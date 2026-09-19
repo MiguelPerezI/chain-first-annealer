@@ -1,0 +1,67 @@
+=== 2026-09-19T06:35:00Z wedge k=2 beta=5 gamma=0.5 ptrack=0.3 time-limit=300 seed=71 ===
+=== gpu_sc chain-first annealer ===  K=wedge of two circles  |F_L|=50  grid=16  k=2 cmax=16 S=4096 iters=5000
+  epoch   1: best   36.0/50  top10 [36, 36, 35, 35, 35, 35, 35, 35, 35, 35]  median 33  now-median 33      7.9s     2.596 Mmoves/s
+  epoch   2: best   36.0/50  top10 [36, 36, 36, 36, 36, 36, 36, 36, 36, 36]  median 34  now-median 34      8.5s     4.825 Mmoves/s
+  epoch   3: best   37.0/50  top10 [37, 36, 36, 36, 36, 36, 36, 36, 36, 36]  median 34  now-median 34      9.1s     6.759 Mmoves/s
+  epoch   4: best   37.0/50  top10 [37, 37, 37, 36, 36, 36, 36, 36, 36, 36]  median 34  now-median 34      9.7s     8.453 Mmoves/s
+  epoch   5: best   37.0/50  top10 [37, 37, 37, 36, 36, 36, 36, 36, 36, 36]  median 34  now-median 34     10.4s     9.948 Mmoves/s
+  epoch   6: best   37.0/50  top10 [37, 37, 37, 36, 36, 36, 36, 36, 36, 36]  median 34  now-median 34     11.0s    11.278 Mmoves/s
+  epoch   7: best   37.0/50  top10 [37, 37, 37, 37, 37, 36, 36, 36, 36, 36]  median 34  now-median 34     11.6s    12.467 Mmoves/s
+  epoch   8: best   37.0/50  top10 [37, 37, 37, 37, 37, 36, 36, 36, 36, 36]  median 34  now-median 34     12.2s    13.538 Mmoves/s
+  epoch   9: best   37.0/50  top10 [37, 37, 37, 37, 37, 37, 36, 36, 36, 36]  median 34  now-median 34     12.8s    14.510 Mmoves/s
+  epoch  10: best   37.0/50  top10 [37, 37, 37, 37, 37, 37, 37, 37, 36, 36]  median 34  now-median 34     13.4s    15.393 Mmoves/s
+  epoch  11: best   37.0/50  top10 [37, 37, 37, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     14.0s    16.200 Mmoves/s
+  epoch  12: best   37.0/50  top10 [37, 37, 37, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     14.6s    16.942 Mmoves/s
+  epoch  13: best   37.0/50  top10 [37, 37, 37, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     15.3s    17.623 Mmoves/s
+  epoch  14: best   37.0/50  top10 [37, 37, 37, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     15.9s    18.252 Mmoves/s
+  epoch  15: best   37.0/50  top10 [37, 37, 37, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     16.5s    18.834 Mmoves/s
+  epoch  16: best   37.0/50  top10 [37, 37, 37, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     17.1s    19.375 Mmoves/s
+  epoch  17: best   37.0/50  top10 [37, 37, 37, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     17.7s    19.878 Mmoves/s
+  epoch  18: best   38.0/50  top10 [38, 37, 37, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     18.3s    20.350 Mmoves/s
+  epoch  19: best   38.0/50  top10 [38, 38, 37, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     19.0s    20.788 Mmoves/s
+  epoch  20: best   38.0/50  top10 [38, 38, 37, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     19.6s    21.201 Mmoves/s
+  epoch  21: best   38.0/50  top10 [38, 38, 38, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     20.2s    21.590 Mmoves/s
+  epoch  22: best   38.0/50  top10 [38, 38, 38, 37, 37, 37, 37, 37, 37, 37]  median 34  now-median 34     20.8s    21.955 Mmoves/s
+  epoch  23: best   38.0/50  top10 [38, 38, 38, 38, 38, 37, 37, 37, 37, 37]  median 35  now-median 34     21.4s    22.301 Mmoves/s
+  epoch  24: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 37, 37, 37, 37]  median 35  now-median 34     22.0s    22.628 Mmoves/s
+  epoch  25: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 37, 37, 37]  median 35  now-median 35     22.6s    22.936 Mmoves/s
+  epoch  26: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 37, 37, 37]  median 35  now-median 35     23.2s    23.229 Mmoves/s
+  epoch  27: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 35  now-median 35     23.9s    23.509 Mmoves/s
+  epoch  28: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 35  now-median 35     24.5s    23.773 Mmoves/s
+  epoch  29: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 35  now-median 35     25.1s    24.025 Mmoves/s
+  epoch  30: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 35  now-median 35     25.7s    24.265 Mmoves/s
+  epoch  31: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 35  now-median 35     26.3s    24.491 Mmoves/s
+  epoch  32: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 35  now-median 35     26.9s    24.709 Mmoves/s
+  epoch  33: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 35  now-median 35     27.5s    24.917 Mmoves/s
+  epoch  34: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 35  now-median 35     28.1s    25.118 Mmoves/s
+  epoch  35: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     28.8s    25.309 Mmoves/s
+  epoch  36: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     29.4s    25.493 Mmoves/s
+  epoch  37: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     30.0s    25.669 Mmoves/s
+  epoch  38: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     30.6s    25.841 Mmoves/s
+  epoch  39: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     31.2s    26.006 Mmoves/s
+  epoch  40: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     31.8s    26.165 Mmoves/s
+  epoch  41: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     32.4s    26.317 Mmoves/s
+  epoch  42: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     33.0s    26.464 Mmoves/s
+  epoch  43: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     33.6s    26.604 Mmoves/s
+  epoch  44: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     34.2s    26.740 Mmoves/s
+  epoch  45: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     34.9s    26.872 Mmoves/s
+  epoch  46: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 36  now-median 36     35.5s    26.999 Mmoves/s
+  epoch  47: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 36     36.1s    27.121 Mmoves/s
+  epoch  48: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 36     36.7s    27.240 Mmoves/s
+  epoch  49: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 36     37.3s    27.354 Mmoves/s
+  epoch  50: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 36     37.9s    27.466 Mmoves/s
+  epoch  51: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 37     38.5s    27.574 Mmoves/s
+  epoch  52: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 37     39.1s    27.679 Mmoves/s
+  epoch  53: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 37     39.7s    27.781 Mmoves/s
+  epoch  54: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 37     40.3s    27.879 Mmoves/s
+  epoch  55: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 37     40.9s    27.975 Mmoves/s
+  epoch  56: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 37     41.5s    28.068 Mmoves/s
+  epoch  57: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 37     42.2s    28.157 Mmoves/s
+  epoch  58: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 37     42.8s    28.245 Mmoves/s
+  epoch  59: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 37     43.4s    28.329 Mmoves/s
+  epoch  60: best   38.0/50  top10 [38, 38, 38, 38, 38, 38, 38, 38, 38, 38]  median 37  now-median 37     44.0s    28.412 Mmoves/s
+best coverage 38/50  domain sizes [19, 19]  time 44.6s  kernel 43.2s  moves 1.23e+09
+NOT a covering: 12 facets uncovered
+wrote results/wedge_k2/summary.json (partial)
+k=2: no full cover (partial summary.json written)
+=== RUN_WEDGE DONE 2026-09-19T06:35:46Z ===

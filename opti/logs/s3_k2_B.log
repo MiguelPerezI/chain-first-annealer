@@ -1,0 +1,8 @@
+=== gpu_sc chain-first annealer ===  K=∂Δ⁴ (S³)  |F_L|=500  grid=25  k=2 cmax=40 S=4096 iters=20000
+  epoch   1: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 458  now-median 458    129.2s       0.6 Mmoves/s
+  epoch   2: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    255.0s       0.6 Mmoves/s
+  epoch   3: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    380.2s       0.6 Mmoves/s
+  time limit reached
+best coverage 460/500  domain sizes [203, 296]  time 380.9s  kernel 380.1s  moves 2.46e+08
+NOT a covering: 40 facets uncovered
+wrote results/s3_k2_B/summary.json (partial)

@@ -1,0 +1,17 @@
+=== 2026-09-19T07:05:30Z bary k=1 cmax=16 beta=5 gamma=0.5 ptrack=0.3 time-limit=120 seed=71 ===
+=== gpu_sc chain-first annealer ===  K=barycenter triangle (cone on ∂Δ²)  |F_L|=54  grid=16  k=1 cmax=16 S=4096 iters=5000
+  epoch   1: best   54.0/54  top10 [54, 54, 54, 54, 54, 54, 54, 54, 54, 54]  median 54  now-median 54     10.6s     1.929 Mmoves/s
+  full coverage reached at epoch 1
+best coverage 54/54  domain sizes [54]  time 11.0s  kernel 10.6s  moves 2.05e+07
+VERIFIED system of 1 motion planners: sizes [54], reduced chain lengths [3]  =>  SC_strict(barycenter triangle (cone on ∂Δ²)) <= 0
+wrote results/bary_k1/cover.txt planners.txt summary.json
+--- code-independent audit of results/bary_k1 ---
+K = barycenter triangle (Δ² split by its barycenter): rebuilt KxK independently — 54 maximal facets
+[1] facet table: 54/54 staircase facets match cover.txt
+[2] cover: 1 disjoint domains cover all 54 facets (sizes [54])
+[3] domain 0: 54 facets, chain of 4 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+
+VERIFIED: SC_strict(barycenter triangle (Δ² split by its barycenter)) <= 0 by 1 explicit planner domains (subdivision level 0)
+wrote results/bary_k1/certificate.md: 1 domains, 54 facets, chain lengths [3]
+wrote results/bary_k1/definition.md  (bary: 4 vertices, 54 facets of K x K)
+=== RUN_BARY DONE 2026-09-19T07:05:42Z ===

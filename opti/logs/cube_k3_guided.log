@@ -1,0 +1,30 @@
+=== gpu_sc chain-first annealer ===  K=cube boundary (8 vertices, 12 triangles)  |F_L|=864  grid=64  k=3 cmax=16 S=4096 iters=5000
+  seeded population from results/cube_k3_v2/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  822.0/864  top10 [822, 822, 822, 822, 822, 822, 822, 822, 822, 822]  median 502  now-median 496     19.0s     1.080 Mmoves/s
+  epoch   2: best  825.0/864  top10 [825, 825, 825, 823, 823, 823, 823, 823, 823, 823]  median 523  now-median 518     32.4s     1.266 Mmoves/s
+  epoch   3: best  827.0/864  top10 [827, 827, 827, 827, 825, 825, 825, 825, 825, 825]  median 820  now-median 818     45.9s     1.343 Mmoves/s
+  epoch   4: best  829.0/864  top10 [829, 829, 829, 828, 827, 827, 827, 827, 827, 827]  median 820  now-median 818     59.4s     1.383 Mmoves/s
+  epoch   5: best  838.0/864  top10 [838, 831, 830, 829, 829, 829, 829, 829, 828, 828]  median 820  now-median 817     72.9s     1.408 Mmoves/s
+  epoch   6: best  838.0/864  top10 [838, 834, 831, 831, 830, 830, 829, 829, 829, 829]  median 820  now-median 817     86.4s     1.426 Mmoves/s
+  epoch   7: best  838.0/864  top10 [838, 838, 838, 834, 834, 833, 832, 832, 832, 832]  median 821  now-median 817     99.9s     1.438 Mmoves/s
+  epoch   8: best  838.0/864  top10 [838, 838, 838, 836, 834, 833, 833, 832, 832, 832]  median 822  now-median 817    113.4s     1.448 Mmoves/s
+  epoch   9: best  838.0/864  top10 [838, 838, 838, 838, 836, 835, 834, 834, 834, 834]  median 822  now-median 817    127.0s     1.456 Mmoves/s
+  epoch  10: best  839.0/864  top10 [839, 838, 838, 838, 838, 837, 836, 836, 835, 835]  median 822  now-median 817    140.4s     1.462 Mmoves/s
+  epoch  11: best  842.0/864  top10 [842, 839, 838, 838, 838, 838, 838, 838, 838, 838]  median 822  now-median 819    154.0s     1.467 Mmoves/s
+  epoch  12: best  846.0/864  top10 [846, 840, 839, 839, 839, 839, 838, 838, 838, 838]  median 822  now-median 819    167.5s     1.471 Mmoves/s
+  epoch  13: best  847.0/864  top10 [847, 845, 841, 840, 840, 839, 839, 839, 839, 839]  median 822  now-median 822    181.0s     1.475 Mmoves/s
+  epoch  14: best  851.0/864  top10 [851, 847, 845, 845, 842, 841, 840, 840, 840, 840]  median 822  now-median 822    194.5s     1.478 Mmoves/s
+  epoch  15: best  853.0/864  top10 [853, 851, 850, 845, 845, 844, 843, 843, 842, 842]  median 822  now-median 822    208.0s     1.481 Mmoves/s
+  epoch  16: best  854.0/864  top10 [854, 853, 850, 846, 846, 846, 845, 845, 845, 845]  median 822  now-median 822    221.5s     1.483 Mmoves/s
+  epoch  17: best  854.0/864  top10 [854, 853, 850, 846, 846, 846, 846, 846, 846, 846]  median 824  now-median 823    235.1s     1.485 Mmoves/s
+  epoch  18: best  854.0/864  top10 [854, 853, 850, 850, 849, 849, 848, 848, 847, 846]  median 824  now-median 823    248.6s     1.487 Mmoves/s
+  epoch  19: best  854.0/864  top10 [854, 853, 853, 852, 851, 851, 850, 850, 849, 849]  median 825  now-median 825    262.1s     1.488 Mmoves/s
+  epoch  20: best  857.0/864  top10 [857, 855, 854, 853, 852, 851, 851, 850, 850, 850]  median 825  now-median 825    275.6s     1.490 Mmoves/s
+  epoch  21: best  862.0/864  top10 [862, 857, 856, 855, 855, 855, 854, 854, 854, 853]  median 829  now-median 829    289.1s     1.491 Mmoves/s
+  epoch  22: best  864.0/864  top10 [864, 862, 860, 858, 857, 856, 856, 855, 855, 855]  median 829  now-median 829    302.6s     1.493 Mmoves/s
+  full coverage reached at epoch 22
+best coverage 864/864  domain sizes [482, 384, 348]  time 303.8s  kernel 301.9s  moves 4.51e+08
+VERIFIED system of 3 motion planners: sizes [482, 236, 146], reduced chain lengths [5, 5, 4]  =>  SC_strict(cube boundary (8 vertices, 12 triangles)) <= 2
+wrote results/cube_k3_guided/cover.txt planners.txt summary.json

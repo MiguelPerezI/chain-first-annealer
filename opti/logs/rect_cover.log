@@ -1,0 +1,22 @@
+circle: limit 1: none (0.0s, 1 nodes)
+circle: limit 2: none (0.0s, 1 nodes)
+circle: limit 3: FOUND (0.0s, 17 nodes)
+circle: rho = 3, rectangles (v,w) = [(0, 0), (1, 1), (2, 2)]
+s2: limit 1: none (0.0s, 1 nodes)
+s2: limit 2: none (0.0s, 91 nodes)
+s2: limit 3: FOUND (0.0s, 38 nodes)
+s2: rho = 3, rectangles (v,w) = [(0, 0), (1, 1), (2, 2)]
+s3: limit 1: none (0.0s, 1 nodes)
+s3: limit 2: none (0.0s, 273 nodes)
+s3: limit 3: FOUND (0.0s, 77 nodes)
+s3: rho = 3, rectangles (v,w) = [(0, 0), (1, 1), (2, 2)]
+torus: limit 1: none (0.0s, 1 nodes)
+torus: limit 2: none (0.0s, 1 nodes)
+torus: limit 3: none (0.0s, 1 nodes)
+torus: limit 4: none (0.0s, 1 nodes)
+torus: limit 5: none (0.0s, 1 nodes)
+torus: limit 6: none (0.0s, 6652 nodes)
+torus: limit 7: none (0.5s, 412129 nodes)
+torus: limit 8: none (11.3s, 9641980 nodes)
+torus: limit 9: none (367.2s, 328517794 nodes)
+torus: rho = 11 (ILP, HiGHS optimal, 8 s): rectangles (0,0) (0,4) (1,1) (2,4) (2,6) (3,3) (4,0) (4,2) (5,5) (6,2) (6,6)

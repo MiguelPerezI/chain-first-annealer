@@ -1,0 +1,105 @@
+=== 2026-09-18T18:55:15Z hybrid m=7 k=2 time-limit=360 seed=11  ===
+Császár torus: keeping 7 rectangles ([216, 168, 144, 132, 120, 108, 78] facets) -> remainder 210 facets, k=2 chains
+  epoch   1: best  140.0/210  top10 [140, 131, 126, 124, 123, 122, 122, 121, 121, 119]  median 49  now-median 49     20.9s       3.9 Mmoves/s
+  epoch   2: best  153.0/210  top10 [153, 151, 150, 150, 149, 148, 148, 148, 147, 147]  median 84  now-median 84     37.1s       4.4 Mmoves/s
+  epoch   3: best  155.0/210  top10 [155, 154, 154, 154, 153, 153, 153, 153, 153, 153]  median 114  now-median 113     53.2s       4.6 Mmoves/s
+  epoch   4: best  161.0/210  top10 [161, 161, 161, 159, 159, 159, 159, 159, 158, 158]  median 121  now-median 121     69.4s       4.7 Mmoves/s
+  epoch   5: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 129  now-median 129     85.6s       4.8 Mmoves/s
+  epoch   6: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 132  now-median 132    101.8s       4.8 Mmoves/s
+  epoch   7: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 140  now-median 140    117.9s       4.9 Mmoves/s
+  epoch   8: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 141  now-median 141    134.1s       4.9 Mmoves/s
+  epoch   9: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 144  now-median 144    150.3s       4.9 Mmoves/s
+  epoch  10: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 145  now-median 145    166.4s       4.9 Mmoves/s
+  epoch  11: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 145  now-median 145    182.6s       4.9 Mmoves/s
+  epoch  12: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 145  now-median 145    198.8s       5.0 Mmoves/s
+  epoch  13: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 146  now-median 146    214.9s       5.0 Mmoves/s
+  epoch  14: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 146  now-median 146    231.1s       5.0 Mmoves/s
+  epoch  15: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 150  now-median 150    247.2s       5.0 Mmoves/s
+  epoch  16: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 150  now-median 150    263.5s       5.0 Mmoves/s
+  epoch  17: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 151  now-median 151    279.6s       5.0 Mmoves/s
+  epoch  18: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 151  now-median 151    295.8s       5.0 Mmoves/s
+  epoch  19: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 151  now-median 151    312.0s       5.0 Mmoves/s
+  epoch  20: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 151  now-median 151    328.2s       5.0 Mmoves/s
+  epoch  21: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 151  now-median 151    344.3s       5.0 Mmoves/s
+  epoch  22: best  161.0/210  top10 [161, 161, 161, 161, 161, 161, 161, 161, 161, 161]  median 151  now-median 151    360.5s       5.0 Mmoves/s
+  time limit reached
+remainder coverage 161/210  time 361.3s
+NOT a covering of the remainder: 49 facets uncovered
+=== 2026-09-18T19:01:17Z hybrid m=6 k=3 time-limit=360 seed=12  ===
+Császár torus: keeping 6 rectangles ([216, 168, 144, 132, 120, 108] facets) -> remainder 288 facets, k=3 chains
+  epoch   1: best  163.0/288  top10 [163, 150, 150, 143, 137, 136, 136, 135, 134, 132]  median 60  now-median 59     30.0s       2.7 Mmoves/s
+  epoch   2: best  216.0/288  top10 [216, 213, 210, 210, 207, 205, 205, 205, 203, 203]  median 115  now-median 115     55.0s       3.0 Mmoves/s
+  epoch   3: best  234.0/288  top10 [234, 234, 233, 232, 229, 228, 228, 228, 228, 227]  median 160  now-median 160     80.0s       3.1 Mmoves/s
+  epoch   4: best  241.0/288  top10 [241, 239, 238, 236, 235, 235, 235, 234, 233, 233]  median 179  now-median 179    105.0s       3.1 Mmoves/s
+  epoch   5: best  241.0/288  top10 [241, 241, 240, 240, 239, 239, 239, 238, 237, 236]  median 200  now-median 200    130.0s       3.2 Mmoves/s
+  epoch   6: best  241.0/288  top10 [241, 241, 241, 240, 240, 240, 240, 239, 239, 239]  median 207  now-median 207    155.0s       3.2 Mmoves/s
+  epoch   7: best  242.0/288  top10 [242, 242, 242, 241, 241, 241, 241, 240, 240, 240]  median 216  now-median 216    180.0s       3.2 Mmoves/s
+  epoch   8: best  248.0/288  top10 [248, 242, 242, 242, 241, 241, 241, 241, 241, 241]  median 218  now-median 218    205.0s       3.2 Mmoves/s
+  epoch   9: best  251.0/288  top10 [251, 246, 243, 242, 242, 242, 242, 241, 241, 241]  median 223  now-median 223    230.1s       3.2 Mmoves/s
+  epoch  10: best  251.0/288  top10 [251, 246, 246, 243, 243, 242, 242, 242, 241, 241]  median 224  now-median 224    255.0s       3.2 Mmoves/s
+  epoch  11: best  251.0/288  top10 [251, 251, 249, 247, 247, 246, 246, 243, 243, 243]  median 226  now-median 226    280.0s       3.2 Mmoves/s
+  epoch  12: best  251.0/288  top10 [251, 251, 251, 250, 249, 249, 247, 247, 244, 243]  median 227  now-median 227    305.1s       3.2 Mmoves/s
+  epoch  13: best  252.0/288  top10 [252, 251, 251, 251, 251, 250, 250, 249, 247, 247]  median 229  now-median 229    330.1s       3.2 Mmoves/s
+  epoch  14: best  252.0/288  top10 [252, 251, 251, 251, 251, 251, 251, 250, 250, 250]  median 229  now-median 229    355.0s       3.2 Mmoves/s
+  epoch  15: best  252.0/288  top10 [252, 252, 252, 251, 251, 251, 251, 251, 251, 251]  median 231  now-median 231    380.0s       3.2 Mmoves/s
+  time limit reached
+remainder coverage 252/288  time 381.1s
+NOT a covering of the remainder: 36 facets uncovered
+=== 2026-09-18T19:07:39Z hybrid m=5 k=3 time-limit=360 seed=13  ===
+Császár torus: keeping 5 rectangles ([216, 168, 144, 132, 120] facets) -> remainder 396 facets, k=3 chains
+  epoch   1: best  169.0/396  top10 [169, 169, 164, 160, 160, 157, 157, 154, 153, 150]  median 68  now-median 68     39.4s       2.1 Mmoves/s
+  epoch   2: best  269.0/396  top10 [269, 265, 263, 262, 256, 254, 253, 252, 251, 249]  median 132  now-median 132     73.7s       2.2 Mmoves/s
+  epoch   3: best  306.0/396  top10 [306, 304, 303, 303, 303, 303, 301, 300, 298, 294]  median 194  now-median 194    108.2s       2.3 Mmoves/s
+  epoch   4: best  310.0/396  top10 [310, 309, 308, 307, 307, 306, 306, 306, 305, 305]  median 223  now-median 223    142.6s       2.3 Mmoves/s
+  epoch   5: best  310.0/396  top10 [310, 310, 310, 308, 308, 308, 308, 308, 308, 308]  median 250  now-median 250    177.0s       2.3 Mmoves/s
+  epoch   6: best  310.0/396  top10 [310, 310, 310, 310, 309, 309, 309, 309, 309, 309]  median 261  now-median 261    211.4s       2.3 Mmoves/s
+  epoch   7: best  311.0/396  top10 [311, 311, 310, 310, 310, 310, 310, 310, 310, 310]  median 275  now-median 274    245.9s       2.3 Mmoves/s
+  epoch   8: best  312.0/396  top10 [312, 311, 311, 311, 311, 310, 310, 310, 310, 310]  median 277  now-median 277    280.3s       2.3 Mmoves/s
+  epoch   9: best  312.0/396  top10 [312, 311, 311, 311, 311, 311, 311, 311, 311, 311]  median 287  now-median 287    314.8s       2.3 Mmoves/s
+  epoch  10: best  312.0/396  top10 [312, 312, 311, 311, 311, 311, 311, 311, 311, 311]  median 288  now-median 288    349.2s       2.3 Mmoves/s
+  epoch  11: best  312.0/396  top10 [312, 312, 312, 312, 312, 311, 311, 311, 311, 311]  median 298  now-median 298    383.7s       2.4 Mmoves/s
+  time limit reached
+remainder coverage 312/396  time 384.7s
+NOT a covering of the remainder: 84 facets uncovered
+=== 2026-09-18T19:14:04Z hybrid m=5 k=4 time-limit=360 seed=14  ===
+Császár torus: keeping 5 rectangles ([216, 168, 144, 132, 120] facets) -> remainder 396 facets, k=4 chains
+  epoch   1: best  162.0/396  top10 [162, 162, 150, 148, 147, 146, 142, 140, 139, 138]  median 70  now-median 70     41.9s       2.0 Mmoves/s
+  epoch   2: best  280.0/396  top10 [280, 262, 260, 260, 256, 255, 254, 252, 248, 245]  median 143  now-median 143     78.7s       2.1 Mmoves/s
+  epoch   3: best  328.0/396  top10 [328, 322, 312, 312, 309, 306, 305, 305, 305, 304]  median 213  now-median 213    115.7s       2.1 Mmoves/s
+  epoch   4: best  343.0/396  top10 [343, 340, 337, 336, 335, 335, 335, 334, 334, 333]  median 250  now-median 250    152.6s       2.1 Mmoves/s
+  epoch   5: best  351.0/396  top10 [351, 348, 348, 345, 344, 344, 344, 343, 343, 343]  median 281  now-median 281    189.5s       2.2 Mmoves/s
+  epoch   6: best  352.0/396  top10 [352, 352, 349, 349, 349, 349, 349, 348, 348, 347]  median 296  now-median 296    226.5s       2.2 Mmoves/s
+  epoch   7: best  354.0/396  top10 [354, 353, 353, 352, 352, 352, 352, 352, 351, 350]  median 313  now-median 313    263.4s       2.2 Mmoves/s
+  epoch   8: best  356.0/396  top10 [356, 355, 355, 355, 353, 353, 353, 352, 352, 352]  median 320  now-median 320    300.4s       2.2 Mmoves/s
+  epoch   9: best  357.0/396  top10 [357, 357, 355, 355, 354, 354, 353, 353, 353, 353]  median 330  now-median 330    337.3s       2.2 Mmoves/s
+  epoch  10: best  362.0/396  top10 [362, 358, 357, 355, 355, 355, 354, 354, 354, 354]  median 333  now-median 333    374.2s       2.2 Mmoves/s
+  time limit reached
+remainder coverage 362/396  time 375.5s
+NOT a covering of the remainder: 34 facets uncovered
+=== 2026-09-18T19:20:21Z hybrid m=4 k=4 time-limit=360 seed=15  ===
+Császár torus: keeping 4 rectangles ([216, 168, 144, 132] facets) -> remainder 516 facets, k=4 chains
+  epoch   1: best  192.0/516  top10 [192, 186, 182, 180, 177, 176, 175, 173, 165, 165]  median 91  now-median 91     52.9s       1.5 Mmoves/s
+  epoch   2: best  328.0/516  top10 [328, 321, 320, 315, 306, 305, 303, 300, 298, 298]  median 169  now-median 169    100.9s       1.6 Mmoves/s
+  epoch   3: best  413.0/516  top10 [413, 410, 408, 407, 396, 393, 390, 387, 384, 381]  median 256  now-median 256    148.9s       1.7 Mmoves/s
+  epoch   4: best  430.0/516  top10 [430, 430, 430, 430, 429, 428, 427, 427, 427, 422]  median 307  now-median 307    197.0s       1.7 Mmoves/s
+  epoch   5: best  439.0/516  top10 [439, 438, 435, 435, 435, 435, 434, 434, 434, 434]  median 351  now-median 350    245.2s       1.7 Mmoves/s
+  epoch   6: best  441.0/516  top10 [441, 440, 439, 439, 438, 438, 438, 437, 437, 437]  median 370  now-median 370    293.4s       1.7 Mmoves/s
+  epoch   7: best  443.0/516  top10 [443, 442, 442, 441, 441, 441, 441, 441, 440, 440]  median 393  now-median 393    341.5s       1.7 Mmoves/s
+  epoch   8: best  443.0/516  top10 [443, 443, 443, 442, 442, 442, 442, 441, 441, 441]  median 402  now-median 402    389.7s       1.7 Mmoves/s
+  time limit reached
+remainder coverage 443/516  time 391.1s
+NOT a covering of the remainder: 73 facets uncovered
+=== 2026-09-18T19:26:53Z hybrid m=3 k=5 time-limit=360 seed=16  ===
+Császár torus: keeping 3 rectangles ([216, 168, 144] facets) -> remainder 648 facets, k=5 chains
+  epoch   1: best  223.0/648  top10 [223, 216, 209, 209, 206, 206, 203, 201, 199, 198]  median 135  now-median 135     68.9s       1.2 Mmoves/s
+  epoch   2: best  381.0/648  top10 [381, 371, 353, 347, 346, 341, 338, 338, 337, 337]  median 214  now-median 214    132.8s       1.2 Mmoves/s
+  epoch   3: best  475.0/648  top10 [475, 463, 461, 458, 456, 454, 452, 450, 444, 440]  median 304  now-median 304    196.9s       1.2 Mmoves/s
+  epoch   4: best  551.0/648  top10 [551, 538, 530, 530, 525, 510, 510, 509, 506, 503]  median 367  now-median 367    261.1s       1.3 Mmoves/s
+  epoch   5: best  581.0/648  top10 [581, 578, 572, 571, 571, 564, 559, 559, 556, 554]  median 427  now-median 427    325.4s       1.3 Mmoves/s
+  epoch   6: best  583.0/648  top10 [583, 583, 582, 580, 577, 577, 575, 572, 571, 568]  median 460  now-median 460    389.6s       1.3 Mmoves/s
+  time limit reached
+remainder coverage 583/648  time 391.3s
+NOT a covering of the remainder: 65 facets uncovered
+=== 2026-09-18T19:33:25Z torus k=3 cmax=20 gamma=0.1 probe ===
+=== gpu_sc chain-first annealer ===  K=Császár torus  |F_L|=1176  grid=49  k=3 cmax=20 S=4096 iters=20000
+=== LADDER8 DONE 2026-09-18T19:33:48Z ===

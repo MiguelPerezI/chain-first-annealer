@@ -1,0 +1,118 @@
+=== 2026-09-18T21:20:27Z hybrid m=7 k=3 seed=51 600 s ===
+Császár torus: keeping 7 rectangles ([216, 168, 144, 132, 120, 108, 78] facets) -> remainder 210 facets, k=3 chains
+  epoch   1: best  127.0/210  top10 [127, 125, 123, 120, 119, 119, 118, 117, 113, 111]  median 51  now-median 51     23.1s       3.5 Mmoves/s
+  epoch   2: best  168.0/210  top10 [168, 166, 163, 160, 158, 157, 156, 156, 156, 156]  median 99  now-median 99     41.4s       4.0 Mmoves/s
+  epoch   3: best  188.0/210  top10 [188, 185, 181, 180, 178, 177, 177, 176, 175, 175]  median 132  now-median 132     59.7s       4.1 Mmoves/s
+  epoch   4: best  188.0/210  top10 [188, 188, 187, 186, 185, 185, 185, 184, 183, 183]  median 146  now-median 146     77.9s       4.2 Mmoves/s
+  epoch   5: best  192.0/210  top10 [192, 191, 190, 190, 190, 189, 188, 188, 187, 187]  median 157  now-median 157     96.2s       4.3 Mmoves/s
+  epoch   6: best  192.0/210  top10 [192, 192, 192, 191, 190, 190, 190, 190, 190, 189]  median 161  now-median 161    114.4s       4.3 Mmoves/s
+  epoch   7: best  192.0/210  top10 [192, 192, 192, 192, 192, 192, 192, 191, 191, 191]  median 167  now-median 167    132.7s       4.3 Mmoves/s
+  epoch   8: best  196.0/210  top10 [196, 196, 193, 193, 193, 193, 192, 192, 192, 192]  median 169  now-median 169    150.9s       4.4 Mmoves/s
+  epoch   9: best  196.0/210  top10 [196, 196, 196, 193, 193, 193, 193, 193, 193, 193]  median 173  now-median 173    169.2s       4.4 Mmoves/s
+  epoch  10: best  197.0/210  top10 [197, 196, 196, 195, 194, 194, 194, 193, 193, 193]  median 175  now-median 175    187.4s       4.4 Mmoves/s
+  epoch  11: best  197.0/210  top10 [197, 196, 196, 195, 195, 195, 195, 195, 194, 193]  median 178  now-median 178    205.7s       4.4 Mmoves/s
+  epoch  12: best  197.0/210  top10 [197, 197, 196, 196, 196, 195, 195, 195, 195, 194]  median 178  now-median 178    223.9s       4.4 Mmoves/s
+  epoch  13: best  198.0/210  top10 [198, 197, 197, 197, 197, 196, 196, 196, 196, 196]  median 181  now-median 181    242.2s       4.4 Mmoves/s
+  epoch  14: best  198.0/210  top10 [198, 198, 198, 197, 197, 197, 196, 196, 196, 196]  median 181  now-median 181    260.4s       4.4 Mmoves/s
+  epoch  15: best  198.0/210  top10 [198, 198, 198, 198, 198, 197, 197, 197, 197, 197]  median 183  now-median 183    278.6s       4.4 Mmoves/s
+  epoch  16: best  199.0/210  top10 [199, 199, 198, 198, 198, 198, 198, 197, 197, 197]  median 183  now-median 183    296.9s       4.4 Mmoves/s
+  epoch  17: best  199.0/210  top10 [199, 199, 198, 198, 198, 198, 198, 198, 198, 198]  median 185  now-median 185    315.1s       4.4 Mmoves/s
+  epoch  18: best  199.0/210  top10 [199, 199, 198, 198, 198, 198, 198, 198, 198, 198]  median 185  now-median 185    333.3s       4.4 Mmoves/s
+  epoch  19: best  199.0/210  top10 [199, 199, 199, 199, 198, 198, 198, 198, 198, 198]  median 186  now-median 186    351.6s       4.4 Mmoves/s
+  epoch  20: best  199.0/210  top10 [199, 199, 199, 199, 199, 198, 198, 198, 198, 198]  median 186  now-median 186    369.8s       4.4 Mmoves/s
+  epoch  21: best  199.0/210  top10 [199, 199, 199, 199, 199, 199, 199, 199, 199, 198]  median 187  now-median 187    388.1s       4.4 Mmoves/s
+  epoch  22: best  200.0/210  top10 [200, 199, 199, 199, 199, 199, 199, 199, 199, 199]  median 187  now-median 187    406.3s       4.4 Mmoves/s
+  epoch  23: best  200.0/210  top10 [200, 200, 200, 200, 199, 199, 199, 199, 199, 199]  median 188  now-median 188    424.6s       4.4 Mmoves/s
+  epoch  24: best  200.0/210  top10 [200, 200, 200, 200, 200, 200, 199, 199, 199, 199]  median 188  now-median 188    442.8s       4.4 Mmoves/s
+  epoch  25: best  200.0/210  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 199]  median 189  now-median 189    461.1s       4.4 Mmoves/s
+  epoch  26: best  200.0/210  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 189  now-median 189    479.3s       4.5 Mmoves/s
+  epoch  27: best  200.0/210  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 190  now-median 190    497.6s       4.5 Mmoves/s
+  epoch  28: best  200.0/210  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 190  now-median 190    515.8s       4.5 Mmoves/s
+  epoch  29: best  200.0/210  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 192  now-median 192    534.1s       4.5 Mmoves/s
+  epoch  30: best  200.0/210  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 192  now-median 192    552.3s       4.5 Mmoves/s
+  epoch  31: best  200.0/210  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 192  now-median 192    570.5s       4.5 Mmoves/s
+  epoch  32: best  200.0/210  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 192  now-median 192    588.7s       4.5 Mmoves/s
+  epoch  33: best  200.0/210  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 193  now-median 193    607.0s       4.5 Mmoves/s
+  time limit reached
+remainder coverage 200/210  time 608.1s
+NOT a covering of the remainder: 10 facets uncovered
+=== 2026-09-18T21:30:36Z hybrid m=8 k=2 seed=52 600 s ===
+Császár torus: keeping 8 rectangles ([216, 168, 144, 132, 120, 108, 78, 66] facets) -> remainder 144 facets, k=2 chains
+  epoch   1: best  107.0/144  top10 [107, 104, 104, 103, 101, 101, 100, 99, 99, 98]  median 50  now-median 50     16.4s       5.0 Mmoves/s
+  epoch   2: best  123.0/144  top10 [123, 122, 121, 120, 119, 119, 119, 118, 118, 117]  median 77  now-median 77     27.7s       5.9 Mmoves/s
+  epoch   3: best  127.0/144  top10 [127, 127, 126, 125, 125, 125, 124, 124, 124, 124]  median 94  now-median 94     39.0s       6.3 Mmoves/s
+  epoch   4: best  130.0/144  top10 [130, 129, 127, 127, 127, 127, 127, 127, 126, 126]  median 101  now-median 101     50.3s       6.5 Mmoves/s
+  epoch   5: best  130.0/144  top10 [130, 130, 130, 129, 129, 128, 128, 128, 127, 127]  median 107  now-median 107     61.6s       6.7 Mmoves/s
+  epoch   6: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 129, 129, 129]  median 109  now-median 109     72.8s       6.8 Mmoves/s
+  epoch   7: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 112  now-median 112     84.2s       6.8 Mmoves/s
+  epoch   8: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 112  now-median 112     95.4s       6.9 Mmoves/s
+  epoch   9: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 115  now-median 115    106.7s       6.9 Mmoves/s
+  epoch  10: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 115  now-median 115    117.9s       7.0 Mmoves/s
+  epoch  11: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 117  now-median 117    129.3s       7.0 Mmoves/s
+  epoch  12: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 117  now-median 117    140.5s       7.0 Mmoves/s
+  epoch  13: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 118  now-median 118    151.9s       7.0 Mmoves/s
+  epoch  14: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 119  now-median 119    163.1s       7.0 Mmoves/s
+  epoch  15: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 121  now-median 121    174.5s       7.1 Mmoves/s
+  epoch  16: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 121  now-median 121    185.7s       7.1 Mmoves/s
+  epoch  17: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 124  now-median 124    197.0s       7.1 Mmoves/s
+  epoch  18: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 124  now-median 124    208.3s       7.1 Mmoves/s
+  epoch  19: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 125  now-median 125    219.6s       7.1 Mmoves/s
+  epoch  20: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 125  now-median 125    230.8s       7.1 Mmoves/s
+  epoch  21: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 127  now-median 127    242.2s       7.1 Mmoves/s
+  epoch  22: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 127  now-median 127    253.4s       7.1 Mmoves/s
+  epoch  23: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 127  now-median 127    264.8s       7.1 Mmoves/s
+  epoch  24: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 127  now-median 127    276.0s       7.1 Mmoves/s
+  epoch  25: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 127  now-median 127    287.3s       7.1 Mmoves/s
+  epoch  26: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 127  now-median 127    298.5s       7.1 Mmoves/s
+  epoch  27: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 127  now-median 127    309.9s       7.2 Mmoves/s
+  epoch  28: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 127  now-median 127    321.1s       7.2 Mmoves/s
+  epoch  29: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    332.5s       7.2 Mmoves/s
+  epoch  30: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    343.7s       7.2 Mmoves/s
+  epoch  31: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    355.1s       7.2 Mmoves/s
+  epoch  32: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    366.3s       7.2 Mmoves/s
+  epoch  33: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    377.6s       7.2 Mmoves/s
+  epoch  34: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    388.9s       7.2 Mmoves/s
+  epoch  35: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    400.2s       7.2 Mmoves/s
+  epoch  36: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    411.5s       7.2 Mmoves/s
+  epoch  37: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    422.8s       7.2 Mmoves/s
+  epoch  38: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    434.1s       7.2 Mmoves/s
+  epoch  39: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    445.4s       7.2 Mmoves/s
+  epoch  40: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    456.6s       7.2 Mmoves/s
+  epoch  41: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    468.0s       7.2 Mmoves/s
+  epoch  42: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    479.2s       7.2 Mmoves/s
+  epoch  43: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    490.6s       7.2 Mmoves/s
+  epoch  44: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    501.8s       7.2 Mmoves/s
+  epoch  45: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    513.1s       7.2 Mmoves/s
+  epoch  46: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    524.3s       7.2 Mmoves/s
+  epoch  47: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    535.7s       7.2 Mmoves/s
+  epoch  48: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    546.9s       7.2 Mmoves/s
+  epoch  49: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    558.3s       7.2 Mmoves/s
+  epoch  50: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    569.5s       7.2 Mmoves/s
+  epoch  51: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    580.8s       7.2 Mmoves/s
+  epoch  52: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    592.0s       7.2 Mmoves/s
+  epoch  53: best  130.0/144  top10 [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]  median 130  now-median 130    603.4s       7.2 Mmoves/s
+  time limit reached
+remainder coverage 130/144  time 604.1s
+NOT a covering of the remainder: 14 facets uncovered
+=== 2026-09-18T21:40:41Z hybrid m=5 k=5 seed=53 600 s ===
+Császár torus: keeping 5 rectangles ([216, 168, 144, 132, 120] facets) -> remainder 396 facets, k=5 chains
+  epoch   1: best  154.0/396  top10 [154, 146, 143, 142, 139, 139, 135, 135, 134, 133]  median 71  now-median 71     44.0s       1.9 Mmoves/s
+  epoch   2: best  259.0/396  top10 [259, 257, 246, 245, 244, 237, 236, 236, 236, 234]  median 145  now-median 145     83.3s       2.0 Mmoves/s
+  epoch   3: best  326.0/396  top10 [326, 323, 320, 312, 311, 311, 310, 309, 309, 307]  median 218  now-median 218    122.7s       2.0 Mmoves/s
+  epoch   4: best  350.0/396  top10 [350, 347, 345, 343, 342, 340, 340, 339, 338, 337]  median 261  now-median 261    162.1s       2.0 Mmoves/s
+  epoch   5: best  359.0/396  top10 [359, 358, 358, 357, 356, 356, 356, 356, 355, 355]  median 296  now-median 296    201.6s       2.0 Mmoves/s
+  epoch   6: best  369.0/396  top10 [369, 368, 367, 366, 365, 364, 364, 364, 363, 363]  median 313  now-median 313    241.0s       2.0 Mmoves/s
+  epoch   7: best  374.0/396  top10 [374, 373, 372, 371, 371, 371, 371, 371, 370, 369]  median 331  now-median 331    280.6s       2.0 Mmoves/s
+  epoch   8: best  379.0/396  top10 [379, 377, 377, 375, 375, 374, 373, 373, 373, 373]  median 338  now-median 338    320.0s       2.1 Mmoves/s
+  epoch   9: best  382.0/396  top10 [382, 380, 379, 379, 378, 377, 377, 377, 375, 375]  median 347  now-median 347    359.5s       2.1 Mmoves/s
+  epoch  10: best  387.0/396  top10 [387, 380, 380, 379, 378, 377, 377, 377, 377, 377]  median 350  now-median 350    398.9s       2.1 Mmoves/s
+  epoch  11: best  388.0/396  top10 [388, 381, 380, 380, 380, 379, 379, 378, 378, 378]  median 357  now-median 357    438.4s       2.1 Mmoves/s
+  epoch  12: best  389.0/396  top10 [389, 382, 380, 380, 380, 380, 380, 379, 379, 378]  median 359  now-median 358    477.8s       2.1 Mmoves/s
+  epoch  13: best  389.0/396  top10 [389, 385, 383, 381, 381, 381, 380, 380, 380, 380]  median 362  now-median 362    517.4s       2.1 Mmoves/s
+  epoch  14: best  389.0/396  top10 [389, 389, 383, 383, 381, 381, 381, 381, 380, 380]  median 363  now-median 363    556.8s       2.1 Mmoves/s
+  epoch  15: best  389.0/396  top10 [389, 389, 385, 384, 384, 384, 382, 381, 381, 381]  median 366  now-median 366    596.3s       2.1 Mmoves/s
+  epoch  16: best  389.0/396  top10 [389, 389, 388, 388, 386, 384, 382, 382, 381, 381]  median 366  now-median 366    635.8s       2.1 Mmoves/s
+  time limit reached
+remainder coverage 389/396  time 637.4s
+NOT a covering of the remainder: 7 facets uncovered
+=== LADDER12 DONE 2026-09-18T21:51:19Z ===

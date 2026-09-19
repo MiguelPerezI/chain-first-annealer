@@ -1,0 +1,12 @@
+=== gpu_sc chain-first annealer ===  K=Császár torus  |F_L|=1176  grid=49  k=4 cmax=40 S=4096 iters=20000
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  244.0/1176  top10 [244, 242, 239, 238, 237, 236, 235, 235, 234, 234]  median 196  now-median 196     58.1s       1.4 Mmoves/s
+  epoch   2: best  317.0/1176  top10 [317, 305, 301, 284, 282, 281, 281, 280, 278, 278]  median 220  now-median 220    110.8s       1.5 Mmoves/s
+  epoch   3: best  369.0/1176  top10 [369, 360, 354, 351, 351, 350, 349, 348, 348, 348]  median 260  now-median 260    163.9s       1.5 Mmoves/s
+  epoch   4: best  431.0/1176  top10 [431, 430, 430, 426, 425, 425, 419, 417, 413, 413]  median 298  now-median 298    217.1s       1.5 Mmoves/s
+  epoch   5: best  498.0/1176  top10 [498, 480, 474, 472, 472, 469, 467, 467, 465, 464]  median 347  now-median 347    270.4s       1.5 Mmoves/s
+  time limit reached
+best coverage 498/1176  domain sizes [78, 198, 122, 102]  time 272.1s  kernel 270.0s  moves 4.1e+08
+NOT a covering: 678 facets uncovered
+wrote results/torus_k4_smoke/summary.json (partial)

@@ -1,0 +1,8 @@
+=== gpu_sc chain-first annealer ===  K=∂Δ⁴ (S³)  |F_L|=500  grid=25  k=3 cmax=40 S=4096 iters=20000
+  epoch   1: best  496.0/500  top10 [496, 496, 495, 495, 495, 495, 494, 494, 494, 493]  median 460  now-median 460     65.5s       1.3 Mmoves/s
+  epoch   2: best  499.0/500  top10 [499, 499, 499, 499, 499, 499, 499, 499, 499, 499]  median 476  now-median 476    125.8s       1.3 Mmoves/s
+  epoch   3: best  500.0/500  top10 [500, 500, 499, 499, 499, 499, 499, 499, 499, 499]  median 483  now-median 483    186.3s       1.3 Mmoves/s
+  full coverage reached at epoch 3
+best coverage 500/500  domain sizes [230, 311, 103]  time 187.4s  kernel 186.2s  moves 2.46e+08
+VERIFIED system of 3 motion planners: sizes [230, 226, 44], reduced chain lengths [4, 3, 3]  =>  SC_strict(∂Δ⁴ (S³)) <= 2
+wrote results/s3_k3_20260918T164956Z/cover.txt planners.txt summary.json

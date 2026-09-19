@@ -1,0 +1,9 @@
+=== gpu_sc chain-first annealer ===  K=∂Δ⁴ (S³)  |F_L|=500  grid=25  k=3 cmax=40 S=4096 iters=20000
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  492.0/500  top10 [492, 491, 490, 489, 489, 488, 487, 487, 486, 486]  median 448  now-median 448     64.0s       1.3 Mmoves/s
+  epoch   2: best  500.0/500  top10 [500, 499, 499, 499, 499, 499, 498, 498, 498, 498]  median 473  now-median 473    120.8s       1.4 Mmoves/s
+  full coverage reached at epoch 2
+best coverage 500/500  domain sizes [187, 293, 131]  time 122.1s  kernel 120.6s  moves 1.64e+08
+VERIFIED system of 3 motion planners: sizes [252, 187, 61], reduced chain lengths [3, 5, 4]  =>  SC_strict(∂Δ⁴ (S³)) <= 2
+wrote results/s3_k3_run1/cover.txt planners.txt summary.json

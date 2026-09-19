@@ -1,0 +1,6 @@
+/home/ubuntu/Documents/opti/stream_starcover.py:2: SyntaxWarning: invalid escape sequence '\ '
+  """stream_starcover.py — star cover of ∂Δ^{n+1} (S^n) for n where the
+  s5: streaming [9072, 2772, 504] vs audited [9072, 2772, 504] — MATCH
+  s6: streaming [45276, 12012, 1848] vs audited [45276, 12012, 1848] — MATCH
+  s7: streaming [219648, 51480, 6864] vs audited [219648, 51480, 6864] — MATCH
+  s8: streaming [1042470, 218790, 25740] vs audited [1042470, 218790, 25740] — MATCH

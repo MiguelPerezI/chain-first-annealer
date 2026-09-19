@@ -1,0 +1,57 @@
+=== 2026-09-18T20:59:40Z hybrid m=6 k=4 seed=41 600 s ===
+Császár torus: keeping 6 rectangles ([216, 168, 144, 132, 120, 108] facets) -> remainder 288 facets, k=4 chains
+  epoch   1: best  137.0/288  top10 [137, 135, 128, 125, 125, 124, 121, 120, 120, 118]  median 59  now-median 59     32.1s       2.6 Mmoves/s
+  epoch   2: best  217.0/288  top10 [217, 211, 210, 208, 207, 206, 204, 204, 200, 198]  median 122  now-median 122     58.9s       2.8 Mmoves/s
+  epoch   3: best  247.0/288  top10 [247, 244, 243, 241, 241, 240, 239, 238, 237, 237]  median 173  now-median 173     85.8s       2.9 Mmoves/s
+  epoch   4: best  256.0/288  top10 [256, 255, 253, 252, 252, 251, 251, 251, 251, 250]  median 197  now-median 197    112.5s       2.9 Mmoves/s
+  epoch   5: best  262.0/288  top10 [262, 261, 261, 260, 260, 259, 259, 259, 259, 258]  median 216  now-median 216    139.3s       2.9 Mmoves/s
+  epoch   6: best  268.0/288  top10 [268, 266, 266, 265, 263, 263, 263, 263, 262, 262]  median 225  now-median 225    166.0s       3.0 Mmoves/s
+  epoch   7: best  272.0/288  top10 [272, 269, 268, 268, 267, 267, 267, 266, 266, 266]  median 235  now-median 235    192.7s       3.0 Mmoves/s
+  epoch   8: best  273.0/288  top10 [273, 270, 269, 269, 268, 268, 268, 268, 267, 267]  median 239  now-median 239    219.4s       3.0 Mmoves/s
+  epoch   9: best  274.0/288  top10 [274, 274, 273, 272, 271, 271, 270, 269, 269, 268]  median 245  now-median 245    246.2s       3.0 Mmoves/s
+  epoch  10: best  274.0/288  top10 [274, 274, 273, 272, 272, 271, 271, 271, 271, 270]  median 247  now-median 247    272.9s       3.0 Mmoves/s
+  epoch  11: best  275.0/288  top10 [275, 274, 274, 274, 274, 273, 273, 273, 273, 273]  median 252  now-median 252    299.7s       3.0 Mmoves/s
+  epoch  12: best  276.0/288  top10 [276, 275, 275, 275, 274, 274, 274, 274, 274, 274]  median 253  now-median 253    326.3s       3.0 Mmoves/s
+  epoch  13: best  277.0/288  top10 [277, 277, 276, 276, 276, 276, 276, 276, 275, 275]  median 255  now-median 255    353.1s       3.0 Mmoves/s
+  epoch  14: best  278.0/288  top10 [278, 277, 277, 277, 276, 276, 276, 276, 276, 276]  median 256  now-median 256    379.8s       3.0 Mmoves/s
+  epoch  15: best  280.0/288  top10 [280, 279, 277, 277, 277, 277, 276, 276, 276, 276]  median 258  now-median 258    406.5s       3.0 Mmoves/s
+  epoch  16: best  282.0/288  top10 [282, 280, 279, 278, 277, 277, 277, 276, 276, 276]  median 259  now-median 259    433.2s       3.0 Mmoves/s
+  epoch  17: best  282.0/288  top10 [282, 280, 279, 278, 277, 277, 277, 277, 277, 276]  median 261  now-median 261    459.9s       3.0 Mmoves/s
+  epoch  18: best  282.0/288  top10 [282, 280, 279, 279, 278, 277, 277, 277, 277, 277]  median 261  now-median 261    486.6s       3.0 Mmoves/s
+  epoch  19: best  282.0/288  top10 [282, 280, 280, 280, 280, 280, 279, 279, 278, 277]  median 262  now-median 262    513.4s       3.0 Mmoves/s
+  epoch  20: best  282.0/288  top10 [282, 280, 280, 280, 280, 280, 280, 280, 279, 278]  median 262  now-median 262    540.1s       3.0 Mmoves/s
+  epoch  21: best  282.0/288  top10 [282, 280, 280, 280, 280, 280, 280, 280, 280, 280]  median 264  now-median 264    566.9s       3.0 Mmoves/s
+  epoch  22: best  283.0/288  top10 [283, 281, 280, 280, 280, 280, 280, 280, 280, 280]  median 264  now-median 264    593.6s       3.0 Mmoves/s
+  epoch  23: best  283.0/288  top10 [283, 281, 280, 280, 280, 280, 280, 280, 280, 280]  median 265  now-median 265    620.3s       3.0 Mmoves/s
+  time limit reached
+remainder coverage 283/288  time 621.7s
+NOT a covering of the remainder: 5 facets uncovered
+=== 2026-09-18T21:10:03Z hybrid m=6 k=4 seed=42 600 s ===
+Császár torus: keeping 6 rectangles ([216, 168, 144, 132, 120, 108] facets) -> remainder 288 facets, k=4 chains
+  epoch   1: best  132.0/288  top10 [132, 126, 124, 123, 123, 123, 122, 120, 119, 118]  median 59  now-median 59     30.7s       2.7 Mmoves/s
+  epoch   2: best  215.0/288  top10 [215, 213, 210, 205, 204, 201, 201, 200, 200, 200]  median 122  now-median 122     57.5s       2.9 Mmoves/s
+  epoch   3: best  244.0/288  top10 [244, 242, 240, 240, 238, 238, 237, 236, 236, 236]  median 173  now-median 173     84.3s       2.9 Mmoves/s
+  epoch   4: best  257.0/288  top10 [257, 256, 255, 255, 255, 255, 254, 253, 252, 251]  median 197  now-median 197    111.1s       3.0 Mmoves/s
+  epoch   5: best  266.0/288  top10 [266, 263, 262, 262, 260, 260, 260, 260, 260, 259]  median 217  now-median 217    137.9s       3.0 Mmoves/s
+  epoch   6: best  268.0/288  top10 [268, 265, 265, 264, 263, 263, 263, 263, 262, 262]  median 226  now-median 226    164.8s       3.0 Mmoves/s
+  epoch   7: best  271.0/288  top10 [271, 271, 268, 268, 267, 266, 266, 265, 265, 265]  median 236  now-median 236    191.5s       3.0 Mmoves/s
+  epoch   8: best  272.0/288  top10 [272, 271, 271, 271, 269, 269, 268, 268, 267, 267]  median 240  now-median 240    218.3s       3.0 Mmoves/s
+  epoch   9: best  272.0/288  top10 [272, 271, 271, 271, 271, 271, 271, 270, 270, 270]  median 246  now-median 246    245.1s       3.0 Mmoves/s
+  epoch  10: best  275.0/288  top10 [275, 272, 272, 272, 272, 271, 271, 271, 271, 271]  median 248  now-median 248    271.9s       3.0 Mmoves/s
+  epoch  11: best  276.0/288  top10 [276, 275, 275, 274, 273, 273, 273, 272, 272, 272]  median 252  now-median 252    298.7s       3.0 Mmoves/s
+  epoch  12: best  277.0/288  top10 [277, 276, 276, 275, 275, 275, 275, 275, 274, 273]  median 253  now-median 253    325.5s       3.0 Mmoves/s
+  epoch  13: best  278.0/288  top10 [278, 277, 277, 276, 276, 275, 275, 275, 275, 275]  median 256  now-median 256    352.3s       3.0 Mmoves/s
+  epoch  14: best  280.0/288  top10 [280, 279, 277, 277, 277, 276, 276, 276, 276, 276]  median 256  now-median 256    379.0s       3.0 Mmoves/s
+  epoch  15: best  282.0/288  top10 [282, 281, 280, 279, 278, 278, 278, 277, 277, 277]  median 258  now-median 258    405.8s       3.0 Mmoves/s
+  epoch  16: best  282.0/288  top10 [282, 282, 281, 281, 280, 280, 278, 278, 278, 278]  median 259  now-median 259    432.6s       3.0 Mmoves/s
+  epoch  17: best  282.0/288  top10 [282, 282, 281, 281, 280, 280, 280, 280, 278, 278]  median 261  now-median 261    459.3s       3.0 Mmoves/s
+  epoch  18: best  282.0/288  top10 [282, 282, 281, 281, 281, 281, 280, 280, 280, 280]  median 261  now-median 261    486.1s       3.0 Mmoves/s
+  epoch  19: best  282.0/288  top10 [282, 282, 281, 281, 281, 281, 281, 280, 280, 280]  median 262  now-median 262    512.9s       3.0 Mmoves/s
+  epoch  20: best  282.0/288  top10 [282, 282, 282, 281, 281, 281, 281, 281, 281, 281]  median 262  now-median 262    539.7s       3.0 Mmoves/s
+  epoch  21: best  282.0/288  top10 [282, 282, 282, 282, 282, 281, 281, 281, 281, 281]  median 264  now-median 264    566.4s       3.0 Mmoves/s
+  epoch  22: best  282.0/288  top10 [282, 282, 282, 282, 282, 282, 282, 281, 281, 281]  median 264  now-median 264    593.2s       3.0 Mmoves/s
+  epoch  23: best  282.0/288  top10 [282, 282, 282, 282, 282, 282, 282, 282, 282, 281]  median 265  now-median 265    620.0s       3.0 Mmoves/s
+  time limit reached
+remainder coverage 282/288  time 621.3s
+NOT a covering of the remainder: 6 facets uncovered
+=== LADDER11 DONE 2026-09-18T21:20:25Z ===

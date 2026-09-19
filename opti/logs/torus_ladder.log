@@ -1,0 +1,38 @@
+=== 2026-09-18T17:05:35Z torus k=6 time-limit=600 seed=31  ===
+=== gpu_sc chain-first annealer ===  K=Császár torus  |F_L|=1176  grid=49  k=6 cmax=40 S=4096 iters=20000
+  epoch   1: best  241.0/1176  top10 [241, 240, 239, 239, 237, 236, 233, 233, 233, 232]  median 197  now-median 197     63.9s       1.3 Mmoves/s
+  epoch   2: best  267.0/1176  top10 [267, 266, 262, 261, 260, 260, 260, 260, 258, 258]  median 211  now-median 211    121.0s       1.4 Mmoves/s
+  epoch   3: best  310.0/1176  top10 [310, 303, 301, 300, 300, 299, 299, 298, 298, 296]  median 235  now-median 235    178.2s       1.4 Mmoves/s
+  epoch   4: best  359.0/1176  top10 [359, 353, 350, 350, 348, 348, 344, 344, 343, 343]  median 260  now-median 260    235.3s       1.4 Mmoves/s
+  epoch   5: best  412.0/1176  top10 [412, 407, 405, 402, 401, 401, 398, 395, 394, 393]  median 298  now-median 298    292.5s       1.4 Mmoves/s
+  epoch   6: best  456.0/1176  top10 [456, 444, 443, 441, 438, 438, 437, 436, 436, 436]  median 330  now-median 330    349.5s       1.4 Mmoves/s
+  epoch   7: best  488.0/1176  top10 [488, 487, 480, 478, 476, 476, 475, 474, 474, 472]  median 370  now-median 370    406.8s       1.4 Mmoves/s
+  epoch   8: best  530.0/1176  top10 [530, 517, 507, 504, 503, 502, 501, 499, 498, 498]  median 395  now-median 395    463.9s       1.4 Mmoves/s
+  epoch   9: best  540.0/1176  top10 [540, 538, 538, 537, 530, 527, 526, 524, 524, 524]  median 427  now-median 427    521.2s       1.4 Mmoves/s
+  epoch  10: best  554.0/1176  top10 [554, 553, 553, 548, 543, 542, 542, 541, 540, 540]  median 442  now-median 442    578.1s       1.4 Mmoves/s
+  epoch  11: best  569.0/1176  top10 [569, 568, 566, 565, 564, 563, 560, 559, 558, 557]  median 465  now-median 465    635.3s       1.4 Mmoves/s
+  time limit reached
+best coverage 569/1176  domain sizes [88, 44, 113, 176, 101, 54]  time 637.7s  kernel 633.9s  moves 9.01e+08
+NOT a covering: 607 facets uncovered
+wrote results/torus_k6_L1/summary.json (partial)
+=== 2026-09-18T17:16:14Z torus k=4 time-limit=900 seed=32  ===
+=== gpu_sc chain-first annealer ===  K=Császár torus  |F_L|=1176  grid=49  k=4 cmax=40 S=4096 iters=20000
+  epoch   1: best  244.0/1176  top10 [244, 243, 240, 239, 238, 238, 236, 234, 234, 234]  median 196  now-median 195     57.3s       1.4 Mmoves/s
+  epoch   2: best  300.0/1176  top10 [300, 285, 283, 282, 282, 281, 280, 280, 280, 279]  median 220  now-median 220    110.4s       1.5 Mmoves/s
+  epoch   3: best  376.0/1176  top10 [376, 370, 363, 361, 350, 347, 344, 342, 342, 341]  median 260  now-median 260    199.0s       1.2 Mmoves/s
+  epoch   4: best  444.0/1176  top10 [444, 428, 426, 425, 419, 417, 416, 411, 410, 410]  median 299  now-median 299    252.9s       1.3 Mmoves/s
+  epoch   5: best  487.0/1176  top10 [487, 482, 475, 472, 472, 471, 466, 466, 465, 464]  median 347  now-median 346    328.9s       1.2 Mmoves/s
+  epoch   6: best  538.0/1176  top10 [538, 532, 518, 515, 507, 503, 503, 503, 499, 498]  median 377  now-median 377    400.5s       1.2 Mmoves/s
+  epoch   7: best  554.0/1176  top10 [554, 548, 546, 540, 539, 539, 533, 529, 527, 523]  median 412  now-median 412    484.4s       1.2 Mmoves/s
+  epoch   8: best  562.0/1176  top10 [562, 558, 557, 555, 555, 554, 546, 543, 540, 539]  median 429  now-median 429    551.6s       1.2 Mmoves/s
+  epoch   9: best  574.0/1176  top10 [574, 574, 571, 569, 566, 566, 565, 565, 564, 563]  median 451  now-median 451    604.9s       1.2 Mmoves/s
+  epoch  10: best  583.0/1176  top10 [583, 581, 579, 577, 577, 575, 575, 572, 571, 570]  median 459  now-median 459    658.0s       1.2 Mmoves/s
+  epoch  11: best  594.0/1176  top10 [594, 591, 585, 584, 583, 583, 579, 578, 577, 576]  median 474  now-median 474    711.4s       1.3 Mmoves/s
+  epoch  12: best  606.0/1176  top10 [606, 591, 589, 588, 588, 586, 583, 583, 582, 582]  median 479  now-median 478    764.7s       1.3 Mmoves/s
+  epoch  13: best  614.0/1176  top10 [614, 609, 591, 591, 591, 589, 589, 588, 588, 584]  median 490  now-median 490    818.1s       1.3 Mmoves/s
+  epoch  14: best  617.0/1176  top10 [617, 609, 597, 594, 593, 591, 591, 590, 589, 588]  median 493  now-median 492    871.3s       1.3 Mmoves/s
+  epoch  15: best  618.0/1176  top10 [618, 609, 597, 596, 594, 594, 593, 593, 591, 591]  median 504  now-median 503    924.7s       1.3 Mmoves/s
+  time limit reached
+best coverage 618/1176  domain sizes [160, 175, 140, 160]  time 926.3s  kernel 923.6s  moves 1.23e+09
+NOT a covering: 558 facets uncovered
+wrote results/torus_k4_L1/summary.json (partial)

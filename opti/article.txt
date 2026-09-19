@@ -1,0 +1,1607 @@
+
+
+A randomized greedy algorithm for piecewise linear motion planning
+
+      Report GitHub Issue
+
+      ×
+
+      Title:
+
+      Content selection saved. Describe the issue below:
+
+      Description:
+
+      Submit without GitHub
+      Submit in GitHub
+
+    arXiv is now an independent nonprofit!
+    Learn more
+    ×
+
+      Back to arXiv
+
+    Why HTML?
+
+      Report Issue
+
+      Back to Abstract
+
+      Download PDF
+
+Abstract
+
+1 Introduction
+
+2 Background
+
+2.1 Topological complexity via homotopic distance
+
+2.2 Contiguity vs. homotopy
+
+3 Contiguity distance
+
+4 Algorithms
+
+4.1 Randomized local search of contiguity chains
+
+4.2 Reduction of contiguity chains
+
+4.3 Randomized contiguity subcomplexes
+
+4.4 Randomized coverings by contiguity subcomplexes
+
+4.5 Optimization of coverings
+
+5 Computational results
+
+5.1 The circle
+
+5.2 A wedge of two circles
+
+References
+
+    License: arXiv.org perpetual non-exclusive license
+
+arXiv:2008.13290v2 [math.AT] 23 Feb 2021
+
+A randomized greedy algorithm for piecewise linear motion planning
+
+Carlos Ortiz
+
+Note: Supported by a Conacyt scholarship.
+
+Adriana Lara
+
+Note: Partially supported by Grant SIP20201381.
+
+Jesús González
+
+Note: The third author thankfully acknowledge the computer resources, technical expertise and support provided by the Laboratorio Nacional de Supercómputo del Sureste de México, a CONACYT member of the network of national laboratories.
+
+Ayse Borat
+
+Abstract
+
+We describe and implement a randomized algorithm that inputs a polyhedron, thought of as the space of states of some automated guided vehicle ℛ\mathcal{R}, and outputs an explicit system of piecewise linear motion planners for ℛ\mathcal{R}. The algorithm is designed in such a way that the cardinality of the outputed system is probabilistically close (with parameters chosen by the user) to minimal possible. This yields the first automated solution for robust-to-noise robot motion planning in terms of simplicial complexity (SC) techniques, a discretization of Farber’s topological complexity TC\mathrm{TC}. Besides its relevance toward technological applications, our work revels that, unlike other discrete approaches to TC, the SC model can recast Farber’s invariant without having to introduce costly subdivisions. We develop and implement our algorithm by actually discretizing Macías-Virgós and Mosquera-Lois’ notion of homotopic distance, thus encompassing computer estimations of other sectional category invariants as well, such as the Lusternik-Schnirelmann category of polyhedra.
+
+Keywords and phrases: Abstract simplicial complex, barycentric subdivision, contiguity of simplicial maps, motion planning, randomized algorithm, homotopic distance.
+
+2010 Mathematics Subject Classification: Primary: 55M30, 68T40, 68W20. Secondary: 55U10, 05E45.
+
+1 Introduction
+
+The notion of topological complexity (TC), introduced by Michael Farber in [4], is a mathematical model measuring the continuity instabilities in the motion planning problem of robots. The theoretical aspects of Farber’s idea have been extensively studied by algebraic topologists through nearly twenty years. As a result, the concept has found deep and fruitful connections in homotopy theory. Nonetheless, the more computational aspects of the TC-ideas have seen limited developments, while actual engineering-minded TC-applications seem to be inexistent. The purpose of this paper is to help mend such a situation by focusing on the more applied features of Farber’s TC. We take advantage of computational topology techniques and, more importantly, by using randomized algorithms, we settle a cumputer-based solution to the motion planning problem for autonomous systems under Farber’s model. We implement our algorithms with successful and, as explained below, unexpected results.
+
+We use the discretization of Farber’s TC developed in [7]. Here is the basic idea (details are reviewed and generalized in the next section). Assume that the space of states of a given autonomous system is given by (the topological realization of) an abstract simplicial complex KK where, for practical reasons, we assume KK to be finite. Taking a linear order on the vertices of KK, we consider the ordered simplicial product K×KK\times K. In such a context, a piecewise linear motion planner defined on a subcomplex JJ of K×KK\times K is a chain of simplicial maps φ0,φ1,…,φc:J→K\varphi_{0},\varphi_{1},\ldots,\varphi_{c}\colon J\to K (c≥1c\geq 1) satisfying that (i) each φi\varphi_{i} is contiguous to the subsequent map φi+1\varphi_{i+1} (0≤i<c0\leq i<c), and that (ii) φ0\varphi_{0} (φc\varphi_{c}) is the restriction to JJ of the projection K×K→KK\times K\to K onto the first (second) factor. The rationale behind such a definition is that, for any given pair (a,b)(a,b) of initial-final points in the topological realization ‖J‖\|J\| of JJ, the sequence of points
+
+a,‖φ0‖​(a,b),‖φ1‖​(a,b),…,‖φc‖​(a,b),ba,\;\|\varphi_{0}\|(a,b),\;\|\varphi_{1}\|(a,b),\,\ldots\,,\;\|\varphi_{c}\|(a,b),\;b
+
+flags a piecewise linear path in ‖K‖\|K\| from aa to bb depending continuously on aa and bb. A motion planner defined on the full complex K×KK\times K exists only in the (topologically trivial) case that ‖K‖\|K\| is contractible. It is then natural to define SCstrict​(K)\mathrm{SC}_{\text{strict}}(K) as one less than the minimal cardinality of systems of piecewise linear motion planners whose domains cover K×KK\times K. This yields a discretized approximation of Farber’s TC in the sense that TC⁡(‖K‖)≤SCstrict​(K)\mathrm{TC}(\|K\|)\leq\mathrm{SC}_{\text{strict}}(K).
+
+A central result in [7] (coming from the Simplicial Approximation Theorem) is that, if we want to have a discretized invariant of KK that actually recovers (rather than just approximates) Farber’s topological complexity of the realization ‖K‖\|K\|, then the above construction has to be done within a limiting process where K×KK\times K is allowed to be “sufficiently” subdivided, for instance, by taking bb-iterated barycentric subdivisions Sdb​(K×K)\mathrm{Sd}^{b}(K\times K). This yields the simplicial complexity (SC) of KK,
+
+SC⁡(K)=limb→∞SCstrictb​(K),\mathrm{SC}(K)=\lim_{b\to\infty}\mathrm{SC}^{\hskip 0.7113ptb}_{\text{strict}}(K),
+
+where SCstrictb​(K)\mathrm{SC}^{\hskip 0.7113ptb}_{\text{strict}}(K) is defined in terms of Sdb​(K×K)\mathrm{Sd}^{b}(K\times K) in the same way as SCstrict​(K)\mathrm{SC}_{\text{strict}}(K) is defined in terms of K×KK\times K (so SCstrict0​(K)=SCstrict​(K)\mathrm{SC}^{0}_{\text{strict}}(K)=\mathrm{SC}_{\text{strict}}(K)). Then, as shown in [7, Theorem 3.5],
+
+SCstrict0​(K×K)≥SCstrict1​(K×K)≥SCstrict2​(K×K)≥⋯≥SC⁡(K)=TC⁡(‖K‖),\mathrm{SC}^{0}_{\text{strict}}(K\times K)\geq\mathrm{SC}^{1}_{\text{strict}}(K\times K)\geq\mathrm{SC}^{2}_{\text{strict}}(K\times K)\geq\cdots\geq\mathrm{SC}(K)=\mathrm{TC}(\|K\|),
+
+(1)
+
+recovering Farber’s topological complexity of ‖K‖\|K\|. Our main theoretical result, Theorem 3.3 below, is a generalization of (1). This is achieved by introducing the notion of contiguity distance between simplicial maps (Definition 3.2), a discretization of the concept of homotopic distance studied recently in [8].
+
+Remark 1.1.
+
+The point above is that, by taking iterated barycentric subdivisions, we can recast Farber’s invariant by means of a finite model. However, any person familiar with the computational aspects involving subdivisions will immediately realize that the proposal based on bb-iterated barycentric subdivisions becomes computationally prohibitive as bb grows. Thus, in principle, the use of SC to evaluate TC carries a compromise between how close we want to approximate TC\mathrm{TC} versus how long we are willing to wait for a computer to perform a calculation involving a large number of subdivisions. The following considerations explain that, in some cases, such compromise can be minimized without diminishing the effectiveness of the approach.
+
+An initial way to soften the compromise above is to allow for coarser/partial subdivisions. The option is however still not satisfactory, as there is no indication a priori of what portions of K×KK\times K (and how much) should be subdivided. With the aid of human geometric intuition, the coarser subdivision alternative was used in [7, Section 4] to recast, after a single subdivision, the fact that the topological complexity of the circle (the natural benchmark in [7]) is 1, namely,
+
+SCstrictb​(∂Δ2)=1​,  for b≥1.\mathrm{SC}^{\hskip 0.56905ptb}_{\text{strict}}(\partial\Delta^{2})=1\mbox{, \ for $b\geq 1$.}
+
+(2)
+
+With these preliminaries, we are ready to describe the main application-minded achievements of this paper. Firstly, we lay the grounds for a randomized algorithm that is able to perform, without human aid, evaluation tasks such as (2). Secondly, and more relevant for actual applications, we set a corresponding computer implementation which, besides of performing automated TC estimations, produces probabilistically close-to-optimal systems of piecewise linear motion planners. Optimality here means that, in each inputed case, the cardinality of the outputed system is close to been minimal possible (i.e., close to the TC value of the complex under consideration), where closeness is controlled by means of user-given parameters in the probabilistic algorithm. In brief, our implementation outputs robust-to-noise system of piecewise linear motion planners, with a reliability that depends on the given parameters.
+
+As a byproduct, we find somehow surprisingly that the subdivision ingredient implicit in (1) can be unnecessary in a SC-recasting of Farber’s TC, thus nullifying the critical compromise noted in Remark 1.1. This is a crucial feature for eventual technological TC-applications. For instance, running on a laptop computer, our algorithm finds in a bit less than a minute a system of piecewise linear motion planners giving in fact
+
+SCstrict0​(∂Δ2)=1.\mathrm{SC}^{\hskip 0.56905pt0}_{\text{strict}}(\partial\Delta^{2})=1.
+
+(3)
+
+This should be compared to the fact that, starting with the barycentric subdivision Sd1​(∂Δ2×∂Δ2)\mathrm{Sd}^{1}(\partial\Delta^{2}\times\partial\Delta^{2}), our computer implementation finds in about 10 hours running time a system of piecewise linear motion planners recovering the weaker fact (2). The reported running times (obtained on the same laptop computer) are given for comparison purposes: the computation is about 600 times (unnecessarily) more complex by allowing a single subdivision. Naturally, the use of powerful computational clusters results in significant time reductions, thus allowing to replace the circle ∂Δ2\partial\Delta^{2} by complexes arising from actual applications. The moral is that, in general, an SC-approach to motion planning applications tends to perform satisfactorily well by ignoring the subdivision component. Actual applications of the SC-ideas to concrete problems by using powerful computer clusters will be addressed in a future publication.
+
+Remark 1.2.
+
+The ability to recast Farber’s TC in discrete terms without the need of subdivisions seems to be a convenient advantage of our SC-model over other discrete approaches. Specifically, the discrete topological complexity introduced in [6] of a simplicial complex whose geometric realization is a circle turns out to be one unit larger than TC⁡(S1)\mathrm{TC}(S^{1}) [6, Theorem 5.6]. Likewise, (if no subdivisions are allowed) the value of Tanaka’s combinatorial complexity on the minimal finite space model of a circle is two units higher than TC⁡(S1)\mathrm{TC}(S^{1}) ([10, Example 3.7]).
+
+The first part of the paper is devoted to reviewing the basic tools (Section 2) and developping the theoretical basis (Section 3) that show that our model recasts homotopy notions such as Farber’s topological complexity and Lusternik-Schnirelmann’s category. This is done via Macías-Virgós and Mosquera-Lois’ homotopic distance, a concept whose discretization is achieved by means of Theorem 3.3. The second part of the paper has an applied focus: Section 4 describes the main processes in our algorithm, while Section 5 illustrates, via experimentation, the power that the technique has even when the subdivision ingredient is omitted.
+
+2 Background
+
+2.1 Topological complexity via homotopic distance
+
+Let P⁡(X)P(X) stand for the free path space on a topological space XX. Farber’s topological complexity of XX, TC⁡(X)\mathrm{TC}(X), is the sectional category of the end-point evaluation map e:P⁡(X)→X×Xe\colon P(X)\to X\times X, i.e., the fibration taking a free path γ∈P⁡(X)\gamma\in P(X) to the pair (γ⁡(0),γ⁡(1))(\gamma(0),\gamma(1)). In other words, TC⁡(X)+1\mathrm{TC}(X)+1 is the smallest cardinality of open covers {Ui}i\{U_{i}\}_{i} of X×XX\times X so that ee admits a continuous section σi\sigma_{i} on each UiU_{i}. Note that we use reduced terms, so that a contractible space has zero topological complexity. The open sets UiU_{i} in such an open cover are called local domains, the corresponding sections σi\sigma_{i} are called local motion planners, and the family of pairs {(Ui,σi)}\{(U_{i},\sigma_{i})\} is called a system of local motion planners for XX. A system of local motion planners is said to be optimal if it has TC⁡(X)+1\mathrm{TC}(X)+1 local domains. In view of the continuity requirement on local rules, an optimal motion planner minimizes the possibility of accidents in the performance of a robot moving in a noisy environment.
+
+When XX is the realization of an abstract simplicial complex, the openness requirement on local domains can be replaced, without altering the numerical value of TC⁡(X)\mathrm{TC}(X), by requiring that local domains are subdivided subcomplexes (see [7], or the adaptation to the simplicial analogue of homotopic distance in the proof of Theorem 3.3 below). Furthermore, a local motion planner is really a (local) homotopy in disguise:
+
+Lemma 2.1 ([5, Lemma 4.21]).
+
+The evaluation map e:P⁡(X)→X×Xe\colon P(X)\to X\times X admits a section on a subset AA of X×XX\times X if and only if the restrictions to AA of the two projections to the axes πi:X×X→X\pi_{i}\colon X\times X\to X, i=1,2i=1,2, are homotopic.
+
+Consequently, TC⁡(X)=D⁡(p1,p2)\mathrm{TC}(X)=\mathrm{D}(p_{1},p_{2}), where:
+
+Definition 2.2 ([8]).
+
+The homotopic distance D⁡(f,g)\mathrm{D}(f,g) between two continuous maps f,g:X→Yf,g\colon X\to Y is one less than the minimal cardinality of covers of XX by open sets UU on each of which the restricted maps f|Uf_{|U} and g|Ug_{|U} are homotopic.
+
+2.2 Contiguity vs. homotopy
+
+For details on the facts reviewed in this subsection, the reader can consult standard references, such as [9, Chapter 3].
+
+Definition 2.3.
+
+For a positive integer cc, and a pair of simplicial maps φ,φ′:J→K\varphi,\varphi^{\prime}:J\to K,
+
+1. 
+
+φ\varphi and φ′\varphi^{\prime} are said to be 1-contiguous provided φ⁡(σ)∪φ′​(σ)\varphi(\sigma)\cup\varphi^{\prime}(\sigma) is a simplex of KK for any facet (i.e., maximal simplex) σ\sigma of JJ.
+
+2. 
+
+φ\varphi and φ′\varphi^{\prime} are said to be cc-contiguous if there is a sequence of maps φ0,φ1,⋯,φc:J→K\varphi_{0},\varphi_{1},\cdots,\varphi_{c}:J\to K, with φ0=φ\varphi_{0}=\varphi and φc=φ′\varphi_{c}=\varphi^{\prime}, such that φi−1\varphi_{i-1} and φi\varphi_{i} are 1-contiguous for each i∈{1,2,…,c}i\in\{1,2,\ldots,c\}.
+
+The sequence of maps φj\varphi_{j} in Definition 2.3.2 is called a contiguity chain of length cc between φ\varphi and φ′\varphi^{\prime}. We write φ∼cφ′\varphi\sim_{c}\varphi^{\prime} to mean that there is such a sequence, and write φ∼φ′\varphi\sim\varphi^{\prime} to mean φ∼cφ′\varphi\sim_{c}\varphi^{\prime} for some cc. The latter is an equivalence relation in the set of simplicial maps J→KJ\to K. The corresponding equivalence classes are called contiguity classes. Note that contiguity classes are preserved under composition.
+
+Remark 2.4.
+
+Contiguity classes refine homotopy classes in the sense that the topological realizations of a pair of contiguous simplicial maps are homotopic through a piecewise affine homotopy. More importantly, as soon as highly subdivided complexes are allowed, this leads to a one-to-one correspondence between contiguity and homotopy classes. To make the latter statement precise (in Theorem 2.6 below), we need:
+
+Definition 2.5.
+
+(a) For a simplex σ\sigma of KK, the open realized simplex ⟨σ⟩⊆‖K‖\langle\sigma\rangle\subseteq\|K\| consists of the barycentric combinations ∑v∈σtv​v\sum_{v\in\sigma}t_{v}v with each tvt_{v} positive. Note that the realization of σ\sigma, ‖σ‖⊆‖K‖\|\sigma\|\subseteq\|K\|, is the closure of ⟨σ⟩\langle\sigma\rangle. (b) A simplicial approximation of a continuous map f:‖J‖→‖K‖f\colon\|J\|\to\|K\| is a simplicial map φ:J→K\varphi\colon J\to K such that ‖φ‖​(x)∈‖σ‖\|\varphi\|(x)\in\|\sigma\| provided f⁡(x)∈⟨σ⟩f(x)\in\langle\sigma\rangle.
+
+For instance, a simplicial map is the only approximation of its geometric realization. On the other hand, for a subdivision K′K^{\prime} of KK, the standard homeomorphism ‖K′‖→=‖K‖\|K^{\prime}\|\stackrel{{\scriptstyle=}}{{\to}}\|K\| is approximated by any simplicial map φ:K′→K\varphi\colon K^{\prime}\to K with the property that, for every vertex v′v^{\prime} of K′K^{\prime}, the barycentric coordinate of v′∈‖K‖v^{\prime}\in\|K\| at φ⁡(v′)\varphi(v^{\prime}) is positive. Further, simplicial composition of approximations approximates the corresponding topological composition.
+
+Theorem 2.6.
+
+Uniqueness of approximations: Any two approximations of a continuous map are 11-contiguous. Further, for finite JJ:
+
+(i) 
+
+Existence of approximations: Any continuous map f:‖J‖→‖K‖f\colon\|J\|\to\|K\| admits an approximation φb:Sdb​(J)→K\varphi_{b}\colon\mathrm{Sd}^{b}(J)\to K for any bb large enough. In particular, if ι:Sdb+1​(J)→Sdb​(J)\iota\colon\mathrm{Sd}^{b+1}(J)\to\mathrm{Sd}^{b}(J) is any approximation of the identity on ‖J‖\|J\|, then φb​ι\varphi_{b}\hskip 0.85358pt\iota and φb+1\varphi_{b+1} are 1-contiguous.
+
+(ii) 
+
+Contiguity vs. homotopy: Recall that simplicial maps in the same contiguity class have homotopic topological realizations (Remark 2.4). Conversly, given homotopic maps f0,f1:‖J‖→‖K‖f_{0},f_{1}\colon\|J\|\to\|K\|, there is a non-negative integer b0b_{0} such that, for each b≥b0b\geq b_{0}, any pair of approximations φ0,φ1:Sdb​(J)→K\varphi_{0},\varphi_{1}\colon\mathrm{Sd}^{b}(J)\to K of f0,f1f_{0},f_{1}, respectively, satisfy φ0∼φ1\varphi_{0}\sim\varphi_{1}.
+
+All complexes we deal with will be assumed to be finite. Additionally whenever we need to talk about products, they will be taken in the category of ordered complexes (fixing some linear order on the corresponding sets of vertices). The key point is that the topological realization of an ordered product of complexes is homeomorphic to the product of the topological realizations of the factors (see [3]). We do not require, though, that maps of ordered complexes preserve the given orderings.
+
+3 Contiguity distance
+
+We now adapt the viewpoint in [7] in order to recast, in simplicial terms, the homotopic distance between continuous functions. Throughout this section φ,φ′:L→K\varphi,\varphi^{\prime}\colon L\to K denote a fixed pair of simplicial maps. A subcomplex JJ of LL is said to be a cc-contiguity subcomplex for φ\varphi and φ′\varphi^{\prime} if the restrictions φ|J\varphi_{|J} and φ′|J\varphi^{\prime}_{|J} are cc-contiguous. We say that JJ is a contiguity subcomplex for φ\varphi and φ′\varphi^{\prime} if it is a cc-contiguity subcomplex for some cc. The strict cc-contiguity distance of φ\varphi and φ′\varphi^{\prime}, denoted by SDc​(φ,φ′)\mathrm{SD}_{c}(\varphi,\varphi^{\prime}), is defined as one less than the smallest cardinality of finite covers of LL by cc-contiguity subcomplexes for φ\varphi and φ′\varphi^{\prime}. The strict contiguity distance of φ\varphi and φ′\varphi^{\prime} is SD⁡(φ,φ′):=limcSDc​(φ,φ′)\mathrm{SD}(\varphi,\varphi^{\prime}):=\lim_{c}\mathrm{SD}_{c}(\varphi,\varphi^{\prime}), the eventual constant value of the monotonic sequence
+
+SD1​(φ,φ′)≥SD2​(φ,φ′)≥SD3​(φ,φ′)≥⋯.\mathrm{SD}_{1}(\varphi,\varphi^{\prime})\geq\mathrm{SD}_{2}(\varphi,\varphi^{\prime})\geq\mathrm{SD}_{3}(\varphi,\varphi^{\prime})\geq\cdots.
+
+The concept of strict contiguity distance was introduced in [8, Definition 8.1] (see also [2]) under the name of contiguity distance. We use the shorter name for the actual notion recovering homotopic distance (see Definition 3.2 and Theorem 3.3 below).
+
+Examples 3.1.
+
+Note that the subcomplex generated by any simplex of LL is a contiguity subcomplex for φ\varphi and φ′\varphi^{\prime} provided (the topological realization of) KK is connected. Connectedness of complexes is an assumption that will be in force from this point on. The relation φ∼cφ′\varphi\sim_{c}\varphi^{\prime} can be expressed through the equality SDc​(φ,φ′)=0\mathrm{SD}_{c}(\varphi,\varphi^{\prime})=0, while the equality
+SCstrict​(K)=SD⁡(π1,π2)\mathrm{SC}_{\text{strict}}(K)=\mathrm{SD}(\pi_{1},\pi_{2}) holds by definition, where π1,π2:K×K→K\pi_{1},\pi_{2}\colon K\times K\to K are the two simplicial projections.
+
+Remark 2.4 readily gives
+
+D⁡(‖φ‖,‖φ′‖)≤SD⁡(φ,φ′)\mathrm{D}(\|\varphi\|,\|\varphi^{\prime}\|)\leq\mathrm{SD}(\varphi,\varphi^{\prime})
+
+(4)
+
+We next use the full power of Theorem 2.6 in order to adjust the definition of SD and replace the inequality in (4) by an equality. For each positive integer bb, fix a simplicial approximation ι=ιb:Sdb​(L)→Sdb−1​(L)\iota=\iota_{b}\colon\mathrm{Sd}^{b}(L)\to\mathrm{Sd}^{b-1}(L) of the identity on ‖L‖\|L\|. We abuse notation and write ι:Sdb​(L)→Sdb′​(L)\iota\colon\mathrm{Sd}^{b}(L)\to\mathrm{Sd}^{b^{\prime}}(L) for the obvious iterated composition of ι\iota maps (b≥b′b\geq b^{\prime}). Set SDcb​(φ,φ′):=SDc​(φb,φb′)\mathrm{SD}_{c}^{b}(\varphi,\varphi^{\prime}):=\mathrm{SD}_{c}(\varphi_{b},\varphi^{\prime}_{b}) and SDb​(φ,φ′):=SD⁡(φb,φb′)\mathrm{SD}^{b}(\varphi,\varphi^{\prime}):=\mathrm{SD}(\varphi_{b},\varphi^{\prime}_{b}), the corresponding cc-stabilized value, where the maps φb,φb′:Sdb​(L)→K\varphi_{b},\varphi^{\prime}_{b}\colon\mathrm{Sd}^{b}(L)\to K stand for φ∘ι\varphi\circ\iota and φ′∘ι\varphi^{\prime}\circ\iota, respectively. Note that the contiguity class of φb\varphi_{b} (respectively φb′\varphi_{b}^{\prime}) depends only on that of φ\varphi (respectively φ′\varphi^{\prime}). Although the numbers SDcb​(φ,φ′)\mathrm{SD}^{b}_{c}(\varphi,\varphi^{\prime}) depend in principle on the chosen set of approximations ι\iota, the proof of [7, Lemma 3.3] applies word for word to show that the cc-stabilized value SDb​(φ,φ′)\mathrm{SD}^{b}(\varphi,\varphi^{\prime}) is independent of the chosen approximations. Futher, if JJ is a subcomplex of Sdb​(L)\mathrm{Sd}^{b}(L) and λ:Sd⁡(J)→J\lambda\colon\mathrm{Sd}(J)\to J is an approximation of the identity on ‖J‖\|J\|, then the two compositions in the diagram
+
+are 1-contiguous, as they are approximations of the inclusion ‖J‖⊆‖L‖\|J\|\subseteq\|L\|. This shows SDcb​(φ,φ′)≥SDc+2b+1​(φ,φ′)\mathrm{SD}^{b}_{c}(\varphi,\varphi^{\prime})\geq\mathrm{SD}^{b+1}_{c+2}(\varphi,\varphi^{\prime}), which yields the monotonic sequence
+
+SD0​(φ,φ′)≥SD1​(φ,φ′)≥SD2​(φ,φ′).≥⋯≥0.\mathrm{SD}^{0}(\varphi,\varphi^{\prime})\geq\mathrm{SD}^{1}(\varphi,\varphi^{\prime})\geq\mathrm{SD}^{2}(\varphi,\varphi^{\prime}).\geq\cdots\geq 0.
+
+(5)
+
+Definition 3.2.
+
+The contiguity distance between φ\varphi and φ′\varphi^{\prime} is
+
+D⁡(φ,φ′):=limbSDb​(φ,φ′),\mathrm{D}(\varphi,\varphi^{\prime}):=\lim_{b}\mathrm{SD}^{b}(\varphi,\varphi^{\prime}),
+
+the bb-stabilized value of the monotonic sequence (5).
+
+Since D⁡(φ,φ′)=SDb​(φ,φ′)\mathrm{D}(\varphi,\varphi^{\prime})=\mathrm{SD}^{b}(\varphi,\varphi^{\prime}) holds for any large enough index bb, (4) becomes
+
+D⁡(‖φ‖,‖φ′‖)≤D⁡(φ,φ′).\mathrm{D}(\|\varphi\|,\|\varphi^{\prime}\|)\leq\mathrm{D}(\varphi,\varphi^{\prime}).
+
+(6)
+
+We now adapt the argument in the proof of [7, Theorem 3.5] to prove:
+
+Theorem 3.3.
+
+Equality holds in (6).
+
+Proof.
+
+Let D⁡(‖φ‖,‖φ′‖)=k\mathrm{D}(\|\varphi\|,\|\varphi^{\prime}\|)=k and choose an open covering {U0,…,Uk}\{U_{0},\ldots,U_{k}\} of ‖L‖\|L\| as in Definition 2.2. Since LL is finite, there is an integer b≥0b\geq 0 such that the realization of each simplex of Sdb​(L)\mathrm{Sd}^{b}(L) is contained in some UjU_{j} (0≤j≤k0\leq j\leq k). For each j∈{0,1,…,k}j\in\{0,1,\ldots,k\}, let LjL_{j} be the subcomplex of Sdb​(L)\mathrm{Sd}^{b}(L) generated by those simplices whose realization is contained in UjU_{j}. Then L0,L1,…,LkL_{0},L_{1},\ldots,L_{k} cover LL, and ∥φ∥|Lj\|\varphi\|_{|L_{j}} and ∥φ′∥|Lj\|\varphi^{\prime}\|_{|L_{j}} are homotopic for 0≤j≤k0\leq j\leq k. By Theorem 2.6, we can pick large enough integers b′b^{\prime} and cc such that, for each j∈{0,1,…,k}j\in\{0,1,\ldots,k\}, the two composites
+
+are cc-contiguous. This yields D⁡(‖φ‖,‖φ′‖)=k≥SDcb+b′​(φ,φ′)≥D⁡(φ,φ′)\mathrm{D}(\|\varphi\|,\|\varphi^{\prime}\|)=k\geq\mathrm{SD}^{b+b^{\prime}}_{c}(\varphi,\varphi^{\prime})\geq\mathrm{D}(\varphi,\varphi^{\prime}).
+∎
+
+Since a continuous map f:‖L‖→‖K‖f\colon\|L\|\to\|K\| is homotopic to the geometric realization of any of its simplicial approximations, Theorem 3.3 and [8, Proposition 2.2] immediately yield:
+
+Corollary 3.4.
+
+For a pair of contiguous maps f,f′:‖L‖→‖K‖f,f^{\prime}\colon\|L\|\to\|K\|, we have
+
+D⁡(f,f′)=D⁡(φ,φ′),\mathrm{D}(f,f^{\prime})=\mathrm{D}(\varphi,\varphi^{\prime}),
+
+where φ,φ′:Sdb​(L)→K\varphi,\varphi^{\prime}\colon\mathrm{Sd}^{b}(L)\to K are any corresponding simplicial approximations (for some large enough bb).
+
+Actually, Theorem 3.3 allows us to import to the simplicial realm properties of homotopic distance proved in [8]. For instance:
+
+Corollary 3.5.
+
+D⁡(φ,φ′)\mathrm{D}(\varphi,\varphi^{\prime}) is a contiguity invariant of the pair of maps (φ,φ′)(\varphi,\varphi^{\prime}). Explicitly, if the simplicial maps in the diagram
+
+satisfy β∘φ∘α∼ψ\beta\circ\varphi\circ\alpha\sim\psi and β∘φ′∘α∼ψ′\beta\circ\varphi^{\prime}\circ\alpha\sim\psi^{\prime}, with α\alpha and β\beta contiguity equivalences (i.e., they have inverses up to contiguity), then D⁡(φ,φ′)=D⁡(ψ,ψ′)\mathrm{D}(\varphi,\varphi^{\prime})=\mathrm{D}(\psi,\psi^{\prime})
+
+Corollary 3.6.
+
+The inequality D⁡(φ,φ′)≤TC⁡(‖K‖)\mathrm{D}(\varphi,\varphi^{\prime})\leq\mathrm{TC}(\|K\|) holds, as well as the triangular inequality D⁡(φ,φ′′)≤D⁡(φ,φ′)+D⁡(φ′,φ′′)\mathrm{D}(\varphi,\varphi^{\prime\prime})\leq\mathrm{D}(\varphi,\varphi^{\prime})+\mathrm{D}(\varphi^{\prime},\varphi^{\prime\prime}) and the “sublogarithmic” inequalities
+
+D⁡(φ∘ψ,φ′∘ψ′)\displaystyle\mathrm{D}(\,\varphi\circ\psi,\varphi^{\prime}\circ\psi^{\prime}\,)
+≤D⁡(φ,φ′)+D⁡(ψ,ψ′)\displaystyle\leq\mathrm{D}(\varphi,\varphi^{\prime})+\mathrm{D}(\psi,\psi^{\prime})
+
+D⁡(φ×ϕ,φ′×ϕ′)\displaystyle\mathrm{D}(\varphi\times\phi,\varphi^{\prime}\times\phi^{\prime})
+≤D⁡(φ,φ′)+D⁡(ϕ,ϕ′)\displaystyle\leq\mathrm{D}(\varphi,\varphi^{\prime})+\mathrm{D}(\phi,\phi^{\prime})
+
+for ψ,ψ′:M→L\psi,\psi^{\prime}\colon M\to L, ϕ,ϕ′:L′→K′\phi,\phi^{\prime}\colon L^{\prime}\to K^{\prime} and φ,φ′,φ′′:L→K\varphi,\varphi^{\prime},\varphi^{\prime\prime}\colon L\to K.
+
+Corollary 3.7.
+
+cat⁡(‖K‖)=D⁡(∗,1K)=D⁡(ι1,ι2)\mathrm{cat}(\|K\|)=\mathrm{D}(\ast,1_{K})=\mathrm{D}(\iota_{1},\iota_{2}) and TC⁡(‖K‖)=D⁡(π1,π2)\mathrm{TC}(\|K\|)=\mathrm{D}(\pi_{1},\pi_{2}). Here 1K1_{K} is the identity map on KK, πi\pi_{i} are the simplicial projections in Examples 3.1, and ιi:K→K×K\iota_{i}\colon K\to K\times K are the axial inclusions ι1​(v)=(v,v0)\iota_{1}(v)=(v,v_{0}) and ι2​(v)=(v0,v)\iota_{2}(v)=(v_{0},v).
+
+4 Algorithms
+
+We now describe a randomized algorithm whose implementation yields reasonable estimations of the contiguity distance between simplicial maps. As described in the introductory section, in the case of simplicial complexity, our implementation constructs reasonably close-to-optimal systems of piecewise linear local motion planners.
+
+We represent an (abstract simplicial) complex KK by a pair (VK,FK)(V_{K},F_{K}), where VKV_{K} is the list of the vertices of KK, and FKF_{K} is the list of the facets (i.e. maximal simplices) of KK. This encoding is convenient because of Definition 2.3.1 and, more importantly for our purposes, since a covering of a given complex is completely determined by a covering of its facets (see the discussion at the beginning of Subsection 4.3).
+
+In what follows we assume given an algorithm, Contiguous, that checks whether two simplicial maps are contiguous11
+            1
+
+          Note that if a simplicial map φ\varphi is contiguous (in the sense of Definition 2.3.1) to a vertex map φ′\varphi^{\prime}, then φ′\varphi^{\prime} must be simplicial. In this paper we assume that Contiguous has been implemented solely on the basis of Definition 2.3.1, so to admit any two vertex maps as input, necessarily reporting false whenever one of the input parameters is not simplicial. In fact, under these assumption, Contiguous(φ,φ)(\varphi,\varphi) can be used to check if a vertex map φ\varphi is simplicial.. Such a function is available in standard mathematical software systems such as SageMath. In fact, our algorithms are easily implementable in SageMath, a system which has many other convenient features for our purposes —such as a function for spelling out (as a list of facets) the ordered simplicial product of ordered complexes.
+
+4.1 Randomized local search of contiguity chains
+
+Recall that, for finite abstract simplicial complexes JJ and KK, Theorem 2.6 characterizes homotopy classes of continuous maps ‖J‖→‖K‖\|J\|\to\|K\| in terms of contiguity classes of maps J→KJ\to K through a limiting process that takes finer and finer subdivisions of JJ. This classical fact is generalized in [1] by introducing a certain “contiguity complex” Contig​(J,K)\text{Contig}(J,K) that approximates, as JJ becomes sufficiently subdivided, the homotopy type of the function space of continuous maps ‖J‖→‖K‖\|J\|\to\|K\|. What is relevant for us is to remark that Blumberg and Mandell propose a certain randomized algorithm in order to study the rate of growth (under subdivision of the domain) of the components of Contig​(J,K)\text{Contig}(J,K). We adapt Blumberg-Mandell’s algorithm (without the subdivision component) for our computer implemented search of piecewise linear local motion planners.
+
+The randomized algorithm LocalSearch in this section inputs a pair of simplicial maps φ,φ′:J→K\varphi,\varphi^{\prime}\colon J\to K, a positive integer MM, and a probability parameter rr (r∈[0,1]r\in[0,1]), and outputs a list Ψ\Psi that either contains a chain of maps
+
+φ0,φ1,⋯,φc:J→K,c≤M,\varphi_{0},\varphi_{1},\cdots,\varphi_{c}:J\to K,\quad c\leq M,
+
+(7)
+
+satisfying the conditions in Definition 2.3.2 or, else, is empty, in case the randomized search for (7) is not successful. Starting at φ\varphi, the search is done through a random walk with local steps in the space of simplicial maps J→KJ\to K. Actual steps in the walk are tried (and recorded in Ψ\Psi), at most MM times on a “greedy” basis, with the probability parameter rr used to break a situation where no greedy step has been taken after a number of consecutive tries. A greedy step is actually taken whenever the distance from the goal map φ′\varphi^{\prime} to the current position of the walk is larger than the distance from φ′\varphi^{\prime} to the potentially new position of the walk. Here, the distance between simplicial maps f,g:J→Kf,g\colon J\to K is defined as
+
+d⁡(f,g)=∑dK​(f⁡(v),g⁡(v)),d(f,g)=\sum d_{K}(f(v),g(v)),
+
+where the summation runs over the vertices vv of JJ, and dKd_{K} stands for the graph distance on the 1-skeleton of KK.
+
+              1
+            if Contiguous ​(φ,φ′)\text{\it Contiguous\hskip 1.42262pt}(\varphi,\varphi^{\prime}) then
+
+              2
+            return Ψ←{φ,φ′}\Psi\leftarrow\{\varphi,\varphi^{\prime}\}
+
+              3
+            end if
+
+              4
+            Ψ←{φ}\Psi\leftarrow\{\varphi\}\hskip 0.56905pt;  ϕ←φ\phi\leftarrow\varphi
+
+              5
+            for i←1i\leftarrow 1 to MM do
+
+              6
+            f←ϕ;vj←RandomVertex ​(VJ)f\leftarrow\phi\,;\;\;v_{j}\leftarrow\text{\it RandomVertex\hskip 1.42262pt}(V_{J})
+
+              7
+            f⁡(vj)←RandomVertex​(VK∖{ϕ⁡(vj)}​)f(v_{j})\leftarrow\text{\it RandomVertex\hskip 0.0pt}\left(V_{K}\setminus\{\phi(v_{j})\}\rule{0.0pt}{11.38109pt}\right)
+
+              8
+            p←RandomNumber ​(0,1)p\leftarrow\text{\it RandomNumber\hskip 1.42262pt}(0,1)
+
+              9
+            if Contiguous (ϕ,f)(\phi,f)  and  (​p<r​ or ​d​(f,φ′)<d⁡(ϕ,φ′))\left(\rule{0.0pt}{11.38109pt}\hskip 1.13809ptp<r\text{\bf\hskip 1.99168pt or\hskip 5.69054pt}d(f,\varphi^{\prime})<d(\phi,\varphi^{\prime})\right) then
+
+              10
+            Ψ←Ψ∪{f}\Psi\leftarrow\Psi\cup\{f\};  ϕ←f\hskip 0.85358pt\phi\leftarrow f
+
+              11
+            if ϕ=φ′\phi=\varphi^{\prime} then
+
+              12
+            return Ψ\Psi
+
+              13
+            end if
+
+              14
+            end if
+
+              15
+            end for
+
+              16
+            return Ψ←∅\Psi\leftarrow\varnothing
+
+Algorithm 1 LocalSearch. Current element in Ψ\Psi is recorded by ϕ\phi.
+
+We use the following variant of LocalSearch in our actual implementation. Start by noticing that, at each step of the iterative process (line 1), the potential new position ff in the walk —a random single-vertex variant of ϕ\phi— may fail to be contiguous to the current position ϕ\phi, thus preventing us from taking the greedy step (line 1). The construction of ff (lines 1 and 1) can then be replaced by a process that, first constructs a list Lϕ,wL_{\phi,w} of all the simplicial maps that differ from ϕ\phi on a single randomly chosen vertex w∈VJw\in V_{J}, and then chooses ff randomly from Lϕ,wL_{\phi,w} (provided Lϕ,w≠∅L_{\phi,w}\neq\varnothing). Of course, with this modification, the first test condition in line 1 can safely be removed.
+
+4.2 Reduction of contiguity chains
+
+The random walk performed by LocalSearch has a local-step basis: any two consecutive maps φi\varphi_{i} and φi+1\varphi_{i+1} in a sequence (7) produced by LocalSearch differ only by their values at a single vertex of JJ. In particular, it is usual that LocalSearch outputs a long sequence of (hundreds and even thousands of) consecutive contiguous maps in between φ\varphi and φ′\varphi^{\prime}. This could be remedied by running a shortest path algorithm/heuristic on the contiguity graph generated by the maps φi\varphi_{i} in the sequence. However, the construction of the graph is costly for large sequences. The simpler alternative described in this subsection works well given the random nature of LocalSearch.
+
+              1
+            ϕ′←{φ0}\phi^{\prime}\leftarrow\{\varphi_{0}\};  j←0j\leftarrow 0
+
+              2
+            while j≠cj\neq c do
+
+              3
+            i←ci\leftarrow c
+
+              4
+            while not Contiguous (φj,φi)(\varphi_{j},\varphi_{i}) do
+
+              5
+            i←i−1i\leftarrow i-1
+
+              6
+            end while
+
+              7
+            ϕ′←ϕ′∪{φi}\phi^{\prime}\leftarrow\phi^{\prime}\cup\{\varphi_{i}\};  j←ij\leftarrow i
+
+              8
+            end while
+
+              9
+            return ϕ′\phi^{\prime}
+
+Algorithm 2 Reduce.
+
+The algorithm Reduce attempts to reduce the size of a contiguity sequence ϕ=(φ0,…,φc)\phi=(\varphi_{0},\ldots,\varphi_{c}) by reporting the sequence ϕ′\phi^{\prime} obtained from ϕ\phi by discarding the terms φℓ+1,φℓ+2,…,φℓ+m−1\varphi_{\ell+1},\varphi_{\ell+2},\ldots,\varphi_{\ell+m-1} in chunks φℓ,φℓ+1,…,φℓ+m\varphi_{\ell},\varphi_{\ell+1},\ldots,\varphi_{\ell+m} whenever m>1m>1 is maximal with φℓ\varphi_{\ell} and φℓ+m\varphi_{\ell+m} contiguous.
+
+4.3 Randomized contiguity subcomplexes
+
+For simplicial maps ψ,ψ′:L→K\psi,\psi^{\prime}\colon L\to K, the task of finding coverings of LL by cc-contiguity subcomplexes can be focused on facets of LL. Indeed, by restricting to facets, a covering 𝒞\mathcal{C} of LL by cc-contiguity subcomplexes yields (in a non-unique way) a partition 𝒫\mathcal{P} of the facets of LL. In such a situation, if JPJ_{P} stands for the subcomplex of LL generated by the facets in a given P∈𝒫P\in\mathcal{P}, then 𝒞𝒫:={JP:P∈𝒫}\mathcal{C}_{\mathcal{P}}:=\{J_{P}\colon P\in\mathcal{P}\} is a covering of LL by cc-contiguity subcomplexes with Card⁡(𝒞𝒫)≤Card⁡(𝒞)\mathrm{Card}(\mathcal{C}_{\mathcal{P}})\leq\mathrm{Card}(\mathcal{C}). The definition of SDc​(ψ,ψ′)\mathrm{SD}_{c}(\psi,\psi^{\prime}) can therefore be reformulated by limiting attention to coverings 𝒞𝒫\mathcal{C}_{\mathcal{P}} coming from a partition 𝒫\mathcal{P} of the facets of LL as above. This is the viewpoint in the algorithms described next.
+
+A random subset of the facets of LL will most likely fail to generate a contiguity subcomplex. Likewise, a random partition 𝒫\mathcal{P} of the facets of LL will most likely fail to produce a covering 𝒞𝒫\mathcal{C}_{\mathcal{P}} by contiguity complexes. A more careful randomized search is needed. As a first step, the randomized algorithm RCC (RandomContiguitysubComplex) in this subsection aims at constructing a maximal contiguity subcomplex for a given pair of simplicial maps. Then, in Subsection 4.4 we describe a randomized algorithm that searches for partitions 𝒫\mathcal{P} of the set of facets of LL that yield a covering 𝒞𝒫\mathcal{C}_{\mathcal{P}} by contiguity subcomplexes. Lastly, the size of such a covering 𝒞𝒫\mathcal{C}_{\mathcal{P}} is optimized by the algorithm in Subsection 4.5. The latter algorithm is crucial for our purposes, as it gives us a real chance to get at systems of piecewise linear local motion planners that are (near-to) optimal in the sense of Section 2.2.
+
+              1
+            𝒪←{σ∈FL:σ∉FJ}\mathcal{O}\leftarrow\left\{\sigma\in F_{L}\colon\sigma\notin F_{J}\right\}
+
+              2
+            while 𝒪≠∅\mathcal{O}\neq\varnothing  do
+
+              3
+            σ←RandomFacet ​(𝒪)\sigma\leftarrow\text{{\it RandomFacet\hskip 1.42262pt}}(\mathcal{O})
+
+              4
+            J′←SimplicialComplex ​(J,σ)J^{\prime}\leftarrow\text{{\it SimplicialComplex\hskip 1.42262pt}}(J,\sigma)
+
+              5
+            ϕ←LocalSearch ​(ψ|J′,ψ′|J′)\phi\leftarrow\text{{\it LocalSearch\hskip 1.42262pt}}(\psi\hskip 0.56905pt|_{J^{\prime}},\psi^{\prime}\hskip 0.56905pt|_{J^{\prime}}) 
+
+              6
+            if ϕ≠∅\phi\neq\varnothing then
+
+              7
+            return J′J^{\prime}
+
+              8
+            end if
+
+              9
+            𝒪←𝒪∖{σ}\mathcal{O}\leftarrow\mathcal{O}\setminus\left\{\sigma\right\} 
+
+              10
+            end while
+
+              11
+            return JJ
+
+Algorithm 3 AddFacet. A random σ\sigma ensures variety of results from multiple runs.
+
+We start with the algorithm AddFacet, whose input is a pair of simplicial maps ψ,ψ′:L→K\psi,\psi^{\prime}\colon L\to K, and a contiguity subcomplex JJ for ψ\psi and ψ′\psi^{\prime}. It is implicitly assumed that JJ is generated by a set of facets of LL. With this information, the algorithm looks randomly for the first facet σ\sigma of LL not in JJ that, together with JJ, generates a contiguity subcomplex J′J^{\prime}. If such a facet σ\sigma is found, AddFacet outputs J′J^{\prime}, otherwise JJ is reported. Each testing is done by the algorithm LocalSearch with the restricted simplicial maps ψ|J′\psi|_{J^{\prime}} and ψ′|J′\psi^{\prime}|_{J^{\prime}} as parameters. Note that AddFacet requires in addition the two parameters MM and rr needed by LocalSearch.
+
+The main algorithm in this subsection, RCC, is an iteration of AddFacet. Starting with two simplicial maps ψ,ψ′:L→K\psi,\psi^{\prime}\colon L\to K as input, RCC applies AddFacet recursively, using the output of the previous application as (part of) the input for the next application (ψ\psi and ψ′\psi^{\prime} are kept as the rest of the input for all iterations of AddFacet). The iteration starts by using the contiguity subcomplex generated by a randomly chosen facet of LL, which is a contiguity subcomplex in view of Examples 3.1. The iteration is applied at most Card⁡(FL)\mathrm{Card}(F_{L}) times, and is set to stop whenever the current application of AddFacet is unable to add an additional facet (this will hold, for instance, if the total complex LL has been identified as a contiguity complex for ψ\psi and ψ′\psi^{\prime}).
+
+A slight generalization of RCC will also be needed in what follows. The algorithm AddFacets is an iteration of AddFacet on the same grounds as RCC, except that the starting contiguity subcomplex is a prescribed parameter.
+
+For latter use in the global algorithm, an actual implementation of both AddFacets and RCC should keep track of the (reduced version of the) last non-empty contiguity sequence ϕ\phi constructed by AddFacet, for this provides us with an explicit contiguity chain for the restrictions of ψ\psi and ψ′\psi^{\prime} to the output of AddFacets or RCC.
+
+4.4 Randomized coverings by contiguity subcomplexes
+
+For simplicial maps ψ,ψ′:L→K\psi,\psi^{\prime}\colon L\to K, the algorithm Covering in this subsection constructs a partition 𝒫\mathcal{P} of FLF_{L} as the one described in the initial paragraph of Subsetion 4.3. The process is an iteration of RCC. Assume we have constructed a family 𝒫\mathcal{P} of pairwise disjoint subsets of FLF_{L} such that each P∈𝒫P\in\mathcal{P} generates a contiguity subcomplex JPJ_{P} for ψ\psi and ψ′\psi^{\prime} (𝒫\mathcal{P} is empty at the start of the process). Then we execute RCC with the restricted maps ψ|I,ψ′|I:I→K\psi_{|I},\psi^{\prime}_{|I}\colon I\to K as parameters, where II is the subcomplex of LL generated by the facets of LL that do not lie in any P∈𝒫P\in\mathcal{P}. The set of relevant facets of the resulting contiguity complex is appended to 𝒫\mathcal{P}. The process is iterated until the resulting 𝒫\mathcal{P} partitions FLF_{L}.
+
+              1
+            A←FLA\leftarrow F_{L}\hskip 0.56905pt
+
+              2
+            𝒫←∅\,\mathcal{P}\leftarrow\varnothing
+
+              3
+            while A≠∅A\neq\varnothing do
+
+              4
+            I←SimplicialComplex ​(A)I\leftarrow\text{{\it SimplicialComplex\hskip 1.42262pt}}(A) 
+
+              5
+            J←RCC ​(ψ|I,ψ′|I)J\leftarrow\text{{\it RCC\hskip 1.42262pt}}(\psi|_{I},\psi^{\prime}|_{I})
+
+              6
+            P←(Facets(J)∩FL)∖(∪Q∈𝒫Q)P\leftarrow\left(Facets(J)\cap F_{L}\right)\setminus\left(\cup_{Q\in\mathcal{P}}Q\right) 
+
+              7
+            𝒫←𝒫∪{P}\mathcal{P}\leftarrow\mathcal{P}\cup\left\{P\right\}\hskip 0.56905pt;  A←A∖PA\leftarrow A\setminus P 
+
+              8
+            end while
+
+              9
+            return 𝒫\mathcal{P}
+
+Algorithm 4 Covering. 
+
+4.5 Optimization of coverings
+
+When applied to the two simplicial projections π1,π2:K×K→K\pi_{1},\pi_{2}\colon K\times K\to K, the algorithm Covering in the previous subsection constructs systems of piecewise linear local motion planners in rather short time. In addition, in cases where we know the topological optimal TC⁡(‖K‖)+1\mathrm{TC}(\|K\|)+1, some sporadic runs of Covering report systems with cardinality reasonably close to optimal. In this subsection we describe the randomized algorithm OptimizedCovering that addresses all other situations, i.e., those where the systems reported by Covering appear to have too many domains. This is achieved by using a greedy strategy that attempts to reduce the number of piecewise linear local domains by increasing the size of large domains. OptimizedCovering is the key process giving the convenient performance of our implementation without the need of expensive subdivisions, as advertised in the introductory section.
+
+              1
+            𝒫←Covering ​(ψ,ψ′);\mathcal{P}\leftarrow\text{{\it Covering\hskip 1.42262pt}}(\psi,\psi^{\prime});\;\;
+i←0;i\leftarrow 0;\;\; j←0j\leftarrow 0 
+
+              2
+            while i<N​ and Card ​(𝒫)>ti<N\text{ and \text{{\it Card\hskip 1.42262pt}}}(\mathcal{P})>t do
+
+              3
+            i←i+1;i\leftarrow i+1;\;\; 𝒫′←𝒫;\mathcal{P}^{\prime}\leftarrow\mathcal{P};\;\;
+
+              4
+            𝒫←Order ​(𝒫)\mathcal{P}\leftarrow\text{{\it Order\hskip 1.42262pt}}(\mathcal{P})
+
+              5
+            D←⋃k=jCard ​(𝒫)−1PkD\leftarrow\bigcup\limits_{k=j}^{\text{{\it Card\hskip 1.42262pt}}(\mathcal{P})-1}P_{k} 
+
+              6
+            JP←RCC ​(ψ|JD,ψ′|JD)J_{P}\leftarrow\text{{\it RCC\hskip 1.42262pt}}(\psi|_{J_{D}},\psi^{\prime}|_{J_{D}})
+
+              7
+            P←LargestSet ​(P,Pj)P\leftarrow\text{{\it LargestSet\hskip 1.42262pt}}(P,P_{j}) 
+
+              8
+            D←⋃k=max⁡(0,j−1)Card ​(𝒫)−1PkD\leftarrow\bigcup\limits_{k=\max(0,j-1)}^{\text{{\it Card\hskip 1.42262pt}}(\mathcal{P})-1}P_{k}
+
+              9
+            JQ←AddFacets ​(JP,ψ|JD,ψ′|JD)J_{Q}\leftarrow\text{{\it AddFacets\hskip 1.42262pt}}(J_{P},\psi|_{J_{D}},\psi^{\prime}|_{J_{D}})
+
+              10
+            if j>0j>0 then
+
+              11
+            Q←LargestSet ​(Q,Pj−1)Q\leftarrow\text{{\it LargestSet\hskip 1.42262pt}}(Q,P_{j-1}) 
+
+              12
+            end if
+
+              13
+            𝒫←DeleteVoids ​({P0,P1,…,Pj−2,Q,Pj−1−Q,Pj−Q,…,Pp−Q})\mathcal{P}\leftarrow\text{{\it DeleteVoids\hskip 1.42262pt}}(\{P_{0},P_{1},\ldots,P_{j-2},Q,P_{j-1}-Q,P_{j}-Q,\ldots,P_{p}-Q\})
+
+              14
+            if Card ​(𝒫′)<Card ​(𝒫)\text{{\it Card\hskip 1.42262pt}}(\mathcal{P}^{\prime})<\text{{\it Card\hskip 1.42262pt}}(\mathcal{P}) then
+
+              15
+            𝒫←𝒫′\mathcal{P}\leftarrow\mathcal{P}^{\prime}
+
+              16
+            end if
+
+              17
+            j←j+1j\leftarrow j+1
+
+              18
+            if j>Card ​(𝒫)−1j>\text{{\it Card\hskip 1.42262pt}}(\mathcal{P})-1 then
+
+              19
+            j←0j\leftarrow 0
+
+              20
+            end if
+
+              21
+            end while
+
+              22
+            return 𝒫\mathcal{P} 
+
+Algorithm 5 OptimizedCovering.
+
+OptimizedCovering starts with a partition 𝒫\mathcal{P} of FLF_{L} produced by Covering, and goes into an iterative process that aims at shortening the length of 𝒫\mathcal{P}. Explicitly, assume that, after the ii-th stage of the iteration, the original partition has evolved to become the partition {P0,P1,…,Pp}\{P_{0},P_{1},\ldots,P_{p}\}.
+Then, using a control variable jj (inductively assumed to lie in between 00 and pp), the (i+1)(i+1)-st recursive stage of OptimizedCovering performs the following actions:
+
+(1) 
+
+Order the partition so that Card⁡(P0)≥Card⁡(P1)≥⋯≥Card⁡(Pp)\mathrm{Card}(P_{0})\geq\mathrm{Card}(P_{1})\geq\cdots\geq\mathrm{Card}(P_{p}).
+
+(2) 
+
+Use the algorithm RCC  to generate a random contiguity subcomplex JPJ_{P} of JPj∪Pj+1∪⋯∪PpJ_{P_{j}\cup P_{j+1}\cup\cdots\cup P_{p}}. Keep in PP the largest set of PP and PjP_{j}.
+
+(3) 
+
+Use the algorithm AddFacets to add as many facets of
+
+Pj−1∪Pj∪⋯∪PpP_{j-1}\cup P_{j}\cup\cdots\cup P_{p}
+
+(8)
+
+as possible to PP, so to produce a contiguity subcomplex JQJ_{Q} containing JPJ_{P}. If j=0j=0, part Pj−1P_{j-1} is inexistent in (8). If j>0j>0, keep in QQ the largest set between QQ and Pj−1P_{j-1}.
+
+The (i+1)(i+1)-st iteration of the process then finishes by constructing the new (optimized) partition
+
+{P0,P1,…,Pj−2,Q,Pj−1−Q,Pj−Q,…,Pp−Q}​,\{P_{0},P_{1},\ldots,P_{j-2},Q,P_{j-1}-Q,P_{j}-Q,\ldots,P_{p}-Q\}\rule{0.0pt}{11.38109pt},
+
+(9)
+
+where empty parts are eliminated. If j=0j=0, parts P0P_{0}, P1,…,Pj−2P_{1},\ldots,P_{j-2} and Pj−1−QP_{j-1}-Q are inexistent in (9). Lastly, in preparation for the next iteration, the control variable jj is incremented by one, unless its value has to be reset to zero so to meet the inductive hypothesis on jj. The rationale behind this process is to use the best possible contiguity subcomplex that can be built from the facets in ∪i≥jPi\cup_{i\geq j}P_{i} (step (2)) to greedily improve on the cardinality of Pj−1P_{j-1} (step (3)). The net effect of such a recursive process is that new longer portions start “bubbling up” in the most recently produced partitions, while shorter portions tend to disappear from previously constructed partitions, as their elements get added to the longer emerging parts. As a consequence, the new partitions tend to have fewer domains than the old partitions.
+
+For better results, the main recursive loop in the process above is meant to be repeated a large number of times (indicated by a parameter NN prescribed by the user). The pseudocode we describe uses in addition a parameter tt (also determined by the user) that breaks the recursion as soon as a partition with tt elements or less is achieved. The value of tt is to be provided on the basis of getting a “short enough” partition, either because the user would be happy with the prescribed bound, or simply because it does not make sense to insist on getting a partition of length smaller that the optimal TC⁡(‖K‖)+1\mathrm{TC}(\|K\|)+1 (if the latter number is known in advance, say by theoretical but non-constructive means).
+
+5 Computational results
+
+5.1 The circle
+
+Let K:=∂Δ2K:=\partial\Delta^{2}, i.e., the most efficient triangulation of the circle, with vertices labelled 0,1,20,1,2. The (realization of the ordered) product structure on K×KK\times K is depicted in Figure 1, where opposite sides of the external square are identified as indicated. Using parameters M=1000M=1000 and r=0.1r=0.1 for LocalSearch, OptimizedCovering yields, in about 57 seconds, the contiguity covering {J0,J1}\{J_{0},J_{1}\} of K×KK\times K for the two projections, where JiJ_{i} is generated by the ii-labelled triangles in Figure 1.
+
+Figure 1: An optimized covering of the ordered product ∂Δ2×∂Δ2\partial\Delta^{2}\times\partial\Delta^{2}.
+
+(a) Output of Covering.
+
+(b) Third iteration.
+
+(c) Sixth iteration.
+
+(d) Seventh iteration.
+
+Figure 2: Main steps in OptimizedCovering in the case of ∂Δ2\partial\Delta^{2}.
+
+Relevant stages in the actual process performed by OptimizedCovering that lead to the cover {J0,J1}\{J_{0},J_{1}\} are illustrated in Figure 2. At each of the stages shown, the largest (smallest) subcomplex is highlighted in light (dark) gray. OptimizedCover finishes when the dark gray subcomplex has been incorporated into two large subcomplexes. The corresponding contiguity chains (simplified by Reduce) for the restricted projections π1|Ji,π2|Ji:Ji→K\pi_{1}|_{J_{i}},\pi_{2}|_{J_{i}}\colon J_{i}\to K are described in Table 1 (for i=0i=0) and Table 2 (for i=1i=1). In particular, the optimal SCstrict​(∂Δ2)=1\mathrm{SC}_{\text{strict}}(\partial\Delta^{2})=1 is attained though contiguity chains of length at most 99.
+
+(0,0)\left(0,0\right)
+(0,1)\left(0,1\right)
+(0,2)\left(0,2\right)
+(1,0)\left(1,0\right)
+(1,1)\left(1,1\right)
+(1,2)\left(1,2\right)
+(2,0)\left(2,0\right)
+(2,1)\left(2,1\right)
+(2,2)\left(2,2\right)
+
+φ0=π1|J0\varphi_{0}=\pi_{1}|_{J_{0}}
+00
+00
+00
+11
+11
+11
+22
+22
+22
+
+φ1\varphi_{1}
+00
+00
+00
+22
+11
+11
+22
+22
+22
+
+φ2\varphi_{2}
+00
+00
+00
+22
+11
+11
+00
+00
+22
+
+φ3\varphi_{3}
+00
+11
+11
+22
+11
+11
+00
+00
+22
+
+φ4\varphi_{4}
+00
+11
+22
+22
+11
+22
+00
+00
+22
+
+φ5\varphi_{5}
+00
+11
+22
+00
+11
+22
+00
+00
+22
+
+φ6=π2|J0\varphi_{6}=\pi_{2}|_{J_{0}}
+00
+11
+22
+00
+11
+22
+00
+11
+22
+
+Table 1: Contiguity chain between π1|J0\pi_{1}|_{J_{0}} and π2|J0\pi_{2}|_{J_{0}} for J0J_{0} in Figure 1,
+
+(0,0)\left(0,0\right)
+(0,1)\left(0,1\right)
+(0,2)\left(0,2\right)
+(1,0)\left(1,0\right)
+(1,1)\left(1,1\right)
+(1,2)\left(1,2\right)
+(2,1)\left(2,1\right)
+(2,2)\left(2,2\right)
+
+φ0=π1|J1\varphi_{0}=\pi_{1}|_{J_{1}}
+00
+00
+00
+11
+11
+11
+22
+22
+
+φ1\varphi_{1}
+00
+22
+00
+11
+11
+11
+22
+22
+
+φ2\varphi_{2}
+00
+22
+00
+11
+11
+11
+11
+22
+
+φ3\varphi_{3}
+00
+22
+00
+00
+11
+11
+11
+22
+
+φ4\varphi_{4}
+00
+22
+00
+00
+11
+00
+11
+22
+
+φ5\varphi_{5}
+00
+22
+22
+00
+11
+00
+11
+22
+
+φ6\varphi_{6}
+00
+11
+22
+00
+11
+00
+11
+22
+
+φ7\varphi_{7}
+00
+22
+22
+00
+11
+00
+11
+22
+
+φ8\varphi_{8}
+00
+11
+22
+00
+11
+00
+11
+22
+
+φ9=π2|J1\varphi_{9}=\pi_{2}|_{J_{1}}
+00
+11
+22
+00
+11
+22
+11
+22
+
+Table 2: Contiguity chain between π1|J1\pi_{1}|_{J_{1}} and π2|J1\pi_{2}|_{J_{1}} for J1J_{1} in Figure 1.
+
+Remark 5.1.
+
+Working instead with Sd⁡(K×K)\mathrm{Sd}(K\times K), OptimizedCovering generates a system of piecewise linear motion planners using parameters M=20000M=20000 and r=0.1r=0.1 for LocalSearch. A detailed report of the resulting pair of piecewise linear domains and corresponding contiguity chains can be found in the Master’s thesis of the first author. Despite the computer effort needed for such calculations, the output only gives that the optimal (2) can be attained though contiguity chains of length at most 26.
+
+5.2 A wedge of two circles
+
+Consider the 1-dimensional complex KK depicted in the following figure:
+
+The geometric realization ‖K‖\|K\| is homotopic to a wedge of two circles. As in the case of a single circle, OptimizedCovering recovers the well known equality TC⁡(‖K‖)=2\mathrm{TC}(\|K\|)=2 without requiring subdivisions. The 2525-minutes calculation was accomplished using parameters r=0.1r=0.1 and M=5000M=5000 for LocalSearch. The three resulting optimal piecewise linear local domains J0,J1,J2J_{0},J_{1},J_{2} are generated by the following list of facets where, for simplicity, a vertex (i,j)(i,j) of the ordered product K×KK\times K is labelled as 4​i+j4i+j:
+
+J0J_{0}: 
+
+{5,9,10},{0,3,15},{0,4,7},{4,8,11},{0,4,6},{5,13,15},{0,3,7},\{5,9,10\},\{0,3,15\},\{0,4,7\},\{4,8,11\},\{0,4,6\},\{5,13,15\},\{0,3,7\},
+
+{0,2,10},{0,2,6},{0,4,5},{0,12,14},{1,13,15},{0,12,15},{4,5,9},\{0,2,10\},\{0,2,6\},\{0,4,5\},\{0,12,14\},\{1,13,15\},\{0,12,15\},\{4,5,9\},
+
+{4,8,9},{4,5,13},{4,7,11},{1,3,15},{0,2,14},{1,3,7}.\{4,8,9\},\{4,5,13\},\{4,7,11\},\{1,3,15\},\{0,2,14\},\{1,3,7\}.
+
+J1J_{1}: 
+
+{4,7,15},{0,1,9},{1,2,6},{0,1,13},{4,12,13},{5,7,15},{1,9,10},\{4,7,15\},\{0,1,9\},\{1,2,6\},\{0,1,13\},\{4,12,13\},\{5,7,15\},\{1,9,10\},
+
+{1,13,14},{0,1,5},{1,5,7},{4,12,15},{0,8,9},{1,5,6},{0,3,11},\{1,13,14\},\{0,1,5\},\{1,5,7\},\{4,12,15\},\{0,8,9\},\{1,5,6\},\{0,3,11\},
+
+{0,12,13},{0,8,11},{1,2,10},{1,2,14}\{0,12,13\},\{0,8,11\},\{1,2,10\},\{1,2,14\}.
+
+J2J_{2}: 
+
+{4,12,14},{0,8,10},{1,9,11},{1,3,11},{5,13,14},{4,6,10},{4,6,14},\{4,12,14\},\{0,8,10\},\{1,9,11\},\{1,3,11\},\{5,13,14\},\{4,6,10\},\{4,6,14\},
+
+{5,6,10},{5,6,14},{4,8,10},{5,7,11},{5,9,11}\{5,6,10\},\{5,6,14\},\{4,8,10\},\{5,7,11\},\{5,9,11\}.
+
+00
+11
+22
+33
+44
+55
+66
+77
+88
+99
+1010
+1111
+1212
+1313
+1414
+1515
+
+φ0=π1|J0\varphi_{0}=\pi_{1}|_{J_{0}}
+00
+00
+00
+00
+11
+11
+11
+11
+22
+22
+22
+22
+33
+33
+33
+33
+
+φ1\varphi_{1}
+00
+00
+00
+00
+11
+11
+11
+11
+11
+11
+22
+22
+00
+33
+00
+33
+
+φ2\varphi_{2}
+00
+00
+00
+00
+11
+11
+00
+11
+11
+11
+22
+11
+00
+33
+22
+33
+
+φ3\varphi_{3}
+00
+00
+22
+00
+11
+11
+00
+00
+00
+11
+22
+11
+00
+33
+00
+33
+
+φ4\varphi_{4}
+00
+33
+22
+33
+11
+11
+00
+00
+00
+11
+22
+00
+00
+33
+22
+33
+
+φ5\varphi_{5}
+00
+33
+22
+33
+11
+11
+00
+00
+00
+11
+22
+00
+00
+11
+22
+33
+
+φ6\varphi_{6}
+00
+33
+22
+33
+00
+11
+00
+00
+00
+11
+22
+00
+00
+11
+22
+33
+
+φ7\varphi_{7}
+00
+33
+22
+33
+00
+11
+00
+33
+00
+11
+22
+00
+00
+11
+22
+33
+
+φ8=π2|J0\varphi_{8}=\pi_{2}|_{J_{0}}
+00
+11
+22
+33
+00
+11
+22
+33
+00
+11
+22
+33
+00
+11
+22
+33
+
+(a) 
+
+Table 3: Contiguity chain on J0J_{0}.
+
+The corresponding contiguity chains are described in Tables 3–5.
+
+00
+11
+22
+33
+44
+55
+66
+77
+88
+99
+1010
+1111
+1212
+1313
+1414
+1515
+
+φ0=π1|J1\varphi_{0}=\pi_{1}|_{J_{1}}
+00
+00
+00
+00
+11
+11
+11
+11
+22
+22
+22
+22
+33
+33
+33
+33
+
+φ1\varphi_{1}
+00
+00
+00
+00
+11
+11
+11
+11
+00
+22
+22
+00
+33
+33
+33
+33
+
+φ2\varphi_{2}
+00
+00
+00
+11
+33
+11
+00
+11
+00
+22
+22
+11
+33
+33
+33
+33
+
+φ3\varphi_{3}
+00
+00
+00
+00
+33
+11
+00
+11
+00
+22
+22
+11
+00
+00
+00
+33
+
+φ4\varphi_{4}
+00
+00
+22
+00
+33
+11
+00
+11
+00
+00
+00
+00
+00
+00
+22
+33
+
+φ5\varphi_{5}
+00
+00
+00
+33
+33
+11
+00
+11
+00
+00
+00
+33
+00
+00
+00
+33
+
+φ6\varphi_{6}
+00
+11
+00
+33
+33
+11
+00
+11
+00
+11
+00
+33
+00
+00
+00
+33
+
+φ7\varphi_{7}
+00
+11
+00
+33
+33
+11
+00
+33
+00
+11
+00
+33
+00
+00
+00
+33
+
+φ8\varphi_{8}
+00
+11
+00
+33
+00
+11
+00
+33
+00
+11
+11
+33
+00
+00
+00
+33
+
+φ9\varphi_{9}
+00
+11
+11
+33
+00
+11
+00
+33
+00
+11
+11
+33
+00
+11
+11
+33
+
+φ10\varphi_{10}
+00
+11
+11
+33
+00
+11
+11
+33
+00
+11
+22
+33
+00
+11
+22
+33
+
+φ11=π2|J1\varphi_{11}=\pi_{2}|_{J_{1}}
+00
+11
+22
+33
+00
+11
+22
+33
+00
+11
+22
+33
+00
+11
+22
+33
+
+(a) 
+
+Table 4: Contiguity chain on J1J_{1}.
+
+00
+11
+33
+44
+55
+66
+77
+88
+99
+1010
+1111
+1212
+1313
+1414
+
+φ0=π1|J2\varphi_{0}=\pi_{1}|_{J_{2}}
+00
+00
+00
+11
+11
+11
+11
+22
+22
+22
+22
+33
+33
+33
+
+φ1\varphi_{1}
+00
+00
+00
+11
+11
+11
+11
+22
+22
+22
+22
+33
+11
+11
+
+φ2\varphi_{2}
+22
+00
+00
+11
+11
+22
+11
+22
+22
+22
+22
+33
+11
+11
+
+φ3\varphi_{3}
+11
+22
+00
+11
+11
+22
+11
+22
+22
+22
+22
+11
+11
+11
+
+φ4\varphi_{4}
+11
+22
+22
+11
+11
+22
+22
+22
+11
+22
+22
+22
+11
+22
+
+φ5\varphi_{5}
+11
+22
+11
+11
+11
+22
+11
+11
+11
+22
+11
+22
+11
+22
+
+φ6\varphi_{6}
+11
+11
+11
+11
+11
+22
+33
+11
+11
+22
+11
+22
+11
+11
+
+φ7\varphi_{7}
+22
+33
+33
+22
+11
+22
+33
+22
+11
+22
+33
+11
+11
+22
+
+φ8\varphi_{8}
+00
+11
+33
+22
+11
+11
+33
+00
+11
+22
+33
+22
+11
+22
+
+φ9\varphi_{9}
+00
+11
+33
+22
+11
+22
+33
+00
+11
+22
+33
+00
+11
+22
+
+φ10=π2|J2\varphi_{10}=\pi_{2}|_{J_{2}}
+00
+11
+33
+00
+11
+22
+33
+00
+11
+22
+33
+00
+11
+22
+
+(a) 
+
+Table 5: Contiguity chain on J2J_{2}.
+
+References
+
+[1]
+
+A.J. Blumberg and M.A. Mandell.
+
+Quantitative homotopy theory in topological data analysis.
+
+Found. Comput. Math., 13(6):885–911, 2013.
+
+[2]
+
+A. Borat, M. Pamuk, and T. Vergili.
+
+Contiguity distance between simplicial maps.
+
+arXiv:2012.10627 [math.AT].
+
+[3]
+
+S. Eilenberg and N. Steenrod.
+
+Foundations of algebraic topology.
+
+Princeton University Press, Princeton, New Jersey, 1952.
+
+[4]
+
+M. Farber.
+
+Topological complexity of motion planning.
+
+Discrete Comput. Geom., 29(2):211–221, 2003.
+
+[5]
+
+M. Farber.
+
+Invitation to topological robotics.
+
+Zurich Lectures in Advanced Mathematics. European Mathematical
+Society (EMS), Zürich, 2008.
+
+[6]
+
+D. Fernández-Ternero, E. Macías-Virgós, E. Minuz, and J. A.
+Vilches.
+
+Discrete topological complexity.
+
+Proc. Amer. Math. Soc., 146(10):4535–4548, 2018.
+
+[7]
+
+J. González.
+
+Simplicial complexity: piecewise linear motion planning in robotics.
+
+New York J. Math., 24:279–292, 2018.
+
+[8]
+
+E. Macías-Virgós and D. Mosquera-Lois.
+
+Homotopic distance between maps.
+
+arXiv:1810.12591 [math.AT]. To appear in
+Math. Proc. Cambridge Philos. Soc.
+
+[9]
+
+E.H. Spanier.
+
+Algebraic topology.
+
+McGraw-Hill Book Co., New York-Toronto, Ont.-London, 1966.
+
+[10]
+
+K. Tanaka.
+
+A combinatorial description of topological complexity for finite
+spaces.
+
+Algebr. Geom. Topol., 18(2):779–796, 2018.
+
+Escuela Superior de Física y Matemáticas del Instituto Politécnico Nacional. Edificio 9, Unidad Profesional Adolfo López Mateos, 07300, Mexico City, Mexico.
+
+arweyo@gmail.com, alaral@ipn.mx.
+
+Departamento de Matemáticas, Centro de Investigación y de Estudios Avanzados del Istituto Politécnico Nacional, Av. IPN 2508, Zacatenco, México City 07000, México.
+
+jesus@math.cinvestav.mx
+
+Department of Mathematics, Faculty of Engineering and Natural Sciences, Bursa Technical University, Bursa, Turkey.
+
+ayse.borat@btu.edu.tr
+
+    Experimental support, please
+    view the build logs
+    for errors. Generated by
+
+        L
+        A
+        T
+        E
+
+      xml
+
+    .
+
+    Instructions for reporting errors
+
+    We are continuing to improve HTML versions of papers, and your feedback helps enhance accessibility and mobile
+      support. To report errors in the HTML that will help us improve conversion and rendering, choose any of the
+      methods listed below:
+
+      Click the "Report Issue" () button, located in the page header.
+
+    Tip: You can select the relevant text first, to include it in your report.
+
+    Our team has already identified the following issues. We appreciate your time reviewing and reporting rendering errors we
+      may not have found yet. Your efforts will help us improve the HTML versions for all readers, because disability
+      should not be a barrier to accessing research. Thank you for your continued support in championing open access for
+      all.
+
+    Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a list of packages that need conversion, and welcome developer contributions.
+
+        We gratefully acknowledge support from
+        our major funders,
+        member institutions, ,
+        and all contributors.
+
+        About
+        ·
+        Help
+        ·
+        Contact
+        ·
+        Subscribe
+        ·
+        Copyright
+        ·
+        Privacy
+        ·
+        Accessibility
+        ·
+        Operational Status (opens in new tab)
+
+      Major funding support from
+

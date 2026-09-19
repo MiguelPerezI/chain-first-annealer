@@ -1,0 +1,36 @@
+=== 2026-09-18T19:33:50Z s2 k=3 cmax=20 time-limit=120 seed=51 --ptrack 0.3 ===
+=== gpu_sc chain-first annealer ===  K=∂Δ³ (S²)  |F_L|=96  grid=16  k=3 cmax=20 S=4096 iters=20000
+  epoch   1: best   96.0/96  top10 [96, 96, 96, 96, 96, 96, 96, 96, 96, 96]  median 96  now-median 96     21.0s       3.9 Mmoves/s
+  full coverage reached at epoch 1
+best coverage 96/96  domain sizes [54, 52, 48]  time 21.9s  kernel 21.0s  moves 8.19e+07
+VERIFIED system of 3 motion planners: sizes [54, 29, 13], reduced chain lengths [7, 3, 4]  =>  SC_strict(∂Δ³ (S²)) <= 2
+wrote results/s2_k3_v2/cover.txt planners.txt summary.json
+=== 2026-09-18T19:34:13Z s3 k=3 cmax=40 time-limit=300 seed=52 --ptrack 0.3 ===
+=== gpu_sc chain-first annealer ===  K=∂Δ⁴ (S³)  |F_L|=500  grid=25  k=3 cmax=40 S=4096 iters=20000
+  epoch   1: best  500.0/500  top10 [500, 500, 500, 500, 500, 500, 500, 500, 500, 500]  median 499  now-median 499    151.5s       0.5 Mmoves/s
+  full coverage reached at epoch 1
+best coverage 500/500  domain sizes [309, 283, 271]  time 152.6s  kernel 151.5s  moves 8.19e+07
+VERIFIED system of 3 motion planners: sizes [309, 130, 61], reduced chain lengths [7, 8, 5]  =>  SC_strict(∂Δ⁴ (S³)) <= 2
+wrote results/s3_k3_v2/cover.txt planners.txt summary.json
+=== 2026-09-18T19:36:46Z s3 k=2 cmax=40 time-limit=300 seed=53 --ptrack 0.3 ===
+=== gpu_sc chain-first annealer ===  K=∂Δ⁴ (S³)  |F_L|=500  grid=25  k=2 cmax=40 S=4096 iters=20000
+  epoch   1: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    130.6s       0.6 Mmoves/s
+  epoch   2: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    256.7s       0.6 Mmoves/s
+  epoch   3: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    382.6s       0.6 Mmoves/s
+  time limit reached
+best coverage 460/500  domain sizes [320, 320]  time 383.4s  kernel 382.5s  moves 2.46e+08
+NOT a covering: 40 facets uncovered
+wrote results/s3_k2_v2_track/summary.json (partial)
+=== 2026-09-18T19:43:11Z s3 k=2 cmax=40 time-limit=300 seed=54 --ptrack 0.05 ===
+=== gpu_sc chain-first annealer ===  K=∂Δ⁴ (S³)  |F_L|=500  grid=25  k=2 cmax=40 S=4096 iters=20000
+  epoch   1: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 455  now-median 455     57.6s       1.4 Mmoves/s
+  epoch   2: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    109.9s       1.5 Mmoves/s
+  epoch   3: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    162.2s       1.5 Mmoves/s
+  epoch   4: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    214.4s       1.5 Mmoves/s
+  epoch   5: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    266.6s       1.5 Mmoves/s
+  epoch   6: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    319.0s       1.5 Mmoves/s
+  time limit reached
+best coverage 460/500  domain sizes [297, 317]  time 319.8s  kernel 318.9s  moves 4.92e+08
+NOT a covering: 40 facets uncovered
+wrote results/s3_k2_v2_point/summary.json (partial)
+=== PUSH_S3_V2 DONE 2026-09-18T19:48:31Z ===

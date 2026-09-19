@@ -1,0 +1,15 @@
+=== 2026-09-18T20:34:26Z s4 k=3 cmax=40 beta=5 gamma=0.5 ptrack=0.3 time-limit=600 seed=61 ===
+=== gpu_sc chain-first annealer ===  K=∂Δ⁵ (S⁴)  |F_L|=2520  grid=36  k=3 cmax=40 S=4096 iters=20000
+  epoch   1: best 2520.0/2520  top10 [2520, 2520, 2520, 2520, 2520, 2520, 2520, 2520, 2520, 2520]  median 2511  now-median 2510    785.7s       0.1 Mmoves/s
+  full coverage reached at epoch 1
+best coverage 2520/2520  domain sizes [1634, 1483, 1689]  time 786.9s  kernel 785.7s  moves 8.19e+07
+VERIFIED system of 3 motion planners: sizes [1634, 653, 233], reduced chain lengths [11, 10, 7]  =>  SC_strict(∂Δ⁵ (S⁴)) <= 2
+wrote results/s4_k3_v2/cover.txt planners.txt summary.json
+=== 2026-09-18T20:47:34Z s4 k=2 cmax=40 beta=5 gamma=0.5 ptrack=0.3 time-limit=600 seed=62 ===
+=== gpu_sc chain-first annealer ===  K=∂Δ⁵ (S⁴)  |F_L|=2520  grid=36  k=2 cmax=40 S=4096 iters=20000
+  epoch   1: best 2380.0/2520  top10 [2380, 2380, 2380, 2380, 2380, 2380, 2380, 2380, 2380, 2380]  median 2374  now-median 2374    716.2s       0.1 Mmoves/s
+  time limit reached
+best coverage 2380/2520  domain sizes [1746, 1750]  time 717.0s  kernel 716.1s  moves 8.19e+07
+NOT a covering: 140 facets uncovered
+wrote results/s4_k2_v2/summary.json (partial)
+=== PUSH_S4 DONE 2026-09-18T20:59:32Z ===

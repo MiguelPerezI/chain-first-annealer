@@ -1,0 +1,8 @@
+.claude/
+__pycache__/
+*.pyc
+*.swp
+
+# Large run outputs (>10MB, too big for git)
+opti/results/s7_starcover/
+opti/results/s8_starcover/

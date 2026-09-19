@@ -1,0 +1,68 @@
+=== 2026-09-19T07:36:27Z cube k=3 cmax=16 beta=5 gamma=0.5 ptrack=0.3 time-limit=1200 seed=82 --init results/cube_k3/summary.json ===
+=== gpu_sc chain-first annealer ===  K=cube boundary (8 vertices, 12 triangles)  |F_L|=864  grid=64  k=3 cmax=16 S=4096 iters=5000
+  seeded population from results/cube_k3/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+  epoch   1: best  689.0/864  top10 [689, 689, 686, 686, 684, 683, 683, 683, 683, 683]  median 424  now-median 423     17.6s     1.169 Mmoves/s
+  epoch   2: best  699.0/864  top10 [699, 695, 694, 691, 691, 690, 690, 690, 690, 690]  median 440  now-median 440     31.1s     1.321 Mmoves/s
+  epoch   3: best  699.0/864  top10 [699, 699, 699, 699, 698, 698, 698, 697, 696, 696]  median 669  now-median 669     44.6s     1.382 Mmoves/s
+  epoch   4: best  705.0/864  top10 [705, 703, 701, 701, 701, 700, 700, 699, 699, 699]  median 671  now-median 671     58.1s     1.414 Mmoves/s
+  epoch   5: best  708.0/864  top10 [708, 706, 705, 705, 704, 704, 703, 703, 702, 702]  median 678  now-median 678     71.6s     1.433 Mmoves/s
+  epoch   6: best  712.0/864  top10 [712, 710, 708, 707, 707, 706, 706, 706, 706, 706]  median 681  now-median 680     85.1s     1.447 Mmoves/s
+  epoch   7: best  720.0/864  top10 [720, 716, 710, 710, 710, 709, 709, 708, 708, 708]  median 685  now-median 685     98.7s     1.457 Mmoves/s
+  epoch   8: best  720.0/864  top10 [720, 716, 714, 712, 712, 711, 711, 710, 710, 710]  median 688  now-median 687    112.2s     1.464 Mmoves/s
+  epoch   9: best  720.0/864  top10 [720, 720, 719, 716, 716, 715, 715, 714, 714, 714]  median 692  now-median 692    125.7s     1.470 Mmoves/s
+  epoch  10: best  721.0/864  top10 [721, 720, 720, 720, 719, 719, 716, 716, 716, 716]  median 693  now-median 693    139.2s     1.475 Mmoves/s
+  epoch  11: best  732.0/864  top10 [732, 727, 723, 723, 723, 722, 721, 721, 721, 721]  median 697  now-median 696    152.7s     1.479 Mmoves/s
+  epoch  12: best  736.0/864  top10 [736, 732, 727, 725, 725, 724, 724, 723, 722, 722]  median 698  now-median 698    166.1s     1.483 Mmoves/s
+  epoch  13: best  737.0/864  top10 [737, 732, 729, 728, 727, 726, 725, 725, 724, 724]  median 701  now-median 701    179.6s     1.486 Mmoves/s
+  epoch  14: best  740.0/864  top10 [740, 732, 729, 728, 727, 727, 727, 726, 726, 726]  median 701  now-median 701    193.1s     1.489 Mmoves/s
+  epoch  15: best  742.0/864  top10 [742, 734, 733, 732, 732, 731, 730, 730, 728, 728]  median 704  now-median 704    206.6s     1.491 Mmoves/s
+  epoch  16: best  742.0/864  top10 [742, 738, 734, 734, 732, 732, 732, 732, 731, 730]  median 705  now-median 705    220.0s     1.493 Mmoves/s
+  epoch  17: best  742.0/864  top10 [742, 738, 738, 737, 736, 736, 736, 735, 734, 734]  median 708  now-median 708    233.5s     1.495 Mmoves/s
+  epoch  18: best  743.0/864  top10 [743, 742, 740, 740, 739, 737, 736, 736, 736, 736]  median 709  now-median 708    247.0s     1.497 Mmoves/s
+  epoch  19: best  752.0/864  top10 [752, 746, 745, 743, 742, 742, 742, 742, 741, 740]  median 711  now-median 711    260.5s     1.498 Mmoves/s
+  epoch  20: best  756.0/864  top10 [756, 752, 751, 750, 745, 745, 745, 745, 743, 743]  median 712  now-median 712    273.9s     1.499 Mmoves/s
+  epoch  21: best  762.0/864  top10 [762, 756, 752, 752, 752, 751, 750, 749, 749, 747]  median 715  now-median 715    287.4s     1.500 Mmoves/s
+  epoch  22: best  762.0/864  top10 [762, 760, 756, 753, 753, 752, 752, 751, 750, 749]  median 716  now-median 716    300.9s     1.501 Mmoves/s
+  epoch  23: best  764.0/864  top10 [764, 764, 758, 755, 753, 753, 753, 753, 752, 752]  median 719  now-median 718    314.3s     1.502 Mmoves/s
+  epoch  24: best  768.0/864  top10 [768, 767, 758, 755, 754, 753, 753, 753, 753, 753]  median 720  now-median 720    327.8s     1.503 Mmoves/s
+  epoch  25: best  776.0/864  top10 [776, 770, 764, 758, 757, 756, 756, 755, 755, 755]  median 723  now-median 722    341.3s     1.504 Mmoves/s
+  epoch  26: best  776.0/864  top10 [776, 770, 764, 762, 760, 758, 758, 758, 757, 757]  median 723  now-median 723    354.7s     1.505 Mmoves/s
+  epoch  27: best  776.0/864  top10 [776, 770, 766, 766, 766, 764, 764, 764, 762, 762]  median 726  now-median 726    368.2s     1.506 Mmoves/s
+  epoch  28: best  776.0/864  top10 [776, 774, 770, 770, 769, 766, 765, 765, 764, 762]  median 727  now-median 727    381.7s     1.506 Mmoves/s
+  epoch  29: best  779.0/864  top10 [779, 779, 776, 776, 773, 770, 769, 768, 767, 767]  median 730  now-median 729    395.1s     1.507 Mmoves/s
+  epoch  30: best  782.0/864  top10 [782, 780, 779, 777, 773, 771, 770, 769, 768, 768]  median 730  now-median 730    408.6s     1.508 Mmoves/s
+  epoch  31: best  783.0/864  top10 [783, 782, 780, 779, 777, 777, 776, 773, 773, 772]  median 733  now-median 733    422.0s     1.508 Mmoves/s
+  epoch  32: best  783.0/864  top10 [783, 782, 781, 781, 780, 778, 777, 775, 775, 775]  median 734  now-median 733    435.5s     1.509 Mmoves/s
+  epoch  33: best  785.0/864  top10 [785, 783, 782, 781, 781, 780, 780, 778, 777, 777]  median 737  now-median 736    449.0s     1.509 Mmoves/s
+  epoch  34: best  785.0/864  top10 [785, 783, 782, 781, 781, 780, 780, 778, 777, 777]  median 737  now-median 737    462.4s     1.510 Mmoves/s
+  epoch  35: best  785.0/864  top10 [785, 784, 782, 782, 781, 781, 781, 780, 780, 779]  median 740  now-median 740    476.0s     1.510 Mmoves/s
+  epoch  36: best  790.0/864  top10 [790, 788, 787, 782, 782, 782, 781, 781, 781, 780]  median 740  now-median 740    489.4s     1.510 Mmoves/s
+  epoch  37: best  792.0/864  top10 [792, 789, 788, 787, 786, 784, 783, 782, 782, 782]  median 743  now-median 743    502.9s     1.511 Mmoves/s
+  epoch  38: best  793.0/864  top10 [793, 792, 789, 789, 789, 788, 788, 784, 782, 782]  median 744  now-median 743    516.3s     1.511 Mmoves/s
+  epoch  39: best  795.0/864  top10 [795, 795, 795, 793, 789, 789, 789, 789, 788, 788]  median 746  now-median 746    529.8s     1.511 Mmoves/s
+  epoch  40: best  797.0/864  top10 [797, 795, 795, 793, 793, 793, 791, 789, 789, 789]  median 747  now-median 746    543.3s     1.512 Mmoves/s
+  epoch  41: best  798.0/864  top10 [798, 797, 795, 795, 793, 793, 793, 793, 793, 791]  median 749  now-median 749    556.7s     1.512 Mmoves/s
+  epoch  42: best  798.0/864  top10 [798, 797, 795, 795, 795, 793, 793, 793, 793, 793]  median 750  now-median 749    570.2s     1.512 Mmoves/s
+  epoch  43: best  798.0/864  top10 [798, 798, 797, 795, 795, 795, 795, 795, 794, 793]  median 753  now-median 753    583.7s     1.513 Mmoves/s
+  epoch  44: best  798.0/864  top10 [798, 798, 797, 796, 795, 795, 795, 795, 795, 795]  median 754  now-median 753    597.1s     1.513 Mmoves/s
+  epoch  45: best  800.0/864  top10 [800, 798, 798, 798, 797, 797, 796, 795, 795, 795]  median 758  now-median 757    610.6s     1.513 Mmoves/s
+  epoch  46: best  800.0/864  top10 [800, 798, 798, 798, 797, 797, 796, 796, 796, 795]  median 759  now-median 758    624.0s     1.513 Mmoves/s
+  epoch  47: best  802.0/864  top10 [802, 800, 799, 798, 798, 798, 798, 798, 797, 797]  median 762  now-median 761    637.5s     1.514 Mmoves/s
+  epoch  48: best  802.0/864  top10 [802, 800, 800, 800, 799, 798, 798, 798, 798, 798]  median 763  now-median 762    651.0s     1.514 Mmoves/s
+  epoch  49: best  806.0/864  top10 [806, 802, 800, 800, 800, 800, 799, 799, 799, 799]  median 767  now-median 766    664.5s     1.514 Mmoves/s
+  epoch  50: best  807.0/864  top10 [807, 804, 802, 800, 800, 800, 799, 799, 799, 799]  median 767  now-median 767    677.9s     1.514 Mmoves/s
+  epoch  51: best  808.0/864  top10 [808, 805, 804, 803, 803, 802, 802, 801, 800, 800]  median 771  now-median 771    691.4s     1.514 Mmoves/s
+  epoch  52: best  808.0/864  top10 [808, 805, 804, 803, 803, 803, 802, 802, 802, 801]  median 772  now-median 772    704.9s     1.515 Mmoves/s
+  epoch  53: best  812.0/864  top10 [812, 810, 810, 807, 806, 806, 805, 804, 804, 804]  median 776  now-median 775    718.4s     1.515 Mmoves/s
+  epoch  54: best  812.0/864  top10 [812, 810, 810, 810, 807, 806, 806, 805, 805, 804]  median 776  now-median 776    731.8s     1.515 Mmoves/s
+  epoch  55: best  820.0/864  top10 [820, 812, 811, 811, 811, 810, 808, 808, 807, 806]  median 779  now-median 778    745.3s     1.515 Mmoves/s
+  epoch  56: best  820.0/864  top10 [820, 812, 811, 811, 811, 810, 808, 808, 807, 806]  median 779  now-median 779    758.8s     1.515 Mmoves/s
+  epoch  57: best  820.0/864  top10 [820, 820, 813, 812, 812, 811, 811, 811, 811, 810]  median 781  now-median 780    772.3s     1.515 Mmoves/s
+  epoch  58: best  820.0/864  top10 [820, 820, 813, 812, 812, 811, 811, 811, 811, 810]  median 781  now-median 781    785.7s     1.516 Mmoves/s
+  epoch  59: best  820.0/864  top10 [820, 820, 813, 812, 812, 812, 811, 811, 811, 811]  median 784  now-median 784    799.2s     1.516 Mmoves/s
+  epoch  60: best  820.0/864  top10 [820, 820, 813, 812, 812, 812, 812, 811, 811, 811]  median 785  now-median 785    812.7s     1.516 Mmoves/s
+best coverage 820/864  domain sizes [382, 293, 391]  time 813.9s  kernel 810.6s  moves 1.23e+09
+NOT a covering: 44 facets uncovered
+wrote results/cube_k3_v2/summary.json (partial)
+k=3: no full cover (partial summary.json written)
+=== RUN_CUBE DONE 2026-09-19T07:50:02Z ===

@@ -1,0 +1,13 @@
+Császár torus: keeping 6 rectangles ([216, 168, 144, 132, 120, 108] facets) -> remainder 288 facets, k=2 chains
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  162.0/288  top10 [162, 159, 153, 153, 151, 148, 146, 144, 143, 143]  median 55  now-median 55     52.0s       1.6 Mmoves/s
+  epoch   2: best  182.0/288  top10 [182, 178, 176, 176, 176, 176, 176, 176, 176, 176]  median 93  now-median 93     99.4s       1.6 Mmoves/s
+  epoch   3: best  184.0/288  top10 [184, 183, 183, 182, 182, 182, 182, 182, 182, 182]  median 127  now-median 126    146.9s       1.7 Mmoves/s
+  epoch   4: best  185.0/288  top10 [185, 185, 185, 183, 183, 183, 183, 183, 183, 183]  median 138  now-median 138    194.4s       1.7 Mmoves/s
+  epoch   5: best  186.0/288  top10 [186, 185, 185, 185, 185, 185, 185, 184, 184, 183]  median 153  now-median 153    230.3s       1.8 Mmoves/s
+  epoch   6: best  187.0/288  top10 [187, 186, 186, 186, 185, 185, 185, 185, 185, 185]  median 158  now-median 158    267.0s       1.8 Mmoves/s
+  epoch   7: best  189.0/288  top10 [189, 187, 186, 186, 186, 186, 186, 186, 186, 186]  median 167  now-median 167    314.5s       1.8 Mmoves/s
+  time limit reached
+remainder coverage 189/288  time 315.4s
+NOT a covering of the remainder: 99 facets uncovered

@@ -1,0 +1,28 @@
+=== gpu_sc chain-first annealer ===  K=∂Δ⁴ (S³)  |F_L|=500  grid=25  k=2 cmax=40 S=4096 iters=20000
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 441  now-median 441     20.0s       4.1 Mmoves/s
+  epoch   2: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 454  now-median 454     36.9s       4.4 Mmoves/s
+  epoch   3: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 457  now-median 457     64.8s       3.8 Mmoves/s
+  epoch   4: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 457  now-median 457     81.7s       4.0 Mmoves/s
+  epoch   5: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 457  now-median 457    109.7s       3.7 Mmoves/s
+  epoch   6: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 457  now-median 457    146.6s       3.4 Mmoves/s
+  epoch   7: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    183.8s       3.1 Mmoves/s
+  epoch   8: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    220.7s       3.0 Mmoves/s
+  epoch   9: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    256.1s       2.9 Mmoves/s
+  epoch  10: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    292.9s       2.8 Mmoves/s
+  epoch  11: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    319.6s       2.8 Mmoves/s
+  epoch  12: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    336.6s       2.9 Mmoves/s
+  epoch  13: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    353.9s       3.0 Mmoves/s
+  epoch  14: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    407.2s       2.8 Mmoves/s
+  epoch  15: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    457.5s       2.7 Mmoves/s
+  epoch  16: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    488.1s       2.7 Mmoves/s
+  epoch  17: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    504.9s       2.8 Mmoves/s
+  epoch  18: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    526.3s       2.8 Mmoves/s
+  epoch  19: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    562.1s       2.8 Mmoves/s
+  epoch  20: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    598.3s       2.7 Mmoves/s
+  epoch  21: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    634.2s       2.7 Mmoves/s
+  epoch  22: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    670.4s       2.7 Mmoves/s
+  epoch  23: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    698.9s       2.7 Mmoves/s
+  epoch  24: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    715.9s       2.7 Mmoves/s
+  epoch  25: best  460.0/500  top10 [460, 460, 460, 460, 460, 460, 460, 460, 460, 460]  median 460  now-median 460    732.7s       2.8 Mmoves/s

@@ -1,0 +1,17 @@
+=== 2026-09-19T00:04:36Z s5 k=3 cmax=16 beta=5 gamma=0.5 ptrack=0.3 time-limit=10800 ===
+=== gpu_sc chain-first annealer ===  K=∂Δ⁶ (S⁵)  |F_L|=12348  grid=49  k=3 cmax=16 S=4096 iters=5000
+  epoch   1: best 12055.0/12348  top10 [12055, 11996, 11973, 11956, 11937, 11925, 11910, 11890, 11881, 11880]  median 10786  now-median 10786   1016.7s       0.0 Mmoves/s
+  epoch   2: best 12348.0/12348  top10 [12348, 12348, 12347, 12347, 12346, 12345, 12344, 12344, 12342, 12342]  median 12022  now-median 12021   2025.2s       0.0 Mmoves/s
+  full coverage reached at epoch 2
+best coverage 12348/12348  domain sizes [7061, 8442, 7636]  time 2026.3s  kernel 2025.2s  moves 4.1e+07
+VERIFIED system of 3 motion planners: sizes [7061, 4239, 1048], reduced chain lengths [9, 5, 4]  =>  SC_strict(∂Δ⁶ (S⁵)) <= 2
+wrote results/s5_k3_v2/cover.txt planners.txt summary.json
+--- code-independent audit of results/s5_k3_v2 ---
+[2] cover: 3 disjoint domains cover all 12348 facets (sizes [7061, 4239, 1048])
+[3] domain 0: 7061 facets, chain of 10 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+[3] domain 1: 4239 facets, chain of 6 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+[3] domain 2: 1048 facets, chain of 5 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+
+VERIFIED: SC_strict(∂Δ⁶ (S⁵)) <= 2 by 3 explicit planner domains (subdivision level 0)
+wrote results/s5_k3_v2/certificate.md: 3 domains, 12348 facets, chain lengths [9, 5, 4]
+=== RUN_S5 DONE 2026-09-19T00:38:28Z ===

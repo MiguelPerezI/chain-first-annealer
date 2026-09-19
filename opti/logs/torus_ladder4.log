@@ -1,0 +1,11 @@
+=== 2026-09-18T18:11:49Z torus k=8 cmax=40 beta=5 time-limit=600 seed=71 --gamma 0.5 --ptrack 0.3 ===
+=== gpu_sc chain-first annealer ===  K=Császár torus  |F_L|=1176  grid=49  k=8 cmax=40 S=4096 iters=20000
+  epoch   1: best  330.0/1176  top10 [330, 319, 319, 316, 313, 313, 312, 311, 311, 310]  median 262  now-median 260    135.2s       0.6 Mmoves/s
+  epoch   2: best  415.0/1176  top10 [415, 401, 396, 392, 384, 383, 381, 380, 379, 379]  median 309  now-median 307    265.6s       0.6 Mmoves/s
+  epoch   3: best  522.0/1176  top10 [522, 478, 476, 470, 467, 467, 467, 462, 459, 458]  median 370  now-median 368    397.0s       0.6 Mmoves/s
+  epoch   4: best  582.0/1176  top10 [582, 579, 572, 566, 563, 558, 558, 557, 552, 552]  median 428  now-median 426    528.9s       0.6 Mmoves/s
+  epoch   5: best  705.0/1176  top10 [705, 682, 673, 670, 659, 658, 656, 655, 653, 651]  median 500  now-median 498    661.5s       0.6 Mmoves/s
+  time limit reached
+best coverage 705/1176  domain sizes [147, 130, 114, 148, 126, 130, 94, 102]  time 664.6s  kernel 660.7s  moves 4.1e+08
+NOT a covering: 471 facets uncovered
+wrote results/torus_k8_c40_b5/summary.json (partial)

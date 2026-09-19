@@ -1,0 +1,24 @@
+=== 2026-09-18T18:22:58Z torus k=1 cmax=40 beta=5 time-limit=600 seed=81 --gamma 0.0 --ptrack 0.3 ===
+=== gpu_sc chain-first annealer ===  K=Császár torus  |F_L|=1176  grid=49  k=1 cmax=40 S=4096 iters=20000
+  epoch   1: best  206.0/1176  top10 [206, 204, 202, 198, 194, 189, 189, 189, 188, 187]  median 125  now-median 99     86.9s       0.9 Mmoves/s
+  epoch   2: best  222.0/1176  top10 [222, 222, 222, 222, 218, 218, 216, 216, 216, 216]  median 126  now-median 87    170.0s       1.0 Mmoves/s
+  epoch   3: best  226.0/1176  top10 [226, 224, 224, 222, 222, 222, 222, 222, 222, 222]  median 130  now-median 84    252.8s       1.0 Mmoves/s
+  epoch   4: best  228.0/1176  top10 [228, 228, 228, 228, 228, 226, 224, 222, 222, 222]  median 130  now-median 84    399.1s       0.8 Mmoves/s
+  epoch   5: best  228.0/1176  top10 [228, 228, 228, 228, 228, 228, 228, 228, 228, 228]  median 134  now-median 84    481.9s       0.9 Mmoves/s
+  epoch   6: best  228.0/1176  top10 [228, 228, 228, 228, 228, 228, 228, 228, 228, 228]  median 134  now-median 84    565.0s       0.9 Mmoves/s
+  epoch   7: best  228.0/1176  top10 [228, 228, 228, 228, 228, 228, 228, 228, 228, 228]  median 137  now-median 84    647.8s       0.9 Mmoves/s
+  time limit reached
+best coverage 228/1176  domain sizes [228]  time 648.4s  kernel 647.7s  moves 5.73e+08
+NOT a covering: 948 facets uncovered
+wrote results/torus_k1_c40_g0/summary.json (partial)
+=== 2026-09-18T18:33:47Z torus k=1 cmax=40 beta=5 time-limit=480 seed=82 --gamma 0.5 --ptrack 0.3 ===
+=== gpu_sc chain-first annealer ===  K=Császár torus  |F_L|=1176  grid=49  k=1 cmax=40 S=4096 iters=20000
+  epoch   1: best  204.0/1176  top10 [204, 202, 200, 198, 198, 196, 195, 194, 192, 188]  median 124  now-median 100     85.8s       1.0 Mmoves/s
+  epoch   2: best  222.0/1176  top10 [222, 222, 222, 222, 222, 222, 216, 216, 216, 216]  median 126  now-median 86    175.6s       0.9 Mmoves/s
+  epoch   3: best  222.0/1176  top10 [222, 222, 222, 222, 222, 222, 222, 222, 222, 222]  median 129  now-median 84    258.2s       1.0 Mmoves/s
+  epoch   4: best  228.0/1176  top10 [228, 228, 222, 222, 222, 222, 222, 222, 222, 222]  median 130  now-median 84    361.0s       0.9 Mmoves/s
+  epoch   5: best  228.0/1176  top10 [228, 228, 228, 228, 222, 222, 222, 222, 222, 222]  median 133  now-median 84    540.4s       0.8 Mmoves/s
+  time limit reached
+best coverage 228/1176  domain sizes [228]  time 540.9s  kernel 540.3s  moves 4.1e+08
+NOT a covering: 948 facets uncovered
+wrote results/torus_k1_c40_b5/summary.json (partial)

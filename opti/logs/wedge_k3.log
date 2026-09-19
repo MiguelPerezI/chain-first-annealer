@@ -1,0 +1,75 @@
+=== 2026-09-19T06:33:43Z wedge k=3 beta=5 gamma=0.5 ptrack=0.3 time-limit=300 seed=71 ===
+=== gpu_sc chain-first annealer ===  K=wedge of two circles  |F_L|=50  grid=16  k=3 cmax=16 S=4096 iters=5000
+  epoch   1: best   47.0/50  top10 [47, 46, 46, 46, 46, 46, 46, 46, 46, 46]  median 41  now-median 41     21.9s     0.938 Mmoves/s
+  epoch   2: best   48.0/50  top10 [48, 47, 47, 47, 47, 47, 47, 47, 47, 47]  median 43  now-median 43     22.9s     1.816 Mmoves/s
+  epoch   3: best   48.0/50  top10 [48, 48, 47, 47, 47, 47, 47, 47, 47, 47]  median 44  now-median 44     23.7s     2.640 Mmoves/s
+  epoch   4: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 47, 47]  median 44  now-median 44     24.4s     3.415 Mmoves/s
+  epoch   5: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 45  now-median 45     25.2s     4.145 Mmoves/s
+  epoch   6: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 45  now-median 45     25.9s     4.832 Mmoves/s
+  epoch   7: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 46  now-median 46     26.6s     5.484 Mmoves/s
+  epoch   8: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 46  now-median 46     27.3s     6.100 Mmoves/s
+  epoch   9: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 46  now-median 46     28.1s     6.686 Mmoves/s
+  epoch  10: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 46  now-median 46     28.8s     7.241 Mmoves/s
+  epoch  11: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 46  now-median 46     29.5s     7.770 Mmoves/s
+  epoch  12: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 46  now-median 46     30.3s     8.272 Mmoves/s
+  epoch  13: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 47  now-median 46     31.0s     8.751 Mmoves/s
+  epoch  14: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 47  now-median 46     31.7s     9.204 Mmoves/s
+  epoch  15: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 47  now-median 47     32.5s     9.640 Mmoves/s
+  epoch  16: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 47  now-median 47     33.2s    10.054 Mmoves/s
+  epoch  17: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 47  now-median 47     34.0s    10.453 Mmoves/s
+  epoch  18: best   48.0/50  top10 [48, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 47  now-median 47     34.7s    10.832 Mmoves/s
+  epoch  19: best   49.0/50  top10 [49, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 47  now-median 47     35.4s    11.198 Mmoves/s
+  epoch  20: best   49.0/50  top10 [49, 48, 48, 48, 48, 48, 48, 48, 48, 48]  median 47  now-median 47     36.2s    11.547 Mmoves/s
+  epoch  21: best   49.0/50  top10 [49, 49, 49, 48, 48, 48, 48, 48, 48, 48]  median 47  now-median 47     36.9s    11.885 Mmoves/s
+  epoch  22: best   49.0/50  top10 [49, 49, 49, 48, 48, 48, 48, 48, 48, 48]  median 47  now-median 47     37.6s    12.207 Mmoves/s
+  epoch  23: best   49.0/50  top10 [49, 49, 49, 49, 49, 48, 48, 48, 48, 48]  median 47  now-median 47     38.4s    12.519 Mmoves/s
+  epoch  24: best   49.0/50  top10 [49, 49, 49, 49, 49, 48, 48, 48, 48, 48]  median 47  now-median 47     39.1s    12.818 Mmoves/s
+  epoch  25: best   50.0/50  top10 [50, 49, 49, 49, 49, 48, 48, 48, 48, 48]  median 47  now-median 47     39.9s    13.106 Mmoves/s
+  full coverage reached at epoch 25
+best coverage 50/50  domain sizes [18, 17, 17]  time 40.8s  kernel 39.1s  moves 5.12e+08
+VERIFIED system of 3 motion planners: sizes [18, 16, 16], reduced chain lengths [2, 5, 5]  =>  SC_strict(wedge of two circles) <= 2
+wrote results/wedge_k3_v2/cover.txt planners.txt summary.json
+--- code-independent audit of results/wedge_k3_v2 ---
+cover.txt reports 50 facets — this auditor only rebuilds ∂Δ^n x ∂Δ^n for n = 2 (18), 3 (96), 4 (500), 5 (2520), 6 (12348), 7 (59136), 8 (277992), 9 (1287000), 10 (5883020) facets and the Császár torus (1176); above n = 10 no facet-by-facet cover.txt exists (see stream_starcover.py)
+wrote results/wedge_k3_v2/certificate.md: 3 domains, 50 facets, chain lengths [2, 5, 5]
+Traceback (most recent call last):
+  File "/home/ubuntu/Documents/opti/make_definition_md.py", line 113, in <module>
+    main()
+  File "/home/ubuntu/Documents/opti/make_definition_md.py", line 27, in main
+    N = int(name[1:])                     # S^N = ∂Δ^{N+1}
+        ^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'edge'
+=== RUN_WEDGE DONE 2026-09-19T06:34:55Z ===
+
+--- post-fix re-run of the checks at 2026-09-19T06:45:42Z: independent_check.py and make_definition_md.py now support the wedge (the two tracebacks above are the pre-fix code) ---
+K = wedge of two circles (K₄ − {2,3}): 4 vertices, 5 edges, chi = -1, ||K|| ~ S^1 v S^1 (triangles {0,1,2}, {0,1,3} share the edge {0,1})
+K = wedge of two circles (K₄ − {2,3}): rebuilt KxK independently — 50 maximal facets
+[1] facet table: 50/50 staircase facets match cover.txt
+[2] cover: 3 disjoint domains cover all 50 facets (sizes [18, 16, 16])
+[3] domain 0: 18 facets, chain of 3 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+[3] domain 1: 16 facets, chain of 6 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+[3] domain 2: 16 facets, chain of 6 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+
+VERIFIED: SC_strict(wedge of two circles (K₄ − {2,3})) <= 2 by 3 explicit planner domains (subdivision level 0)
+audit exit=0
+wrote results/wedge_k3_v2/definition.md  (wedge: 4 vertices, 50 facets of K x K)
+definition regenerated (exit=0)
+our K: wedge of two circles, 5 facets, 50 facets of K x K, grid 4 x 4
+[0] read the paper's three lists from article.html: [20, 18, 12] facets
+[1] every decoded triangle is that facet of K x K, with the paper's vertices
+[2] the paper's J0, J1, J2 partition K x K: [20, 18, 12] = 50 facets
+[3] J0: dim H1(J;Z2) = 2, rank (pi1-pi2)_* = 0  -> passes the H1 test
+[3] J1: dim H1(J;Z2) = 1, rank (pi1-pi2)_* = 0  -> passes the H1 test
+[3] J2: dim H1(J;Z2) = 0, rank (pi1-pi2)_* = 0  -> passes the H1 test
+[4] J0: the paper's Table for J0 — 9 maps (8 links), pi1 -> pi2, simplicial + 1-contiguous on all 20 facets: OK
+[4] J1: the paper's Table for J1 — 12 maps (11 links), pi1 -> pi2, simplicial + 1-contiguous on all 18 facets: OK
+[4] J2: the paper's Table for J2 — 11 maps (10 links), pi1 -> pi2, simplicial + 1-contiguous on all 12 facets: OK
+[x] cross-checked against gpu_sc.Product (facets, is_simplex) and h1_obstruction.py (H^1 on all 3 domains): identical
+[5] results/wedge_k3_v2: domains [18, 16, 16] = 50 facets, chain links [2, 5, 5] / maps [3, 6, 6]  ->  SC_strict <= 2
+    the paper's chain links [8, 11, 10] / maps [9, 12, 11]
+    overlap matrix (rows = paper J0..J2, cols = our domains):
+      J0 (20):  10   5   5
+      J1 (18):   4   4  10
+      J2 (12):   4   7   1
+    identical to the paper's partition? False
+paper cross-check exit=0

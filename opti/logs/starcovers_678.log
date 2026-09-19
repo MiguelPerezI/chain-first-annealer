@@ -1,0 +1,54 @@
+=== 2026-09-19T00:12:16Z  S^6 = ∂Δ7  -> results/s6_starcover ===
+∂Δ⁷ (S⁶): 3 domains [45276, 12012, 1848], chain lengths [2, 2, 2], SC_strict <= 2; verified, written to results/s6_starcover
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.91
+	Maximum resident set size (kbytes): 182332
+--- audit ---
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.05
+	Maximum resident set size (kbytes): 26716
+wrote results/s6_starcover/definition.md  (s6: 8 vertices, 59136 facets of K x K)
+wrote results/s6_starcover/certificate.md: 3 domains, 59136 facets, chain lengths [2, 2, 2]
+     
+    4096 .
+    4096 ..
+    5138609 certificate.md
+    5488812 cover.txt
+    2881 definition.md
+    1756 planners.txt
+    758971 summary.json
+=== 2026-09-19T00:12:25Z  S^7 = ∂Δ8  -> results/s7_starcover ===
+∂Δ⁸ (S⁷): 3 domains [219648, 51480, 6864], chain lengths [2, 2, 2], SC_strict <= 2; verified, written to results/s7_starcover
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:25.02
+	Maximum resident set size (kbytes): 494676
+--- audit ---
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.15
+	Maximum resident set size (kbytes): 87512
+wrote results/s7_starcover/definition.md  (s7: 9 vertices, 277992 facets of K x K)
+wrote results/s7_starcover/certificate.md: 3 domains, 277992 facets, chain lengths [2, 2, 2]
+     
+    4096 .
+    4096 ..
+    27693367 certificate.md
+    29356318 cover.txt
+    2948 definition.md
+    2099 planners.txt
+    3782285 summary.json
+=== 2026-09-19T00:13:11Z  S^8 = ∂Δ9  -> results/s8_starcover ===
+∂Δ⁹ (S⁸): 3 domains [1042470, 218790, 25740], chain lengths [2, 2, 2], SC_strict <= 2; verified, written to results/s8_starcover
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:12.31
+	Maximum resident set size (kbytes): 2177972
+--- audit ---
+[2] cover: 3 disjoint domains cover all 1287000 facets (sizes [1042470, 218790, 25740])
+VERIFIED: SC_strict(∂Δ⁹ (S⁸)) <= 2 by 3 explicit planner domains (subdivision level 0)
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:07.50
+	Maximum resident set size (kbytes): 3588628
+wrote results/s8_starcover/definition.md  (s8: 10 vertices, 1287000 facets of K x K)
+wrote results/s8_starcover/certificate.md: 3 domains, 1287000 facets, chain lengths [2, 2, 2]
+     
+    4096 .
+    4096 ..
+    144325608 certificate.md
+    152042170 cover.txt
+    3034 definition.md
+    2480 planners.txt
+    18195617 summary.json
+=== RUN_STARCOVERS DONE 2026-09-19T00:18:17Z ===

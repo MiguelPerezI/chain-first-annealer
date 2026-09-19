@@ -1,0 +1,13 @@
+### s3_k2_A: --cmax 40 --ptrack 0.3 --guide 0 --seed 21
+best coverage 460/500  domain sizes [284, 265]  time 382.7s  kernel 381.8s  moves 2.46e+08
+NOT a covering: 40 facets uncovered
+### s3_k2_B: --cmax 40 --ptrack 0.3 --guide 1.0 --seed 22
+best coverage 460/500  domain sizes [203, 296]  time 380.9s  kernel 380.1s  moves 2.46e+08
+NOT a covering: 40 facets uncovered
+### s3_k2_C: --cmax 80 --ptrack 0.3 --guide 1.0 --T1 0.1 --seed 23
+best coverage 460/500  domain sizes [284, 216]  time 315.2s  kernel 314.1s  moves 1.64e+08
+NOT a covering: 40 facets uncovered
+### s3_k2_D: --cmax 40 --ptrack 0.3 --guide 1.0 --seed 24 --init results/s3_k3_run1/summary.json
+best coverage 460/500  domain sizes [275, 212]  time 382.1s  kernel 381.3s  moves 2.46e+08
+NOT a covering: 40 facets uncovered
+### all done
