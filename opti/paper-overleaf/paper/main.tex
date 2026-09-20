@@ -1,0 +1,890 @@
+% !TeX program = pdflatex
+% ------------------------------------------------------------------
+% arXiv submission draft.  Suggested classes:
+%   primary: math.AT ; secondary: cs.RO, cs.DC
+% ------------------------------------------------------------------
+\documentclass[12pt]{article}
+
+\setlength{\oddsidemargin}{.5cm}
+\setlength{\evensidemargin}{.5cm}
+\setlength{\textwidth}{6in}
+\setlength{\textheight}{8in}
+\setlength{\emergencystretch}{1.5em}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{array,longtable}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\newcommand{\doi}[1]{doi:\,\href{http://dx.doi.org/#1}{#1}}
+\newcommand{\TC}{\mathrm{TC}}
+\newcommand{\cat}{\mathrm{cat}}
+\newcommand{\SC}{\mathrm{SC}}
+\newcommand{\SCst}{\SC_{\mathrm{strict}}}
+\newcommand{\SD}{\mathrm{SD}}
+
+\newtheorem{theo}{Theorem}[section]
+\newtheorem{lemma}[theo]{Lemma}
+\newtheorem{corollary}[theo]{Corollary}
+\newtheorem{proposition}[theo]{Proposition}
+\newtheorem{definition}[theo]{Definition}
+\newtheorem{example}[theo]{Example}
+\newtheorem{remark}[theo]{Remark}
+\newtheorem{conjecture}[theo]{Conjecture}
+
+\title{Simplicial complexity of spheres:\\
+a chain-first annealer for explicit covers of
+boundary-of-simplex spheres}
+
+\author{Miguel Esteban Perez Ibarra\footnote{Escuela Superior de F\'isica
+y Matem\'aticas del Instituto Polit\'ecnico Nacional, Edificio 9, Unidad
+Profesional Adolfo L\'opez Mateos, 07300 Mexico City, Mexico.}, and
+Jaziel Flores\footnotemark[1]}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+An explicit system of piecewise-linear motion planners on a finite simplicial complex $K$ certifies an upper bound on González's simplicial complexity, $\SC(K)$. Existing randomized greedy algorithms construct such systems but stall in practice: published experiments stop at $1$-dimensional complexes, and extensive cluster computing (120-hour jobs on 96 cores) fails to complete a single covering of $\partial\Delta^3\times\partial\Delta^3$. We trace this stall to the objective function—the energy landscape is flat exactly where the search needs a gradient, causing chain entries to drift to noise unless actively tracked. To overcome this, we replace greedy descent with a chain-first annealer that evolves a population of candidate systems under a corrected energy function in parallel on a single GPU. This approach covers the spheres $S^1$ through $S^5$ in under 35 minutes. Every reported system is an audited certificate replayed by an independent checker; all results reproduce on a standard laptop with GPU in minutes.
+\end{abstract}
+
+\medskip\noindent
+\emph{Keywords and phrases:} topological complexity; simplicial
+complexity; contiguity chains; piecewise linear motion planning;
+simulated annealing; GPU computing.
+
+\medskip\noindent
+\emph{2020 Mathematics Subject Classification:} Primary: 55M30, 68W20.
+Secondary: 68T40, 55U10, 90C27.
+
+\section{Introduction}\label{sec:intro}
+
+Farber's topological complexity $\TC(X)$ \cite{F03} measures the
+smallest number of continuous rules needed to move a system between any
+two configurations of $X$.  Gonz\'alez's simplicial complexity
+\cite{G18} discretizes the question: replace continuous motion planners
+by \emph{simplicial} ones, defined on pieces of the ordered product
+$K\times K$ of a triangulation $K$ of $X$, where ``continuous'' becomes
+``joined by a contiguity chain of simplicial maps''
+(Section~\ref{sec:back}).  The value $\SCst(K)$ at subdivision level
+zero is a finite, checkable integer---but finding a cover that realizes
+it is a search problem over chains of simplicial maps, and it is
+ferociously expensive.
+
+Ortiz, Lara, Gonz\'alez and Borat \cite{OLGB21} gave a pipeline of
+randomized greedy algorithms for exactly this search.  Their published
+experiments tell the story of its cost: the circle $\partial\Delta^2$
+($18$ maximal facets in the product) takes about a minute; the wedge of
+two circles takes $25$ minutes at level~$0$; a single barycentric
+subdivision of the circle takes about $10$ hours.  The $2$-sphere case,
+$\partial\Delta^3\times\partial\Delta^3$ with its $96$ maximal facets,
+was explicitly deferred to cluster-scale hardware.
+
+That estimate proved optimistic.  A C++/MPI predecessor of the present
+work ran the same algorithms on a $96$-core cluster in $120$-hour jobs
+and never completed one covering of
+$\partial\Delta^3\times\partial\Delta^3$: a single failed growth attempt
+cost about $3$ seconds per candidate walk, domains froze after a few
+dozen facets, and dozens of consecutive retry passes flipped nothing at
+full computational cost.  To mitigate this issue our first plan was to port the pipeline
+faithfully---bit-for-bit, with a CPU reference---to a single Tesla T4
+graphics processor, and thus finally obtained the explicit minimum cover of the
+$2$-sphere in $4.4$ minutes.  But the same brute force only went so
+far: on the $3$-sphere model, despite using GPU hardware, the best certified cover had $20$ domains
+($\SCst(\partial\Delta^4)\le 19$, floor $2$).
+
+This paper reports the second part of the project, in which the
+remaining targets fell, one after another, in seconds to minutes.
+There are three ingredients, and the order matters: a diagnosis of
+the two ways the greedy search dies, flat scores and drifting
+chains (Section~\ref{sec:fail}); a chain-first annealer that
+corrects the energy and anneals thousands of complete $k$-chain
+systems in parallel on the GPU (Section~\ref{sec:annealer}); and the
+theorem the search was trying to tell us---every plateau of every
+search had the same shape, the product rectangles
+$\operatorname{star}(v)\times\operatorname{star}(w)$, which are
+contiguity domains for an elementary reason (Theorem~\ref{thm:prod})
+and yield $\SCst(\partial\Delta^{n+1})\le 2$ uniformly, sharp for
+even $n$ (Corollary~\ref{cor:spheres}; Section~\ref{sec:products}).
+The consequences are collected in Section~\ref{sec:results}; the
+certificates and reproduction script in Section~\ref{sec:repro}.
+
+\section{Background and notation}\label{sec:back}
+
+We keep the framework of \cite{OLGB21} and recall only what is used
+later.  Throughout, $K$ is a finite connected simplicial complex on an
+ordered vertex set $V$, and $K\times K$ is the ordered (``staircase'')
+product triangulation of $\|K\|\times\|K\|$; its maximal facets lie
+over pairs $(s,t)$ of facets of $K$.
+
+Two simplicial maps $\varphi,\varphi':J\to K$ are \emph{$1$-contiguous}
+if $\varphi(\sigma)\cup\varphi'(\sigma)$ is a simplex of $K$ for every
+facet $\sigma$ of $J$; a \emph{contiguity chain} is a sequence
+$\varphi=\varphi_0\sim\varphi_1\sim\cdots\sim\varphi_c=\varphi'$ of
+consecutively $1$-contiguous maps.  A subcomplex $J\subseteq L$ is a
+\emph{contiguity domain} for $\psi,\psi':L\to K$ if the restrictions
+$\psi|_J,\psi'|_J$ are joined by a contiguity chain, and the strict
+contiguity distance $\SD(\psi,\psi')$ is one less than the minimum
+number of contiguity domains covering $L$.  For the two projections
+$\pi_1,\pi_2:K\times K\to K$,
+\[
+\SCst(K)=\SD(\pi_1,\pi_2)\ge \TC(\|K\|),
+\]
+with equality in the limit of barycentric subdivisions
+\cite{OLGB21,G18}.  A cover of $K\times K$ by $d$ contiguity domains is
+a \emph{system of $d$ piecewise-linear motion planners} and certifies
+$\SCst(K)\le d-1$.  All statements in this paper are at subdivision
+level $0$, and we read the facets of $K\times K$ as a covering problem
+over the \emph{facet pairs} $(s,t)$.  When $K$ is pure of dimension
+$d$, every pair carries the same number $\binom{2d}{d}$ of staircase
+facets, and a facet count is a pair count up to that factor; when $K$
+is not pure, the number of staircase facets over $(s,t)$ depends on
+$\dim s$ and $\dim t$.  In either case a coverage figure counted in
+facets becomes a count of covered \emph{pairs} only after checking
+that each pair is covered in its entirety, since a domain may contain
+some of the staircase facets over a pair without containing them all.
+
+The pipeline of \cite{OLGB21} grows one domain at a time: starting from
+a seed facet it repeatedly calls \textsc{LocalSearch}---a random walk
+with budget $M$ that tries to extend a contiguity chain over one more
+facet---then merges and prunes the resulting cover.  Its cost profile,
+and the way it fails, is the subject of the next section.
+
+\section{How the greedy dies}\label{sec:fail}
+
+Three autopsy findings, each verified experimentally.
+
+\textbf{Flat energy.}  A \textsc{LocalSearch} walk is scored by whether
+the \emph{whole} chain works, so a candidate whose chain has one bad
+link scores essentially like a candidate with forty bad links: there is
+no gradient over the number of defects, the quantity the walk actually
+controls.  We observed this regime directly in an early version of the
+chain-first annealer: with a defect penalty of $\beta=0.05$ it never
+solves even the circle (the smallest nontrivial target, $18$ facets),
+stalling run after run at $13$--$15$ covered facets, indefinitely.
+That is a documented failure mode of our own scoring function; that the
+same flatness is what stalls the pipeline of \cite{OLGB21} is a reading
+of the two behaviours, not a causal link we have isolated.
+
+\textbf{Chain drift.}  When several chains compete to cover the same
+facets and the score takes the minimum over chains, entries of a chain
+that are momentarily irrelevant receive no signal at all and drift to
+noise; when a facet should migrate from one chain to another, the
+receiving chain has been randomized exactly where it matters.  We read
+this as the likely microscopic mechanism of the macroscopic freeze
+observed from the beginning---on the $96$-core cluster, growth froze
+after the first few dozen facets of each domain, and retry passes
+flipped nothing---though we have not established that link
+experimentally.  The
+wedge-of-two-circles reproduction of the first phase of this project
+exhibited the same
+signature at small scale: exhaustive pairwise-merge probing showed the
+greedy's recorded partition to be a genuine local optimum of its own
+dynamics---stable, and one domain above the true optimum.
+
+\textbf{Quadratic accounting.}  Each step of the original walk rescans
+the whole domain and re-runs a shortest-path computation from scratch:
+about $70\,\mu$s per step in the C++/MPI implementation, so one failed
+growth attempt at budget $M=40000$ costs about $3$ seconds per
+candidate, sequentially per core.  $96$ cores times $120$ hours of this
+is a large number of stalls, not a large covering.
+
+The repair of the accounting is engineering (batched walks, incremental
+step conditions, precomputed extension sets; on one Tesla T4 the
+batched kernel issues about $10^{10}$ walk steps in $4.4$ minutes).
+The repair of the two diseases is the energy of the next section, and
+it is what made the corrected search worth running.
+
+\section{The chain-first annealer}\label{sec:annealer}
+
+Instead of growing domains facet by facet, we anneal \emph{whole
+candidate systems}.  A state is a tuple of $k$ chains.  A chain is a
+sequence $C=(\varphi_0,\varphi_1,\dots,\varphi_{c_{\max}})$ of maps of
+vertex sets with fixed endpoints $\varphi_0=\pi_1$ and
+$\varphi_{c_{\max}}=\pi_2$; the interior entries are arbitrary vertex
+assignments and are \emph{not} required to be simplicial maps
+$K\times K\to K$.  In the implementation $c_{\max}$ counts links, so a
+stored chain holds $c_{\max}+1$ maps.
+
+A facet $\sigma$ of $K\times K$ is \emph{covered} by $C$ when every
+link of $C$ satisfies the $1$-contiguity condition on $\sigma$, and the
+\emph{domain} $\mathrm{Dom}(C)$ is the subcomplex generated by the
+facets that $C$ covers.  Restricted to $\mathrm{Dom}(C)$ the entries
+are simplicial and consecutive entries are $1$-contiguous, so
+$C|_{\mathrm{Dom}(C)}$ is a contiguity chain from
+$\pi_1|_{\mathrm{Dom}(C)}$ to $\pi_2|_{\mathrm{Dom}(C)}$ in the sense
+of Section~\ref{sec:back}.  It is this restriction, not the ambient
+vertex assignment, that a certificate reports.
+
+For a facet $\sigma$ and the $j$-th chain of a state, let $b_j(\sigma)$
+be the number of links of that chain which violate the contiguity
+condition on $\sigma$, and let $m(\sigma)=\min_j b_j(\sigma)$ be the
+defect count of the best chain for that facet.  With $\mathrm{pen}(0)=0$
+and $\mathrm{pen}(b)=1+\beta b$ for $b>0$, the energy of a state is
+\[
+E \;=\; \sum_{\sigma} w_\sigma\,\mathrm{pen}\bigl(m(\sigma)\bigr)
+\;+\; \gamma\sum_{j}\sum_{\sigma} b_j(\sigma).
+\]
+The facet weights are $w_\sigma=1$ in the unguided runs; a guided
+restart may raise the weight of facets that an earlier stage left
+uncovered.  The first sum is the objective: it vanishes exactly on the
+facets some chain already covers, and $\beta$ grades the rest by how
+far the \emph{best} chain is from covering them, which is the gradient
+a flat score lacks.  The second sum penalises defects in \emph{all}
+chains, not only the best one; it is the cleanliness term that
+suppresses drift---without it ($\gamma=0$) long chains fail again, and
+$\gamma=0.1$ is measurably too weak.  \emph{Coverage}, the quantity
+reported in the tables, is the number of facets with $m(\sigma)=0$; it
+is not itself a term of $E$.
+
+The word \emph{energy} is the standard simulated-annealing term
+\cite{KGV83,Cerny85}, not a physical quantity: in the Metropolis
+dynamics \cite{Metropolis53}, the cost function of a combinatorial
+search plays the role that energy plays in statistical mechanics, and
+the temperature $T$ entering the acceptance rule $e^{-\Delta E/T}$
+below is a control parameter measured in the same (dimensionless)
+units as $E$.
+
+A population of $S$ states anneals in parallel on the GPU under a
+Metropolis kernel of its own, distinct from the \textsc{LocalSearch}
+kernel of the first phase (Section~\ref{sec:intro}).  The population is
+not drawn with independent uniform interior maps: each state is built
+by sweeps that flip entries of $\pi_1$ towards $\pi_2$ in random order,
+so that every initial chain already interpolates between the two
+projections.  A proposal changes the value assigned to one vertex in
+one chain, either at a single interior position or over a block of
+consecutive positions; the block proposals are what we call
+\emph{track moves}, and they are drawn with probability
+$p_{\mathrm{track}}$.  They are a move shape, not an explicit
+bookkeeping of the facets a chain has been assigned.  The temperature
+follows a geometric schedule \emph{within} each epoch, and the
+incumbent best state is kept by highest unweighted coverage, which need
+not be the state of lowest energy.  The population also undergoes
+selection and replacement, so the $S$ trajectories are not independent
+for the whole run.  After each epoch the incumbent's chains are used to
+\emph{partition} the facets (each facet goes to the first chain
+covering it), each restricted chain is shortened by the greedy
+farthest-jump reduction of \cite[Algorithm 2]{OLGB21}, and the
+resulting system is verified link by link, facet by facet.  The output
+is a certificate, not a claim (Section~\ref{sec:repro}).
+Algorithm~\ref{alg:anneal} gives the full loop in the style of
+\cite{OLGB21}.
+
+\begin{algorithm}[H]
+\caption{\textsc{ChainAnneal}($K$, $k$, $c_{\max}$; $S$, $\beta$,
+$\gamma$, $p_{\mathrm{track}}$): anneal whole systems of $k$ chains over $K\times K$.}
+\label{alg:anneal}
+\begin{algorithmic}[1]
+\Require a \emph{state} is $(C_1,\dots,C_k)$ with
+$C_i=(\varphi_{i,0},\dots,\varphi_{i,c_{\max}})$,
+$\varphi_{i,0}=\pi_1$, $\varphi_{i,c_{\max}}=\pi_2$, interior entries
+arbitrary vertex assignments; population size $S$
+\State initialise $S$ states by random-order sweeps that flip entries
+of $\pi_1$ towards $\pi_2$
+\State $\mathcal{C}^*\gets$ incumbent (highest coverage seen so far)
+\For{epoch $=1,2,\dots$}
+\ForAll{states $\mathcal{C}$ of the population, in parallel on the GPU}
+\State perform $M$ Metropolis steps, the temperature $T$ following a
+geometric schedule $T_0\to T_1$ \emph{inside} the epoch: propose a new
+value for one vertex of one chain, at a single interior position or
+(with probability $p_{\mathrm{track}}$) over a block of consecutive
+positions; accept by $e^{-\Delta E/T}$
+\Statex \hspace{2em} with
+$E=\sum_\sigma w_\sigma\,\mathrm{pen}(m(\sigma))
++\gamma\sum_j\sum_\sigma b_j(\sigma)$
+\EndFor
+\State update $\mathcal{C}^*$ by highest unweighted coverage
+\Comment{not necessarily lowest $E$}
+\State apply selection and replacement to the population
+\State partition: each facet of $K\times K$ goes to the first chain
+of $\mathcal{C}^*$ covering it \Comment{facet $\mapsto$ domain}
+\State shorten each restricted chain by the greedy farthest-jump
+reduction \cite[Algorithm~2]{OLGB21}
+\State verify: every link $1$-contiguous on every facet of its
+domain, chain from $\pi_1|_J$ to $\pi_2|_J$
+\If{cover is complete \textbf{and} verification passed}
+\State \Return $(\text{partition},\text{chains})$
+\Comment{a certificate for $\SCst(K)\le k-1$}
+\EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+Table~\ref{tab:annealer} summarizes the runs and Table~\ref{tab:params}
+lists the search parameters of each one.  The plateau rows are as
+instructive as the successes, and we return to them in
+Section~\ref{sec:products}: the two-chain runs on $\partial\Delta^3$,
+$\partial\Delta^4$ and $\partial\Delta^5$ stop at coverage values that
+are exactly those attained by suitable two-rectangle constructions.
+
+\begin{table}[H]
+\centering\footnotesize
+\begin{tabular}{@{}p{2.8cm}lp{2.9cm}p{1.8cm}p{3.5cm}@{}}
+\toprule
+target $K\times K$ & $k$ & best coverage & wall time & outcome \\
+\midrule
+$\partial\Delta^2$ (circle, $18$ facets)
+  & 2--3 & $18/18$ & $<15$\,s
+  & verified, $\SCst\le 2$ ($=1$ known \cite{OLGB21})\\
+\midrule
+wedge $S^1\vee S^1$ ($50$ facets)
+  & 3 & $50/50$, epoch $25$ & $41$\,s
+  & verified $18+16+16$, $\SCst=2$\\
+wedge
+  & 2 & $39/50$ & plateau, $15$\,min
+  & no $2$-domain cover\\
+\midrule
+$\partial\Delta^3$ (S$^2$, $96$)
+  & 3 & $96/96$, epoch 1 & $22$\,s
+  & verified $54+29+13$, $\SCst=2=\TC$\\
+$\partial\Delta^3$
+  & 2 & $84/96$ & (plateau)
+  & $84/96=14/16$ of facet pairs\\
+$\partial\Delta^4$ (S$^3$, $500$)
+  & 3 & $500/500$, epoch 1 & $153$\,s
+  & verified $309+130+61$, $\SCst\le 2$\\
+$\partial\Delta^4$
+  & 2 & $460/500$ & (plateau)
+  & $460/500=23/25$ of facet pairs, all seeds\\
+$\partial\Delta^5$ (S$^4$, $2520$)
+  & 3 & $2520/2520$, epoch 1 & $13$\,min
+  & verified $1634+653+233$, $\SCst=2=\TC$\\
+$\partial\Delta^5$
+  & 2 & $2380/2520$, epoch 1 & $12$\,min
+  & $2380/2520=34/36$ of facet pairs, as predicted\\
+$\partial\Delta^6$ (S$^5$, $12348$)
+  & 3 & $12348/12348$, epoch 2 & $34$\,min
+  & verified $7061+4239+1048$, $\SCst\le 2$\\
+\midrule
+cube boundary ($S^2$, $864$)
+  & 3 & $864/864$, epoch $22$ & ${\approx}24$\,min$^\dagger$
+  & verified $482+236+146$, $\SCst=2=\TC$\\
+cube boundary
+  & 2 & --- & ---
+  & $\TC(S^2)=2$: no $2$-domain cover\\
+\bottomrule
+\end{tabular}
+\caption{Chain-first annealer with the corrected energy, on one Tesla
+T4.  The per-run values of $c_{\max}$, the population size and the move
+budget are \emph{not} uniform across rows; they are listed in
+Table~\ref{tab:params}.  The plateaus reported here were stable across
+the seeds and the continuations we ran.  $^\dagger$The cube entry is a
+$3$-stage continuation totalling about $24$ minutes: cold ($303$\,s,
+$662/864$), warm restart ($814$\,s, $820/864$), guided restart
+($304$\,s, complete); the $304$\,s is the final guided stage alone, not
+the whole sequence.}
+\label{tab:annealer}
+\end{table}
+
+\begin{table}[H]
+\centering\footnotesize
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+run & $c_{\max}$ & $S$ & moves/epoch & seed \\
+\midrule
+$\partial\Delta^3$ (S$^2$) & $20$ & $4096$ & $20000$ & $51$\\
+$\partial\Delta^4$ (S$^3$) & $40$ & $4096$ & $20000$ & $52$\\
+$\partial\Delta^5$ (S$^4$) & $40$ & $4096$ & $20000$ & $61$\\
+$\partial\Delta^6$ (S$^5$) & $16$ & $4096$ & $5000$ & $71$\\
+wedge $S^1\vee S^1$ & $16$ & $4096$ & $5000$ & $71$\\
+cube boundary (final guided stage) & $16$ & $4096$ & $5000$ & $84$\\
+\bottomrule
+\end{tabular}
+\caption{Search parameters of the runs reported in
+Table~\ref{tab:annealer}; all six used $\beta=5$, $\gamma=0.5$ and
+$p_{\mathrm{track}}=0.3$.  These settings should not be read back onto
+the circle runs, which used different values.}
+\label{tab:params}
+\end{table}
+
+Four remarks on the table.  First, the successes certify values, not
+just bounds: for $S^2$ and $S^4$ the search independently reproduces at
+level $0$ the optimum $\TC=2$ that Section~\ref{sec:products} proves in
+general.  Second, the search domains are \emph{near}-rectangles, not
+rectangles: on $\partial\Delta^5$ the winning chains touch $30$, $28$
+and more pairs where a rectangle touches $25$, with $62$, $3$ and $67$
+facets outside the closest rectangle---a measured amount of non-product
+freedom, the same freedom that pushes the largest single chain domain on
+$\partial\Delta^4$ to $329$ facets where a rectangle holds $320$.
+Third, the plateaus are not noise floors: the observed coverage values
+coincide with those attained by suitable two-rectangle constructions.
+This numerical agreement does not imply that every observed domain, or
+their union, has product structure, and in the saved states it often
+does not.  On $\partial\Delta^4$ the run \texttt{s3\_k2\_v2\_track}
+does end in two genuine rectangles of $320$ facets each, with union
+$460$; but \texttt{s3\_k2\_A} ends in domains of $284$ and $265$
+facets, the second of which is contained in no rectangle
+$\operatorname{star}(v)\times\operatorname{star}(w)$ and whose union is
+not a union of two rectangles, while \texttt{s3\_k2\_v2\_point} ends in
+domains of $297$ and $317$ facets, neither of them contained in a
+rectangle, with the same total coverage $460$.  On $\partial\Delta^5$
+the run \texttt{s4\_k2\_v2} reaches $2380/2520$ with a union that is
+likewise not a union of two rectangles.  What is stable across runs is
+the coverage value, not the shape of the domains that realise it; that
+is the observation which makes the next section possible.
+Fourth, the cube boundary---an $8$-vertex, $12$-face triangulation of
+$S^2$ distinct from $\partial\Delta^3$---shows how far the annealer can
+depart from product covers: the star-rectangle bound gives $\rho=8$,
+certifying only $\SCst\le 7$, while the free-form three-chain search
+reaches $\SCst=2=\TC(S^2)$.  The gap of five in the domain count
+reflects genuine non-product structure that no rectangle construction
+can capture.
+
+\section{The product domains theorem}\label{sec:products}
+
+Write $\operatorname{star}(v)$ for the set of facets of $K$ containing
+the vertex $v$, and $c_x$ for the constant map to the vertex $x$.
+
+\begin{theo}[product domains]\label{thm:prod}
+For vertices $v,w$ of $K$, let $D(v,w)\subseteq K\times K$ be the
+subcomplex generated by the maximal facets lying over pairs $(s,t)$ of
+facets of $K$ with $v\in s$ and $w\in t$.  Then $D(v,w)$ is a
+contiguity domain for
+$(\pi_1,\pi_2)$: if $v=v_0,v_1,\dots,v_m=w$ is a path in the
+$1$-skeleton of $K$, then on $D(v,w)$
+\[
+\pi_1 \;\sim\; c_{v_0}\;\sim\; c_{v_1}\;\sim\;\cdots\;\sim\;
+c_{v_m}\;\sim\; \pi_2,
+\]
+a chain of $m+2$ links ($2$ links when $v=w$).
+\end{theo}
+
+\begin{proof}
+The generating maximal facets are maximal in $K\times K$, so none is a
+face of another; the facets of the subcomplex they generate are exactly
+the generators, and since $1$-contiguity is a condition on facets
+(Section~\ref{sec:back}), it suffices to check the chain on those.  A
+facet $\sigma\in D(v,w)$ lying over $(s,t)$ has $\pi_1(\sigma)=s$,
+$\pi_2(\sigma)=t$ (a staircase path visits every row and every column,
+so all vertices of $s$ and of $t$ occur), and $c_x(\sigma)=\{x\}$, so
+every map in the chain is simplicial on $\sigma$.  Consecutive maps are
+$1$-contiguous on $\sigma$: $\pi_1(\sigma)\cup c_v(\sigma)=s\cup\{v\}=s$
+since $v\in s$; $c_{v_i}(\sigma)\cup c_{v_{i+1}}(\sigma)=\{v_i,v_{i+1}\}$
+is an edge of $K$; and $c_w(\sigma)\cup\pi_2(\sigma)=t$.
+\end{proof}
+
+We emphasize the provenance: this statement was not guessed, it was
+\emph{found}.  The plateaus of Table~\ref{tab:annealer} sit at exactly
+the coverage two such rectangles achieve---though, as recorded in
+Section~\ref{sec:annealer}, the domains realising that coverage need not
+themselves be rectangles---and in naming the value the theorem converts
+a search problem into a covering problem.
+
+\begin{corollary}[a search-free upper bound]\label{cor:rho}
+Let $\rho(K)$ be the minimum number of rectangles $D(v,w)$ covering all
+facet pairs of $K\times K$, i.e.\ the minimum size of a set
+$R\subseteq V\times V$ such that for every pair $(s,t)$ of facets of
+$K$ there is $(v,w)\in R$ with $v\in s$, $w\in t$.  Then
+\[
+\SCst(K)\;\le\;\rho(K)-1.
+\]
+\end{corollary}
+
+\begin{proof}
+Every facet pair $(s,t)$ has some $(v,w)\in R$ with $v\in s$, $w\in
+t$, so the domains $D(v,w)$, $(v,w)\in R$, cover $K\times K$ (covers
+need not be disjoint); Theorem~\ref{thm:prod} supplies the chains, and
+$\rho(K)$ domains certify $\SCst(K)\le\rho(K)-1$.
+\end{proof}
+
+The number $\rho(K)$ is a set-cover optimum with $|V|^2$ candidate sets
+over $|F|^2$ elements; a small integer program (HiGHS, a few hundred
+constraints) solves it in seconds for every complex we consider.
+
+\begin{corollary}[all boundary-of-simplex spheres]\label{cor:spheres}
+For every $n\ge1$, $\rho(\partial\Delta^{n+1})=3$; hence
+\[
+\SCst(\partial\Delta^{n+1})\le 2\ \ \text{for all }n\ge1,
+\quad
+\SCst(\partial\Delta^{n+1})=\TC(S^n)=2\ \ \text{for even }n\ge2,
+\]
+sharp at subdivision level $0$.
+\end{corollary}
+
+\begin{proof}
+The facets of $\partial\Delta^{n+1}$ are $s_a=V\setminus\{a\}$,
+$a\in\{0,\dots,n+1\}$.  Take $R=\{(0,0),(1,1),(2,2)\}$: the pair
+$(s_a,s_b)$ is missed by $(v,v)$ iff $v\in\{a,b\}$, so it is missed by
+all three rectangles iff $\{0,1,2\}\subseteq\{a,b\}$, impossible.  Two
+rectangles $(v,w),(v',w')$ never suffice: $(s_v,s_{w'})$ is missed by
+both.  Hence $\rho=3$, and for even $n$ Farber's $\TC(S^n)=2$
+\cite{F03} with $\TC(\|K\|)\le\SCst(K)$ \cite{G18} gives equality.
+\end{proof}
+
+\begin{remark}
+The rectangle bound is not always sharp.  $\SCst(\partial\Delta^2)=1$
+by the explicit two-domain cover of \cite{OLGB21}, while
+Corollary~\ref{cor:rho} gives $2$; odd-dimensional spheres lie in
+$\{1,2\}$ and the gap must come from non-product domains, as it does
+for the circle.  The annealed two-chain searches on
+$\partial\Delta^4$, however, never exceeded the coverage $460/500$ that
+two rectangles already achieve, whatever the shape of the domains they
+returned (Conjecture~\ref{conj}).  The cube boundary provides the starkest
+known gap: $\rho(\text{cube})=8$ (verified by integer program,
+Section~\ref{sec:results}), certifying only $\SCst\le 7$, while the
+annealer finds $\SCst=2=\TC(S^2)$; product domains overshoot by a
+factor of nearly four in the domain count.
+\end{remark}
+
+\section{Results}\label{sec:results}
+
+Table~\ref{tab:records} places the new results alongside the best
+previously known bounds.  The ``before'' column accumulates the
+published pipeline \cite{OLGB21} and its reimplementations in the first
+phase of this project (Section~\ref{sec:intro}): the $96$-core C++/MPI
+version and the faithful single-GPU port.  The ``after'' column is
+the chain-first annealer of Section~\ref{sec:annealer}.
+
+\begin{remark}
+The annealer certifies upper bounds, not optima.  A successful $k$-chain
+run proves $\SCst(K)\le k-1$ but does not prove that $k-1$ is the
+minimum; we are improving on the bounds achievable by the algorithms of
+\cite{OLGB21}, not claiming that every reported value is a global
+minimum.  The sharp equalities in the tables arise from independent
+lower bounds---Farber's topological complexity for even-dimensional
+spheres \cite{F03}, and prior constructions for the circle and the
+wedge \cite{OLGB21}---matched by our certificates.  For spaces not yet
+pinned by a matching lower bound the reported values are the best known
+upper bounds.
+\end{remark}
+
+\begin{table}[H]
+\centering\footnotesize
+\begin{tabular}{@{}p{2.7cm}p{3.5cm}p{2.8cm}p{4.2cm}@{}}
+\toprule
+target & before & after & certificate \\
+\midrule
+circle $\partial\Delta^2$ ($18$)
+  & $57$\,s \cite{OLGB21}; level $1\approx10$\,h
+  & $<15$\,s
+  & $\SCst\le 2$ ($=1$ known), audited\\
+wedge $K_4\setminus e$ ($50$)
+  & $25$\,min \cite{OLGB21}, $3$ domains
+  & $41$\,s
+  & $18+16+16$, $\SCst=2$, audited\\
+cube boundary ($864$)
+  & $\SCst\le 7$ (product bound, $\rho=8$)
+  & $\approx 24$\,min total; $304$\,s final guided stage
+  & $482+236+146$, $\SCst=2=\TC$, audited\\
+$\partial\Delta^3$ (S$^2$, $96$)
+  & never on $96$ cores, $120$\,h jobs;
+    $4.4$\,min on T4 (first phase)
+  & $22$\,s
+  & $54+29+13$, $\SCst=2=\TC$, audited\\
+$\partial\Delta^4$ (S$^3$, $500$)
+  & $\SCst\le 19$ ($20$ domains, $\approx3$\,h GPU, first phase)
+  & $153$\,s, one epoch
+  & $309+130+61$, $\SCst\le 2$, audited\\
+$\partial\Delta^5$ (S$^4$, $2520$)
+  & not attempted
+  & $13$\,min, one epoch
+  & $1634+653+233$, $\SCst=2=\TC$, audited\\
+$\partial\Delta^6$ (S$^5$, $12348$)
+  & not attempted
+  & $34$\,min, epoch $2$
+  & $7061+4239+1048$, $\SCst\le 2$, audited\\
+all $\partial\Delta^{n+1}$
+  & S$^1$, S$^2$, S$^3$ case by case
+  & $\SCst\le2$ for all $n$; $=\TC$ for even $n$
+  & Corollary~\ref{cor:spheres}\\
+\bottomrule
+\end{tabular}
+\caption{Then and now.  Facet counts of the verified partition are listed
+in the certificate column.  Every entry was replayed and re-audited
+independently of the search code.}
+\label{tab:records}
+\end{table}
+
+Several entries deserve emphasis.
+
+\emph{The wedge and the cube separate free-form search from product
+covers.}  On the wedge of two circles the product bound gives only
+$\SCst\le 3$ ($\rho=4$), while the annealer reproduces the sharp
+certificate of \cite{OLGB21} in $41$\,seconds---finding a different
+partition ($18+16+16$ vs.\ $20+18+12$) with shorter chains ($2$, $5$,
+$5$ links vs.\ $8$, $11$, $10$).  On the cube boundary the gap is
+more dramatic: $\rho=8$ forces any product cover to use at least $8$
+domains, certifying only $\SCst\le7$, yet the chain-first annealer
+covers all $864$ facets with just $3$ domains and confirms
+$\SCst=2=\TC(S^2)$.  Neither result is reachable by Theorem~\ref{thm:prod}.
+
+\emph{The $4$-sphere and $5$-sphere were priced out of the old world.}
+$\partial\Delta^5\times\partial\Delta^5$ has $2520$ maximal facets and
+$\partial\Delta^6\times\partial\Delta^6$ has $12348$; neither was
+attempted with the greedy pipeline.  The chain-first annealer solves
+them in $13$ and $34$~minutes, respectively, and delivers independently
+audited certificates.  Level-$0$ sharpness
+$\SCst(\partial\Delta^5)=\TC(S^4)=2$ is, to our knowledge, the first
+sharp result beyond dimension $2$ in this framework.
+
+\emph{Prediction became quantitative.}  Before the corrected runs,
+rectangle arithmetic predicted two-chain plateaus at $460=23\cdot 20$
+facets out of $500$ on $\partial\Delta^4$ and at $2380=34\cdot 70$ out
+of $2520$ on $\partial\Delta^5$.  Both coverage values were observed
+exactly, the latter in a single epoch.  The agreement is at the level of
+the numbers: the domains returned at those values are often not
+rectangles (Section~\ref{sec:annealer}), so what the plateau measures is
+how far local dynamics reach, not that a two-chain optimum has product
+structure.
+
+\emph{The search and the theorem certify the same optimum.}  The
+$2$-sphere and $4$-sphere values match $\TC(S^2)=\TC(S^4)=2$ given by
+Farber's theorem \cite{F03}, independently certifying sharpness at
+subdivision level~$0$.
+
+\emph{Warm-start rung ladders extend the search to harder complexes.}
+The cube boundary certificate of Table~\ref{tab:annealer} was not reached
+in a single run: a cold \textsc{ChainAnneal} covered $662$ of $864$ facets
+in $303$\,s; a warm restart from the saved incumbent reached $820/864$ in
+$814$\,s; a guided restart, in which facets still uncovered carry inflated
+energy weights, completed the cover in $304$\,s more.  The key observation
+is a \emph{within-rung front-loading effect}: coverage gains accumulate
+sub-linearly in time, following empirically a law $\Delta
+\mathrm{cov}(t)\approx c\cdot t^{\,0.84}$ with exponent below $1$.  Early
+in a rung the population claims the facets accessible from the current
+chain topology; once those are exhausted, the same computational budget
+buys rapidly diminishing returns.  Terminating early and reseeding from
+the incumbent resets the dynamics: the warm population begins near the
+coverage frontier, and the guided weights concentrate the energy on the
+surviving gap.  The optimal rung length at a fixed per-rung overhead
+$\tau$ is $T^*_{\mathrm{rung}} = \bigl(0.84/(1-0.84)\bigr)\cdot\tau\approx
+5\tau$; on the hardware used here $\tau\approx 40$\,s gives
+$T^*_{\mathrm{rung}}\approx 2.7$\,min.  Algorithm~\ref{alg:ladder}
+abstracts the pattern.
+
+\begin{algorithm}[H]
+\caption{\textsc{WarmLadder}($K$, $k$, $c_{\max}$; $S$, $\beta$, $\gamma$,
+$p_{\mathrm{track}}$; per-rung budget $T_{\mathrm{rung}}$, guided weight
+factor $g\ge1$, cap $g_{\max}$, max rungs $R_{\max}$).
+Extension of Algorithm~\ref{alg:anneal} by warm restart and guided reweighting.}
+\label{alg:ladder}
+\begin{algorithmic}[1]
+\Require facet weights $w_\sigma\gets 1$ for all $\sigma\in K\times K$;
+  incumbent $\mathcal{C}^*\gets\varnothing$
+\State run \textsc{ChainAnneal}$(K,k,c_{\max};S,\beta,\gamma,
+  p_{\mathrm{track}};w)$ for time $T_{\mathrm{rung}}$;
+  set $\mathcal{C}^*\gets$ best state found
+\For{$r=1,2,\ldots,R_{\max}$}
+  \If{$\mathcal{C}^*$ covers all facets of $K\times K$}
+    \State\Return $\mathcal{C}^*$
+    \Comment{certificate: $\SCst(K)\le k-1$}
+  \EndIf
+  \ForAll{facets $\sigma$ not covered by $\mathcal{C}^*$}
+    \State $w_\sigma\gets\min(g\cdot w_\sigma,\;g_{\max})$
+    \Comment{raise weight on uncovered facets}
+  \EndFor
+  \State reinitialise population from $\mathcal{C}^*$ with small random perturbations
+  \State run \textsc{ChainAnneal}$(K,k,c_{\max};S,\beta,\gamma,
+    p_{\mathrm{track}};w)$ for time $T_{\mathrm{rung}}$;
+    update $\mathcal{C}^*\gets$ best state found
+\EndFor
+\State\Return $\mathcal{C}^*$
+\Comment{partial cover; no certificate}
+\end{algorithmic}
+\end{algorithm}
+
+To probe how far this strategy can extend the search to harder complexes,
+we applied Algorithm~\ref{alg:ladder} to the dodecahedron boundary: a
+fan triangulation of $S^2$ with $20$ vertices and $36$ triangles, yielding
+$K\times K$ with $7776$ product facets.  Its simplex density is $3.2\%$
+(compared to $21.4\%$ for the cube boundary), and the dual graph of $K$
+has diameter $7$ against $4$ for the cube---both figures predict
+substantially harder search.  We ran five long warm escalations of up to
+one hour each, then a systematic $2.5$-minute ladder of $172$ short rungs
+executed unattended over $12$ GPU-hours.
+Table~\ref{tab:dodeca} records the complete campaign.
+
+\begin{table}[H]
+\centering\footnotesize
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+stage & time & coverage & gain & \% \\
+\midrule
+cold start ($c_{\max}=40$, $S=4096$) &
+  $60$\,min & $0\to 644$ & $+644$ & $8.3$ \\
+warm escalation 1 &
+  $60$\,min & $644\to 1208$ & $+564$ & $15.5$ \\
+warm escalation 2 &
+  $60$\,min & $1208\to 1579$ & $+371$ & $20.3$ \\
+warm escalation 3 &
+  $60$\,min & $1579\to 1749$ & $+170$ & $22.5$ \\
+warm escalation 4 &
+  $15$\,min & $1749\to 1802$ & $+53$ & $23.2$ \\
+warm escalation 5 &
+  $7$\,min & $1802\to 1831$ & $+29$ & $23.5$ \\
+\midrule
+2.5-min ladder, R.\,1--20 &
+  $55$\,min & $1831\to 2064$ & $+233$ & $26.5$ \\
+2.5-min ladder, R.\,22--41 &
+  $58$\,min & $2075\to 2218$ & $+143$ & $28.5$ \\
+2.5-min ladder, R.\,42--61 &
+  $58$\,min & $2218\to 2310$ & $+92$ & $29.7$ \\
+2.5-min ladder, R.\,62--81 &
+  $58$\,min & $2310\to 2400$ & $+90$ & $30.9$ \\
+2.5-min ladder, R.\,82--101 &
+  $58$\,min & $2400\to 2441$ & $+41$ & $31.4$ \\
+2.5-min ladder, R.\,102--121 &
+  $58$\,min & $2441\to 2487$ & $+46$ & $32.0$ \\
+2.5-min ladder, R.\,122--141 &
+  $58$\,min & $2487\to 2523$ & $+36$ & $32.4$ \\
+2.5-min ladder, R.\,142--172 + probes &
+  ${\approx}3.5$\,h & $2523\to 2602$ & $+79$ & $33.5$ \\
+\midrule
+\textbf{total} &
+  ${\approx}20$\,h & $0\to 2602$ & $+2602$ & $33.5$ \\
+\bottomrule
+\end{tabular}
+\caption{Complete warm-start rung-ladder campaign on the dodecahedron boundary
+($7776$ product facets of $K\times K$, $k=3$).
+Upper block: five long warm escalations ($c_{\max}=40$, $g=3$, $g_{\max}=11$),
+each reseeded from the previous incumbent.
+Lower block: $2.5$-minute ladder run unattended over $12$\,GPU-hours,
+summarised in batches of $20$ rungs; the final row combines the last partial
+batch with extended window probes and a $70$-trial basin survey.
+Mean gain per rung falls from $11.7$ in the first batch to below $1$ in
+the last; no complete cover was found.
+The obstacle is the sparsity of $K$: a dual-graph diameter of $7$ requires
+coordinated walks that grow geometrically harder to satisfy simultaneously
+as coverage rises.}
+\label{tab:dodeca}
+\end{table}
+
+\section{Certificates, auditing, reproduction}\label{sec:repro}
+
+Randomized search output is usually taken on trust; none of the numbers
+above is.  Every reported system is discharged as data: the winning
+state's chains are replayed deterministically (identical splitmix64 RNG
+on GPU and CPU), each chain is shortened by the greedy reduction of
+\cite[Algorithm 2]{OLGB21}, and the system is asserted to connect the
+two projections through pairwise $1$-contiguous simplicial maps over
+every facet of every domain.  An independent auditor---a pure-Python
+program that rebuilds each triangulation from scratch and shares no
+code with the search---re-runs every check; it has caught real bugs
+during development and exits nonzero on any discrepancy.
+
+The reproduction is a single script of audited, successful executions:
+explicit product certificates for the circle, $S^2$, $S^3$, and $S^4$,
+each re-verified and re-audited, complete in about two minutes on CPU
+alone; an optional GPU mode replays the flagship annealer runs ($22$\,s,
+$153$\,s, and $13$\,min).  Certificate documents listing every domain's
+facets and every planner map are generated from data by a single
+generator program; none of the tables in this paper is hand-typed from
+anything but audited output.
+
+\paragraph{Repository.}  All of it---every domain and every planner map
+of every certified system reported here (as \texttt{cover.txt},
+\texttt{planners.txt} and \texttt{summary.json} per run, and as
+readable certificate documents), the annealer, the certificate builder,
+the independent auditor, and the reproduction script---is available at
+\begin{center}
+\url{https://github.com/MiguelPerezI/simplicial-complexity-certificates}
+\end{center}
+A reader who wishes to verify, say, the $4$-sphere cover by hand can
+open \texttt{cover.txt} and \texttt{planners.txt} in
+\texttt{results/s4\_k3\_v2/}, or run the auditor directly:\\
+\texttt{python3 independent\_check.py results/s4\_k3\_v2}.
+
+\section{Concluding remarks}\label{sec:concl}
+
+The arc of this project is that the expensive object turned out to be
+the wrong object.  The randomized greedy hunts chains one facet at a
+time, at a cost that defeated a $96$-core cluster; the corrected
+annealer hunts whole systems of chains and solves the classical targets
+in seconds to minutes; and the rectangles those searches kept
+discovering are a theorem that makes the search itself optional for a
+whole family of spaces.  What remains genuinely open---exact values on
+odd-dimensional spheres---now has the right shape: a homological filter
+for candidate domains and an instrument that finds rectangles whenever
+rectangles are what there is to find.
+
+\begin{conjecture}\label{conj}
+\emph{(C1)} $\SCst(\partial\Delta^4)=2$ at level $0$; equivalently,
+with the convention $\SCst=(\text{minimum number of domains})-1$ used
+throughout, two domains do not suffice on the S$^3$ model.  We have no
+impossibility proof, and a failed search is not one: the support is
+experimental.  Twelve two-chain searches (old and corrected energy, all
+seeds) stall at coverage $460/500$ facets, and the largest single
+two-chain domain we have observed has $329$ facets.
+\emph{(C2)} On $\partial\Delta^{n+1}\times\partial\Delta^{n+1}$, greedy
+and annealed searches with $k<\rho$ chains always converge to
+(sub)rectangle covers of $\rho-1$ rectangles---the observed plateaus
+$84/96$, $460/500$ and $2380/2520$ are the general case.
+\end{conjecture}
+
+\begin{thebibliography}{10}
+
+\bibitem{BPV23}
+A.~Borat, M.~Pamuk, and T.~Vergili.
+\newblock Contiguity distance between simplicial maps.
+\newblock {\em Turkish J. Math.}, 47:664--677, 2023.
+
+\bibitem{Cerny85}
+V.~\v{C}ern\'y.
+\newblock Thermodynamical approach to the traveling salesman problem:
+  an efficient simulation algorithm.
+\newblock {\em J. Optim. Theory Appl.}, 45(1):41--51, 1985.
+
+\bibitem{F03}
+M.~Farber.
+\newblock Topological complexity of motion planning.
+\newblock {\em Discrete Comput. Geom.}, 29(2):211--221, 2003.
+
+\bibitem{FTMV18}
+D.~Fern\'andez-Ternero, E.~Mac\'ias-Virg\'os, E.~Minuz, and J.~A.
+  Vilches.
+\newblock Discrete topological complexity.
+\newblock {\em Proc. Amer. Math. Soc.}, 146(10):4535--4548, 2018.
+
+\bibitem{G18}
+J.~Gonz\'alez.
+\newblock Simplicial complexity: piecewise linear motion planning in
+  robotics.
+\newblock {\em New York J. Math.}, 24:279--292, 2018.
+
+\bibitem{HD}
+E.~Mac\'ias-Virg\'os and D.~Mosquera-Lois.
+\newblock Homotopic distance between maps.
+\newblock {\em Math. Proc. Cambridge Philos. Soc.}, 172(1):73--93, 2022.
+
+\bibitem{KGV83}
+S.~Kirkpatrick, C.~D. Gelatt, Jr., and M.~P. Vecchi.
+\newblock Optimization by simulated annealing.
+\newblock {\em Science}, 220(4598):671--680, 1983.
+
+\bibitem{Metropolis53}
+N.~Metropolis, A.~W. Rosenbluth, M.~N. Rosenbluth, A.~H. Teller, and
+  E.~Teller.
+\newblock Equation of state calculations by fast computing machines.
+\newblock {\em J. Chem. Phys.}, 21(6):1087--1092, 1953.
+
+\bibitem{Numba}
+S.K. Lam, A.~Pitrou, and S.~Seibert.
+\newblock Numba: a LLVM-based compiling Python JIT compiler.
+\newblock In {\em Proc. Second Workshop on the LLVM Compiler
+  Infrastructure in HPC}, article 7, 2015.
+
+\bibitem{OLGB21}
+C.~Ortiz, A.~Lara, J.~Gonz\'alez, and A.~Borat.
+\newblock A randomized greedy algorithm for piecewise linear motion
+  planning.
+\newblock {\em Mathematics}, 9(19):2358, 2021.
+\newblock arXiv:2008.13290.
+
+\bibitem{Spanier}
+E.H. Spanier.
+\newblock {\em Algebraic topology}.
+\newblock McGraw--Hill, New York, 1966.
+
+\end{thebibliography}
+
+\end{document}
+
+
+

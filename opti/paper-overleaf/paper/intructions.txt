@@ -1,0 +1,29 @@
+
+I want to write a paper about my findings. Our only reference paper is 
+
+https://arxiv.org/html/1701.07612v1
+https://arxiv.org/html/2008.13290v2
+
+
+but mainly -> https://arxiv.org/html/2008.13290v2 which is the one where our work is improving on.
+
+currently I have a draft called main.tex but as you will find in ~/Downloads/opti we have already
+found a new method called chain first annealer which is what I want the article to mainly focus on,
+the results I want to show are found in:
+
+~/Documents/simplicial-complexity-certificates/results/chain-first-annealer/
+
+which can also be found in ~/Downloads/opti.
+
+Write the article to naturally introduce how chain first annealer improves greatly on the algorithms
+found in https://arxiv.org/html/2008.13290v2
+
+in ~/Downloads/opti you'll find info on starcover, but for now I dont want to introduce that result
+so strongly ommit any results regarding the starcover.
+
+In the article tell the read that the results from using the annealer can be fund in https://github.com/MiguelPerezI/simplicial-complexity-certificates.git
+
+main.tex already has info but i dont like how its currently written, it mentions results on the
+starcover, and it mentions the csaszar torus which I also want to ommit, rewrite it in a more professional
+way, focusing only on introducing the chain first annealer method, its corresponding theorems, 
+the algorithms, and the results, so the read can see the improvements.
