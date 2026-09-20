@@ -465,6 +465,17 @@ facets of one product `σ × τ` of two tetrahedra). Whether 460 is a theorem (`
 with the 3‑domain certificate above then optimal) or a search barrier is the open question this work leaves; the experiments of
 12.4 attack it with larger chains, track moves, adaptive weights and seeding from the 3‑domain certificate.
 
+> **Update (2026‑09‑19).** The plateau survived every attack. Every two‑chain search on record pins at exactly 460 with zero
+> top‑10 spread from the first epoch — now including the first ones ever given a *real* budget (69 epochs, 5.65 × 10⁹ moves,
+> corrected energy; the earlier runs were cut at 2–3 epochs by a 300 s limit). Two facts now sharpen what 460 *is*: it is **exactly
+> the best cover by 2 rectangles**, verified by exhaustive enumeration of all 300 rectangle pairs (`rect2_optimum.py`; the
+> same script reproduces 84/96 for S² and 2380/2520 for S⁴ the same way), and yet the plateau states are frequently *not*
+> rectangle covers at all — `s3_k2_v2_point` reached 460 with neither domain a product. Across seven recorded runs the
+> *union* is 460 while the domains' total size ranges 487–640 and their overlap 27–180: one ceiling, six shapes. The one
+> general proof tool this repo has, the H₁ obstruction, is vacuous on spheres (H₁(∂Δ⁴×∂Δ⁴) = 0), so C1 stays a conjecture
+> — but a much better evidenced one. Full campaign, including a constructive attack with verified single‑chain domains
+> (`fixed_domain_test.py`) and why the circle's two‑domain mechanism is 1‑dimensional and does not lift: `s3_k2_push_log.md`.
+
 ### 12.3 Where the chain‑first search fails: the circle
 
 On `∂Δ²`, `is_simplex(S) ⇔ |S| ≤ 2`, so an interior map may use only two of the three values on every facet and chains must
@@ -636,6 +647,11 @@ too weak; temperature, copy probability and epoch length are irrelevant. `γ = 0
 independent) and is the recommended default for constrained targets together with `β = 5`. The `s3_k2` conclusion of §12.4
 ("track moves did not help") was specific to S³ and should be re‑read in this light; the 460 plateau there also deserves a
 retry with the new energy.
+
+> *(That retry was run on 2026‑09‑19: 69 epochs at β 5 / γ 0.5, still exactly 460 in every epoch — see the update note in
+> §12.2 and `s3_k2_push_log.md`. It also uncovered an implementation detail worth knowing before escalating a guide: the
+> guided‑local‑search weight cap was hard‑coded at 4.0 while a persistently uncovered facet saturates at `1 + guide/0.3`,
+> so every `--guide` value from 1.0 upward produced identical weights. The cap is now `--guide-max` in `gpu_sc.py`.)*
 
 ## 15. Torus results with the corrected energy
 

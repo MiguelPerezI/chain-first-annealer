@@ -1,0 +1,51 @@
+resuming: initialised from results/dodeca_ladder/rung161/summary.json, starting at rung 162
+seeding state covers 2550 of 7776 facets
+=== rung 162  12:06:13Z  seed 252  from 2550 facets  -> results/dodeca_ladder/rung162 ===
+best coverage 2551/7776  domain sizes [1397, 1233, 436]  time 172.1s  kernel 166.8s  moves 1.02e+08
+NOT a covering: 5225 facets uncovered
+--- rung 162 done: 2550 -> 2551  (+1)
+=== rung 163  12:09:07Z  seed 253  from 2551 facets  -> results/dodeca_ladder/rung163 ===
+best coverage 2551/7776  domain sizes [1397, 1233, 436]  time 172.0s  kernel 166.7s  moves 1.02e+08
+NOT a covering: 5225 facets uncovered
+--- rung 163 done: 2551 -> 2551  (+0)
+=== rung 164  12:12:00Z  seed 254  from 2551 facets  -> results/dodeca_ladder/rung164 ===
+best coverage 2551/7776  domain sizes [1397, 1233, 436]  time 172.1s  kernel 166.7s  moves 1.02e+08
+NOT a covering: 5225 facets uncovered
+--- rung 164 done: 2551 -> 2551  (+0)
+=== rung 165  12:14:53Z  seed 255  from 2551 facets  -> results/dodeca_ladder/rung165 ===
+best coverage 2551/7776  domain sizes [1397, 1233, 436]  time 172.1s  kernel 166.8s  moves 1.02e+08
+NOT a covering: 5225 facets uncovered
+--- rung 165 done: 2551 -> 2551  (+0)
+=== rung 166  12:17:46Z  seed 256  from 2551 facets  -> results/dodeca_ladder/rung166 ===
+best coverage 2551/7776  domain sizes [1397, 1233, 436]  time 172.2s  kernel 166.9s  moves 1.02e+08
+NOT a covering: 5225 facets uncovered
+--- rung 166 done: 2551 -> 2551  (+0)
+=== rung 167  12:20:39Z  seed 257  from 2551 facets  -> results/dodeca_ladder/rung167 ===
+best coverage 2551/7776  domain sizes [1397, 1233, 436]  time 172.3s  kernel 166.9s  moves 1.02e+08
+NOT a covering: 5225 facets uncovered
+--- rung 167 done: 2551 -> 2551  (+0)
+=== rung 168  12:23:32Z  seed 258  from 2551 facets  -> results/dodeca_ladder/rung168 ===
+best coverage 2551/7776  domain sizes [1397, 1233, 436]  time 173.1s  kernel 167.7s  moves 1.02e+08
+NOT a covering: 5225 facets uncovered
+--- rung 168 done: 2551 -> 2551  (+0)
+=== rung 169  12:26:27Z  seed 259  from 2551 facets  -> results/dodeca_ladder/rung169 ===
+best coverage 2551/7776  domain sizes [1397, 1233, 436]  time 175.3s  kernel 169.5s  moves 1.02e+08
+NOT a covering: 5225 facets uncovered
+--- rung 169 done: 2551 -> 2551  (+0)
+=== rung 170  12:29:23Z  seed 260  from 2551 facets  -> results/dodeca_ladder/rung170 ===
+best coverage 2551/7776  domain sizes [1397, 1233, 436]  time 175.0s  kernel 169.4s  moves 1.02e+08
+NOT a covering: 5225 facets uncovered
+--- rung 170 done: 2551 -> 2551  (+0)
+=== rung 171  12:32:19Z  seed 261  from 2551 facets  -> results/dodeca_ladder/rung171 ===
+best coverage 2551/7776  domain sizes [1397, 1233, 436]  time 175.0s  kernel 169.3s  moves 1.02e+08
+NOT a covering: 5225 facets uncovered
+--- rung 171 done: 2551 -> 2551  (+0)
+=== rung 172  12:35:15Z  seed 262  from 2551 facets  -> results/dodeca_ladder/rung172 ===
+best coverage 2551/7776  domain sizes [1397, 1233, 436]  time 175.2s  kernel 169.5s  moves 1.02e+08
+NOT a covering: 5225 facets uncovered
+--- rung 172 done: 2551 -> 2551  (+0)
+=== rung 173  12:38:12Z  seed 263  from 2551 facets  -> results/dodeca_ladder/rung173 ===
+best coverage 2553/7776  domain sizes [1404, 1231, 433]  time 175.4s  kernel 169.5s  moves 1.02e+08
+NOT a covering: 5223 facets uncovered
+--- rung 173 done: 2551 -> 2553  (+2)
+=== rung 174  12:41:08Z  seed 264  from 2553 facets  -> results/dodeca_ladder/rung174 ===

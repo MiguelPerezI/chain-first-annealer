@@ -1,0 +1,55 @@
+∂Δ⁴ (S³): 500 facets, 5 vertices, cells 5x5 (20 facets per cell)
+
+--- domain 'upper': 300 facets of 500 ---
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 32 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 239  now-median 238     24.7s     0.829 Mmoves/s
+  epoch   2: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 244  now-median 244     44.8s     0.914 Mmoves/s
+  epoch   3: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 259     64.9s     0.947 Mmoves/s
+  epoch   4: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 260     85.1s     0.963 Mmoves/s
+  epoch   5: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 248    105.1s     0.975 Mmoves/s
+  epoch   6: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    125.2s     0.982 Mmoves/s
+  epoch   7: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    145.1s     0.989 Mmoves/s
+  epoch   8: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    165.2s     0.992 Mmoves/s
+  epoch   9: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    185.3s     0.995 Mmoves/s
+  epoch  10: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    205.4s     0.998 Mmoves/s
+  epoch  11: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    225.5s     0.999 Mmoves/s
+  epoch  12: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    245.6s     1.001 Mmoves/s
+  epoch  13: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    265.6s     1.003 Mmoves/s
+  epoch  14: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    285.8s     1.004 Mmoves/s
+  epoch  15: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    305.8s     1.005 Mmoves/s
+  epoch  16: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    325.8s     1.006 Mmoves/s
+  epoch  17: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    345.9s     1.007 Mmoves/s
+  epoch  18: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    366.2s     1.007 Mmoves/s
+  epoch  19: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    386.1s     1.008 Mmoves/s
+  epoch  20: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    406.1s     1.009 Mmoves/s
+  epoch  21: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    426.1s     1.010 Mmoves/s
+  epoch  22: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    446.4s     1.010 Mmoves/s
+  epoch  23: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 244    466.5s     1.010 Mmoves/s
+  epoch  24: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 242    486.6s     1.011 Mmoves/s
+  epoch  25: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 242    506.7s     1.011 Mmoves/s
+  epoch  26: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    526.9s     1.011 Mmoves/s
+  epoch  27: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 241    546.8s     1.012 Mmoves/s
+  epoch  28: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    566.8s     1.012 Mmoves/s
+  epoch  29: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 233    586.9s     1.012 Mmoves/s
+  epoch  30: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    606.9s     1.013 Mmoves/s
+  epoch  31: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    627.0s     1.013 Mmoves/s
+  epoch  32: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    647.0s     1.013 Mmoves/s
+  epoch  33: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    667.0s     1.014 Mmoves/s
+  epoch  34: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    687.1s     1.014 Mmoves/s
+  epoch  35: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    706.9s     1.014 Mmoves/s
+  epoch  36: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    727.1s     1.015 Mmoves/s
+  epoch  37: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    747.1s     1.015 Mmoves/s
+  epoch  38: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    767.2s     1.015 Mmoves/s
+  epoch  39: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    787.3s     1.015 Mmoves/s
+  epoch  40: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    807.4s     1.015 Mmoves/s
+  epoch  41: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    827.5s     1.015 Mmoves/s
+  epoch  42: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    847.7s     1.015 Mmoves/s
+  epoch  43: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    867.7s     1.015 Mmoves/s
+  epoch  44: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    887.9s     1.015 Mmoves/s
+  epoch  45: best  260.0/300  top10 [260, 260, 260, 260, 260, 260, 260, 260, 260, 260]  median 260  now-median 232    907.8s     1.016 Mmoves/s
+  time limit reached
+  one chain covers 260/300 facets  (908s, k=1)  -> no chain found in budget
+
+union of the domains that admitted a chain: 0/500
+wrote results/s3_upper_probe/summary.json

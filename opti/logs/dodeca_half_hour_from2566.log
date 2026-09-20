@@ -1,0 +1,63 @@
+=== gpu_sc chain-first annealer ===  K=dodecahedron boundary (20 vertices, 36 triangles)  |F_L|=7776  grid=400  k=3 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 ptrack=0.3  guide=3.0/(max 11.0)  seed=201
+  seeded population from results/dodeca_hour_from2553/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best 2566.0/7776  top10 [2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566]  median 1446  now-median 1420     36.6s     0.566 Mmoves/s
+  epoch   2: best 2568.0/7776  top10 [2568, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566]  median 1448  now-median 1412     69.5s     0.595 Mmoves/s
+  epoch   3: best 2568.0/7776  top10 [2568, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566]  median 2566  now-median 2531    102.6s     0.606 Mmoves/s
+  epoch   4: best 2568.0/7776  top10 [2568, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566]  median 2566  now-median 2515    135.6s     0.611 Mmoves/s
+  epoch   5: best 2568.0/7776  top10 [2568, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566]  median 2566  now-median 2514    168.7s     0.614 Mmoves/s
+  epoch   6: best 2568.0/7776  top10 [2568, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566]  median 2566  now-median 2499    201.7s     0.616 Mmoves/s
+  epoch   7: best 2568.0/7776  top10 [2568, 2568, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566]  median 2566  now-median 2501    234.7s     0.618 Mmoves/s
+  epoch   8: best 2568.0/7776  top10 [2568, 2568, 2566, 2566, 2566, 2566, 2566, 2566, 2566, 2566]  median 2566  now-median 2486    267.7s     0.619 Mmoves/s
+  epoch   9: best 2568.0/7776  top10 [2568, 2568, 2568, 2567, 2566, 2566, 2566, 2566, 2566, 2566]  median 2566  now-median 2489    300.7s     0.620 Mmoves/s
+  epoch  10: best 2568.0/7776  top10 [2568, 2568, 2568, 2567, 2566, 2566, 2566, 2566, 2566, 2566]  median 2566  now-median 2472    333.6s     0.621 Mmoves/s
+  epoch  11: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2567, 2566, 2566]  median 2566  now-median 2458    366.7s     0.621 Mmoves/s
+  epoch  12: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2567, 2566, 2566]  median 2566  now-median 2443    399.6s     0.622 Mmoves/s
+  epoch  13: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2567]  median 2566  now-median 2428    432.7s     0.622 Mmoves/s
+  epoch  14: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2415    465.6s     0.623 Mmoves/s
+  epoch  15: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2403    498.7s     0.623 Mmoves/s
+  epoch  16: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2391    531.7s     0.623 Mmoves/s
+  epoch  17: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2379    564.8s     0.623 Mmoves/s
+  epoch  18: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2366    597.7s     0.624 Mmoves/s
+  epoch  19: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2356    630.8s     0.624 Mmoves/s
+  epoch  20: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2345    663.7s     0.624 Mmoves/s
+  epoch  21: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2335    696.9s     0.624 Mmoves/s
+  epoch  22: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2325    729.8s     0.624 Mmoves/s
+  epoch  23: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2317    762.9s     0.624 Mmoves/s
+  epoch  24: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2308    795.9s     0.624 Mmoves/s
+  epoch  25: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2300    828.9s     0.625 Mmoves/s
+  epoch  26: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2291    861.9s     0.625 Mmoves/s
+  epoch  27: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2283    895.0s     0.625 Mmoves/s
+  epoch  28: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2274    927.9s     0.625 Mmoves/s
+  epoch  29: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2267    961.0s     0.625 Mmoves/s
+  epoch  30: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2260    993.9s     0.625 Mmoves/s
+  epoch  31: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2255   1027.0s     0.625 Mmoves/s
+  epoch  32: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2248   1060.0s     0.625 Mmoves/s
+  epoch  33: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2243   1093.1s     0.625 Mmoves/s
+  epoch  34: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2237   1126.1s     0.625 Mmoves/s
+  epoch  35: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2233   1159.2s     0.625 Mmoves/s
+  epoch  36: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2227   1192.1s     0.625 Mmoves/s
+  epoch  37: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2225   1225.3s     0.625 Mmoves/s
+  epoch  38: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2220   1258.2s     0.625 Mmoves/s
+  epoch  39: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2218   1291.3s     0.625 Mmoves/s
+  epoch  40: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2213   1324.2s     0.625 Mmoves/s
+  epoch  41: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2214   1357.3s     0.625 Mmoves/s
+  epoch  42: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2209   1390.3s     0.626 Mmoves/s
+  epoch  43: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2214   1423.4s     0.626 Mmoves/s
+  epoch  44: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2210   1456.3s     0.626 Mmoves/s
+  epoch  45: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2222   1489.4s     0.626 Mmoves/s
+  epoch  46: best 2568.0/7776  top10 [2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2216   1522.4s     0.626 Mmoves/s
+  epoch  47: best 2570.0/7776  top10 [2570, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2237   1555.5s     0.626 Mmoves/s
+  epoch  48: best 2570.0/7776  top10 [2570, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2234   1588.5s     0.626 Mmoves/s
+  epoch  49: best 2570.0/7776  top10 [2570, 2569, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2323   1621.6s     0.626 Mmoves/s
+  epoch  50: best 2570.0/7776  top10 [2570, 2569, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2317   1654.5s     0.626 Mmoves/s
+  epoch  51: best 2570.0/7776  top10 [2570, 2569, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2376   1687.7s     0.626 Mmoves/s
+  epoch  52: best 2570.0/7776  top10 [2570, 2569, 2568, 2568, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2363   1720.7s     0.626 Mmoves/s
+  epoch  53: best 2570.0/7776  top10 [2570, 2569, 2569, 2569, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2398   1753.8s     0.626 Mmoves/s
+  epoch  54: best 2570.0/7776  top10 [2570, 2569, 2569, 2569, 2568, 2568, 2568, 2568, 2568, 2568]  median 2566  now-median 2385   1786.7s     0.626 Mmoves/s
+  epoch  55: best 2570.0/7776  top10 [2570, 2569, 2569, 2569, 2568, 2568, 2568, 2568, 2568, 2568]  median 2567  now-median 2417   1819.8s     0.626 Mmoves/s
+  time limit reached
+best coverage 2570/7776  domain sizes [1425, 1235, 433]  time 1823.7s  kernel 1799.9s  moves 1.13e+09
+NOT a covering: 5206 facets uncovered
+wrote results/dodeca_half_hour_from2566/summary.json (partial)

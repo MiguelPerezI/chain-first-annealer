@@ -1,0 +1,12 @@
+=== gpu_sc chain-first annealer ===  K=dodecahedron boundary (20 vertices, 36 triangles)  |F_L|=7776  grid=400  k=3 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 ptrack=0.3  guide=3.0/(max 11.0)  seed=203
+  seeded population from results/dodeca_ladder/rung112/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  epoch   1: best 2472.0/7776  top10 [2472, 2471, 2471, 2471, 2471, 2471, 2471, 2471, 2471, 2471]  median 1399  now-median 1378     36.5s     0.568 Mmoves/s
+  epoch   2: best 2472.0/7776  top10 [2472, 2472, 2472, 2471, 2471, 2471, 2471, 2471, 2471, 2471]  median 1402  now-median 1360     69.4s     0.596 Mmoves/s
+  epoch   3: best 2472.0/7776  top10 [2472, 2472, 2472, 2472, 2472, 2472, 2472, 2471, 2471, 2471]  median 2471  now-median 2435    102.5s     0.606 Mmoves/s
+  epoch   4: best 2472.0/7776  top10 [2472, 2472, 2472, 2472, 2472, 2472, 2472, 2471, 2471, 2471]  median 2471  now-median 2417    135.5s     0.611 Mmoves/s
+  epoch   5: best 2472.0/7776  top10 [2472, 2472, 2472, 2472, 2472, 2472, 2472, 2472, 2472, 2472]  median 2471  now-median 2416    168.6s     0.614 Mmoves/s
+  time limit reached
+best coverage 2472/7776  domain sizes [1333, 1229, 443]  time 172.0s  kernel 166.7s  moves 1.02e+08
+NOT a covering: 5304 facets uncovered
+wrote results/dodeca_ladder/rung113/summary.json (partial)

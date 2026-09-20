@@ -6,3 +6,14 @@ __pycache__/
 # Large run outputs (>10MB, too big for git)
 opti/results/s7_starcover/
 opti/results/s8_starcover/
+
+# Per-rung ladder state: hundreds of near-identical summary.json files,
+# 95MB from the 2.5-minute ladder and 39MB from the 100-try run.  Each is a
+# snapshot of three chains, fully reproducible from run_dodeca_ladder.sh, and
+# their results are tabulated in opti/dodeca_anneal_log.md.  The two final
+# resumable checkpoints are kept, since losing those would mean re-running
+# hours of GPU to get back to 2553 and 2602 facets.
+opti/results/dodeca_ladder/rung*/
+opti/results/dodeca_tries/rung*/
+!opti/results/dodeca_ladder/rung173/
+!opti/results/dodeca_tries/rung070/

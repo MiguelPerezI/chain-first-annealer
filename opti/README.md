@@ -44,6 +44,11 @@ writable and auditable on this machine (S⁹: 5.88 M facets, ≈0.8 GB `cover.tx
 wall, the closed forms and `stream_starcover.py` (the streamed verifier for that regime, cross-checked against the
 audited certificates) are Section 21 of `optimized_algorithms.md`.
 
+A second and *independent* wall sits on the search side rather than the writing side: the chain-first GPU annealer
+cannot be launched on ∂Δ⁸ at all (its per-thread kernel state is 764 KB against a 512 KB limit) and is already ~300×
+more expensive per epoch on ∂Δ⁷ than on ∂Δ⁶, so the annealed certificates stop at S⁵ = ∂Δ⁶. Measured, with the
+arithmetic that reproduces the boundary: `s7_chain_first_wall.md`.
+
 For the wedge of two circles of the paper's §5.2 — like the circle, a complex where no product cover reaches the
 bound (`ρ = 4`, so products give only `SC ≤ 3`) — the annealer finds 3 domains (18+16+16) with 2/5/5-link chains
 in 41 s, giving the sharp `SC = 2`; and `wedge_paper_check.py` decodes the paper's own facet lists and chain tables
@@ -67,6 +72,20 @@ SC ≤ 7, while the sphere's own bound is 2 — and no 3-domain cover can even b
 `results/cube_k3_guided` covers all 864 facets in 304 s and reduces to 3 domains (482+236+146, chains
 5/5/4 links), giving the sharp `SC_strict(cube) = 2` at subdivision level 0 — five domains better than
 any product cover. Section 26.
+
+A third triangulation of S², the **dodecahedron boundary** (20 vertices, 54 edges, 36 triangles, χ = 2; fanning
+each pentagon from one vertex leaves it far from vertex-transitive — vertex degrees run 3 to 8), is
+supported by both the annealer (`--complex dodeca`) and the auditor as of 2026-09-19. The chain-first search does
+**not** reach a cover there. Five runs — one cold and four warm-started rungs, 4 h 20 m of GPU — left it at **1802 of
+its 7,776 product facets (23.2%)**, and the yield per identical hour *fell monotonically* across the rungs
+(644 → 564 → 371 → 170 gained), so the restart route is refuted rather than merely unfinished; a 15-minute rung
+confirmed the yield is front-loaded without making short rungs the better strategy (extrapolated 4 h of them ≈ 848
+against the 1802 the long rungs delivered). The measured cause is
+that a chain's domain requires *every* link to be simplicial: the domain floor is the diagonal cells (2.8% here,
+against the cube's 8.3% and ∂Δ⁴'s 20%), coverage beyond that comes from walks across K's dual graph, and this K is
+by far the sparsest in the repository — 36 triangles out of 1,140 possible vertex triples (3.2%, against the cube's
+21%) with dual-graph diameter 7 (the cube's is 4). Density table, the cmax sweep, the escalation and its corrections:
+`dodeca_anneal_log.md`.
 
 Narrative certificates with the full math and every planner map:
 `S2_certificate.md`, `S3_certificate.md`, `S4_certificate.md`,
@@ -125,7 +144,9 @@ Requires a Python with `numpy`, `numba`, `scipy` (override with
 | `star_cover.py` | builds and verifies product-domain certificates star(v)×star(w) (Algorithm 2) |
 | `stream_starcover.py` | streamed verifier for the star covers of ∂Δ^{n+1} above the size wall (never materializes K×K); `--cross-check` reproduces the audited S⁵–S⁸ domain sizes |
 | `rect_cover.py` | rectangle-cover number ρ(K): ILP (scipy/HiGHS) and independent branch-and-bound |
+| `rect2_optimum.py` | exhaustive optimum of the rectangle family over 1, 2, 3 rectangles (`star(v)×star(w)`), and which rectangles the recorded k=2 plateau states actually reach — the check that the sphere plateaus 84/96, 460/500, 2380/2520 *are* the 2-rectangle optima |
 | `hybrid_cover.py` | hybrid experiments (fixed rectangles + annealed chains), the "wall" of Section 8 |
+| `fixed_domain_test.py` | the constructive counterpart to the cover search: given a facet set, anneal **one** chain on the grid restricted to it (`hybrid_cover.SubProduct`). Full coverage ⇒ that set is a domain with an explicit planner. Used for the ∂Δ⁴ two-domain push — see s3_k2_push_log.md |
 | `h1_obstruction.py`, `band_test.py` | the GF(2) H₁ obstruction test for candidate domains |
 | `make_certificate_md.py` | generates `certificate.md` files from data |
 | `make_definition_md.py` | generates `definition.md` for any `sN`, the wedge, the barycenter triangle or the cube boundary (pure combinatorics: facet list, product indexing, closed-form counts) |

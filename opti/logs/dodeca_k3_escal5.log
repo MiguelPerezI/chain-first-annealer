@@ -1,0 +1,21 @@
+=== gpu_sc chain-first annealer ===  K=dodecahedron boundary (20 vertices, 36 triangles)  |F_L|=7776  grid=400  k=3 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 ptrack=0.3  guide=3.0/(max 11.0)  seed=88
+  seeded population from results/dodeca_k3_escal4/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best 1821.0/7776  top10 [1821, 1813, 1813, 1813, 1812, 1812, 1812, 1811, 1811, 1811]  median 1064  now-median 1045     37.5s     0.552 Mmoves/s
+  epoch   2: best 1821.0/7776  top10 [1821, 1818, 1817, 1815, 1815, 1815, 1815, 1814, 1814, 1814]  median 1064  now-median 1041     71.0s     0.583 Mmoves/s
+  epoch   3: best 1824.0/7776  top10 [1824, 1821, 1819, 1818, 1818, 1817, 1817, 1817, 1816, 1816]  median 1802  now-median 1778    104.7s     0.594 Mmoves/s
+  epoch   4: best 1824.0/7776  top10 [1824, 1821, 1820, 1819, 1819, 1818, 1818, 1817, 1817, 1816]  median 1802  now-median 1768    138.3s     0.600 Mmoves/s
+  epoch   5: best 1826.0/7776  top10 [1826, 1824, 1821, 1820, 1820, 1819, 1819, 1819, 1818, 1818]  median 1802  now-median 1773    171.9s     0.603 Mmoves/s
+  epoch   6: best 1828.0/7776  top10 [1828, 1826, 1825, 1824, 1821, 1821, 1820, 1820, 1819, 1819]  median 1802  now-median 1764    205.4s     0.605 Mmoves/s
+  epoch   7: best 1828.0/7776  top10 [1828, 1827, 1826, 1826, 1826, 1824, 1822, 1821, 1821, 1821]  median 1803  now-median 1769    239.1s     0.607 Mmoves/s
+  epoch   8: best 1828.0/7776  top10 [1828, 1827, 1826, 1826, 1826, 1825, 1824, 1824, 1822, 1822]  median 1803  now-median 1760    272.6s     0.608 Mmoves/s
+  epoch   9: best 1831.0/7776  top10 [1831, 1828, 1828, 1827, 1826, 1826, 1826, 1824, 1824, 1824]  median 1804  now-median 1764    306.3s     0.609 Mmoves/s
+  epoch  10: best 1831.0/7776  top10 [1831, 1828, 1828, 1828, 1827, 1826, 1826, 1826, 1824, 1824]  median 1804  now-median 1756    339.6s     0.610 Mmoves/s
+  epoch  11: best 1831.0/7776  top10 [1831, 1828, 1828, 1828, 1827, 1827, 1826, 1826, 1826, 1825]  median 1806  now-median 1763    372.8s     0.612 Mmoves/s
+  epoch  12: best 1831.0/7776  top10 [1831, 1830, 1828, 1828, 1828, 1828, 1827, 1826, 1826, 1826]  median 1806  now-median 1755    405.9s     0.613 Mmoves/s
+  epoch  13: best 1831.0/7776  top10 [1831, 1831, 1831, 1830, 1830, 1828, 1828, 1828, 1828, 1827]  median 1807  now-median 1764    439.6s     0.613 Mmoves/s
+  time limit reached
+best coverage 1831/7776  domain sizes [1008, 934, 393]  time 443.6s  kernel 434.4s  moves 2.66e+08
+NOT a covering: 5945 facets uncovered
+wrote results/dodeca_k3_escal5/summary.json (partial)

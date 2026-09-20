@@ -87,15 +87,28 @@ class Product:
         self.kfacets = [tuple(sorted(f)) for f in kfacets]
         self.nv = 1 + max(v for f in self.kfacets for v in f)
         nv = self.nv
-        assert nv <= 11, ("is_simplex table / int8 grid ids assume nv <= 11 "
-                          "(ngrid = nv^2 <= 127); larger K needs the streaming "
-                          "tools (make_definition_md.py / stream_starcover.py)")
+        # What actually bounds nv: is_simplex is a 2^nv byte table and the
+        # maps' vertex masks are int32, so nv <= 30; 24 keeps the table at
+        # 16 MB.  The grid-id arrays (facet_verts: a product facet's vertices
+        # are grid ids, up to ngrid - 1) are int16, which allows nv <= 181 and
+        # is why the old nv <= 11 int8 guard was raised.
+        assert nv <= 24, (f"is_simplex table would be 2^{nv} bytes; the "
+                          f"streaming tools (make_definition_md.py / "
+                          f"stream_starcover.py) cover larger K")
         self.ngrid = nv * nv
-        # is_simplex[S] for S a bitmask over V_K
+        # is_simplex[S] for S a bitmask over V_K: S is a simplex iff it is a
+        # subset of some facet.  Enumerate the subsets of each facet (2^|facet|
+        # of them) rather than filtering all 2^nv masks — for the dodecahedron
+        # that is 36 x 8 instead of 1,048,576 full scans.
         masks = [sum(1 << v for v in f) for f in self.kfacets]
         tab = np.zeros(1 << nv, dtype=np.uint8)
-        for s in range(1 << nv):
-            tab[s] = any(s & ~m == 0 for m in masks)
+        for m in masks:
+            s = m
+            while True:
+                tab[s] = 1
+                if s == 0:
+                    break
+                s = (s - 1) & m
         self.is_simplex = tab
         # BFS distances on the 1-skeleton
         adj = np.zeros((nv, nv), bool)
@@ -144,7 +157,9 @@ class Product:
         self.facets = facets
         self.nf = len(facets)
         self.maxfv = max(len(f) for f in facets)
-        fv = np.zeros((self.nf, self.maxfv), np.int8)
+        # int16: these are grid ids (a*nv + b), not K-vertex ids, so they reach
+        # ngrid - 1 = nv^2 - 1 -- 399 for the 20-vertex dodecahedron, past int8
+        fv = np.zeros((self.nf, self.maxfv), np.int16)
         fnv = np.zeros(self.nf, np.int8)
         for i, f in enumerate(facets):
             fnv[i] = len(f)
@@ -232,6 +247,24 @@ def build(name):
                         [0, 5, 4], [2, 3, 7], [2, 7, 6], [4, 5, 6], [4, 6, 7],
                         [0, 1, 2], [0, 2, 3]],
                        "cube boundary (8 vertices, 12 triangles)")
+    if name == "dodeca":
+        # The dodecahedron boundary: 20 vertices 0..19, 12 pentagonal faces,
+        # each pentagon fanned from one of its vertices into 3 triangles ->
+        # 36 triangles, f-vector (20, 54, 36), every edge in exactly two
+        # triangles, chi = 2 -- a triangulated S^2 like the cube, but with no
+        # boundary-simplex structure and, unlike ∂Δ³, no symmetry group small
+        # enough to give the product family a cheap cover.
+        # (facet list from Documents/c++_scripts/dodeca.hpp, Dodecahedron::tri_)
+        return Product([(3, 14, 19), (13, 14, 19), (3, 4, 19), (8, 13, 19),
+                        (8, 12, 19), (12, 16, 19), (4, 16, 19), (0, 4, 16),
+                        (0, 6, 16), (0, 2, 3), (0, 1, 2), (0, 3, 4),
+                        (2, 15, 17), (2, 14, 15), (2, 3, 14), (8, 13, 14),
+                        (8, 14, 15), (8, 9, 15), (5, 6, 12), (5, 11, 12),
+                        (6, 12, 16), (8, 9, 12), (9, 10, 12), (10, 11, 12),
+                        (9, 10, 15), (10, 15, 17), (10, 17, 18), (7, 10, 18),
+                        (5, 7, 10), (5, 10, 11), (2, 17, 18), (2, 7, 18),
+                        (1, 2, 7), (0, 1, 7), (0, 5, 7), (0, 5, 6)],
+                       "dodecahedron boundary (20 vertices, 36 triangles)")
     if name == "torus":
         f = []
         for i in range(7):
@@ -997,8 +1030,12 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
                  log=print, stop_at_full=True, tournament_every=2, tournament_frac=0.25,
                  init_chains=None, ptrack=0.05, guide=0.0, guide_max=4.0, gamma=0.0):
     """guide > 0: adaptive weights (guided local search) — after each epoch the
-    facets left uncovered by the best state get weight += guide (capped), all
-    weights decay toward 1; the reported coverage is always unweighted."""
+    facets left uncovered by the best state get weight += guide (capped at
+    guide_max), all weights decay toward 1; the reported coverage is always
+    unweighted.  A facet left uncovered for many epochs saturates the cap:
+    w* = 1 + guide/0.3, so guide = 1 already reaches the old default cap of 4
+    (1 + 3.33) — escalating the increment alone does nothing, the cap has to
+    move with it (exposed as --guide-max)."""
     ann = ChainAnnealer(P, k, cmax, S, seed=seed)
     if init_chains is not None:
         n = min(len(init_chains), S) // 2
@@ -1059,7 +1096,7 @@ def init_from_summary(P: Product, path: Path, k: int, cmax: int, S: int):
 
 def cli():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "torus"])
+    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "torus"])
     ap.add_argument("--k", type=int, default=3, help="number of chains / domains")
     ap.add_argument("--cmax", type=int, default=40, help="links per chain")
     ap.add_argument("--S", type=int, default=4096, help="population (GPU threads)")
@@ -1073,6 +1110,9 @@ def cli():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--ptrack", type=float, default=0.05, help="probability of a multi-map track move")
     ap.add_argument("--guide", type=float, default=0.0, help="adaptive weight increment for uncovered facets")
+    ap.add_argument("--guide-max", type=float, default=4.0, dest="guide_max",
+                    help="cap on those adaptive weights; a persistently uncovered facet saturates at "
+                         "1 + guide/0.3, so the cap must be raised for --guide above ~0.9 to bite")
     ap.add_argument("--tournament-every", type=int, default=2)
     ap.add_argument("--tournament-frac", type=float, default=0.25)
     ap.add_argument("--time-limit", type=float, default=None, help="seconds")
@@ -1083,7 +1123,8 @@ def cli():
 
     P = build(a.complex)
     print(f"=== gpu_sc chain-first annealer ===  K={P.name}  |F_L|={P.nf}  grid={P.ngrid}  "
-          f"k={a.k} cmax={a.cmax} S={a.S} iters={a.iters}")
+          f"k={a.k} cmax={a.cmax} S={a.S} iters={a.iters}  T0={a.T0} T1={a.T1}  "
+          f"beta={a.beta} gamma={a.gamma} ptrack={a.ptrack}  guide={a.guide}/(max {a.guide_max})  seed={a.seed}")
     init = None
     if a.init:
         init = init_from_summary(P, Path(a.init), a.k, a.cmax, a.S)
@@ -1094,7 +1135,8 @@ def cli():
                                           stop_at_full=not a.no_stop, init_chains=init,
                                           tournament_every=a.tournament_every,
                                           tournament_frac=a.tournament_frac,
-                                          ptrack=a.ptrack, guide=a.guide, gamma=a.gamma)
+                                          ptrack=a.ptrack, guide=a.guide, guide_max=a.guide_max,
+                                          gamma=a.gamma)
     dt = time.perf_counter() - t0
     doms = [P.domain_of(chains[j]) for j in range(a.k)]
     covered = np.zeros(P.nf, bool)

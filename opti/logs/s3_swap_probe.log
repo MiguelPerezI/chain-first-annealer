@@ -1,0 +1,33 @@
+∂Δ⁴ (S³): 500 facets, 5 vertices, cells 5x5 (20 facets per cell)
+
+--- domain 'upper-ends': 240 facets of 500 ---
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 32 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 191  now-median 191     20.6s     0.994 Mmoves/s
+  epoch   2: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 200     36.5s     1.123 Mmoves/s
+  epoch   3: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 200     51.8s     1.187 Mmoves/s
+  epoch   4: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 200     67.7s     1.210 Mmoves/s
+  epoch   5: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 197     83.1s     1.234 Mmoves/s
+  epoch   6: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190     99.0s     1.241 Mmoves/s
+  epoch   7: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    114.4s     1.254 Mmoves/s
+  epoch   8: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    130.5s     1.257 Mmoves/s
+  epoch   9: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    145.8s     1.265 Mmoves/s
+  epoch  10: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    161.7s     1.267 Mmoves/s
+  epoch  11: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    177.0s     1.273 Mmoves/s
+  epoch  12: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    193.0s     1.274 Mmoves/s
+  epoch  13: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    208.4s     1.278 Mmoves/s
+  epoch  14: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    224.4s     1.278 Mmoves/s
+  epoch  15: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    239.8s     1.282 Mmoves/s
+  epoch  16: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    255.8s     1.282 Mmoves/s
+  epoch  17: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    271.1s     1.285 Mmoves/s
+  epoch  18: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    287.0s     1.285 Mmoves/s
+  epoch  19: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    302.4s     1.288 Mmoves/s
+  epoch  20: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    318.4s     1.287 Mmoves/s
+  epoch  21: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    333.8s     1.289 Mmoves/s
+  epoch  22: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    349.7s     1.289 Mmoves/s
+  epoch  23: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    365.1s     1.291 Mmoves/s
+  epoch  24: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    381.1s     1.291 Mmoves/s
+  epoch  25: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    396.4s     1.293 Mmoves/s
+  epoch  26: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    412.4s     1.292 Mmoves/s
+  epoch  27: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    427.8s     1.293 Mmoves/s
+  epoch  28: best  200.0/240  top10 [200, 200, 200, 200, 200, 200, 200, 200, 200, 200]  median 200  now-median 190    443.8s     1.293 Mmoves/s

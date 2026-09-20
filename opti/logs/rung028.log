@@ -1,0 +1,9 @@
+=== gpu_sc chain-first annealer ===  K=dodecahedron boundary (20 vertices, 36 triangles)  |F_L|=7776  grid=400  k=3 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 ptrack=0.3  guide=3.0/(max 11.0)  seed=328
+  seeded population from results/dodeca_tries/rung027/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  epoch   1: best 2587.0/7776  top10 [2587, 2587, 2587, 2587, 2587, 2587, 2587, 2587, 2587, 2587]  median 1457  now-median 1432     36.6s     0.566 Mmoves/s
+  epoch   2: best 2588.0/7776  top10 [2588, 2587, 2587, 2587, 2587, 2587, 2587, 2587, 2587, 2587]  median 1457  now-median 1426     69.5s     0.595 Mmoves/s
+  epoch   3: best 2588.0/7776  top10 [2588, 2587, 2587, 2587, 2587, 2587, 2587, 2587, 2587, 2587]  median 2587  now-median 2553    102.6s     0.606 Mmoves/s
+best coverage 2588/7776  domain sizes [1440, 1240, 433]  time 106.1s  kernel 101.4s  moves 6.14e+07
+NOT a covering: 5188 facets uncovered
+wrote results/dodeca_tries/rung028/summary.json (partial)

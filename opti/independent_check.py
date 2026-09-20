@@ -179,6 +179,64 @@ def bary_facets():
     return [(0, 1, 3), (0, 2, 3), (1, 2, 3)]
 
 
+def check_sphere_surface(name, KF, nv_expect, ne_expect):
+    """Re-prove that a triangle mesh is a closed orientable surface of
+    chi = 2, i.e. a triangulation of S^2: the expected f-vector, every edge in
+    exactly two triangles, every vertex link a single cycle.  (Extracted from
+    the cube's check unchanged, so that the dodecahedron gets the same
+    argument rather than a copy of it.)"""
+    Tset = {tuple(sorted(f)) for f in KF}
+    V = sorted({v for f in KF for v in f})
+    E = {tuple(sorted(e)) for f in KF for e in combinations(f, 2)}
+    assert len(V) == nv_expect and len(E) == ne_expect, \
+        f"f-vector ({len(V)}, {len(E)}, {len(KF)}) unexpected"
+    nfacet_of_edge = {}
+    for f in KF:
+        for e in combinations(f, 2):
+            nfacet_of_edge[tuple(sorted(e))] = nfacet_of_edge.get(tuple(sorted(e)), 0) + 1
+    assert set(nfacet_of_edge.values()) == {2}, \
+        "some edge does not lie in exactly two triangles (not a closed surface)"
+    for v in V:
+        nb = sorted({u for e in E if v in e for u in e if u != v})
+        adj = {u: [] for u in nb}
+        for a, b in combinations(nb, 2):
+            if tuple(sorted((a, v, b))) in Tset:
+                adj[a].append(b)
+                adj[b].append(a)
+        assert all(len(adj[u]) == 2 for u in nb), f"link of {v} is not a cycle"
+        seen, stack = {nb[0]}, [nb[0]]
+        while stack:
+            x = stack.pop()
+            for y in adj[x]:
+                if y not in seen:
+                    seen.add(y)
+                    stack.append(y)
+        assert len(seen) == len(nb), f"link of {v} is disconnected"
+    chi = len(V) - len(E) + len(KF)
+    assert chi == 2, "not chi = 2"
+    print(f"K = {name}: {len(V)} vertices, {len(E)} edges, {len(KF)} triangles, "
+          f"every edge in exactly two triangles, every vertex link a single "
+          f"cycle, chi = 2 -- a closed surface, hence (chi = 2) the sphere S²")
+
+
+def dodeca_facets():
+    """The dodecahedron boundary: 20 vertices 0..19, 12 pentagonal faces, each
+    fanned from one of its vertices into 3 triangles -> 36 triangles, f-vector
+    (20, 54, 36).  Listed in the same order as gpu_sc.build("dodeca") — the
+    staircase enumeration of KxK depends on the facet order and on each
+    facet's vertex order, and Product sorts within a facet while preserving
+    the order of facets."""
+    return [(3, 14, 19), (13, 14, 19), (3, 4, 19), (8, 13, 19),
+            (8, 12, 19), (12, 16, 19), (4, 16, 19), (0, 4, 16),
+            (0, 6, 16), (0, 2, 3), (0, 1, 2), (0, 3, 4),
+            (2, 15, 17), (2, 14, 15), (2, 3, 14), (8, 13, 14),
+            (8, 14, 15), (8, 9, 15), (5, 6, 12), (5, 11, 12),
+            (6, 12, 16), (8, 9, 12), (9, 10, 12), (10, 11, 12),
+            (9, 10, 15), (10, 15, 17), (10, 17, 18), (7, 10, 18),
+            (5, 7, 10), (5, 10, 11), (2, 17, 18), (2, 7, 18),
+            (1, 2, 7), (0, 1, 7), (0, 5, 7), (0, 5, 6)]
+
+
 def cube_facets():
     """The cube boundary: vertices 0..7, the six square faces {0,3,7,4},
     {1,2,6,5}, {0,1,5,4}, {2,3,7,6}, {4,5,6,7}, {0,1,2,3}, each cut along its
@@ -205,6 +263,8 @@ def detect_k(resdir):
         return "barycenter triangle (Δ² split by its barycenter)", bary_facets()
     if nf == 864:
         return "cube boundary (8 vertices, 12 triangles)", cube_facets()
+    if nf == 7776:
+        return "dodecahedron boundary (20 vertices, 36 triangles)", dodeca_facets()
     for n in (2, 3, 4, 5, 6, 7, 8, 9):   # ∂Δ^n x ∂Δ^n: n = 6 (12348) .. 9 (5883020) facets
         if expected_num_facets(n) == nf:
             return {2: "∂Δ² (S¹)", 3: "∂Δ³ (S²)", 4: "∂Δ⁴ (S³)", 5: "∂Δ⁵ (S⁴)",
@@ -317,40 +377,18 @@ def main(resdir):
     elif name.startswith("cube"):
         # 12 triangles x 12 triangles x C(4,2) = 6 monotone paths of a square.
         assert len(KF) == 12, "not twelve triangles"
-        Tset = {tuple(sorted(f)) for f in KF}
-        V = sorted({v for f in KF for v in f})
-        E = {tuple(sorted(e)) for f in KF for e in combinations(f, 2)}
-        assert len(V) == 8 and len(E) == 18, "f-vector (8, 18, 12) expected"
-        nfacet_of_edge = {}
-        for f in KF:
-            for e in combinations(f, 2):
-                nfacet_of_edge[tuple(sorted(e))] = nfacet_of_edge.get(tuple(sorted(e)), 0) + 1
-        assert set(nfacet_of_edge.values()) == {2}, \
-            "some edge does not lie in exactly two triangles (not a closed surface)"
-        for v in V:
-            nb = sorted({u for e in E if v in e for u in e if u != v})
-            adj = {u: [] for u in nb}
-            for a, b in combinations(nb, 2):
-                if tuple(sorted((a, v, b))) in Tset:
-                    adj[a].append(b)
-                    adj[b].append(a)
-            assert all(len(adj[u]) == 2 for u in nb), f"link of {v} is not a cycle"
-            seen, stack = {nb[0]}, [nb[0]]
-            while stack:
-                x = stack.pop()
-                for y in adj[x]:
-                    if y not in seen:
-                        seen.add(y)
-                        stack.append(y)
-            assert len(seen) == len(nb), f"link of {v} is disconnected"
-        chi = len(V) - len(E) + len(KF)
-        assert chi == 2, "not chi = 2"
+        check_sphere_surface(name, KF, 8, 18)
         nf_expected = len(KF) ** 2 * 6
         n = None
         floor = 3   # SC_strict >= TC(S^2) = 2 (chi = 2 and closed force orientable)
-        print(f"K = {name}: 8 vertices, 18 edges, 12 triangles, every edge in "
-              f"exactly two triangles, every vertex link a single cycle, chi = 2 "
-              f"-- a closed surface, hence (chi = 2) the sphere S²")
+    elif name.startswith("dodeca"):
+        # 36 triangles x 36 triangles x C(4,2) = 6 monotone paths of a triangle
+        # pair's square cell.
+        assert len(KF) == 36, "not thirty-six triangles"
+        check_sphere_surface(name, KF, 20, 54)
+        nf_expected = len(KF) ** 2 * 6
+        n = None
+        floor = 3   # SC_strict >= TC(S^2) = 2, same argument as the cube
     else:
         # ∂Δ^n: each maximal facet has n vertices (k_facets returns
         # n-subsets), so n = len(KF[0]) — NOT len(KF[0]) - 1.

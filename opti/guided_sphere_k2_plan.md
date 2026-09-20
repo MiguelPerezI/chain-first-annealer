@@ -4,6 +4,18 @@
 spheres mean the two-domain cover does not exist (Conjecture C1), or did the
 searches simply run out of budget?*
 
+> **Outcome (2026-09-19, same day).** The plan was executed on ∂Δ⁴ and the
+> budget hypothesis is dead: with ~25× the search budget (69 epochs, 5.65 × 10⁹
+> moves, corrected energy) the population still sits at exactly 460/500 with
+> zero spread in every single epoch. Two corrections to this plan were needed
+> first — the `--guide` escalation below was a no-op against a hard-coded
+> weight cap, and the pass-1 command line contradicts the corrected energy of
+> `optimized_algorithms.md` §14.3 — and the campaign went on to characterise
+> what 460 is (the exhaustive 2-rectangle optimum) and to close two structured
+> families that could have contained a cover. Full log, including the runs that
+> were deliberately *not* made: `s3_k2_push_log.md`. The plan below is left
+> as written, as the pre-registration.
+
 ## The question in context
 
 - Corollary 5.3 of the paper (all boundary-of-simplex spheres): ρ(∂Δ^{n+1}) = 3,

@@ -1,0 +1,7 @@
+resuming: initialised from results/dodeca_ladder/rung020/summary.json, starting at rung 21
+seeding state covers 2064 of 7776 facets
+=== rung 21  05:17:43Z  seed 111  from 2064 facets  -> results/dodeca_ladder/rung021 ===
+best coverage 2075/7776  domain sizes [1147, 1047, 415]  time 175.6s  kernel 169.6s  moves 1.02e+08
+NOT a covering: 5701 facets uncovered
+--- rung 21 done: 2064 -> 2075  (+11)
+=== rung 22  05:20:39Z  seed 112  from 2075 facets  -> results/dodeca_ladder/rung022 ===
