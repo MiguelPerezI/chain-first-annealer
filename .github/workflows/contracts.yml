@@ -1,0 +1,14 @@
+name: Certificate contracts
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - run: python -B opti/src/test_contracts.py
+      - run: python -O -B opti/src/test_contracts.py
+      - run: bash -n opti/reproduce_all.sh

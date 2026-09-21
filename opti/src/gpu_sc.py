@@ -39,6 +39,8 @@ import math
 import os
 import sys
 import time
+from numbers import Integral
+from validation import validate_parameters
 from pathlib import Path
 
 import numpy as np
@@ -488,6 +490,7 @@ class ChainAnnealer:
 
     def __init__(self, P: Product, k: int, cmax: int, S: int, seed: int = 0,
                  weights=None, threads=64):
+        validate_parameters(k=k, cmax=cmax, S=S, seed=seed, threads=threads)
         self.P, self.k, self.cmax, self.S = P, k, cmax, S
         self.C1 = cmax + 1
         self.threads = threads
@@ -545,6 +548,8 @@ class ChainAnnealer:
         self.d_w = cuda.to_device(self.weights)
 
     def epoch(self, iters, T0, T1, beta=0.05, pmove_copy=0.5, ptrack=0.3, gamma=0.0):
+        validate_parameters(iters=iters, T0=T0, T1=T1, beta=beta,
+                            gamma=gamma, pcopy=pmove_copy, ptrack=ptrack)
         S = self.S
         d_ch = cuda.to_device(self.chains)
         d_best = cuda.to_device(self.chains)
@@ -946,20 +951,36 @@ def verify_system(P: Product, parts):
     """parts: list of (facet_ids, chain).  Plain Definition 2.3 check:
     partition of F_L, chain from pi1 to pi2 on the part's vertices, every
     map simplicial and consecutive maps 1-contiguous on every facet."""
-    covered = np.zeros(P.nf, bool)
+    if not parts:
+        raise ValueError("empty cover")
+    covered = set()
     for facets, chain in parts:
-        facets = [int(f) for f in facets]
-        assert facets, "empty part"
-        assert not covered[facets].any(), "parts overlap"
-        covered[facets] = True
+        facets = list(facets)
+        if not facets or any(isinstance(f, (bool, np.bool_)) or not isinstance(f, Integral)
+                             or not 0 <= f < P.nf for f in facets):
+            raise ValueError("empty part or invalid facet id")
+        if len(set(facets)) != len(facets) or covered.intersection(facets):
+            raise ValueError("duplicate facets or overlapping parts")
+        covered.update(facets)
+        if len(chain) == 0:
+            raise ValueError("empty planner chain")
         verts = P.verts_of(facets)
-        assert all(int(chain[0][v]) == int(P.pi1[v]) for v in verts), "chain does not start at pi1"
-        assert all(int(chain[-1][v]) == int(P.pi2[v]) for v in verts), "chain does not end at pi2"
-        for a, b in zip(chain, chain[1:]):
-            assert maps_contiguous_on(P, a, b, facets), "link not 1-contiguous"
         for m in chain:
-            assert maps_contiguous_on(P, m, m, facets), "map not simplicial"
-    assert covered.all(), "not a covering"
+            if len(m) != P.ngrid or any(
+                    isinstance(m[v], (bool, np.bool_)) or not isinstance(m[v], Integral)
+                    or not 0 <= m[v] < P.nv for v in verts):
+                raise ValueError("invalid planner vertex map")
+            if not maps_contiguous_on(P, m, m, facets):
+                raise ValueError("map not simplicial")
+        if any(chain[0][v] != P.pi1[v] for v in verts):
+            raise ValueError("chain does not start at pi1")
+        if any(chain[-1][v] != P.pi2[v] for v in verts):
+            raise ValueError("chain does not end at pi2")
+        for a, b in zip(chain, chain[1:]):
+            if not maps_contiguous_on(P, a, b, facets):
+                raise ValueError("link not 1-contiguous")
+    if covered != set(range(P.nf)):
+        raise ValueError("not a covering")
     return True
 
 
@@ -987,6 +1008,14 @@ def partition_from_chains(P: Product, chains_k):
 def write_certificate(P: Product, parts, outdir, meta):
     """cover.txt / planners.txt / summary.json in the Abstract_Motion_GPU format
     (auditable with its independent_check.py)."""
+    verify_system(P, parts)
+    reserved = {"complex", "n_domains", "sc_strict_bound", "n_verified",
+                "all_domains_verified", "domain_sizes", "chain_lengths", "domains",
+                "certification", "provenance"}
+    if reserved.intersection(meta):
+        raise ValueError("metadata cannot override certificate fields")
+    from provenance import environment_record
+    provenance = environment_record(meta.get("params", {}).get("init"))
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     nv = P.nv
@@ -1017,7 +1046,9 @@ def write_certificate(P: Product, parts, outdir, meta):
                    n_verified=len(parts), all_domains_verified=True,
                    domain_sizes=[len(f) for f, _ in parts],
                    chain_lengths=[len(c) - 1 for _, c in parts],
-                   domains=[sorted(f) for f, _ in parts], **meta)
+                   domains=[sorted(f) for f, _ in parts],
+                   certification={"internal": "passed", "independent_audit": "not_run"},
+                   provenance=provenance, **meta)
     (outdir / "summary.json").write_text(json.dumps(summary, indent=2, default=str))
     return summary
 
@@ -1036,6 +1067,11 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
     w* = 1 + guide/0.3, so guide = 1 already reaches the old default cap of 4
     (1 + 3.33) — escalating the increment alone does nothing, the cap has to
     move with it (exposed as --guide-max)."""
+    validate_parameters(k=k, cmax=cmax, S=S, iters=iters, epochs=epochs,
+                        T0=T0, T1=T1, beta=beta, gamma=gamma, pcopy=pcopy,
+                        ptrack=ptrack, guide=guide, guide_max=guide_max,
+                        tournament_every=tournament_every,
+                        tournament_frac=tournament_frac, seed=seed, time_limit=time_limit)
     ann = ChainAnnealer(P, k, cmax, S, seed=seed)
     if init_chains is not None:
         n = min(len(init_chains), S) // 2
@@ -1086,7 +1122,8 @@ def init_from_summary(P: Product, path: Path, k: int, cmax: int, S: int):
     out = np.zeros((k, cmax + 1, P.ngrid), np.int8)
     for slot, j in enumerate(order):
         red = reduce_chain(P, [m for m in chains[j]], doms[j].tolist()) if len(doms[j]) else list(chains[j])
-        assert len(red) <= cmax + 1, "reduced chain longer than cmax"
+        if len(red) > cmax + 1:
+            raise ValueError("reduced chain longer than cmax")
         pad = [np.array(m, np.int8) for m in red] + [P.pi2.copy()] * (cmax + 1 - len(red))
         out[slot] = np.array(pad)
     init = np.zeros((S, k, cmax + 1, P.ngrid), np.int8)
@@ -1117,9 +1154,17 @@ def cli():
     ap.add_argument("--tournament-frac", type=float, default=0.25)
     ap.add_argument("--time-limit", type=float, default=None, help="seconds")
     ap.add_argument("--outdir", default=None)
+    ap.add_argument("--require-cover", action="store_true", help="exit 2 for a completed search without a full cover")
     ap.add_argument("--no-stop", action="store_true", help="keep annealing after full coverage")
     ap.add_argument("--init", default=None, help="summary.json of a previous run to seed the population")
     a = ap.parse_args()
+    try:
+        validate_parameters(**{key: getattr(a, key) for key in (
+            "k", "cmax", "S", "iters", "epochs", "T0", "T1", "beta", "gamma",
+            "pcopy", "ptrack", "guide", "tournament_every", "tournament_frac",
+            "seed", "time_limit", "guide_max")})
+    except ValueError as exc:
+        ap.error(str(exc))
 
     P = build(a.complex)
     print(f"=== gpu_sc chain-first annealer ===  K={P.name}  |F_L|={P.nf}  grid={P.ngrid}  "
@@ -1158,10 +1203,13 @@ def cli():
     else:
         print(f"NOT a covering: {int((~covered).sum())} facets uncovered")
         if a.outdir:
+            if any((Path(a.outdir) / f).exists() for f in ("cover.txt", "planners.txt")):
+                raise ValueError("incomplete run cannot overwrite an existing certificate; use a new outdir")
             Path(a.outdir).mkdir(parents=True, exist_ok=True)
             (Path(a.outdir) / "summary.json").write_text(json.dumps(
-                dict(complex=dict(name=P.name, nv=P.nv, num_facets=P.nf), **meta), indent=2, default=str))
+                dict(complex=dict(name=P.name, nv=P.nv, num_facets=P.nf), status="incomplete", sc_strict_bound=None, all_domains_verified=False, **meta), indent=2, default=str))
             print(f"wrote {a.outdir}/summary.json (partial)")
+        return 2 if a.require_cover else 0
     return 0
 
 

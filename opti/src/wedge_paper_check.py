@@ -353,7 +353,7 @@ def main():
     nv = P.nv
     print(f"our K: {P.name}, {len(P.kfacets)} facets, {P.nf} facets of K x K, grid {nv} x {nv}")
 
-    region = _wedge_region("article.html")
+    region = _wedge_region(Path(__file__).resolve().parents[1] / "article" / "article.html")
     lists = paper_lists(region)
     assert len(lists) == 3, f"expected the 3 lists of §5.2, extracted {len(lists)}"
     assert [len(L) for L in lists] == [20, 18, 12], [len(L) for L in lists]

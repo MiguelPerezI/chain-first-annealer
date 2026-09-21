@@ -1,0 +1,4 @@
+# CPU certificate construction and optional CUDA search.
+numpy>=1.26
+numba>=0.67
+scipy>=1.11

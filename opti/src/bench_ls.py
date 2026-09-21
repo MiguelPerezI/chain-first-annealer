@@ -13,14 +13,14 @@ J ∪ {sigma} within the budget.
      verified with the plain definition;
   3. success counts / wall time at several budgets for both walks.
 """
-import json, sys, time
+import json, sys, time, os
 from pathlib import Path
 import numpy as np
 
-sys.path.insert(0, "/home/ubuntu/Documents/Abstract_Motion_GPU")
+GPU_REPO = Path(os.environ.get("ABSMOTION_GPU_REPO", Path(__file__).resolve().parents[3] / "Abstract_Motion_GPU"))
+sys.path.insert(0, str(GPU_REPO))
 import gpu_sc
 
-GPU_REPO = Path("/home/ubuntu/Documents/Abstract_Motion_GPU")
 
 
 def main():
