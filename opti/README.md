@@ -9,6 +9,15 @@ of piecewise-linear motion planners the paper reports is stored here as
 data, together with the search code that found it and an auditor that
 shares **no code** with the search.
 
+## Reviewed behavior and reproducibility
+
+Read [REVIEW_NOTES.md](REVIEW_NOTES.md) for the exact energy and state space,
+corrections to the rectangle interpretation, validation guarantees and commands.
+The 460/500 plateau is an observed count, not a proof of rectangular domains or
+of the impossibility of two domains. Historical results below retain their
+original timings. Code lives in `src/`, campaign scripts in `scripts/`, and
+notebooks in `experiments/`.
+
 ## What to read first (the verified covers)
 
 Each certificate directory in `results/` contains:
@@ -104,7 +113,7 @@ worked examples on the circle and the barycenter triangle.
 ## Verify a certificate yourself (no search code involved)
 
 ```
-python3 independent_check.py results/s4_starcover   # exit 0, prints ALL CHECKS PASSED
+python3 src/independent_check.py results/s4_starcover   # exit 0, prints ALL CHECKS PASSED
 ```
 
 `independent_check.py` is pure Python (standard library + nothing from
@@ -124,11 +133,11 @@ bash reproduce_all.sh        # ~2 minutes, CPU only:
 bash reproduce_all.sh gpu    # additionally replays the successful chain-first
                              # annealer runs (22 s, 153 s, ~13 min, 41 s wedge,
                              # 3 s + 11 s barycenter triangle)
-./run_wedge.sh k3            # the wedge of two circles alone (41 s, GPU)
-python3 wedge_paper_check.py # re-verifies the paper's own §5.2 certificate
-./run_bary.sh k1             # the barycenter triangle alone (11 s, GPU;
+./scripts/run_wedge.sh k3            # the wedge of two circles alone (41 s, GPU)
+python3 src/wedge_paper_check.py # re-verifies the paper's own §5.2 certificate
+./scripts/run_bary.sh k1             # the barycenter triangle alone (11 s, GPU;
                              # k1c3 = 3 s with cmax 2, k3 for comparison)
-./run_cube.sh k3g            # the cube boundary alone: the sharp SC = 2 (304 s, GPU;
+./scripts/run_cube.sh k3g            # the cube boundary alone: the sharp SC = 2 (304 s, GPU;
                              # k3 = 300 s cold, k3w = the continuation, k2 = the
                              # control TC(S²) = 2 says must never cover)
 ```
@@ -150,7 +159,7 @@ Requires a Python with `numpy`, `numba`, `scipy` (override with
 | `h1_obstruction.py`, `band_test.py` | the GF(2) H₁ obstruction test for candidate domains |
 | `make_certificate_md.py` | generates `certificate.md` files from data |
 | `make_definition_md.py` | generates `definition.md` for any `sN`, the wedge, the barycenter triangle or the cube boundary (pure combinatorics: facet list, product indexing, closed-form counts) |
-| `wedge_paper_check.py` | reads the wedge data out of the paper's own §5.2 (facet lists and the three chain tables), decodes it into this repo's facet indexing, and re-verifies the paper's certificate with the Definition 2.3 check; standard library only (`python3 wedge_paper_check.py`, no numpy/numba/search code) |
+| `wedge_paper_check.py` | reads the wedge data out of the paper's own §5.2 (facet lists and the three chain tables), decodes it into this repo's facet indexing, and re-verifies the paper's certificate with the Definition 2.3 check; standard library only (`python3 src/wedge_paper_check.py`, no numpy/numba/search code) |
 | `independent_check.py` | the code-independent auditor |
 | `opti_sc.py` | CPU implementation of the optimized greedy (reference) |
 | `article.html`, `article.txt` | local copies of Ortiz–Lara–González–Borat (arXiv:2008.13290v2), the pipeline this work diagnoses and replaces |

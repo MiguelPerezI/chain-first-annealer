@@ -1,9 +1,13 @@
 # Optimized versions of the algorithms in *A randomized greedy algorithm for piecewise linear motion planning*
 
 **Source:** C. Ortiz, A. Lara, J. González, A. Borat, arXiv:2008.13290v2 (math.AT, 23 Feb 2021).
-**Companion code:** `opti_sc.py` in this directory implements every optimized algorithm below (pure Python) and reproduces the paper's two benchmarks.
+**Companion code:** `../src/opti_sc.py` implements every optimized algorithm below (pure Python) and reproduces the paper's two benchmarks.
 
 ---
+
+> Review correction: historical conjectures and interpretations below are experimental
+> observations, not impossibility proofs. [REVIEW_NOTES.md](../REVIEW_NOTES.md)
+> records the counterexamples to universal rectangle claims.
 
 ## 1. What the paper proposes
 
@@ -848,13 +852,14 @@ DAG of §23). The binding constraint on this complex is the domain partition, no
 **The 460 plateau explained.** On `∂Δ⁴` a rectangle `star(v) × star(w)` has `4 · 4 = 16` facet pairs and `16 · 20 = 320`
 facets; two rectangles cover 23 of the 25 pairs (the two pairs `(s, t)` with `v ∉ s` or `w ∉ t` for both rectangles), i.e.
 **`23 · 20 = 460`**. The best two‑chain state of the corrected‑energy run is *exactly* the rectangles `star(0) × star(1)` and
-`star(3) × star(3)` (320 facets each, all 16 pairs complete). Re‑examining the ten old‑energy runs of §12.4: every chain of every
-460‑state is a sub‑rectangle (its domain lies inside one rectangle: 284/320, 296/320, 275/320, …, touching 16–23 pairs with
-only 2–11 pairs complete), so those plateaus were the same two‑rectangle cover, found less cleanly. The conjecture of §12.4 —
-"the excluded facets of two chains cannot be made disjoint" — now has a concrete form: **every two‑chain state the search
-finds is a two‑rectangle product cover, and `ρ(∂Δ⁴) = 3`** (§16.1). A level‑0 two‑domain cover of `∂Δ⁴ × ∂Δ⁴` would need at
-least one non‑product domain of ≥ 250 facets whose partner covers the rest; the largest non‑product single domain seen is
-329 facets (old energy, §12), so the question stays open, but "40 uncovered" is no longer a mystery.
+`star(3) × star(3)` (320 facets each, all 16 pairs complete). A later raw-state audit disproves the earlier generalization that all other
+460-states are sub-rectangles: the 265-facet domain of `s3_k2_A` touches 20
+base-facet pairs, exceeding a rectangle's 16. The union in that run touches
+24 pairs, of which 22 are complete, and is not a union of two rectangles.
+The corrected-energy point-move run also has non-rectangular domains.
+Thus the matching counts alone do not explain the plateau's geometry or
+prove C1. See [review notes](../REVIEW_NOTES.md) for exact counterexamples.
+
 
 
 ## 18. Reproducing Part III
@@ -985,7 +990,7 @@ the triangles is 4), giving only 15; the rectangle optimum 11 is better because 
 | run | k | best coverage | domains | note |
 |---|---:|---:|---|---|
 | `s4_k3_v2` | 3 | **2520 / 2520 in epoch 1** (13.1 min; one epoch = 8.2 × 10⁷ moves at 0.1 Mmoves/s — 630 facets per star, 9 vertices per facet) | verified 1634 + 653 + 233, chains 11 / 10 / 7 links; population median 2511 | audited, `results/s4_k3_v2` |
-| `s4_k2_v2` | 2 | **2380 / 2520** after one epoch (12 min) | 1746 + 1750 = two rectangles; 140 = 2 × 70 uncovered | **exactly the predicted plateau** (two rectangles miss two facet pairs) |
+| `s4_k2_v2` | 2 | **2380 / 2520** after one epoch (12 min) | 1746 + 1750 (overlapping, non-rectangular union); 140 uncovered | **predicted coverage count**, not two complete missing facet pairs |
 
 The three search domains are near‑rectangles: fitted against the best of the 36 rectangles `star(v)×star(w)` (each
 25 facet pairs × 70 paths = 1750 facets), 1572 of 1634 facets lie in `star(4)×star(1)`, 652 of 653 in
