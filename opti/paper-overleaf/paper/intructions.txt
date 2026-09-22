@@ -1,110 +1,63 @@
-Context :
+
+
+Problem:
+
+In the main.tex, I find:
 
 ```
-Me: suppose we follow a set of articles and on the most latest of these we use as reference and imporove on a result but we dont belong to any instition we only have the bare results, would the academic comunity take us into account?
-
-
-Agent: No — affiliation still functions as a real gatekeeping filter, separate from whether the result is correct. [Likely]
-
-Where it bites you:
-- **arXiv**: most categories require an "endorsement" from an existing author for first-time submitters without a recognized institutional affiliation — this is a real, practical barrier, not a formality. [Certain] the policy exists; specifics of which categories vary.
-- **Journal peer review**: submission itself rarely requires affiliation, but editors and reviewers carry priors toward unfamiliar names with no institutional signal — documented in bias-in-review literature. [Likely]
-- **ML/CS conferences** (NeurIPS, ICML, etc.): mostly double-blind, so affiliation is hidden during the actual review — this is one of the few checkpoints where you're judged closer to purely on merit. [Likely]
-
-Where merit alone does override affiliation: fields where the result is independently checkable without trusting the author. Perelman posted the Poincaré conjecture proof to arXiv with no journal submission at all — mathematicians verified it themselves because a proof is checkable regardless of who wrote it. [Certain] In ML/CS, the equivalent is a reproducible benchmark: a public repo, exact experimental setup, and numbers others can rerun. Papers with Code and Kaggle leaderboards don't ask for a university email.
-
-So the honest framing: you can't skip the gatekeeping mechanisms designed around affiliation, but you can route around them if the result is fully reproducible — full code, data, and a direct, honest comparison against the paper you're improving on. The risk in "bare results" with no institution behind them is that the normal internal-review step (someone catching your errors before anyone sees them) doesn't exist, so any mistake gets caught publicly instead of privately — which costs more reputationally when you have no institutional credibility to absorb it.
-
-
-Me: yeah mine is purely math so results are verifiable, i mean raw calculations dont lie
-
-
-Agent: I disagree with "raw calculations don't lie" as your safety net — it's true but irrelevant to where wrong results actually come from. Arithmetic executed correctly doesn't verify the setup: a misapplied theorem precondition, an unhandled edge case, a convergence assumption that doesn't hold outside the range you tested — these produce confidently correct-looking calculations that are still wrong. [Likely] Almost no crank math submission fails because the arithmetic was sloppy; it fails because a step earlier in the chain assumed something unstated.
-
-There's a sharper problem specific to math: unaffiliated submitters claiming an improved result face *more* scrutiny-by-default than in most fields, not less, precisely because math has the highest base rate of confident, wrong, unaffiliated submissions (Fermat, Riemann, P=NP cranks). [Likely] Reviewers pattern-match on framing before they pattern-match on content — and "the math speaks for itself" is exactly the framing that triggers the crank filter and gets a submission skimmed instead of read.
-
-What I'd do instead:
-- Don't lead with "it's verifiable, just check it" — lead with what specifically was wrong or incomplete in the article you're building on, stated precisely enough that an expert can see in one paragraph that you understood the original result's limits.
-- Stress-test it yourself before anyone else does: check it against known special cases, boundary conditions, and any case where the original article's method degenerates.
-- If the result is proof-based rather than numerical, consider formalizing the critical step in a proof assistant (Lean, Coq) — that buys real credibility with zero institutional affiliation, because the machine's check is not subject to reviewer bias.
-- Post it somewhere with a paper trail (arXiv with endorsement, or a detailed writeup plus MathOverflow/relevant subfield forum) rather than just distributing the raw result.
-
-The risk in your current framing: you invest confidence in the calculation being clean and none in the possibility the premises are wrong, so the first serious reader will look for the premise error, not check your arithmetic — and if you haven't already pressure-tested the premises yourself, that's the version of the story where an unaffiliated submission gets dismissed in the first five minutes rather than actually read.
-
-
-Me: i mean but who actually reviews it? im not really interested in the whole world reviewing it, i only care about the authors of the main reference paper to review it
-
-
-Agent: That narrows the actual problem, but doesn't make it easier — a cold, unsolicited claim of improving on someone's own result has a *lower* response rate than a general submission, because you're one of dozens of similar emails that specific researcher's inbox filter (mental or literal) already screens out by pattern. [Likely]
-
-The base-rate reality: active researchers with a recent, cited paper get a steady stream of "I improved your result" emails from strangers, and the large majority are wrong or trivial. The corresponding author's default heuristic is triage-by-signal, not read-everything-carefully. Institutional affiliation is one signal they use to decide whether to spend the 20 minutes it takes to actually check your work — remove that signal and you need to replace it with something else that does the same filtering job for them. [Likely]
-
-What replaces it, concretely:
-- Lead the email with the exact theorem/equation number in their paper and the precise gap or improvement — one paragraph, not a narrative. If they can see in 30 seconds that you've engaged with their specific result rather than sent a form letter, that alone clears most of the filter.
-- Attach the derivation as a short, self-contained PDF — not inline text, not a link to a repo they have to dig through.
-- Frame it as extending their result, not correcting an error in it, if that's accurate. Authors respond to "I built on your Theorem 3 and got a stronger bound" far more often than to "your Theorem 3 is wrong" — same content, very different response rate, because one is flattering to their prior work and the other is threatening. [Likely]
-- Email the corresponding author directly, not a general department address, and keep it under one screen.
-
-The risk in narrowing your target to just those authors: your sample size is one (or a handful of co-authors), so a non-response tells you nothing about correctness — it usually just means they're busy or your email got triaged before it was read. Don't treat silence as a verdict on the math. If you actually need it verified rather than just acknowledged, a short post to a specialized forum (MathOverflow, or the relevant arXiv discussion channel) alongside the direct email gives you a second, faster path to a real check — and it doesn't cost you the ask to the original authors.
-
-
-Me: okay so an article can be there a long time without it being verified? so then this means that there are two types of articles on arXiv? the ones verified and those that just sit there? what happens when we get an article verified?
-
-
-Agent: No — that framing is off: arXiv doesn't have a "verified" flag at all, so there aren't two categories of articles there. [Certain]
-
-What arXiv moderation actually does is screen for category, format, and obvious spam/plagiarism — not correctness. A subject moderator glancing at a submission is checking "does this belong in math.NT," not "is this proof valid." [Certain] So a paper sitting on arXiv with zero citations for years isn't in a different bucket from a "verified" one — it's just a preprint nobody has engaged with yet, which is the default state for a large share of what's posted there, not an anomaly. [Likely]
-
-Actual verification happens entirely outside arXiv, through two separate tracks:
-
-- **Formal**: submission to a journal → 2–3 reviewers check it → if accepted, the arXiv entry gets a "Journal reference" / DOI field added pointing to the published version. That's the closest thing to a discrete verification event, but it means a handful of reviewers signed off — not that the field has reached consensus. Published results get retracted after the fact too.
-- **Informal**: the community itself checks it — other researchers cite it, build on it, or (for major claims) write independent expository papers walking through the argument. This is literally how Perelman's proof became accepted: no journal submission at all, just several groups independently writing up and confirming the argument over roughly two years before it was treated as settled.
-
-So "getting verified" isn't a single event you can point to — it's an accumulation of independent people finding no hole in it over time. The risk in expecting a binary state: if you treat "not yet formally verified" as evidence something's wrong, you'll misread the normal, slow, unglamorous default that most correct results also sit in for years — reviewer bandwidth and researcher attention are scarce, not doubt about your specific result.
-
-
+\begin{tabular}{@{}p{2.8cm}lp{2.9cm}p{1.8cm}p{3.5cm}@{}}
+\toprule
+target $K\times K$ & $k$ & best coverage & wall time & outcome \\
+\midrule
+$\partial\Delta^2$ ($18$ facets)
+  & 2 & $18/18$ & $<15$\,s
+  & verified, $\SCst\le 2$ ($=1$ known \cite{OLGB21})\\
+\midrule
+$S^1\vee S^1$ ($50$ facets)
+  & 3 & $50/50$, epoch $25$ & $41$\,s
+  & verified $18+16+16$, $\SCst=2$\\
+\midrule
+$\partial\Delta^3$ (S$^2$, $96$)
+  & 3 & $96/96$, epoch 1 & $22$\,s
+  & verified $54+29+13$, $\SCst=2=\TC$\\
+$\partial\Delta^3$
+  & 2 & $84/96$ & (plateau)
+  & $84/96=14/16$ of facet pairs\\
+$\partial\Delta^4$ (S$^3$, $500$)
+  & 3 & $500/500$, epoch 1 & $153$\,s
+  & verified $309+130+61$, $\SCst\le 2$\\
+$\partial\Delta^4$
+  & 2 & $460/500$ & (plateau)
+  & $460/500=23/25$ of facet pairs, all seeds\\
+$\partial\Delta^5$ (S$^4$, $2520$)
+  & 3 & $2520/2520$, epoch 1 & $13$\,min
+  & verified $1634+653+233$, $\SCst=2=\TC$\\
+$\partial\Delta^5$
+  & 2 & $2380/2520$, epoch 1 & $12$\,min
+  & $2380/2520=34/36$ of facet pairs, as predicted\\
+$\partial\Delta^6$ (S$^5$, $12348$)
+  & 3 & $12348/12348$, epoch 2 & $34$\,min
+  & verified $7061+4239+1048$, $\SCst\le 2$\\
+\midrule
+cube boundary ($S^2$, $864$)
+  & 3 & $864/864$, epoch $22$ & ${\approx}24$\,min$^\dagger$
+  & verified $482+236+146$, $\SCst=2=\TC$\\
+cube boundary
+  & 2 & --- & ---
+  & $\TC(S^2)=2$: no $2$-domain cover\\
+\bottomrule
+\end{tabular}
 ```
 
 
-How the article came to being: We were testing article https://arxiv.org/html/2008.13290v2 results and thought we use the same algorithms proposed by Jesus's team.
+Kinda confusing, I would find it easier to just give the reader what he's looking for in quick and simple
+way using the info actually provided in ~/Documents/simplicial-complexity-certificates:
 
-We first tried attacking S^2 since González had alread done S^1, we tried to crack S^2 using a 96 vcpu server but ultimately we never got near the
-3 minimum domains. Since the algorithms are embarransingly vectorizable we implemente Gonzalez algorithms but now with a GPU expecting to see big results.
-We were able to crack S^2 finally, but the victory was short lived because once we tried S^3, again we didnt even get close.
+| Target K | KxK               | Number of Facets | Predicted Minimal Domains  | Best Covering        | Wall Time  | Outcome (Actual Domains)    |
+|----------|-------------------|------------------|----------------------------|----------------------|------------|-----------------------------|
+|   S$^2$  |$\partial\Delta^3$ |        96        |               3            |     96/96 at epoch 1 |    22s     |            54+29+13         |
 
-After a while and with a lot of thinking and planning, we introduced a new method called Chain-First Anneal and now we're making big progress.
-We're not saying that we can crack every complex in polynimial time, but there has definitlely been a big improvement since https://arxiv.org/html/2008.13290v2
-was written.
-
-
-Read the main.tex and help us greatly improve the abstract and introduction since that the first thing reviewers will check if whether or not we're even worth 
-the read.
+...
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-abstract: 
-
-1. REVIEW NOTE A (provenance of the diagnosis). The flat energy at beta=0.05 and the degradation of chain entries were diagnosed in an EARLIER VERSION OF THIS ANNEALER, not in the original LocalSearch nor in the cluster jobs. It is not established that they causally explain those stalls. Suggestion: separate the two stages explicitly and soften the causal claim here and in Section 3 (the wording in Section 3 has already been hedged in this pass; the abstract is left to the authors).
-
-\begin{abstract}
-An explicit system of piecewise-linear motion planners on a finite simplicial complex $K$ certifies an upper bound on González's simplicial complexity, $\SC(K)$. Existing randomized greedy algorithms construct such systems but stall in practice: published experiments stop at $1$-dimensional complexes, and extensive cluster computing (120-hour jobs on 96 cores) fails to complete a single covering of $\partial\Delta^3\times\partial\Delta^3$. We trace this stall to the objective function—the energy landscape is flat exactly where the search needs a gradient, causing chain entries to drift to noise unless actively tracked. To overcome this, we replace greedy descent with a chain-first annealer that evolves a population of candidate systems under a corrected energy function in parallel on a single GPU. This approach covers the spheres $S^1$ through $S^5$ in under 35 minutes. Every reported system is an audited certificate replayed by an independent checker; all results reproduce on a standard laptop with GPU in minutes.
-\end{abstract}
 

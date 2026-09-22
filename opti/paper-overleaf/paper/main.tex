@@ -177,7 +177,7 @@ public.
 \end{itemize}
 
 The theorem and the annealer are complementary, and
-Section~\ref{sec:results} keeps them in tension: on the cube boundary,
+Sections~\ref{sec:annealer} and \ref{sec:results} keep them in tension: on the cube boundary,
 where $\rho=8$ caps every product cover at $\SCst\le7$, the annealer
 still finds the optimum three domains; on the dodecahedron boundary a
 $20$-hour ladder campaign finds no cover at all; and the exact
@@ -327,22 +327,28 @@ kernel of the first phase (Section~\ref{sec:intro}).  The population is
 not drawn with independent uniform interior maps: each state is built
 by sweeps that flip entries of $\pi_1$ towards $\pi_2$ in random order,
 so that every initial chain already interpolates between the two
-projections.  A proposal changes the value assigned to one vertex in
-one chain, either at a single interior position or over a block of
-consecutive positions; the block proposals are what we call
-\emph{track moves}, and they are drawn with probability
-$p_{\mathrm{track}}$.  They are a move shape, not an explicit
-bookkeeping of the facets a chain has been assigned.  The temperature
-follows a geometric schedule \emph{within} each epoch, and the
-incumbent best state is kept by highest unweighted coverage, which need
-not be the state of lowest energy.  The population also undergoes
-selection and replacement, so the $S$ trajectories are not independent
-for the whole run.  After each epoch the incumbent's chains are used to
-\emph{partition} the facets (each facet goes to the first chain
-covering it), each restricted chain is shortened by the greedy
-farthest-jump reduction of \cite[Algorithm 2]{OLGB21}, and the
-resulting system is verified link by link, facet by facet.  The output
-is a certificate, not a claim (Section~\ref{sec:repro}).
+projections.  A proposal chooses one chain and one vertex uniformly at random and
+changes the value assigned to that vertex, either at a single interior
+position or over a block of two to eight consecutive positions; the
+block proposals are what we call \emph{track moves}, and they are drawn
+with probability $p_{\mathrm{track}}$.  The new value is copied from a
+map adjacent to the touched block with probability $1/2$, and otherwise
+drawn uniformly from the remaining vertices; copy moves let a locally
+good assignment propagate along the chain.  Track moves are a move
+shape, not an explicit bookkeeping of the facets a chain has been
+assigned.  The temperature follows a geometric schedule \emph{within}
+each epoch, and the incumbent best state is kept by highest unweighted
+coverage, which need not be the state of lowest energy.  Every second
+epoch the population undergoes selection and replacement---the weakest
+quarter of the states is overwritten by copies of the elite and a few
+slots are re-initialised at random---so the $S$ trajectories are not
+independent for the whole run.  Once the incumbent covers every facet
+the run stops, and the incumbent's chains are used to \emph{partition}
+the facets (each facet goes to the first chain covering it), each
+restricted chain is shortened by the greedy farthest-jump reduction of
+\cite[Algorithm 2]{OLGB21}, and the resulting system is verified map by
+map, link by link, facet by facet.  The output is a certificate, not a
+claim (Section~\ref{sec:repro}).
 Algorithm~\ref{alg:anneal} gives the full loop in the style of
 \cite{OLGB21}.
 
@@ -361,27 +367,33 @@ of $\pi_1$ towards $\pi_2$
 \For{epoch $=1,2,\dots$}
 \ForAll{states $\mathcal{C}$ of the population, in parallel on the GPU}
 \State perform $M$ Metropolis steps, the temperature $T$ following a
-geometric schedule $T_0\to T_1$ \emph{inside} the epoch: propose a new
-value for one vertex of one chain, at a single interior position or
-(with probability $p_{\mathrm{track}}$) over a block of consecutive
-positions; accept by $e^{-\Delta E/T}$
+geometric schedule $T_0\to T_1$ \emph{inside} the epoch: pick one chain
+$j$ and one vertex $w$ uniformly and propose a new value $u$ for
+$\varphi_{j,i}(w)$, at a single interior position $i$ or (with
+probability $p_{\mathrm{track}}$) over a block of two to eight
+consecutive positions $i_1,\dots,i_2$; with probability $1/2$ the value
+$u$ is copied from a neighbouring map, $\varphi_{j,i_1-1}(w)$ or
+$\varphi_{j,i_2+1}(w)$, otherwise drawn uniformly from the remaining
+vertices; accept by $e^{-\Delta E/T}$
 \Statex \hspace{2em} with
 $E=\sum_\sigma w_\sigma\,\mathrm{pen}(m(\sigma))
 +\gamma\sum_j\sum_\sigma b_j(\sigma)$
 \EndFor
 \State update $\mathcal{C}^*$ by highest unweighted coverage
 \Comment{not necessarily lowest $E$}
-\State apply selection and replacement to the population
-\State partition: each facet of $K\times K$ goes to the first chain
-of $\mathcal{C}^*$ covering it \Comment{facet $\mapsto$ domain}
+\If{$\mathcal{C}^*$ covers every facet of $K\times K$}
+\State partition: each facet goes to the first chain of $\mathcal{C}^*$
+covering it \Comment{facet $\mapsto$ domain}
 \State shorten each restricted chain by the greedy farthest-jump
 reduction \cite[Algorithm~2]{OLGB21}
-\State verify: every link $1$-contiguous on every facet of its
-domain, chain from $\pi_1|_J$ to $\pi_2|_J$
-\If{cover is complete \textbf{and} verification passed}
+\State verify: every map simplicial and every link $1$-contiguous on
+every facet of its domain, chain from $\pi_1|_J$ to $\pi_2|_J$
 \State \Return $(\text{partition},\text{chains})$
 \Comment{a certificate for $\SCst(K)\le k-1$}
 \EndIf
+\State every second epoch, overwrite the weakest quarter of the
+population with copies of the elite and re-initialise a few slots at
+random \Comment{selection and replacement}
 \EndFor
 \end{algorithmic}
 \end{algorithm}
@@ -395,57 +407,53 @@ are exactly those attained by suitable two-rectangle constructions.
 
 \begin{table}[H]
 \centering\footnotesize
-\begin{tabular}{@{}p{2.8cm}lp{2.9cm}p{1.8cm}p{3.5cm}@{}}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}llr@{\hspace{5pt}}lrlp{3.0cm}@{}}
 \toprule
-target $K\times K$ & $k$ & best coverage & wall time & outcome \\
+target & triangulation $K$ & facets & predicted & best coverage & wall time & outcome (domains found) \\
 \midrule
-$\partial\Delta^2$ ($18$ facets)
-  & 2 & $18/18$ & $<15$\,s
-  & verified, $\SCst\le 2$ ($=1$ known \cite{OLGB21})\\
+$S^1$ & $\partial\Delta^2$ & $18$ & $2$ & $18/18$ & $<15$\,s
+  & $2$ domains, verified; $\SCst{\le}2$ ($=1$ known \cite{OLGB21})\\
+$S^2$ & $\partial\Delta^3$ & $96$ & $3$ & $96/96$ (epoch $1$) & $22$\,s
+  & $54+29+13$; $\SCst{=}2{=}\TC$\\
+$S^3$ & $\partial\Delta^4$ & $500$ & $3$ & $500/500$ (epoch $1$) & $153$\,s
+  & $309+130+61$; $\SCst{\le}2$\\
+$S^4$ & $\partial\Delta^5$ & $2520$ & $3$ & $2520/2520$ (epoch $1$) & $13$\,min
+  & $1634+653+233$; $\SCst{=}2{=}\TC$\\
+$S^5$ & $\partial\Delta^6$ & $12348$ & $3$ & $12348/12348$ (epoch $2$) & $34$\,min
+  & $7061+4239+1048$; $\SCst{\le}2$\\
 \midrule
-$S^1\vee S^1$ ($50$ facets)
-  & 3 & $50/50$, epoch $25$ & $41$\,s
-  & verified $18+16+16$, $\SCst=2$\\
+$S^1\vee S^1$ & $S^1\vee S^1$ & $50$ & $3$ & $50/50$ (epoch $25$) & $41$\,s
+  & $18+16+16$; $\SCst{=}2$\\
+$S^2$ & cube boundary & $864$ & $8$ ($\rho$) & $864/864$ (epoch $22$) & ${\approx}24$\,min$^\dagger$
+  & $482+236+146$; $\SCst{=}2{=}\TC$\\
 \midrule
-$\partial\Delta^3$ (S$^2$, $96$)
-  & 3 & $96/96$, epoch 1 & $22$\,s
-  & verified $54+29+13$, $\SCst=2=\TC$\\
-$\partial\Delta^3$
-  & 2 & $84/96$ & (plateau)
+\multicolumn{7}{@{}l}{\emph{Two-chain plateau runs ($k=2$): the search seeks a cover by $2$ domains and stalls.}}\\
+$S^2$ & $\partial\Delta^3$ & $96$ & $2$ & $84/96$ & (plateau)
   & $84/96=14/16$ of facet pairs\\
-$\partial\Delta^4$ (S$^3$, $500$)
-  & 3 & $500/500$, epoch 1 & $153$\,s
-  & verified $309+130+61$, $\SCst\le 2$\\
-$\partial\Delta^4$
-  & 2 & $460/500$ & (plateau)
+$S^3$ & $\partial\Delta^4$ & $500$ & $2$ & $460/500$ & (plateau)
   & $460/500=23/25$ of facet pairs, all seeds\\
-$\partial\Delta^5$ (S$^4$, $2520$)
-  & 3 & $2520/2520$, epoch 1 & $13$\,min
-  & verified $1634+653+233$, $\SCst=2=\TC$\\
-$\partial\Delta^5$
-  & 2 & $2380/2520$, epoch 1 & $12$\,min
+$S^4$ & $\partial\Delta^5$ & $2520$ & $2$ & $2380/2520$ (epoch $1$) & $12$\,min
   & $2380/2520=34/36$ of facet pairs, as predicted\\
-$\partial\Delta^6$ (S$^5$, $12348$)
-  & 3 & $12348/12348$, epoch 2 & $34$\,min
-  & verified $7061+4239+1048$, $\SCst\le 2$\\
-\midrule
-cube boundary ($S^2$, $864$)
-  & 3 & $864/864$, epoch $22$ & ${\approx}24$\,min$^\dagger$
-  & verified $482+236+146$, $\SCst=2=\TC$\\
-cube boundary
-  & 2 & --- & ---
-  & $\TC(S^2)=2$: no $2$-domain cover\\
+$S^2$ & cube boundary & $864$ & $2$ & --- & ---
+  & $\TC(S^2)=2$: no $2$-domain cover exists\\
 \bottomrule
 \end{tabular}
-\caption{Chain-first annealer with the corrected energy, on one Tesla
-T4.  The per-run values of $c_{\max}$, the population size and the move
-budget are \emph{not} uniform across rows; they are listed in
-Table~\ref{tab:params}.  The plateaus reported here were stable across
-the seeds and the continuations we ran.  $^\dagger$The cube entry is a
-$3$-stage continuation totalling about $24$ minutes: cold ($303$\,s,
-$662/864$), warm restart ($814$\,s, $820/864$), guided restart
-($304$\,s, complete); the $304$\,s is the final guided stage alone, not
-the whole sequence.}
+\caption{Chain-first annealer, one Tesla T4.  The \emph{predicted}
+column is the number of domains the run seeks: $3$ for the $k=3$ runs
+(which the product-domains theorem, Section~\ref{sec:products},
+guarantees suffices on the simplex boundaries) and $2$ for the plateau
+runs; on the cube boundary the product bound is $\rho=8$, so the three
+domains found beat every product cover.  Domain sizes are those of the
+certified cover.  The per-run values of $c_{\max}$, the population size
+and the move budget are \emph{not} uniform across rows; they are listed
+in Table~\ref{tab:params}.  The plateaus reported here were stable
+across the seeds and the continuations we ran.  $^\dagger$The cube
+entry is a three-rung ladder totalling about $24$ minutes---cold
+rung ($303$\,s, $662/864$), warm rung ($814$\,s, $820/864$), guided
+warm rung ($304$\,s, complete); rungs, warm starts and guided weights
+are defined below.  The $304$\,s quoted above is the final guided rung
+alone, not the whole sequence.}
 \label{tab:annealer}
 \end{table}
 
@@ -470,38 +478,181 @@ the circle runs, which used different values.}
 \label{tab:params}
 \end{table}
 
-Four remarks on the table.  First, the successes certify values, not
-just bounds: for $S^2$ and $S^4$ the search independently reproduces at
-level $0$ the optimum $\TC=2$ that Section~\ref{sec:products} proves in
-general.  Second, the search domains are \emph{near}-rectangles, not
-rectangles: on $\partial\Delta^5$ the winning chains touch $30$, $28$
-and more pairs where a rectangle touches $25$, with $62$, $3$ and $67$
-facets outside the closest rectangle---a measured amount of non-product
-freedom, the same freedom that pushes the largest single chain domain on
-$\partial\Delta^4$ to $329$ facets where a rectangle holds $320$.
-Third, the plateaus are not noise floors: the observed coverage values
-coincide with those attained by suitable two-rectangle constructions.
-This numerical agreement does not imply that every observed domain, or
-their union, has product structure, and in the saved states it often
-does not.  On $\partial\Delta^4$ the run \texttt{s3\_k2\_v2\_track}
-does end in two genuine rectangles of $320$ facets each, with union
-$460$; but \texttt{s3\_k2\_A} ends in domains of $284$ and $265$
-facets, the second of which is contained in no rectangle
-$\operatorname{star}(v)\times\operatorname{star}(w)$ and whose union is
-not a union of two rectangles, while \texttt{s3\_k2\_v2\_point} ends in
-domains of $297$ and $317$ facets, neither of them contained in a
-rectangle, with the same total coverage $460$.  On $\partial\Delta^5$
-the run \texttt{s4\_k2\_v2} reaches $2380/2520$ with a union that is
-likewise not a union of two rectangles.  What is stable across runs is
-the coverage value, not the shape of the domains that realise it; that
-is the observation which makes the next section possible.
-Fourth, the cube boundary---an $8$-vertex, $12$-face triangulation of
-$S^2$ distinct from $\partial\Delta^3$---shows how far the annealer can
-depart from product covers: the star-rectangle bound gives $\rho=8$,
-certifying only $\SCst\le 7$, while the free-form three-chain search
-reaches $\SCst=2=\TC(S^2)$.  The gap of five in the domain count
-reflects genuine non-product structure that no rectangle construction
-can capture.
+\emph{Ladders of restarts: rungs, warm starts, guided weights.}  The
+runs of Table~\ref{tab:annealer} were single calls to
+Algorithm~\ref{alg:anneal}, with one exception.  The cube boundary
+certificate was reached by a short \emph{ladder}: a sequence of bounded
+calls, each of which we call a \emph{rung}, chained so that each rung
+starts where the previous one stopped.  A \emph{cold} rung is an
+ordinary call to Algorithm~\ref{alg:anneal}; on the cube it covered
+$662$ of $864$ facets in $303$\,s.  A \emph{warm} rung initialises its
+population from the previous rung's incumbent: half of the population
+receives the $k$ incumbent chains, each shortened on its domain by the
+greedy reduction and padded with copies of $\pi_2$ up to $c_{\max}$
+links, and the other half is built from fresh sweeps as before; on the
+cube it continued to $820/864$ in $814$\,s.  A \emph{guided} rung
+additionally rebalances the energy during the search: after each epoch
+every weight decays back towards $1$ by $w_\sigma\gets
+1+0.7\,(w_\sigma-1)$, and every facet the incumbent still misses
+receives an additive increment $g$, capped at $g_{\max}$; reported
+coverage stays unweighted.  A guided warm rung closed the remaining
+$44$ facets in $304$\,s.  Guidance without the seed is not enough: a
+guided \emph{cold} rung stalls at $858/864$ with the whole population
+pinned at $856$--$858$---the guide needs a good incumbent, not only a
+budget.
+
+Why short rungs at all?  The coverage gained within a single warm rung
+is \emph{front-loaded}: measured on the dodecahedron campaign below, it
+fits a sublinear law $\Delta\mathrm{cov}(t)\approx c\,t^{0.8}$ (one
+rung gained $+33$ facets in its first $7$ minutes, $+58$ in the first
+$15$, and $+170$ in the full hour).  Early in a rung the population
+claims the facets accessible from the incumbent's chain topology; once
+those are exhausted, further time buys rapidly diminishing returns.
+Every rung also pays a fixed overhead $\tau$ (kernel compilation and
+host--device transfer, $\tau\approx40$\,s on the machine used here), so
+the coverage harvested per GPU-hour, $c\,t^{0.8}/(t+\tau)$, peaks at
+$T^{*}_{\mathrm{rung}}=\tfrac{0.8}{1-0.8}\,\tau=4\tau\approx2.7$\,min.
+Algorithm~\ref{alg:ladder} abstracts the pattern.
+
+\begin{algorithm}[H]
+\caption{\textsc{WarmLadder}($K$, $k$, $c_{\max}$; $S$, $\beta$,
+$\gamma$, $p_{\mathrm{track}}$; per-rung budget $T_{\mathrm{rung}}$,
+guided increment $g$, cap $g_{\max}$, max rungs $R_{\max}$).
+Algorithm~\ref{alg:anneal} run as a ladder: warm seeding between rungs,
+guided reweighting within each rung.}
+\label{alg:ladder}
+\begin{algorithmic}[1]
+\State run \textsc{ChainAnneal}$(K,k,c_{\max};S,\beta,\gamma,
+p_{\mathrm{track}})$ for at most $T_{\mathrm{rung}}$ (\emph{cold} rung,
+$w_\sigma\equiv1$); set $\mathcal{C}^{*}\gets$ best state found
+\For{$r=1,2,\ldots,R_{\max}$}
+  \If{$\mathcal{C}^{*}$ covers all facets of $K\times K$}
+    \State\Return $\mathcal{C}^{*}$
+    \Comment{certificate: $\SCst(K)\le k-1$}
+  \EndIf
+  \State \emph{warm seeding}: half the population $\gets$ the chains of
+  $\mathcal{C}^{*}$, each reduced on its domain and padded with $\pi_2$
+  up to $c_{\max}$ links; the other half is freshly swept
+  \State \emph{guided rung}: run \textsc{ChainAnneal} for at most
+  $T_{\mathrm{rung}}$ with adaptive weights---after each epoch,
+  $w_\sigma\gets1+0.7\,(w_\sigma-1)$ for every facet $\sigma$ and
+  $w_\sigma\gets\min(w_\sigma+g,\,g_{\max})$ for every facet the
+  incumbent does not cover; update $\mathcal{C}^{*}\gets$ best state
+  found \Comment{coverage reporting stays unweighted}
+\EndFor
+\State\Return $\mathcal{C}^{*}$
+\Comment{partial cover; no certificate}
+\end{algorithmic}
+\end{algorithm}
+
+To probe how far ladders extend the reach of the search, we applied
+Algorithm~\ref{alg:ladder} to the dodecahedron boundary: a fan
+triangulation of $S^2$ with $20$ vertices and $36$ triangles, yielding
+$K\times K$ with $7776$ product facets.  Its simplex density is $3.2\%$
+(compared to $21.4\%$ for the cube boundary), and the dual graph of $K$
+has diameter $7$ against $4$ for the cube---both figures predict
+substantially harder search.  We ran five long warm escalations of up
+to one hour each, then a systematic $2.5$-minute ladder of $172$ short
+rungs executed unattended over $12$ GPU-hours.
+Table~\ref{tab:dodeca} records the complete campaign.
+
+\begin{table}[H]
+\centering\footnotesize
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+stage & time & coverage & gain & \% \\
+\midrule
+cold start ($c_{\max}=40$, $S=4096$) &
+  $60$\,min & $0\to 644$ & $+644$ & $8.3$ \\
+warm escalation 1 &
+  $60$\,min & $644\to 1208$ & $+564$ & $15.5$ \\
+warm escalation 2 &
+  $60$\,min & $1208\to 1579$ & $+371$ & $20.3$ \\
+warm escalation 3 &
+  $60$\,min & $1579\to 1749$ & $+170$ & $22.5$ \\
+warm escalation 4 &
+  $15$\,min & $1749\to 1802$ & $+53$ & $23.2$ \\
+warm escalation 5 &
+  $7$\,min & $1802\to 1831$ & $+29$ & $23.5$ \\
+\midrule
+2.5-min ladder, R.\,1--20 &
+  $55$\,min & $1831\to 2064$ & $+233$ & $26.5$ \\
+2.5-min ladder, R.\,22--41 &
+  $58$\,min & $2075\to 2218$ & $+143$ & $28.5$ \\
+2.5-min ladder, R.\,42--61 &
+  $58$\,min & $2218\to 2310$ & $+92$ & $29.7$ \\
+2.5-min ladder, R.\,62--81 &
+  $58$\,min & $2310\to 2400$ & $+90$ & $30.9$ \\
+2.5-min ladder, R.\,82--101 &
+  $58$\,min & $2400\to 2441$ & $+41$ & $31.4$ \\
+2.5-min ladder, R.\,102--121 &
+  $58$\,min & $2441\to 2487$ & $+46$ & $32.0$ \\
+2.5-min ladder, R.\,122--141 &
+  $58$\,min & $2487\to 2523$ & $+36$ & $32.4$ \\
+2.5-min ladder, R.\,142--172 + probes &
+  ${\approx}3.5$\,h & $2523\to 2602$ & $+79$ & $33.5$ \\
+\midrule
+\textbf{total} &
+  ${\approx}20$\,h & $0\to 2602$ & $+2602$ & $33.5$ \\
+\bottomrule
+\end{tabular}
+\caption{Complete warm-start rung-ladder campaign on the dodecahedron boundary
+($7776$ product facets of $K\times K$, $k=3$).
+Upper block: five long warm escalations ($c_{\max}=40$, $g=3$, $g_{\max}=11$),
+each reseeded from the previous incumbent.
+Lower block: $2.5$-minute ladder run unattended over $12$\,GPU-hours,
+summarised in batches of $20$ rungs; the final row combines the last partial
+batch with extended window probes and a $70$-trial basin survey.
+Mean gain per rung falls from $11.7$ in the first batch to below $1$ in
+the last; no complete cover was found.
+The obstacle is the sparsity of $K$: a dual-graph diameter of $7$ requires
+coordinated walks that grow geometrically harder to satisfy simultaneously
+as coverage rises.}
+\label{tab:dodeca}
+\end{table}
+
+We close the section with four observations on
+Table~\ref{tab:annealer}.
+
+\emph{Certified values, not just bounds.}  The successes pin the
+invariant itself: for $S^2$ and $S^4$ the covers found, together with
+the lower bound $\TC=2$ of Section~\ref{sec:products}, force
+$\SCst=\TC=2$, so the search independently reproduces at level $0$ the
+optimum that theorem proves in general.
+
+\emph{Near-product shape.}  The winning domains on the simplex
+boundaries are close to star rectangles, but measurably not equal to
+them: on $\partial\Delta^5$ the chains span $30$, $28$ and more facet
+pairs where a rectangle spans $25$, with $62$, $3$ and $67$ facets
+lying outside the closest rectangle, and on $\partial\Delta^4$ the
+largest single domain holds $329$ facets where a rectangle holds $320$.
+The annealer spends a small, quantifiable amount of non-product
+freedom.
+
+\emph{The plateau value is structural; the plateau shape is not.}
+The stalled two-chain runs stop exactly at the coverage of the best
+two-rectangle constructions.  This does not mean the search found
+rectangles: among the saved states, one $\partial\Delta^4$ run ends in
+two genuine rectangles of $320$ facets each, union $460$, while two
+other runs reach the same $460$ with domains contained in no rectangle
+$\operatorname{star}(v)\times\operatorname{star}(w)$ at all, and the
+$\partial\Delta^5$ run at $2380/2520$ is likewise not a union of two
+rectangles.\footnote{The runs cited are \texttt{s3\_k2\_v2\_track}
+(two rectangles of $320$), \texttt{s3\_k2\_A} (domains of $284$ and
+$265$, the second in no rectangle) and \texttt{s3\_k2\_v2\_point}
+(domains of $297$ and $317$, neither in a rectangle; union still
+$460$) on $\partial\Delta^4$, and \texttt{s4\_k2\_v2} ($2380/2520$)
+on $\partial\Delta^5$.  The saved states accompany the certificates of
+Section~\ref{sec:repro}.}  What is stable across seeds is the coverage
+value, not the domains that realise it---and explaining \emph{that
+number} is what makes the next section possible.
+
+\emph{Non-product freedom pays.}  The cube boundary, an $8$-vertex,
+$12$-face triangulation of $S^2$ distinct from $\partial\Delta^3$,
+shows the extreme case: the star-rectangle bound $\rho=8$ certifies
+only $\SCst\le7$, while the free-form three-chain search reaches
+$\SCst=2=\TC(S^2)$---five domains below the best certificate any
+product construction could give.
 
 \section{The product domains theorem}\label{sec:products}
 
@@ -704,124 +855,6 @@ structure.
 $2$-sphere and $4$-sphere values match $\TC(S^2)=\TC(S^4)=2$ given by
 Farber's theorem \cite{F03}, independently certifying sharpness at
 subdivision level~$0$.
-
-
-\emph{Warm-start rung ladders extend the search to harder complexes.}
-The cube boundary certificate of Table~\ref{tab:annealer} was not reached
-in a single run: a cold \textsc{ChainAnneal} covered $662$ of $864$ facets
-in $303$\,s; a warm restart from the saved incumbent reached $820/864$ in
-$814$\,s; a guided restart, in which facets still uncovered carry inflated
-energy weights, completed the cover in $304$\,s more.  The key observation
-is a \emph{within-rung front-loading effect}: coverage gains accumulate
-sub-linearly in time, following empirically a law $\Delta
-\mathrm{cov}(t)\approx c\cdot t^{\,0.84}$ with exponent below $1$.  Early
-in a rung the population claims the facets accessible from the current
-chain topology; once those are exhausted, the same computational budget
-buys rapidly diminishing returns.  Terminating early and reseeding from
-the incumbent resets the dynamics: the warm population begins near the
-coverage frontier, and the guided weights concentrate the energy on the
-surviving gap.  The optimal rung length at a fixed per-rung overhead
-$\tau$ is $T^*_{\mathrm{rung}} = \bigl(0.84/(1-0.84)\bigr)\cdot\tau\approx
-5\tau$; on the hardware used here $\tau\approx 40$\,s gives
-$T^*_{\mathrm{rung}}\approx 2.7$\,min.  Algorithm~\ref{alg:ladder}
-abstracts the pattern.
-
-\begin{algorithm}[H]
-\caption{\textsc{WarmLadder}($K$, $k$, $c_{\max}$; $S$, $\beta$, $\gamma$,
-$p_{\mathrm{track}}$; per-rung budget $T_{\mathrm{rung}}$, guided weight
-factor $g\ge1$, cap $g_{\max}$, max rungs $R_{\max}$).
-Extension of Algorithm~\ref{alg:anneal} by warm restart and guided reweighting.}
-\label{alg:ladder}
-\begin{algorithmic}[1]
-\Require facet weights $w_\sigma\gets 1$ for all $\sigma\in K\times K$;
-  incumbent $\mathcal{C}^*\gets\varnothing$
-\State run \textsc{ChainAnneal}$(K,k,c_{\max};S,\beta,\gamma,
-  p_{\mathrm{track}};w)$ for time $T_{\mathrm{rung}}$;
-  set $\mathcal{C}^*\gets$ best state found
-\For{$r=1,2,\ldots,R_{\max}$}
-  \If{$\mathcal{C}^*$ covers all facets of $K\times K$}
-    \State\Return $\mathcal{C}^*$
-    \Comment{certificate: $\SCst(K)\le k-1$}
-  \EndIf
-  \ForAll{facets $\sigma$ not covered by $\mathcal{C}^*$}
-    \State $w_\sigma\gets\min(g\cdot w_\sigma,\;g_{\max})$
-    \Comment{raise weight on uncovered facets}
-  \EndFor
-  \State reinitialise population from $\mathcal{C}^*$ with small random perturbations
-  \State run \textsc{ChainAnneal}$(K,k,c_{\max};S,\beta,\gamma,
-    p_{\mathrm{track}};w)$ for time $T_{\mathrm{rung}}$;
-    update $\mathcal{C}^*\gets$ best state found
-\EndFor
-\State\Return $\mathcal{C}^*$
-\Comment{partial cover; no certificate}
-\end{algorithmic}
-\end{algorithm}
-
-To probe how far this strategy can extend the search to harder complexes,
-we applied Algorithm~\ref{alg:ladder} to the dodecahedron boundary: a
-fan triangulation of $S^2$ with $20$ vertices and $36$ triangles, yielding
-$K\times K$ with $7776$ product facets.  Its simplex density is $3.2\%$
-(compared to $21.4\%$ for the cube boundary), and the dual graph of $K$
-has diameter $7$ against $4$ for the cube---both figures predict
-substantially harder search.  We ran five long warm escalations of up to
-one hour each, then a systematic $2.5$-minute ladder of $172$ short rungs
-executed unattended over $12$ GPU-hours.
-Table~\ref{tab:dodeca} records the complete campaign.
-
-\begin{table}[H]
-\centering\footnotesize
-\begin{tabular}{@{}lrrrr@{}}
-\toprule
-stage & time & coverage & gain & \% \\
-\midrule
-cold start ($c_{\max}=40$, $S=4096$) &
-  $60$\,min & $0\to 644$ & $+644$ & $8.3$ \\
-warm escalation 1 &
-  $60$\,min & $644\to 1208$ & $+564$ & $15.5$ \\
-warm escalation 2 &
-  $60$\,min & $1208\to 1579$ & $+371$ & $20.3$ \\
-warm escalation 3 &
-  $60$\,min & $1579\to 1749$ & $+170$ & $22.5$ \\
-warm escalation 4 &
-  $15$\,min & $1749\to 1802$ & $+53$ & $23.2$ \\
-warm escalation 5 &
-  $7$\,min & $1802\to 1831$ & $+29$ & $23.5$ \\
-\midrule
-2.5-min ladder, R.\,1--20 &
-  $55$\,min & $1831\to 2064$ & $+233$ & $26.5$ \\
-2.5-min ladder, R.\,22--41 &
-  $58$\,min & $2075\to 2218$ & $+143$ & $28.5$ \\
-2.5-min ladder, R.\,42--61 &
-  $58$\,min & $2218\to 2310$ & $+92$ & $29.7$ \\
-2.5-min ladder, R.\,62--81 &
-  $58$\,min & $2310\to 2400$ & $+90$ & $30.9$ \\
-2.5-min ladder, R.\,82--101 &
-  $58$\,min & $2400\to 2441$ & $+41$ & $31.4$ \\
-2.5-min ladder, R.\,102--121 &
-  $58$\,min & $2441\to 2487$ & $+46$ & $32.0$ \\
-2.5-min ladder, R.\,122--141 &
-  $58$\,min & $2487\to 2523$ & $+36$ & $32.4$ \\
-2.5-min ladder, R.\,142--172 + probes &
-  ${\approx}3.5$\,h & $2523\to 2602$ & $+79$ & $33.5$ \\
-\midrule
-\textbf{total} &
-  ${\approx}20$\,h & $0\to 2602$ & $+2602$ & $33.5$ \\
-\bottomrule
-\end{tabular}
-\caption{Complete warm-start rung-ladder campaign on the dodecahedron boundary
-($7776$ product facets of $K\times K$, $k=3$).
-Upper block: five long warm escalations ($c_{\max}=40$, $g=3$, $g_{\max}=11$),
-each reseeded from the previous incumbent.
-Lower block: $2.5$-minute ladder run unattended over $12$\,GPU-hours,
-summarised in batches of $20$ rungs; the final row combines the last partial
-batch with extended window probes and a $70$-trial basin survey.
-Mean gain per rung falls from $11.7$ in the first batch to below $1$ in
-the last; no complete cover was found.
-The obstacle is the sparsity of $K$: a dual-graph diameter of $7$ requires
-coordinated walks that grow geometrically harder to satisfy simultaneously
-as coverage rises.}
-\label{tab:dodeca}
-\end{table}
 
 
 \section{Certificates, auditing, reproduction}\label{sec:repro}

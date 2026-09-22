@@ -28,44 +28,45 @@
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces \textsc  {ChainAnneal}($K$, $k$, $c_{\max }$; $S$, $\beta $, $\gamma $, $p_{\mathrm  {track}}$): anneal whole systems of $k$ chains over $K\times K$.}}{7}{algorithm.1}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{alg:anneal}{{1}{7}{\textsc {ChainAnneal}($K$, $k$, $c_{\max }$; $S$, $\beta $, $\gamma $, $p_{\mathrm {track}}$): anneal whole systems of $k$ chains over $K\times K$}{algorithm.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Chain-first annealer with the corrected energy, on one Tesla T4. The per-run values of $c_{\max }$, the population size and the move budget are \emph  {not} uniform across rows; they are listed in Table~\ref {tab:params}. The plateaus reported here were stable across the seeds and the continuations we ran. $^\dagger $The cube entry is a $3$-stage continuation totalling about $24$ minutes: cold ($303$\,s, $662/864$), warm restart ($814$\,s, $820/864$), guided restart ($304$\,s, complete); the $304$\,s is the final guided stage alone, not the whole sequence.}}{8}{table.caption.1}\protected@file@percent }
-\newlabel{tab:annealer}{{1}{8}{Chain-first annealer with the corrected energy, on one Tesla T4. The per-run values of $c_{\max }$, the population size and the move budget are \emph {not} uniform across rows; they are listed in Table~\ref {tab:params}. The plateaus reported here were stable across the seeds and the continuations we ran. $^\dagger $The cube entry is a $3$-stage continuation totalling about $24$ minutes: cold ($303$\,s, $662/864$), warm restart ($814$\,s, $820/864$), guided restart ($304$\,s, complete); the $304$\,s is the final guided stage alone, not the whole sequence}{table.caption.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Chain-first annealer, one Tesla T4. The \emph  {predicted} column is the number of domains the run seeks: $3$ for the $k=3$ runs (which the product-domains theorem, Section~\ref {sec:products}, guarantees suffices on the simplex boundaries) and $2$ for the plateau runs; on the cube boundary the product bound is $\rho =8$, so the three domains found beat every product cover. Domain sizes are those of the certified cover. The per-run values of $c_{\max }$, the population size and the move budget are \emph  {not} uniform across rows; they are listed in Table~\ref {tab:params}. The plateaus reported here were stable across the seeds and the continuations we ran. $^\dagger $The cube entry is a three-rung ladder totalling about $24$ minutes---cold rung ($303$\,s, $662/864$), warm rung ($814$\,s, $820/864$), guided warm rung ($304$\,s, complete); rungs, warm starts and guided weights are defined below. The $304$\,s quoted above is the final guided rung alone, not the whole sequence.}}{8}{table.caption.1}\protected@file@percent }
+\newlabel{tab:annealer}{{1}{8}{Chain-first annealer, one Tesla T4. The \emph {predicted} column is the number of domains the run seeks: $3$ for the $k=3$ runs (which the product-domains theorem, Section~\ref {sec:products}, guarantees suffices on the simplex boundaries) and $2$ for the plateau runs; on the cube boundary the product bound is $\rho =8$, so the three domains found beat every product cover. Domain sizes are those of the certified cover. The per-run values of $c_{\max }$, the population size and the move budget are \emph {not} uniform across rows; they are listed in Table~\ref {tab:params}. The plateaus reported here were stable across the seeds and the continuations we ran. $^\dagger $The cube entry is a three-rung ladder totalling about $24$ minutes---cold rung ($303$\,s, $662/864$), warm rung ($814$\,s, $820/864$), guided warm rung ($304$\,s, complete); rungs, warm starts and guided weights are defined below. The $304$\,s quoted above is the final guided rung alone, not the whole sequence}{table.caption.1}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Search parameters of the runs reported in Table~\ref {tab:annealer}; all six used $\beta =5$, $\gamma =0.5$ and $p_{\mathrm  {track}}=0.3$. These settings should not be read back onto the circle runs, which used different values.}}{9}{table.caption.2}\protected@file@percent }
 \newlabel{tab:params}{{2}{9}{Search parameters of the runs reported in Table~\ref {tab:annealer}; all six used $\beta =5$, $\gamma =0.5$ and $p_{\mathrm {track}}=0.3$. These settings should not be read back onto the circle runs, which used different values}{table.caption.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}The product domains theorem}{9}{section.5}\protected@file@percent }
-\newlabel{sec:products}{{5}{9}{The product domains theorem}{section.5}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces \textsc  {WarmLadder}($K$, $k$, $c_{\max }$; $S$, $\beta $, $\gamma $, $p_{\mathrm  {track}}$; per-rung budget $T_{\mathrm  {rung}}$, guided increment $g$, cap $g_{\max }$, max rungs $R_{\max }$). Algorithm~\ref {alg:anneal} run as a ladder: warm seeding between rungs, guided reweighting within each rung.}}{10}{algorithm.2}\protected@file@percent }
+\newlabel{alg:ladder}{{2}{10}{\textsc {WarmLadder}($K$, $k$, $c_{\max }$; $S$, $\beta $, $\gamma $, $p_{\mathrm {track}}$; per-rung budget $T_{\mathrm {rung}}$, guided increment $g$, cap $g_{\max }$, max rungs $R_{\max }$). Algorithm~\ref {alg:anneal} run as a ladder: warm seeding between rungs, guided reweighting within each rung}{algorithm.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Complete warm-start rung-ladder campaign on the dodecahedron boundary ($7776$ product facets of $K\times K$, $k=3$). Upper block: five long warm escalations ($c_{\max }=40$, $g=3$, $g_{\max }=11$), each reseeded from the previous incumbent. Lower block: $2.5$-minute ladder run unattended over $12$\,GPU-hours, summarised in batches of $20$ rungs; the final row combines the last partial batch with extended window probes and a $70$-trial basin survey. Mean gain per rung falls from $11.7$ in the first batch to below $1$ in the last; no complete cover was found. The obstacle is the sparsity of $K$: a dual-graph diameter of $7$ requires coordinated walks that grow geometrically harder to satisfy simultaneously as coverage rises.}}{11}{table.caption.3}\protected@file@percent }
+\newlabel{tab:dodeca}{{3}{11}{Complete warm-start rung-ladder campaign on the dodecahedron boundary ($7776$ product facets of $K\times K$, $k=3$). Upper block: five long warm escalations ($c_{\max }=40$, $g=3$, $g_{\max }=11$), each reseeded from the previous incumbent. Lower block: $2.5$-minute ladder run unattended over $12$\,GPU-hours, summarised in batches of $20$ rungs; the final row combines the last partial batch with extended window probes and a $70$-trial basin survey. Mean gain per rung falls from $11.7$ in the first batch to below $1$ in the last; no complete cover was found. The obstacle is the sparsity of $K$: a dual-graph diameter of $7$ requires coordinated walks that grow geometrically harder to satisfy simultaneously as coverage rises}{table.caption.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}The product domains theorem}{12}{section.5}\protected@file@percent }
+\newlabel{sec:products}{{5}{12}{The product domains theorem}{section.5}{}}
+\newlabel{thm:prod}{{5.1}{12}{product domains}{theo.5.1}{}}
 \citation{F03}
 \citation{G18}
-\newlabel{thm:prod}{{5.1}{10}{product domains}{theo.5.1}{}}
-\newlabel{cor:rho}{{5.2}{10}{a search-free upper bound}{theo.5.2}{}}
-\newlabel{cor:spheres}{{5.3}{10}{all boundary-of-simplex spheres}{theo.5.3}{}}
 \citation{OLGB21}
 \citation{OLGB21}
 \citation{OLGB21}
 \citation{F03}
 \citation{OLGB21}
+\newlabel{cor:rho}{{5.2}{13}{a search-free upper bound}{theo.5.2}{}}
+\newlabel{cor:spheres}{{5.3}{13}{all boundary-of-simplex spheres}{theo.5.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Results}{13}{section.6}\protected@file@percent }
+\newlabel{sec:results}{{6}{13}{Results}{section.6}{}}
 \citation{OLGB21}
 \citation{OLGB21}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Results}{11}{section.6}\protected@file@percent }
-\newlabel{sec:results}{{6}{11}{Results}{section.6}{}}
 \citation{OLGB21}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Then and now. Facet counts of the verified partition are listed in the certificate column. Every entry was replayed and re-audited independently of the search code.}}{12}{table.caption.3}\protected@file@percent }
-\newlabel{tab:records}{{3}{12}{Then and now. Facet counts of the verified partition are listed in the certificate column. Every entry was replayed and re-audited independently of the search code}{table.caption.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Then and now. Facet counts of the verified partition are listed in the certificate column. Every entry was replayed and re-audited independently of the search code.}}{14}{table.caption.4}\protected@file@percent }
+\newlabel{tab:records}{{4}{14}{Then and now. Facet counts of the verified partition are listed in the certificate column. Every entry was replayed and re-audited independently of the search code}{table.caption.4}{}}
 \citation{F03}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces \textsc  {WarmLadder}($K$, $k$, $c_{\max }$; $S$, $\beta $, $\gamma $, $p_{\mathrm  {track}}$; per-rung budget $T_{\mathrm  {rung}}$, guided weight factor $g\ge 1$, cap $g_{\max }$, max rungs $R_{\max }$). Extension of Algorithm~\ref {alg:anneal} by warm restart and guided reweighting.}}{13}{algorithm.2}\protected@file@percent }
-\newlabel{alg:ladder}{{2}{13}{\textsc {WarmLadder}($K$, $k$, $c_{\max }$; $S$, $\beta $, $\gamma $, $p_{\mathrm {track}}$; per-rung budget $T_{\mathrm {rung}}$, guided weight factor $g\ge 1$, cap $g_{\max }$, max rungs $R_{\max }$). Extension of Algorithm~\ref {alg:anneal} by warm restart and guided reweighting}{algorithm.2}{}}
 \citation{OLGB21}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Complete warm-start rung-ladder campaign on the dodecahedron boundary ($7776$ product facets of $K\times K$, $k=3$). Upper block: five long warm escalations ($c_{\max }=40$, $g=3$, $g_{\max }=11$), each reseeded from the previous incumbent. Lower block: $2.5$-minute ladder run unattended over $12$\,GPU-hours, summarised in batches of $20$ rungs; the final row combines the last partial batch with extended window probes and a $70$-trial basin survey. Mean gain per rung falls from $11.7$ in the first batch to below $1$ in the last; no complete cover was found. The obstacle is the sparsity of $K$: a dual-graph diameter of $7$ requires coordinated walks that grow geometrically harder to satisfy simultaneously as coverage rises.}}{14}{table.caption.4}\protected@file@percent }
-\newlabel{tab:dodeca}{{4}{14}{Complete warm-start rung-ladder campaign on the dodecahedron boundary ($7776$ product facets of $K\times K$, $k=3$). Upper block: five long warm escalations ($c_{\max }=40$, $g=3$, $g_{\max }=11$), each reseeded from the previous incumbent. Lower block: $2.5$-minute ladder run unattended over $12$\,GPU-hours, summarised in batches of $20$ rungs; the final row combines the last partial batch with extended window probes and a $70$-trial basin survey. Mean gain per rung falls from $11.7$ in the first batch to below $1$ in the last; no complete cover was found. The obstacle is the sparsity of $K$: a dual-graph diameter of $7$ requires coordinated walks that grow geometrically harder to satisfy simultaneously as coverage rises}{table.caption.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Certificates, auditing, reproduction}{14}{section.7}\protected@file@percent }
-\newlabel{sec:repro}{{7}{14}{Certificates, auditing, reproduction}{section.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Certificates, auditing, reproduction}{15}{section.7}\protected@file@percent }
+\newlabel{sec:repro}{{7}{15}{Certificates, auditing, reproduction}{section.7}{}}
 \@writefile{toc}{\contentsline {paragraph}{Repositories.}{15}{section*.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8}Concluding remarks}{15}{section.8}\protected@file@percent }
-\newlabel{sec:concl}{{8}{15}{Concluding remarks}{section.8}{}}
 \bibcite{BPV23}{1}
 \bibcite{Cerny85}{2}
 \bibcite{F03}{3}
 \bibcite{FTMV18}{4}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Concluding remarks}{16}{section.8}\protected@file@percent }
+\newlabel{sec:concl}{{8}{16}{Concluding remarks}{section.8}{}}
+\newlabel{conj}{{8.1}{16}{}{theo.8.1}{}}
 \bibcite{G18}{5}
 \bibcite{HD}{6}
 \bibcite{KGV83}{7}
@@ -73,5 +74,4 @@
 \bibcite{Numba}{9}
 \bibcite{OLGB21}{10}
 \bibcite{Spanier}{11}
-\newlabel{conj}{{8.1}{16}{}{theo.8.1}{}}
 \gdef \@abspage@last{17}
