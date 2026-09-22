@@ -41,10 +41,10 @@
 a chain-first annealer for explicit covers of
 boundary-of-simplex spheres}
 
-\author{Miguel Esteban Perez Ibarra\footnote{Escuela Superior de F\'isica
+\author{M. Perez\footnote{Escuela Superior de F\'isica
 y Matem\'aticas del Instituto Polit\'ecnico Nacional, Edificio 9, Unidad
 Profesional Adolfo L\'opez Mateos, 07300 Mexico City, Mexico.}, and
-Jaziel Flores\footnotemark[1]}
+J. Flores\footnotemark[1]}
 
 \date{}
 
@@ -52,7 +52,36 @@ Jaziel Flores\footnotemark[1]}
 \maketitle
 
 \begin{abstract}
-An explicit system of piecewise-linear motion planners on a finite simplicial complex $K$ certifies an upper bound on González's simplicial complexity, $\SC(K)$. Existing randomized greedy algorithms construct such systems but stall in practice: published experiments stop at $1$-dimensional complexes, and extensive cluster computing (120-hour jobs on 96 cores) fails to complete a single covering of $\partial\Delta^3\times\partial\Delta^3$. We trace this stall to the objective function—the energy landscape is flat exactly where the search needs a gradient, causing chain entries to drift to noise unless actively tracked. To overcome this, we replace greedy descent with a chain-first annealer that evolves a population of candidate systems under a corrected energy function in parallel on a single GPU. This approach covers the spheres $S^1$ through $S^5$ in under 35 minutes. Every reported system is an audited certificate replayed by an independent checker; all results reproduce on a standard laptop with GPU in minutes.
+Gonz\'alez's simplicial complexity $\SCst(K)$ discretizes Farber's
+topological complexity: at subdivision level zero it is a finite
+integer, upper-bounded by exhibiting an explicit cover of $K\times K$
+by contiguity domains.  The randomized greedy pipeline of Ortiz, Lara,
+Gonz\'alez and Borat constructs such covers, but its published reach
+stops at $1$-dimensional complexes: the experiments end with the circle
+and the wedge of two circles, the $2$-sphere was deferred to cluster
+hardware, and in our faithful reimplementation the greedy search never
+completed a single covering of $\partial\Delta^3\times\partial\Delta^3$
+in $120$-hour jobs on $96$ cores.  We diagnose two mechanisms behind
+this stall---an objective flat over the number of chain defects, the
+very quantity the walk controls, and untracked chain entries drifting
+to noise---and repair both with a \emph{chain-first annealer}: whole
+systems of $k$ complete contiguity chains, evolved in parallel on a
+single GPU under an energy that grades every uncovered facet by the
+defect count of its best chain and penalises defects in all chains at
+once.  The corrected search covers the spheres $S^1$ through $S^5$ by
+explicit three-domain systems, in $22$ seconds ($S^2$), $153$ seconds
+($S^3$), $13$ minutes ($S^4$) and $34$ minutes ($S^5$), certifying
+$\SCst(\partial\Delta^{n+1})\le2$ for all $n\le5$, with the sharp
+values $\SCst=\TC=2$ on $S^2$, on $S^4$ and on the cube boundary---a
+triangulation in which product constructions require eight domains.  A
+pattern in the search's own plateaus then becomes a theorem: every
+rectangle $\operatorname{star}(v)\times\operatorname{star}(w)$ is a
+contiguity domain, giving $\SCst(\partial\Delta^{n+1})\le2$ for
+\emph{all} $n\ge1$ and $\SCst(\partial\Delta^{n+1})=\TC(S^n)=2$ at
+level zero for every even $n$.  Every reported system is an audited
+certificate, replayed link by link by an independent checker sharing no
+code with the search; the full certificate set re-verifies in about two
+minutes on CPU alone.
 \end{abstract}
 
 \medskip\noindent
@@ -74,47 +103,87 @@ by \emph{simplicial} ones, defined on pieces of the ordered product
 $K\times K$ of a triangulation $K$ of $X$, where ``continuous'' becomes
 ``joined by a contiguity chain of simplicial maps''
 (Section~\ref{sec:back}).  The value $\SCst(K)$ at subdivision level
-zero is a finite, checkable integer---but finding a cover that realizes
-it is a search problem over chains of simplicial maps, and it is
-ferociously expensive.
+zero is a finite, checkable integer---but it is only as real as the
+best explicit cover of $K\times K$ by contiguity domains, and finding
+such a cover is a search problem over chains of simplicial maps whose
+cost had so far pushed every target past dimension one out of reach.
 
 Ortiz, Lara, Gonz\'alez and Borat \cite{OLGB21} gave a pipeline of
-randomized greedy algorithms for exactly this search.  Their published
-experiments tell the story of its cost: the circle $\partial\Delta^2$
-($18$ maximal facets in the product) takes about a minute; the wedge of
-two circles takes $25$ minutes at level~$0$; a single barycentric
-subdivision of the circle takes about $10$ hours.  The $2$-sphere case,
-$\partial\Delta^3\times\partial\Delta^3$ with its $96$ maximal facets,
-was explicitly deferred to cluster-scale hardware.
+randomized greedy algorithms for exactly this search: grow one domain
+at a time from a seed facet by budgeted random walks, then merge and
+prune the resulting cover (Section~\ref{sec:back}).  Their published
+experiments draw its cost curve: the circle $\partial\Delta^2$ ($18$
+maximal facets in the product) takes about a minute; the wedge of two
+circles ($50$ facets) takes $25$ minutes at level~$0$; a single
+barycentric subdivision of the circle takes about $10$ hours; and the
+$2$-sphere $\partial\Delta^3\times\partial\Delta^3$, with its $96$
+maximal facets, was explicitly deferred to cluster-scale hardware.
 
-That estimate proved optimistic.  A C++/MPI predecessor of the present
-work ran the same algorithms on a $96$-core cluster in $120$-hour jobs
-and never completed one covering of
-$\partial\Delta^3\times\partial\Delta^3$: a single failed growth attempt
-cost about $3$ seconds per candidate walk, domains froze after a few
-dozen facets, and dozens of consecutive retry passes flipped nothing at
-full computational cost.  To mitigate this issue our first plan was to port the pipeline
-faithfully---bit-for-bit, with a CPU reference---to a single Tesla T4
-graphics processor, and thus finally obtained the explicit minimum cover of the
-$2$-sphere in $4.4$ minutes.  But the same brute force only went so
-far: on the $3$-sphere model, despite using GPU hardware, the best certified cover had $20$ domains
-($\SCst(\partial\Delta^4)\le 19$, floor $2$).
+The cluster estimate proved optimistic.  A C++/MPI predecessor of the
+present work ran the same algorithms on a $96$-core cluster in
+$120$-hour jobs and never completed one covering of
+$\partial\Delta^3\times\partial\Delta^3$: a single failed growth
+attempt cost about $3$ seconds per candidate walk, domains froze after
+a few dozen facets, and dozens of consecutive retry passes flipped
+nothing at full computational cost.  A faithful single-GPU port of the
+same pipeline---bit-for-bit against a CPU reference, on one Tesla
+T4---did produce the first explicit cover of the $2$-sphere model, in
+$4.4$ minutes, attaining $\SCst(\partial\Delta^3)=\TC(S^2)=2$; but
+brute force alone had reached its ceiling, and on the $3$-sphere model
+the best certified cover still had $20$ domains
+($\SCst(\partial\Delta^4)\le19$).
 
-This paper reports the second part of the project, in which the
-remaining targets fell, one after another, in seconds to minutes.
-There are three ingredients, and the order matters: a diagnosis of
-the two ways the greedy search dies, flat scores and drifting
-chains (Section~\ref{sec:fail}); a chain-first annealer that
-corrects the energy and anneals thousands of complete $k$-chain
-systems in parallel on the GPU (Section~\ref{sec:annealer}); and the
-theorem the search was trying to tell us---every plateau of every
-search had the same shape, the product rectangles
-$\operatorname{star}(v)\times\operatorname{star}(w)$, which are
-contiguity domains for an elementary reason (Theorem~\ref{thm:prod})
-and yield $\SCst(\partial\Delta^{n+1})\le 2$ uniformly, sharp for
-even $n$ (Corollary~\ref{cor:spheres}; Section~\ref{sec:products}).
-The consequences are collected in Section~\ref{sec:results}; the
-certificates and reproduction script in Section~\ref{sec:repro}.
+This paper reports the method that broke that ceiling, and the theorem
+the search had been trying to tell us.  There are four contributions,
+in the order the reader meets them.
+
+\begin{itemize}
+\item \textbf{Diagnosis} (Section~\ref{sec:fail}).  The greedy walk
+dies in two documented ways: its score is flat over the number of
+chain defects---the quantity the walk actually controls---and chain
+entries that are momentarily irrelevant receive no signal and drift to
+noise.
+\item \textbf{A chain-first annealer} (Section~\ref{sec:annealer}).
+Instead of growing domains facet by facet, we anneal whole systems of
+$k$ complete contiguity chains in parallel on one GPU, under an energy
+that grades every uncovered facet by the defect count of its best
+chain and penalises defects in all chains at once.  The search covers
+$S^1$ through $S^5$ by explicit three-domain systems---$22$ seconds
+for the $2$-sphere, $34$ minutes for the $5$-sphere---certifying
+$\SCst(\partial\Delta^{n+1})\le2$ for all $n\le5$, sharply ($=\TC$) on
+$S^2$, $S^4$ and the cube boundary (Table~\ref{tab:annealer}).
+\item \textbf{The product-domains theorem}
+(Section~\ref{sec:products}).  Every plateau of every two-chain search
+sat at exactly the coverage attained by two product rectangles
+$\operatorname{star}(v)\times\operatorname{star}(w)$.  We prove every
+such rectangle is a contiguity domain (Theorem~\ref{thm:prod}), giving
+$\SCst(K)\le\rho(K)-1$ for a rectangle-cover constant $\rho(K)$
+computable by a small integer program (Corollary~\ref{cor:rho}); for
+the simplex boundary $\rho(\partial\Delta^{n+1})=3$, hence
+\[
+\SCst(\partial\Delta^{n+1})\le 2\ \ \text{for all }n\ge1,
+\qquad
+\SCst(\partial\Delta^{n+1})=\TC(S^n)=2\ \ \text{for even }n\ge2,
+\]
+sharp at subdivision level $0$ (Corollary~\ref{cor:spheres}) and
+including, to our knowledge, the first sharp level-$0$ value beyond
+dimension $2$ in this framework ($S^4$).
+\item \textbf{Certificates, not claims} (Section~\ref{sec:repro}).
+Every reported system is replayed deterministically and re-audited by
+an independent checker that rebuilds each triangulation from scratch
+and shares no code with the search; the full certificate set verifies
+in about two minutes on CPU alone, and source and certificates are
+public.
+\end{itemize}
+
+The theorem and the annealer are complementary, and
+Section~\ref{sec:results} keeps them in tension: on the cube boundary,
+where $\rho=8$ caps every product cover at $\SCst\le7$, the annealer
+still finds the optimum three domains; on the dodecahedron boundary a
+$20$-hour ladder campaign finds no cover at all; and the exact
+level-$0$ values on odd-dimensional spheres remain open
+(Conjecture~\ref{conj}).  The results, old and new, are collected in
+Table~\ref{tab:records}.
 
 \section{Background and notation}\label{sec:back}
 
@@ -330,16 +399,13 @@ are exactly those attained by suitable two-rectangle constructions.
 \toprule
 target $K\times K$ & $k$ & best coverage & wall time & outcome \\
 \midrule
-$\partial\Delta^2$ (circle, $18$ facets)
-  & 2--3 & $18/18$ & $<15$\,s
+$\partial\Delta^2$ ($18$ facets)
+  & 2 & $18/18$ & $<15$\,s
   & verified, $\SCst\le 2$ ($=1$ known \cite{OLGB21})\\
 \midrule
-wedge $S^1\vee S^1$ ($50$ facets)
+$S^1\vee S^1$ ($50$ facets)
   & 3 & $50/50$, epoch $25$ & $41$\,s
   & verified $18+16+16$, $\SCst=2$\\
-wedge
-  & 2 & $39/50$ & plateau, $15$\,min
-  & no $2$-domain cover\\
 \midrule
 $\partial\Delta^3$ (S$^2$, $96$)
   & 3 & $96/96$, epoch 1 & $22$\,s
@@ -639,6 +705,7 @@ $2$-sphere and $4$-sphere values match $\TC(S^2)=\TC(S^4)=2$ given by
 Farber's theorem \cite{F03}, independently certifying sharpness at
 subdivision level~$0$.
 
+
 \emph{Warm-start rung ladders extend the search to harder complexes.}
 The cube boundary certificate of Table~\ref{tab:annealer} was not reached
 in a single run: a cold \textsc{ChainAnneal} covered $662$ of $864$ facets
@@ -756,6 +823,7 @@ as coverage rises.}
 \label{tab:dodeca}
 \end{table}
 
+
 \section{Certificates, auditing, reproduction}\label{sec:repro}
 
 Randomized search output is usually taken on trust; none of the numbers
@@ -778,17 +846,23 @@ facets and every planner map are generated from data by a single
 generator program; none of the tables in this paper is hand-typed from
 anything but audited output.
 
-\paragraph{Repository.}  All of it---every domain and every planner map
-of every certified system reported here (as \texttt{cover.txt},
-\texttt{planners.txt} and \texttt{summary.json} per run, and as
-readable certificate documents), the annealer, the certificate builder,
-the independent auditor, and the reproduction script---is available at
+\paragraph{Repositories.}  The project is split across two public repositories.
+The \emph{source code}---the chain-first annealer, the certificate builder,
+the independent auditor, and the reproduction script---lives at
+\begin{center}
+\url{https://github.com/MiguelPerezI/chain-first-annealer}
+\end{center}
+The \emph{certificates}---every domain and every planner map of every
+certified system reported here (as \texttt{cover.txt}, \texttt{planners.txt}
+and \texttt{summary.json} per run, and as readable certificate documents)---are
+archived separately at
 \begin{center}
 \url{https://github.com/MiguelPerezI/simplicial-complexity-certificates}
 \end{center}
 A reader who wishes to verify, say, the $4$-sphere cover by hand can
 open \texttt{cover.txt} and \texttt{planners.txt} in
-\texttt{results/s4\_k3\_v2/}, or run the auditor directly:\\
+\texttt{results/s4\_k3\_v2/} of the certificates repository, or run the
+auditor (from the source repository) directly:\\
 \texttt{python3 independent\_check.py results/s4\_k3\_v2}.
 
 \section{Concluding remarks}\label{sec:concl}

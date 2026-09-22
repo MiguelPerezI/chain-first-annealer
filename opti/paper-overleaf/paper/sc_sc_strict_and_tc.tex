@@ -1,0 +1,653 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+
+\setcounter{MaxMatrixCols}{30}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\title{SC, $\mathrm{SC}_{\mathrm{strict}}$, and TC:\\
+\large Formal definitions, how they relate, and the rules of the game}
+\author{Notes based on arXiv:2008.13290v2\\
+\small ``A randomized greedy algorithm for piecewise linear motion planning''\\
+\small C. Ortiz, A. Lara, J. Gonz\'alez, A. Borat}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\section{The three notions, formally}
+
+\paragraph{TC --- Farber's topological complexity.}
+For a space $X$, let $e : X^I \to X \times X$ be the end-point evaluation map on the
+free path space. Then (in the reduced convention, so contractible spaces have
+$\mathrm{TC}=0$):
+\begin{multline*}
+\mathrm{TC}(X)+1
+= \min\bigl\{n : \text{there is an open cover }
+X\times X = U_1\cup\cdots\cup U_n\\
+\text{such that } e \text{ admits a continuous section over every } U_i\bigr\}.
+\end{multline*}
+Equivalently --- and this is the bridge to everything else ---
+$\mathrm{TC}(X) = D(p_1, p_2)$, the \emph{homotopic distance} of the two
+projections $p_1, p_2 : X\times X \to X$.
+
+\paragraph{$\mathrm{SC}_{\mathrm{strict}}$ --- strict simplicial complexity.}
+For a finite simplicial complex $K$: a \emph{piecewise linear motion planner} on a
+subcomplex $J \subseteq K\times K$ is a chain of simplicial maps
+\[
+\varphi_0, \varphi_1, \dots, \varphi_c : J \longrightarrow K, \qquad c \geq 1,
+\]
+such that each $\varphi_i$ is \emph{contiguous} to $\varphi_{i+1}$ (the simplicial
+analogue of homotopy), $\varphi_0$ is the restriction of the first projection,
+and $\varphi_c$ is the restriction of the second projection. Then
+\[
+\mathrm{SC}_{\mathrm{strict}}(K)
+= \min\bigl\{\text{number of such planners whose domains cover } K\times K\bigr\} - 1.
+\]
+In other words,
+$\mathrm{SC}_{\mathrm{strict}}(K) = \mathrm{SD}(\pi_1,\pi_2)$, the
+\emph{contiguity distance} of the two simplicial projections.
+
+\paragraph{SC --- simplicial complexity.}
+The strict version is computed on whatever triangulation $K\times K$ one happens
+to have, so it depends on the mesh. To obtain a genuine invariant of the
+underlying space, one takes iterated barycentric subdivisions and passes to the
+limit:
+\[
+\mathrm{SC}(K) = \lim_{b\to\infty} \mathrm{SC}^{\,b}_{\mathrm{strict}}(K),
+\]
+where $\mathrm{SC}^{\,b}_{\mathrm{strict}}$ is computed on
+$\mathrm{Sd}^{\,b}(K\times K)$.
+
+\section{The building blocks}
+
+\subsection{Simplicial maps}
+
+\begin{definition}[Simplicial map]
+Let $K$ and $L$ be simplicial complexes with vertex sets $V_K$, $V_L$. A map
+$\varphi : K \to L$ is \emph{simplicial} if it sends vertices to vertices,
+$\varphi(v) \in V_L$ for every $v \in V_K$, and for every simplex
+$\sigma = \{v_0, \dots, v_k\}$ of $K$ the image
+$\varphi(\sigma) = \{\varphi(v_0), \dots, \varphi(v_k)\}$ (repetitions allowed)
+spans a simplex of $L$. A simplicial map extends linearly to a continuous map
+$\lVert\varphi\rVert : \lVert K\rVert \to \lVert L\rVert$,
+\[
+\Bigl(\textstyle\sum_{v\in\sigma} t_v\, v\Bigr) \;\longmapsto\;
+\Bigl(\textstyle\sum_{v\in\sigma} t_v\, \varphi(v)\Bigr),
+\]
+uniquely determined by the images of the vertices, piecewise linearly.
+\end{definition}
+
+\paragraph{Very, very simple terms.}
+A simplicial map is a \emph{corner-renaming rule with a promise}: each corner of
+the board gets renamed to a corner of the target board, and the rule promises
+that every whole tile lands inside a whole tile (no tile gets torn apart or sent
+across a crack). You only need to say where the \emph{corners} go --- the rule
+then fills in the interior of each tile automatically, by stretching it
+linearly.
+
+\subsection{Chains of simplicial maps}
+
+\begin{definition}[Contiguity chain]
+A \emph{chain of simplicial maps} from $J$ to $K$ is a finite sequence
+\[
+\varphi_0, \varphi_1, \dots, \varphi_c : J \longrightarrow K, \qquad c \geq 1,
+\]
+where consecutive maps are \emph{contiguous} (Definition
+\ref{def:contiguity} below). The number $c$ is the \emph{length} of the chain.
+A chain is a \emph{piecewise linear motion planner} on $J$ when
+$\varphi_0 = \pi_1|_J$ and $\varphi_c = \pi_2|_J$, the restrictions of the two
+projections of the product.
+\end{definition}
+
+\paragraph{Very, very simple terms.}
+A chain is a \emph{flip-book}: the same board drawn $c+1$ times, where each
+drawing differs from the previous one by only a tiny, legal tweak. The first
+page says ``stay where you started''; the last page says ``arrive where you
+wanted to go''; flipping the pages \emph{is} the motion plan.
+
+\subsection{Contiguity}
+
+\begin{definition}[Contiguity, arXiv:2008.13290, Definition 2.3]
+\label{def:contiguity}
+Two simplicial maps $\varphi, \varphi' : J \to K$ are \emph{1-contiguous} if
+\[
+\varphi(\sigma) \cup \varphi'(\sigma)
+\]
+spans a simplex of $K$ for every facet (maximal simplex) $\sigma$ of $J$. They
+are \emph{$c$-contiguous} if there exists a chain
+$\varphi_0, \varphi_1, \dots, \varphi_c : J \to K$ with $\varphi_0 = \varphi$,
+$\varphi_c = \varphi'$, and each pair $\varphi_{i-1}, \varphi_i$ 1-contiguous
+for $i \in \{1, \dots, c\}$. Contiguity generates an equivalence relation
+(``same contiguity class''), and it is the simplicial analogue of homotopy:
+contiguous maps have homotopic geometric realizations.
+\end{definition}
+
+\paragraph{Very, very simple terms.}
+Two corner-renaming rules are \emph{neighbors} if, on every tile, the two
+renamings together land inside one and the same tile --- the two recipes are so
+close that a single tile can hold both of their answers at once. ``Contiguous''
+then means: \emph{you can walk from one recipe to the other through a sequence
+of neighbors}, one tiny tweak per step. It is the discrete, tile-respecting
+version of continuously deforming one motion into another.
+
+\subsection{The star of a vertex}
+
+\begin{definition}[Star]
+Let $K$ be a complex and $w$ a vertex of $K$. The \emph{(closed) star} of $w$
+is the set of simplices containing $w$,
+\[
+\operatorname{star}(w) \;=\; \{\, \sigma \in K : w \in \sigma \,\},
+\]
+a subcomplex of $K$; its realization is the union of the open realized
+simplices $\langle\sigma\rangle$ with $w \in \sigma$, an open neighbourhood of
+$w$ in $\lVert K\rVert$. Algorithmically (as in the companion code,
+\texttt{star\_cover.py}), $\operatorname{star}(w)$ is handled as the set of
+\emph{facets} of $K$ containing $w$.
+\end{definition}
+
+\paragraph{Very, very simple terms.}
+The star of a corner $w$ is its \emph{personal spotlight}: all the tiles that
+touch $w$, together with their corners, edges, and faces. Stand on $w$ and
+everything your lamp illuminates is $\operatorname{star}(w)$.
+
+\subsection{Contiguity domains}
+
+The paper's algorithm covers $K\times K$ by subcomplexes on which the two
+projections are contiguous. The companion repo works with the following two
+explicit shapes of such domains.
+
+\begin{definition}[Contiguity domain of a chain]
+\label{def:cdom}
+In the chain-first formulation of the companion code (\texttt{gpu\_sc.py}), a
+chain of vertex maps
+$\Phi = (\pi_1 = \varphi_0, \dots, \varphi_c = \pi_2)$ defined on the
+\emph{whole} vertex grid of $L = K\times K$ certifies, for free, the
+\emph{contiguity domain}
+\[
+D(\Phi) \;=\; \bigl\{\, \sigma \in F_L :
+\varphi_i(\sigma) \cup \varphi_{i+1}(\sigma) \text{ spans a simplex of } K
+\text{ for all } i \,\bigr\},
+\]
+the set of facets of $L$ on which consecutive pages of the flip-book really are
+1-contiguous. A $k$-tuple of chains whose domains $D(\Phi_1), \dots, D(\Phi_k)$
+cover $F_L$ is a system of $k$ piecewise linear motion planners.
+\end{definition}
+
+\begin{definition}[Product (rectangle) domains]
+\label{def:rect}
+For vertices $v, w$ of $K$, the subcomplex
+\[
+D(v, w) \;=\; \operatorname{star}(v) \times \operatorname{star}(w)
+\]
+of $L$ (all staircase facets over pairs of facets $(s,t)$ with $v \in s$,
+$w \in t$) is a contiguity domain: on a facet $\sigma$ over $(s,t)$,
+\[
+\pi_1 \;\sim\; c_v \;\sim\; c_w \;\sim\; \pi_2
+\]
+($c_x$ the constant map to $x$), because
+$\pi_1(\sigma) \cup c_v(\sigma) = s$ and
+$c_w(\sigma) \cup \pi_2(\sigma) = t$ are simplices, while
+$c_v(\sigma) \cup c_w(\sigma) = \{v,w\}$ is an edge whenever $v \sim w$ in $K$
+(for non-adjacent $v,w$, insert the constant maps along a shortest path).
+Hence
+\[
+\mathrm{SC}_{\mathrm{strict}}(K) \;\leq\; \rho(K) - 1,
+\]
+where $\rho(K)$ is the minimum number of rectangles
+$\operatorname{star}(v)\times\operatorname{star}(w)$ covering all pairs of
+facets of $K$.
+\end{definition}
+
+\paragraph{Very, very simple terms.}
+A contiguity domain is \emph{the zone of the board where one particular
+flip-book actually works}. The chain might be written down for the whole
+board, but its pages are only guaranteed to be neighbors on some of the tiles
+--- those tiles form its domain $D(\Phi)$. The rectangle recipe is a cheap way
+to cook up zones: pick a spotlight around a start corner $v$ and a spotlight
+around a goal corner $w$; inside the pair-of-spotlights zone, ``hold at $v$''
+and ``hold at $w$'' are legal neighbor pages, so the flip-book
+\emph{hold at start $\to$ hold at $v$ $\to$ hold at $w$ $\to$ arrive at goal}
+is always valid there. The rules of the game only require that the players'
+zones, taken together, blanket the entire board.
+
+\section{A simplicial map as a matrix}
+\label{sec:matrix}
+
+In the companion repo a simplicial map $\varphi : L = K\times K \to K$ is
+stored exactly as the paper's Tables~1--5 report it: as a \emph{row of image
+vertices}, one entry per vertex of $L$,
+\[
+\bigl(\varphi(v_0),\, \varphi(v_1),\, \dots, \varphi(v_{n-1})\bigr),
+\]
+and a chain $\Phi = (\varphi_0, \dots, \varphi_c)$ is a
+$(c{+}1) \times n$ \emph{matrix}: one row per page of the flip-book, one column
+per vertex of the product, entry $(i,j) = \varphi_i(v_j)$, first row $=\pi_1$,
+last row $=\pi_2$. Vertex (column) $j$ of the grid is the pair
+$(a,b)$ with $j = a\cdot\mathrm{nv} + b$.
+
+\paragraph{Example (from the repo's experiments).}
+For $K = \partial\Delta^4$ ($\mathrm{nv} = 5$, so $L$ has a
+$5\times 5 = 25$-vertex grid), the chain-first annealer works with chains
+padded to a fixed budget of $c_{\max} = 40$ links (unused trailing pages
+simply repeat $\pi_2$; duplicate pages are trivially contiguous). Below are
+the first two rows, a middle row, the second-to-last row, and the last row
+of one chain of the best $2$-chain state found in the run
+\texttt{results/s3\_k2\_A} (omitted rows replaced by $\vdots$). Its two
+chain domains cover $460$ of the $500$ facets --- whether two chains suffice
+at $b = 0$ remains open; the certified optimum $k = 3$, giving
+$\mathrm{SC}_{\mathrm{strict}}(\partial\Delta^4) \leq 2$, is discussed in
+Section~\ref{sec:anneal}:
+\[
+\scriptsize
+\Phi \;=\;
+\begin{pmatrix}
+0&0&0&0&0&1&1&1&1&1&2&2&2&2&2&3&3&3&3&3&4&4&4&4&4\\
+3&0&0&0&3&1&1&3&3&3&3&4&2&3&3&3&3&3&3&3&4&3&4&3&4\\
+\vdots&&&&&&&&&&&&&&&&&&&&&&&\\
+4&1&4&3&3&2&1&3&3&3&1&1&4&4&4&1&3&3&2&4&3&4&2&1&1\\
+\vdots&&&&&&&&&&&&&&&&&&&&&&&\\
+4&1&4&3&4&0&1&4&4&3&4&4&4&3&4&4&1&4&3&4&0&1&4&4&4\\
+0&1&2&3&4&0&1&2&3&4&0&1&2&3&4&0&1&2&3&4&0&1&2&3&4
+\end{pmatrix}
+\]
+The first row is exactly $\pi_1$ (the grid vertex $(a,b)$ maps to $a$), the
+last row is exactly $\pi_2$ (it maps to $b$), and consecutive rows are
+1-contiguous precisely on the facets of the domain $D(\Phi)$ of
+Definition~\ref{def:cdom}. Contiguity between rows $i$ and $i+1$ on a facet
+$\sigma$ is a one-line check: read the $|\sigma|$ columns of $\sigma$ in both
+rows and verify that all the resulting vertex labels together span a simplex of
+$K$ (for $\partial\Delta^4$: each of the $500$ facets has $7$ grid vertices,
+so at most $14$ labels, which must all lie in one of the five facets of $K$).
+
+\paragraph{Very, very simple terms.}
+The matrix is the \emph{score sheet} of the flip-book: each page of the book is
+one line of the sheet, and each column is one intersection of the board
+(start-corner, goal-corner). Read down a column and you watch that particular
+start-goal pair travel from ``stay at the start'' to ``arrive at the goal'';
+read across a row and you see one full page of the book.
+
+\section{Building $K \times K$}
+\label{sec:product}
+
+\paragraph{Formally.}
+Fix a linear order on $V_K$ (the paper works in the category of \emph{ordered}
+complexes). The \emph{ordered product} $L = K\times K$ has vertex set
+$V_L = V_K \times V_K$ --- the \emph{grid} --- with grid vertex $(a,b)$ stored
+as the id $a\cdot\mathrm{nv}+b$, and a set
+$\{(a_0,b_0), \dots, (a_k,b_k)\}$ of distinct grid vertices (ordered so that
+$a_0 \leq \cdots \leq a_k$ and $b_0 \leq \cdots \leq b_k$) is a simplex of $L$
+whenever $\{a_0,\dots,a_k\}$ and $\{b_0,\dots,b_k\}$ are simplices of $K$. The
+realization of the ordered product is homeomorphic to
+$\lVert K\rVert \times \lVert K\rVert$.
+
+Combinatorially, $L$ is generated pair-of-facets by pair-of-facets: for each
+pair of facets $(s, t)$ of $K$, of dimensions $p$ and $q$, the product prism
+$\lVert s\rVert \times \lVert t\rVert$ is cut into
+$\binom{p+q}{p}$ simplices, one per \emph{monotone staircase path} from
+$(0,0)$ to $(p,q)$ in the $p\times q$ grid: each step of the path is
+``advance in $s$'' or ``advance in $t$'', and the simplex's vertices are the
+grid corners $(a_i, b_i)$ the path visits. This is the staircase (standard
+minimal) triangulation used by the companion code. For $K = \partial\Delta^4$:
+$25$ grid vertices and
+$(n{+}1)^2\binom{2n-2}{n-1} = 25\cdot\binom{6}{3} = 500$ facets.
+
+\paragraph{Very, very simple terms.}
+Photocopy your board twice and lay the two copies at right angles: one copy
+answers ``\emph{where does the token start?}'', the other ``\emph{where does
+it want to go?}''. Every choice of a start tile and a goal tile gives a little
+box of the new board --- the big board's tiles are \emph{pairs of tiles}. Each
+box would be square-ish, but the game only understands triangles, so every box
+is pre-cut along a fixed staircase pattern into little triangle tiles. The
+whole big board is the board of all possible (start, goal) situations, and the
+two projections are the two questions: $\pi_1$ reads off the start,
+$\pi_2$ reads off the goal.
+
+\section{Algorithm 1: \emph{Chain Anneal}}
+\label{sec:anneal}
+
+Sections 2--4 say \emph{what} a system of piecewise linear motion planners
+is. The companion repo (\texttt{gpu\_sc.py}) \emph{finds} such systems by
+randomized search, and its main routine is Algorithm~1, \emph{Chain Anneal}.
+This section walks through it in detail: every notion it needs appears first
+formally, then in very very simple terms as a breather.
+
+\subsection{The problem it solves: from covering to unconstrained search}
+
+\paragraph{Formally.}
+Definition~\ref{def:cdom} has a converse that turns the covering problem
+into free-form optimization. For \emph{any} chain of vertex maps
+$\Phi = (\pi_1 = \varphi_0, \varphi_1, \dots, \varphi_c = \pi_2)$ defined on
+\emph{all} of $V_L$, the set $D(\Phi)$ is a contiguity subcomplex with
+certificate $\Phi|_{V(D(\Phi))}$; conversely, \emph{every} contiguity
+subcomplex $J \subseteq L$ is contained in $D(\Phi)$ for some such chain
+(extend $J$'s chain arbitrarily outside $V_J$). Consequently
+\[
+\mathrm{SC}_{\mathrm{strict}}(K) + 1
+= \min\bigl\{ k : \exists\; \Phi^1, \dots, \Phi^k
+\text{ with } D(\Phi^1) \cup \cdots \cup D(\Phi^k) = F_L \bigr\},
+\]
+so the covering problem becomes an \emph{unconstrained} combinatorial
+optimization over $k$-tuples of whole-grid chains, with objective
+$\operatorname{cov}(\Phi^1, \dots, \Phi^k) =
+\bigl|\bigcup_j D(\Phi^j)\bigr|$: no subcomplex bookkeeping, no facet-by-facet
+growth search.
+
+\paragraph{Very, very simple terms.}
+The rectangle recipe of Definition~\ref{def:rect} first picks zones and then
+writes a flip-book inside each zone. Chain Anneal flips the order: write
+whole-board flip-books directly, and let each book \emph{light up} exactly
+the tiles where its pages genuinely are neighbors. The task is now simply:
+pick $k$ flip-books whose lit tiles, together, blanket the whole board.
+
+\subsection{Energy: the score the search tries to lower}
+
+\begin{definition}[Link-violation count, energy, coverage]
+\label{def:energy}
+For a chain $\Phi = (\varphi_0, \dots, \varphi_c)$ on the full grid and a
+facet $\sigma \in F_L$, its \emph{link-violation count} (``bad count'') is
+\[
+b_\Phi(\sigma) = \#\bigl\{ i \in \{0, \dots, c-1\} :
+\varphi_i(\sigma) \cup \varphi_{i+1}(\sigma)
+\text{ does not span a simplex of } K \bigr\},
+\]
+so $\sigma \in D(\Phi)$ if and only if $b_\Phi(\sigma) = 0$.
+For a $k$-tuple $(\Phi^1, \dots, \Phi^k)$, facet weights $w_\sigma \geq 1$, a
+slope $\beta \geq 0$, and a cleanliness weight $\gamma \geq 0$, the
+\emph{energy} is
+\[
+E = \sum_{\sigma} w_\sigma\,
+\operatorname{pen}\bigl(\textstyle\min_j b_{\Phi^j}(\sigma)\bigr)
++ \gamma \sum_{j,\sigma} b_{\Phi^j}(\sigma),
+\qquad
+\operatorname{pen}(0) = 0,\quad \operatorname{pen}(b) = 1 + \beta b,
+\]
+and the \emph{coverage} is the unweighted count that decides the
+``best-so-far'' state:
+\[
+\operatorname{cov} = \#\bigl\{ \sigma : \textstyle\min_j b_{\Phi^j}(\sigma) = 0 \bigr\}.
+\]
+\end{definition}
+
+\paragraph{Very, very simple terms.}
+Each flip-book collects \emph{demerits} on each tile --- one demerit per
+page-turn that would tear that tile. A tile is \emph{lit} when at least one
+book has \emph{zero} demerits on it. The energy is the weighted demerit
+bill: the slope $\beta$ charges extra for tiles torn at many page-turns, and
+$\gamma$ nudges every book to stay tidy even on tiles a teammate is already
+lighting (books that slouch off-duty tend to wander into useless shapes).
+Coverage --- the number of lit tiles --- is the number we actually care
+about; energy is just how the search \emph{feels its way} toward more lit
+tiles.
+
+\subsection{The statistical ingredients}
+
+\begin{definition}[Random walk; simulated annealing; Metropolis rule]
+\label{def:sa}
+A (discrete) \emph{random walk} on a finite state space $\mathcal{X}$ moves
+by repeatedly drawing a \emph{proposal} from a fixed move distribution and
+deciding whether to take it. \emph{Simulated annealing} is a random walk
+driven by an energy $E$ and a \emph{temperature} $T > 0$: a proposed move
+changing the energy by $\Delta E$ is accepted
+\[
+\text{always if } \Delta E \leq 0,
+\qquad
+\text{otherwise with probability } \exp(-\Delta E / T)
+\quad\text{(the \emph{Metropolis rule}).}
+\]
+The temperature follows a \emph{cooling schedule}; here, geometric per
+epoch: at step $t$ of $\mathrm{iters}$,
+$T(t) = T_0\,\bigl(T_1 / T_0\bigr)^{t/\mathrm{iters}}$.
+As $T \to 0$ the rule degenerates to pure \emph{greedy} descent (only
+$\Delta E \leq 0$ moves survive); at high $T$ almost everything is accepted
+and the walk is nearly free.
+\end{definition}
+
+\paragraph{Very, very simple terms.}
+Imagine a marble on a hilly tray whose low points mark the good answers.
+Shaking the tray hard (high $T$) lets the marble jump \emph{out} of shallow
+potholes and explore; shaking ever more gently (cooling) eventually lets it
+settle into a deep hollow. The Metropolis rule is the shaking policy: downhill
+rolls are always allowed, uphill rolls are allowed with a probability that
+shrinks as the shaking dies down --- larger uphill steps are always harder to
+forgive.
+
+\begin{definition}[Local minimum]
+A state where \emph{every} legal move has $\Delta E > 0$ is a
+\emph{local minimum}.
+\end{definition}
+
+\paragraph{Very, very simple terms.}
+A pothole: every direction out of it leads uphill, so a purely greedy walker
+gets stuck; the hot phase of annealing exists precisely to climb out of
+these.
+
+\begin{definition}[Population and tournament selection]
+\label{def:pop}
+Chain Anneal runs a \emph{population} of $S$ independent walkers in
+parallel. Every second epoch, a \emph{tournament} step overwrites the
+weakest quarter of the population (ranked by best-ever coverage) with copies
+of the best states ever reached by the elite, and re-seeds a few slots with
+fresh random chains.
+\end{definition}
+
+\paragraph{Very, very simple terms.}
+A whole class works on the same puzzle at once. Every so often the students
+who are stuck erase their boards and copy the best homework in the room ---
+and a few desks are handed clean paper, so the class keeps generating new
+ideas instead of all converging to the same halfway answer.
+
+\begin{definition}[Guided local search (optional)]
+\label{def:gls}
+Optionally, after each epoch the weight of every facet left uncovered by the
+best state is raised, $w_\sigma \leftarrow w_\sigma + \mathrm{guide}$
+(capped at $\mathrm{guide\_max}$), and all weights decay back toward~1,
+$w_\sigma \leftarrow 1 + 0.7\,(w_\sigma - 1)$. Coverage is always scored
+unweighted, so the criterion for success never moves.
+\end{definition}
+
+\paragraph{Very, very simple terms.}
+The referee keeps raising the bounty on the tiles nobody manages to light,
+while bounties on lit tiles relax toward normal. The walkers are not
+\emph{told} what to do --- the stubborn tiles simply become too expensive to
+leave uncovered.
+
+\subsection{The algorithm, step by step}
+
+\noindent\textbf{Algorithm 1 (\emph{Chain Anneal}).}\;
+\textbf{Input:} the complex $K$ (hence $L = K\times K$); the number of
+chains $k$; a page budget $c_{\max}$; a population size $S$; a move count
+$\mathrm{iters}$ per epoch; temperatures $T_0 > T_1$; energy parameters
+$\beta$, $\gamma$; move-mix parameters $p_{\mathrm{copy}}$, $p_{\mathrm{track}}$;
+optionally $\mathrm{guide} > 0$.
+
+\begin{enumerate}[leftmargin=1.8em, itemsep=3pt]
+  \item \textbf{Initialize.} Each of the $S$ walkers holds $k$ chains of
+  $c_{\max} + 1$ pages. A chain starts as a \emph{sweep}: every page is
+  $\pi_1$, then grid vertices are flipped to their $\pi_2$-images one at a
+  time in a random order, spread over the pages; the last page is $\pi_2$,
+  and leftover pages are copies of $\pi_2$.
+
+  \emph{In plain words:} every walker begins with a naive flip-book that
+  simply relocates one intersection at a time from ``start'' to ``goal'' ---
+  almost certainly tearing tiles all over the board. Duplicate pages are
+  legal and free (identical neighboring pages are trivially contiguous), so
+  the fixed page budget $c_{\max}$ never constrains a shorter chain: it
+  just leaves some pages repeated at the end.
+
+  \item \textbf{Epoch (the anneal).} Each walker, independently and in
+  parallel (one GPU thread per walker), repeats $\mathrm{iters}$ times, at
+  temperature $T$ cooling from $T_0$ to $T_1$:
+  \begin{enumerate}[label=(\alph*), leftmargin=1.8em, itemsep=2pt]
+    \item \emph{Propose a ``track move''.} Pick uniformly at random: a
+    chain $j$; a grid vertex $w$; a block of consecutive interior pages
+    $i_1 \dots i_2$ (length $1$ --- a single page --- with probability
+    $1 - p_{\mathrm{track}}$, else a \emph{track} of length $2$--$8$); and a
+    new value $u \in V_K$ for $\varphi_i(w)$ on the pages of the block (with
+    probability $p_{\mathrm{copy}}$, $u$ is \emph{copied} from the neighbor
+    page $\varphi_{i_1-1}(w)$ or $\varphi_{i_2+1}(w)$; otherwise it is a
+    uniform vertex $\neq$ old). The first page ($= \pi_1$) and last page
+    ($= \pi_2$) are never touched.
+    \item \emph{Score.} Compute $\Delta E$ --- the change the move would
+    cause in the energy of Definition~\ref{def:energy}.
+    \item \emph{Accept or reject} by the Metropolis rule of
+    Definition~\ref{def:sa}.
+    \item \emph{Remember the best.} Whenever the coverage beats the walker's
+    best-ever, snapshot the whole $k$-tuple.
+  \end{enumerate}
+
+  \emph{In plain words:} a move is ``on pages $i_1$ through $i_2$ of book
+  $j$, rename corner $w$ to $u$''. Copy-moves stretch or shrink runs of
+  identical pages (the book duplicates a page and edits the copy), which is
+  how chains grow shorter or longer inside the page budget. Scoring is quick
+  --- see below --- and the Metropolis coin toss decides whether the rename
+  stands.
+
+  \item \textbf{Host round.} After each epoch: the tournament of
+  Definition~\ref{def:pop} (every second epoch) and, if $\mathrm{guide} > 0$,
+  the weight update of Definition~\ref{def:gls}.
+
+  \emph{In plain words:} the teacher collects everyone's best boards, lets
+  the strongest rub off on the weakest, and bumps the bounties on the tiles
+  that are still dark.
+
+  \item \textbf{Stop and certify.} Stop when $\operatorname{cov} = |F_L|$
+  (every tile lit) or when the epoch/time budget runs out. From the best
+  $k$-tuple, compute the domains $D(\Phi^j)$, take the disjoint parts
+  $P_j = D(\Phi^j) \setminus \bigcup_{l < j} D(\Phi^l)$, restrict and shorten
+  each chain with \emph{Reduce} (the paper's Algorithm~2: drop pages
+  redundant on the domain), and verify every contiguity link directly
+  against Definition~\ref{def:contiguity} --- in the repo, additionally by a
+  code-independent auditor (\texttt{independent\_check.py}, exit 0).
+
+  \emph{In plain words:} once the board is blanketed, tidy up the proof:
+  assign each lit tile to its first lighting book, rip out pages that do no
+  work, and have an outside referee re-check that every page-turn is legal.
+\end{enumerate}
+
+\subsection{Why a move costs almost nothing}
+
+Renaming corner $w$ on pages $i_1 \dots i_2$ can only affect the links
+$i_1 - 1 \dots i_2$, and only on facets containing $w$: the star again. So
+$\Delta E$ costs $O(|\operatorname{star}(w)|)$ simplex tests, and each test
+is a single lookup in a precomputed $2^{\mathrm{nv}}$ table indexed by the
+bitmask of the vertex labels --- which is why the GPU sustains millions of
+moves per second per run.
+
+\paragraph{Very, very simple terms.}
+Erasing one name on a few pages only matters for the tiles touching that
+corner, and ``is this label set one of the tiles?'' is answered by a
+precomputed dictionary --- no one ever re-reads the whole book.
+
+\subsection{A real run, and what it proved}
+
+For $K = \partial\Delta^4$, Algorithm~1 with $k = 3$, $c_{\max} = 40$,
+$S = 4096$ walkers, $\mathrm{iters} = 20000$, $T_0 = 0.6 \to T_1 = 0.03$,
+$\beta = 0.05$, $p_{\mathrm{copy}} = 0.5$ (run \texttt{results/s3\_k3\_run1})
+reached \emph{full coverage of all $500$ facets at epoch~2}, in $122$ seconds
+on a Tesla T4. After \emph{Reduce}, the certificate is three planners with
+domains of $252$, $187$, and $61$ facets and chains of $3$, $5$, and $4$
+links --- proving
+\[
+\mathrm{SC}_{\mathrm{strict}}(\partial\Delta^4) \leq 2,
+\qquad\text{so}\qquad
+1 = \mathrm{TC}(S^3) \leq \mathrm{SC}_{\mathrm{strict}}(\partial\Delta^4) \leq 2.
+\]
+The $k = 2$ question at $b = 0$ is open: the best 2-chain state found (the
+run whose chain was displayed in Section~\ref{sec:matrix}) covers $460$ of
+the $500$ facets.
+
+\paragraph{Very, very simple terms.}
+The class found a 3-flip-book blanket of the $\partial\Delta^4$ board in two
+minutes; nobody has yet found a 2-flip-book blanket, and the best try leaves
+forty tiles dark --- maybe it exists, maybe it doesn't, and the annealer has
+(so far) voted ``not found'' rather than ``impossible''.
+
+\section{How they relate}
+
+
+The paper states:
+
+\begin{itemize}
+  \item \textbf{Strict over-estimates TC:}
+  $\;\mathrm{TC}(\lVert K\rVert) \leq \mathrm{SC}_{\mathrm{strict}}(K)$.
+  \item \textbf{Subdivision only helps, never hurts:}
+  $\;\mathrm{SC}_{\mathrm{strict}}^0(K) \geq \mathrm{SC}_{\mathrm{strict}}^1(K)
+  \geq \mathrm{SC}_{\mathrm{strict}}^2(K) \geq \cdots$
+  \item \textbf{The limit is exactly TC} (the main theoretical result:
+  contiguity distance recovers homotopic distance after stabilization):
+  \[
+  \mathrm{SC}^0_{\mathrm{strict}}(K\times K) \;\geq\;
+  \mathrm{SC}^1_{\mathrm{strict}}(K\times K) \;\geq\;
+  \cdots \;\geq\;
+  \mathrm{SC}(K) \;=\; \mathrm{TC}(\lVert K\rVert).
+  \]
+\end{itemize}
+
+Notable empirical point: for the examples on which the randomized algorithm was
+run, the optimal covering was often found already at $b = 0$ --- no subdivision
+needed at all (e.g.\ $\mathrm{SC}^0_{\mathrm{strict}}(\partial\Delta^2) = 1$).
+
+\section{Very, very simple terms}
+
+\begin{itemize}
+  \item \textbf{TC:} ``How many different \emph{rulebooks} does a robot need so
+  that, for \emph{every} start--goal pair, one rulebook tells it how to smoothly
+  move from start to goal?'' The rulebooks may use any continuous motion
+  whatsoever --- perfectly flexible.
+  \item \textbf{$\mathrm{SC}_{\mathrm{strict}}$:} Same question, but now the
+  world is made of actual little triangles (a mesh), and every motion in a
+  rulebook must be built from straight-line moves glued along that fixed mesh.
+  That is a stricter demand, so one may need \emph{more} rulebooks --- how many
+  more depends on how coarse the mesh is.
+  \item \textbf{SC:} Chop every triangle of the mesh into smaller and smaller
+  triangles (barycentric subdivision). With a finer mesh one can write finer
+  rulebooks, so the count drops. Keep chopping forever, and the count bottoms
+  out \emph{exactly} at TC: the mesh stops mattering; only the shape of the
+  space matters.
+\end{itemize}
+
+\section{The rules of the game}
+
+Imagine a board game:
+
+\begin{enumerate}
+  \item \textbf{The board} is a map made of triangular tiles. A token sits on a
+  \emph{Start} tile and wants to reach a \emph{Goal} tile.
+  \item A \textbf{move card} is a recipe that says: ``for every position pair
+  (start, goal) in my zone of the board, here is a path of tile-to-tile hops
+  from start to goal.'' Every start--goal pair of the board must be covered by
+  at least one card.
+  \item \textbf{The catch:} a card's path must \emph{begin by holding the token
+  on its Start tile} and \emph{end by delivering it to its Goal tile}, and the
+  recipe may only morph from ``hold at start'' to ``deliver to goal'' through
+  legal steps in which each step barely changes the recipe (contiguous steps ---
+  the discrete version of ``deform it smoothly'').
+  \item \textbf{TC-rule:} cards may use any smooth, freeform movement across the
+  board. The minimal number of cards needed is $\mathrm{TC}$.
+  \item \textbf{$\mathrm{SC}_{\mathrm{strict}}$-rule:} cards may only move along
+  the printed tile lines --- no cutting corners. The minimal number of cards is
+  $\mathrm{SC}_{\mathrm{strict}}$. Since this is a harder game, one needs at
+  least as many cards as in the TC-game:
+  $\mathrm{TC} \leq \mathrm{SC}_{\mathrm{strict}}$.
+  \item \textbf{The refinement move:} once per round, the board may be redrawn,
+  cutting every tile into smaller tiles. Finer tiles $=$ more legal paths $=$
+  fewer cards needed:
+  $\mathrm{SC}_{\mathrm{strict}}^0 \geq \mathrm{SC}_{\mathrm{strict}}^1 \geq \cdots$
+  \item \textbf{The guarantee printed on the box:} no matter what board the game
+  started with, refining long enough makes the card count settle down and
+  \emph{equal the TC count exactly}: $\mathrm{SC} = \mathrm{TC}$.
+\end{enumerate}
+
+\medskip
+\noindent\textbf{In one sentence:} \emph{TC is the ideal game,
+$\mathrm{SC}_{\mathrm{strict}}$ is the game as played on one fixed board, and
+SC is the game played on ever-finer boards --- which the paper proves is
+secretly the same ideal game.}
+
+\end{document}
