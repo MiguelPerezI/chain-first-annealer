@@ -1,0 +1,27 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=5234
+  seeded population from results/klein_cold666_seed_999_1/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best 1196.0/1536  top10 [1196, 1196, 1196, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 714  now-median 709     36.2s     0.568 Mmoves/s
+  epoch   2: best 1197.0/1536  top10 [1197, 1196, 1196, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 720  now-median 698     67.3s     0.611 Mmoves/s
+  epoch   3: best 1197.0/1536  top10 [1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1166     98.7s     0.626 Mmoves/s
+  epoch   4: best 1197.0/1536  top10 [1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1138    130.0s     0.633 Mmoves/s
+  epoch   5: best 1197.0/1536  top10 [1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1128    161.5s     0.637 Mmoves/s
+  epoch   6: best 1197.0/1536  top10 [1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1101    193.0s     0.640 Mmoves/s
+  epoch   7: best 1197.0/1536  top10 [1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1097    224.7s     0.641 Mmoves/s
+  epoch   8: best 1197.0/1536  top10 [1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1076    256.3s     0.642 Mmoves/s
+  epoch   9: best 1197.0/1536  top10 [1197, 1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1072    288.0s     0.643 Mmoves/s
+  epoch  10: best 1197.0/1536  top10 [1197, 1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1056    319.6s     0.644 Mmoves/s
+  epoch  11: best 1197.0/1536  top10 [1197, 1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1048    351.3s     0.645 Mmoves/s
+  epoch  12: best 1197.0/1536  top10 [1197, 1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1037    382.9s     0.645 Mmoves/s
+  epoch  13: best 1197.0/1536  top10 [1197, 1197, 1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1036    414.7s     0.646 Mmoves/s
+  epoch  14: best 1197.0/1536  top10 [1197, 1197, 1197, 1197, 1196, 1196, 1196, 1196, 1196, 1196]  median 1195  now-median 1026    446.3s     0.646 Mmoves/s
+  epoch  15: best 1197.0/1536  top10 [1197, 1197, 1197, 1197, 1197, 1197, 1196, 1196, 1196, 1196]  median 1195  now-median 1026    477.9s     0.646 Mmoves/s
+  epoch  16: best 1197.0/1536  top10 [1197, 1197, 1197, 1197, 1197, 1197, 1196, 1196, 1196, 1196]  median 1195  now-median 1019    509.6s     0.647 Mmoves/s
+  epoch  17: best 1198.0/1536  top10 [1198, 1197, 1197, 1197, 1197, 1197, 1197, 1197, 1196, 1196]  median 1195  now-median 1023    541.3s     0.647 Mmoves/s
+  epoch  18: best 1198.0/1536  top10 [1198, 1197, 1197, 1197, 1197, 1197, 1197, 1197, 1196, 1196]  median 1195  now-median 1018    573.0s     0.647 Mmoves/s
+  epoch  19: best 1198.0/1536  top10 [1198, 1197, 1197, 1197, 1197, 1197, 1197, 1197, 1197, 1196]  median 1195  now-median 1023    604.7s     0.647 Mmoves/s
+  time limit reached
+best coverage 1198/1536  domain sizes [287, 294, 291, 276, 247]  time 608.5s  kernel 601.3s  moves 3.89e+08
+NOT a covering: 338 facets uncovered
+wrote results/klein_cold666_seed_999_2/summary.json (partial)

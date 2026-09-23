@@ -1,0 +1,15 @@
+=== gpu_sc chain-first annealer ===  K=Möbius band (5 vertices, 5 triangles, minimal & unique)  |F_L|=150  grid=25  k=3 cmax=40 S=4096 iters=5000  T0=1.2 T1=0.05  beta=1.0 gamma=0.5 mu=0.5 ptrack=0.5  guide=1.0/(max 4.0)  seed=3001
+  seeded population from results/mobius_k5/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  134.0/150  top10 [134, 134, 133, 133, 133, 133, 133, 133, 133, 133]  median 122  now-median 120     21.3s     0.963 Mmoves/s
+  epoch   2: best  137.0/150  top10 [137, 136, 135, 135, 135, 135, 134, 134, 134, 134]  median 127  now-median 126     31.8s     1.291 Mmoves/s
+  epoch   3: best  144.0/150  top10 [144, 144, 143, 142, 141, 141, 141, 139, 139, 138]  median 131  now-median 131     38.6s     1.599 Mmoves/s
+  epoch   4: best  146.0/150  top10 [146, 145, 145, 145, 144, 144, 144, 144, 144, 144]  median 132  now-median 132     45.3s     1.815 Mmoves/s
+  epoch   5: best  146.0/150  top10 [146, 146, 146, 146, 146, 146, 146, 146, 146, 146]  median 133  now-median 133     52.1s     1.976 Mmoves/s
+  epoch   6: best  147.0/150  top10 [147, 147, 147, 146, 146, 146, 146, 146, 146, 146]  median 133  now-median 133     58.8s     2.100 Mmoves/s
+  epoch   7: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 146, 146, 146, 146]  median 134  now-median 134     65.5s     2.199 Mmoves/s
+  epoch   8: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 134  now-median 134     72.3s     2.279 Mmoves/s
+  epoch   9: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 135  now-median 135     79.0s     2.346 Mmoves/s
+  epoch  10: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 135  now-median 135     85.7s     2.401 Mmoves/s
+  epoch  11: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 135  now-median 135     92.5s     2.449 Mmoves/s

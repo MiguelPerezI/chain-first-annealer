@@ -1,0 +1,17 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=777
+  seeded population from results/klein_cold666_repro/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best 1176.0/1536  top10 [1176, 1175, 1175, 1175, 1175, 1174, 1174, 1174, 1174, 1174]  median 706  now-median 696     36.2s     0.568 Mmoves/s
+  epoch   2: best 1178.0/1536  top10 [1178, 1177, 1177, 1176, 1176, 1176, 1176, 1175, 1175, 1175]  median 712  now-median 693     67.3s     0.611 Mmoves/s
+  epoch   3: best 1179.0/1536  top10 [1179, 1178, 1178, 1177, 1177, 1177, 1177, 1177, 1177, 1176]  median 1170  now-median 1147     98.7s     0.625 Mmoves/s
+  epoch   4: best 1179.0/1536  top10 [1179, 1179, 1178, 1178, 1177, 1177, 1177, 1177, 1177, 1177]  median 1170  now-median 1130    130.0s     0.633 Mmoves/s
+  epoch   5: best 1179.0/1536  top10 [1179, 1179, 1179, 1178, 1178, 1177, 1177, 1177, 1177, 1177]  median 1170  now-median 1133    161.6s     0.637 Mmoves/s
+  epoch   6: best 1179.0/1536  top10 [1179, 1179, 1179, 1178, 1178, 1177, 1177, 1177, 1177, 1177]  median 1170  now-median 1119    193.1s     0.640 Mmoves/s
+  epoch   7: best 1179.0/1536  top10 [1179, 1179, 1179, 1179, 1179, 1178, 1178, 1178, 1178, 1177]  median 1170  now-median 1120    224.8s     0.641 Mmoves/s
+  epoch   8: best 1179.0/1536  top10 [1179, 1179, 1179, 1179, 1179, 1178, 1178, 1178, 1178, 1178]  median 1170  now-median 1109    256.4s     0.642 Mmoves/s
+  epoch   9: best 1180.0/1536  top10 [1180, 1179, 1179, 1179, 1179, 1179, 1179, 1178, 1178, 1178]  median 1170  now-median 1108    288.1s     0.643 Mmoves/s
+  epoch  10: best 1180.0/1536  top10 [1180, 1179, 1179, 1179, 1179, 1179, 1179, 1178, 1178, 1178]  median 1170  now-median 1096    319.7s     0.644 Mmoves/s
+best coverage 1180/1536  domain sizes [293, 281, 276, 255, 244]  time 323.7s  kernel 318.0s  moves 2.05e+08
+NOT a covering: 356 facets uncovered
+wrote results/klein_rung_next/summary.json (partial)

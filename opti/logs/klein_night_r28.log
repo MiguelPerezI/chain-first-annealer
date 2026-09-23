@@ -1,0 +1,8 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.9 T1=0.02  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=5.0/(max 30.0)  seed=596
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  epoch   1: best  234.0/1536  top10 [234, 234, 234, 232, 230, 230, 230, 229, 229, 229]  median 197  now-median 196     36.2s     0.569 Mmoves/s
+  epoch   2: best  257.0/1536  top10 [257, 250, 248, 246, 246, 245, 245, 245, 245, 244]  median 208  now-median 205     66.9s     0.615 Mmoves/s
+  epoch   3: best  266.0/1536  top10 [266, 263, 263, 261, 261, 260, 259, 259, 259, 259]  median 220  now-median 218     97.8s     0.632 Mmoves/s
+  epoch   4: best  279.0/1536  top10 [279, 278, 277, 275, 275, 274, 273, 272, 272, 271]  median 228  now-median 225    128.6s     0.640 Mmoves/s
+  epoch   5: best  295.0/1536  top10 [295, 292, 290, 290, 289, 289, 288, 287, 287, 286]  median 241  now-median 238    159.5s     0.646 Mmoves/s
+  epoch   6: best  310.0/1536  top10 [310, 308, 308, 307, 306, 306, 305, 304, 303, 302]  median 249  now-median 247    190.4s     0.649 Mmoves/s

@@ -1,0 +1,8 @@
+[try6 s785] === gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=785
+[try6 s785]   seeded population from results/klein_rung2/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+[try6 s785] === gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=785
+[try6 s785]   seeded population from results/klein_rung2/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+[try6 s785]   epoch   1: best 1186.0/1536  top10 [1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186]  median 714  now-median 704     36.2s     0.568 Mmoves/s  [ep 1/1 | vs IN +1 | this epoch +1]
+[try6 s785] best coverage 1186/1536  domain sizes [293, 281, 278, 276, 260]  time 40.0s  kernel 36.0s  moves 2.05e+07
+[try6 s785] NOT a covering: 350 facets uncovered
+[try6 s785] wrote results/klein_rung3/try6_s785/summary.json (partial)

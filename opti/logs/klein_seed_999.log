@@ -1,0 +1,18 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=999
+Traceback (most recent call last):
+  File "/home/ubuntu/Documents/chain-first-annealer/opti/gpu_sc.py", line 1207, in <module>
+    sys.exit(cli())
+             ^^^^^
+  File "/home/ubuntu/Documents/chain-first-annealer/opti/gpu_sc.py", line 1168, in cli
+    init = init_from_summary(P, Path(a.init), a.k, a.cmax, a.S)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/Documents/chain-first-annealer/opti/gpu_sc.py", line 1111, in init_from_summary
+    s = json.loads(path.read_text())
+                   ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'results/klein_seed_999/summary.json'

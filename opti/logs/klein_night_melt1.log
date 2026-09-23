@@ -1,0 +1,12 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=1.2 T1=0.02  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=5.0/(max 30.0)  seed=407
+  seeded population from results/klein_night_melt1/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  epoch   1: best 1175.0/1536  top10 [1175, 1174, 1174, 1174, 1174, 1174, 1174, 1174, 1174, 1174]  median 702  now-median 694     36.5s     0.564 Mmoves/s
+  epoch   2: best 1176.0/1536  top10 [1176, 1176, 1175, 1175, 1174, 1174, 1174, 1174, 1174, 1174]  median 710  now-median 672     67.6s     0.608 Mmoves/s
+  epoch   3: best 1176.0/1536  top10 [1176, 1176, 1175, 1175, 1174, 1174, 1174, 1174, 1174, 1174]  median 1174  now-median 1114     99.1s     0.623 Mmoves/s
+  epoch   4: best 1176.0/1536  top10 [1176, 1176, 1175, 1175, 1174, 1174, 1174, 1174, 1174, 1174]  median 1174  now-median 1083    130.5s     0.631 Mmoves/s
+  epoch   5: best 1176.0/1536  top10 [1176, 1176, 1176, 1175, 1175, 1175, 1175, 1175, 1174, 1174]  median 1174  now-median 1080    162.3s     0.634 Mmoves/s
+  epoch   6: best 1176.0/1536  top10 [1176, 1176, 1176, 1175, 1175, 1175, 1175, 1175, 1174, 1174]  median 1174  now-median 1056    193.9s     0.637 Mmoves/s
+  epoch   7: best 1176.0/1536  top10 [1176, 1176, 1176, 1175, 1175, 1175, 1175, 1175, 1175, 1175]  median 1174  now-median 1057    225.8s     0.638 Mmoves/s
+  epoch   8: best 1176.0/1536  top10 [1176, 1176, 1176, 1175, 1175, 1175, 1175, 1175, 1175, 1175]  median 1174  now-median 1039    257.5s     0.640 Mmoves/s
+  epoch   9: best 1176.0/1536  top10 [1176, 1176, 1176, 1176, 1175, 1175, 1175, 1175, 1175, 1175]  median 1174  now-median 1040    289.3s     0.641 Mmoves/s

@@ -1,0 +1,122 @@
+=== 2026-09-23T07:22:48Z round 1 (remelt from results/klein_night_melt1) TL=600 T0=1.2 seed=407 -> results/klein_night_r1 ===
+best coverage 1176/1536  domain sizes [289, 292, 285, 272, 255]  time 614.1s  kernel 607.0s  moves 1.84e+08
+NOT a covering: 360 facets uncovered
+--- new best: results/klein_night_r1 (1176 > 1174)
+=== 2026-09-23T07:33:04Z round 2 (cold new basin) TL=600 T0=0.9 seed=414 -> results/klein_night_r2 ===
+best coverage 409/1536  domain sizes [112, 87, 76, 113, 119]  time 654.1s  kernel 646.6s  moves 2.05e+08
+NOT a covering: 1127 facets uncovered
+--- no improvement (409 vs best 1176)
+=== 2026-09-23T07:44:00Z round 3 (remelt from results/klein_night_r1) TL=600 T0=1.2 seed=421 -> results/klein_night_r3 ===
+best coverage 1178/1536  domain sizes [274, 289, 285, 287, 258]  time 617.4s  kernel 610.5s  moves 1.84e+08
+NOT a covering: 358 facets uncovered
+--- new best: results/klein_night_r3 (1178 > 1176)
+=== 2026-09-23T07:54:19Z round 4 (cold new basin) TL=600 T0=0.9 seed=428 -> results/klein_night_r4 ===
+best coverage 414/1536  domain sizes [87, 83, 93, 109, 147]  time 654.4s  kernel 647.0s  moves 2.05e+08
+NOT a covering: 1122 facets uncovered
+--- no improvement (414 vs best 1178)
+=== 2026-09-23T08:05:15Z round 5 (remelt from results/klein_night_r3) TL=600 T0=1.2 seed=435 -> results/klein_night_r5 ===
+best coverage 1181/1536  domain sizes [289, 287, 285, 274, 255]  time 617.3s  kernel 610.4s  moves 1.84e+08
+NOT a covering: 355 facets uncovered
+--- new best: results/klein_night_r5 (1181 > 1178)
+=== 2026-09-23T08:15:34Z round 6 (cold new basin) TL=600 T0=0.9 seed=442 -> results/klein_night_r6 ===
+best coverage 409/1536  domain sizes [110, 85, 86, 122, 115]  time 653.3s  kernel 646.3s  moves 2.05e+08
+NOT a covering: 1127 facets uncovered
+--- no improvement (409 vs best 1181)
+=== 2026-09-23T08:26:28Z round 7 (remelt from results/klein_night_r5) TL=600 T0=1.2 seed=449 -> results/klein_night_r7 ===
+best coverage 1183/1536  domain sizes [289, 291, 280, 274, 255]  time 616.4s  kernel 609.9s  moves 1.84e+08
+NOT a covering: 353 facets uncovered
+--- new best: results/klein_night_r7 (1183 > 1181)
+=== 2026-09-23T08:36:47Z round 8 (cold new basin) TL=600 T0=0.9 seed=456 -> results/klein_night_r8 ===
+best coverage 387/1536  domain sizes [109, 122, 95, 85, 101]  time 652.4s  kernel 645.6s  moves 2.05e+08
+NOT a covering: 1149 facets uncovered
+--- no improvement (387 vs best 1183)
+=== 2026-09-23T08:47:40Z round 9 (remelt from results/klein_night_r7) TL=600 T0=1.2 seed=463 -> results/klein_night_r9 ===
+best coverage 1184/1536  domain sizes [291, 289, 280, 276, 255]  time 616.9s  kernel 610.0s  moves 1.84e+08
+NOT a covering: 352 facets uncovered
+--- new best: results/klein_night_r9 (1184 > 1183)
+=== 2026-09-23T08:57:59Z round 10 (cold new basin) TL=600 T0=0.9 seed=470 -> results/klein_night_r10 ===
+best coverage 409/1536  domain sizes [97, 97, 118, 135, 72]  time 652.1s  kernel 645.3s  moves 2.05e+08
+NOT a covering: 1127 facets uncovered
+--- no improvement (409 vs best 1184)
+=== 2026-09-23T09:08:53Z round 11 (remelt from results/klein_night_r9) TL=600 T0=1.2 seed=477 -> results/klein_night_r11 ===
+best coverage 1185/1536  domain sizes [291, 289, 281, 276, 255]  time 616.4s  kernel 610.0s  moves 1.84e+08
+NOT a covering: 351 facets uncovered
+--- new best: results/klein_night_r11 (1185 > 1184)
+=== 2026-09-23T09:19:11Z round 12 (cold new basin) TL=600 T0=0.9 seed=484 -> results/klein_night_r12 ===
+best coverage 410/1536  domain sizes [93, 126, 75, 94, 100]  time 652.7s  kernel 645.7s  moves 2.05e+08
+NOT a covering: 1126 facets uncovered
+--- no improvement (410 vs best 1185)
+=== 2026-09-23T09:30:05Z round 13 (remelt from results/klein_night_r11) TL=600 T0=1.2 seed=491 -> results/klein_night_r13 ===
+best coverage 1186/1536  domain sizes [291, 268, 281, 276, 255]  time 617.4s  kernel 610.5s  moves 1.84e+08
+NOT a covering: 350 facets uncovered
+--- new best: results/klein_night_r13 (1186 > 1185)
+=== 2026-09-23T09:40:24Z round 14 (cold new basin) TL=600 T0=0.9 seed=498 -> results/klein_night_r14 ===
+best coverage 394/1536  domain sizes [72, 119, 106, 85, 121]  time 654.1s  kernel 646.8s  moves 2.05e+08
+NOT a covering: 1142 facets uncovered
+--- no improvement (394 vs best 1186)
+=== 2026-09-23T09:51:20Z round 15 (remelt from results/klein_night_r13) TL=600 T0=1.2 seed=505 -> results/klein_night_r15 ===
+best coverage 1187/1536  domain sizes [291, 269, 276, 268, 255]  time 616.7s  kernel 610.2s  moves 1.84e+08
+NOT a covering: 349 facets uncovered
+--- new best: results/klein_night_r15 (1187 > 1186)
+=== 2026-09-23T10:01:38Z round 16 (cold new basin) TL=600 T0=0.9 seed=512 -> results/klein_night_r16 ===
+best coverage 406/1536  domain sizes [88, 102, 145, 90, 121]  time 653.6s  kernel 646.0s  moves 2.05e+08
+NOT a covering: 1130 facets uncovered
+--- no improvement (406 vs best 1187)
+=== 2026-09-23T10:12:33Z round 17 (remelt from results/klein_night_r15) TL=600 T0=1.2 seed=519 -> results/klein_night_r17 ===
+best coverage 1187/1536  domain sizes [291, 276, 269, 268, 255]  time 618.7s  kernel 612.3s  moves 1.84e+08
+NOT a covering: 349 facets uncovered
+--- no improvement (1187 vs best 1187)
+=== 2026-09-23T10:22:53Z round 18 (cold new basin) TL=600 T0=0.9 seed=526 -> results/klein_night_r18 ===
+best coverage 384/1536  domain sizes [119, 112, 63, 126, 98]  time 653.1s  kernel 645.8s  moves 2.05e+08
+NOT a covering: 1152 facets uncovered
+--- no improvement (384 vs best 1187)
+=== 2026-09-23T10:33:48Z round 19 (remelt from results/klein_night_r15) TL=600 T0=1.2 seed=533 -> results/klein_night_r19 ===
+best coverage 1187/1536  domain sizes [291, 276, 269, 268, 255]  time 617.3s  kernel 610.7s  moves 1.84e+08
+NOT a covering: 349 facets uncovered
+--- no improvement (1187 vs best 1187)
+=== 2026-09-23T10:44:07Z round 20 (cold new basin) TL=600 T0=0.9 seed=540 -> results/klein_night_r20 ===
+best coverage 394/1536  domain sizes [105, 99, 98, 121, 104]  time 650.4s  kernel 643.4s  moves 2.05e+08
+NOT a covering: 1142 facets uncovered
+--- no improvement (394 vs best 1187)
+=== 2026-09-23T10:55:00Z round 21 (remelt from results/klein_night_r15) TL=600 T0=1.2 seed=547 -> results/klein_night_r21 ===
+best coverage 1187/1536  domain sizes [291, 276, 269, 268, 255]  time 619.9s  kernel 612.6s  moves 1.84e+08
+NOT a covering: 349 facets uncovered
+--- no improvement (1187 vs best 1187)
+=== 2026-09-23T11:05:21Z round 22 (cold new basin) TL=600 T0=0.9 seed=554 -> results/klein_night_r22 ===
+best coverage 430/1536  domain sizes [114, 98, 98, 78, 163]  time 652.3s  kernel 644.7s  moves 2.05e+08
+NOT a covering: 1106 facets uncovered
+--- no improvement (430 vs best 1187)
+=== 2026-09-23T11:16:16Z round 23 (remelt from results/klein_night_r15) TL=600 T0=1.2 seed=561 -> results/klein_night_r23 ===
+best coverage 1187/1536  domain sizes [291, 276, 269, 268, 255]  time 617.3s  kernel 610.5s  moves 1.84e+08
+NOT a covering: 349 facets uncovered
+--- no improvement (1187 vs best 1187)
+=== 2026-09-23T11:26:35Z round 24 (cold new basin) TL=600 T0=0.9 seed=568 -> results/klein_night_r24 ===
+best coverage 405/1536  domain sizes [90, 122, 120, 128, 92]  time 653.9s  kernel 645.9s  moves 2.05e+08
+NOT a covering: 1131 facets uncovered
+--- no improvement (405 vs best 1187)
+=== 2026-09-23T11:37:30Z round 25 (remelt from results/klein_night_r15) TL=600 T0=1.2 seed=575 -> results/klein_night_r25 ===
+best coverage 1187/1536  domain sizes [291, 276, 269, 268, 255]  time 618.2s  kernel 611.1s  moves 1.84e+08
+NOT a covering: 349 facets uncovered
+--- no improvement (1187 vs best 1187)
+=== 2026-09-23T11:47:50Z round 26 (cold new basin) TL=600 T0=0.9 seed=582 -> results/klein_night_r26 ===
+best coverage 408/1536  domain sizes [98, 104, 100, 117, 155]  time 651.3s  kernel 644.1s  moves 2.05e+08
+NOT a covering: 1128 facets uncovered
+--- no improvement (408 vs best 1187)
+=== 2026-09-23T11:58:43Z round 27 (remelt from results/klein_night_r15) TL=600 T0=1.2 seed=589 -> results/klein_night_r27 ===
+best coverage 1187/1536  domain sizes [291, 276, 269, 268, 255]  time 619.6s  kernel 612.8s  moves 1.84e+08
+NOT a covering: 349 facets uncovered
+--- no improvement (1187 vs best 1187)
+=== 2026-09-23T12:09:05Z round 28 (cold new basin) TL=600 T0=0.9 seed=596 -> results/klein_night_r28 ===
+--- no improvement (395 vs best 1187)
+=== 2026-09-23T12:12:51Z round 29 (remelt from results/klein_night_r15) TL=600 T0=1.2 seed=603 -> results/klein_night_r29 ===
+--- no improvement (1187 vs best 1187)
+=== 2026-09-23T12:13:03Z round 30 (cold new basin) TL=600 T0=0.9 seed=610 -> results/klein_night_r30 ===
+--- no improvement (426 vs best 1187)
+=== night finished at 2026-09-23T12:13:12Z; best = results/klein_night_r15 ===
+ng: 349 facets uncovered
+--- no improvement (1187 vs best 1187)
+=== 2026-09-23T11:58:15Z round 30 (cold new basin) TL=600 T0=0.9 seed=610 -> results/klein_night_r30 ===
+best coverage 426/1536  domain sizes [95, 106, 121, 117, 123]  time 651.5s  kernel 644.4s  moves 2.05e+08
+NOT a covering: 1110 facets uncovered
+--- no improvement (426 vs best 1187)
+=== night finished at 2026-09-23T12:09:08Z; best = results/klein_night_r15 ===

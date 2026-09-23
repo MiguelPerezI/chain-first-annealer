@@ -1,0 +1,16 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=1.2 T1=0.02  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=5.0/(max 30.0)  seed=407
+  seeded population from results/klein_night_melt1/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  epoch   1: best 1175.0/1536  top10 [1175, 1174, 1174, 1174, 1174, 1174, 1174, 1174, 1174, 1174]  median 702  now-median 694     73.7s     0.279 Mmoves/s
+  epoch   2: best 1176.0/1536  top10 [1176, 1176, 1175, 1175, 1174, 1174, 1174, 1174, 1174, 1174]  median 710  now-median 672    140.2s     0.293 Mmoves/s
+  epoch   3: best 1176.0/1536  top10 [1176, 1176, 1175, 1175, 1174, 1174, 1174, 1174, 1174, 1174]  median 1174  now-median 1114    207.4s     0.297 Mmoves/s
+  epoch   4: best 1176.0/1536  top10 [1176, 1176, 1175, 1175, 1174, 1174, 1174, 1174, 1174, 1174]  median 1174  now-median 1083    274.3s     0.300 Mmoves/s
+  epoch   5: best 1176.0/1536  top10 [1176, 1176, 1176, 1175, 1175, 1175, 1175, 1175, 1174, 1174]  median 1174  now-median 1080    341.7s     0.301 Mmoves/s
+  epoch   6: best 1176.0/1536  top10 [1176, 1176, 1176, 1175, 1175, 1175, 1175, 1175, 1174, 1174]  median 1174  now-median 1056    409.2s     0.301 Mmoves/s
+  epoch   7: best 1176.0/1536  top10 [1176, 1176, 1176, 1175, 1175, 1175, 1175, 1175, 1175, 1175]  median 1174  now-median 1057    476.7s     0.302 Mmoves/s
+  epoch   8: best 1176.0/1536  top10 [1176, 1176, 1176, 1175, 1175, 1175, 1175, 1175, 1175, 1175]  median 1174  now-median 1039    544.5s     0.302 Mmoves/s
+  epoch   9: best 1176.0/1536  top10 [1176, 1176, 1176, 1176, 1175, 1175, 1175, 1175, 1175, 1175]  median 1174  now-median 1040    609.0s     0.304 Mmoves/s
+  time limit reached
+best coverage 1176/1536  domain sizes [289, 292, 285, 272, 255]  time 614.1s  kernel 607.0s  moves 1.84e+08
+NOT a covering: 360 facets uncovered
+wrote results/klein_night_r1/summary.json (partial)

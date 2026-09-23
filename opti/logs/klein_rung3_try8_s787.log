@@ -1,0 +1,2 @@
+[try8 s787] === gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=787
+[try8 s787]   seeded population from results/klein_rung2/summary.json (reduced chains of the 5 largest domains, padded to cmax)

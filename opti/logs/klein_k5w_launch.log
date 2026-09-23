@@ -1,0 +1,29 @@
+=== 2026-09-23T03:40:10Z klein k=5 cmax=24 beta=5 gamma=0.5 ptrack=0.3 time-limit=600 seed=202 --init results/klein_k5/summary.json  ===
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=24 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 ptrack=0.3  guide=0.0/(max 4.0)  seed=202
+  seeded population from results/klein_k5/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+  epoch   1: best  852.0/1536  top10 [852, 848, 847, 846, 845, 844, 843, 841, 841, 841]  median 510  now-median 504     34.5s     0.595 Mmoves/s
+  epoch   2: best  860.0/1536  top10 [860, 859, 858, 857, 857, 857, 856, 853, 853, 852]  median 519  now-median 514     64.1s     0.640 Mmoves/s
+  epoch   3: best  869.0/1536  top10 [869, 869, 866, 863, 862, 861, 861, 860, 860, 860]  median 817  now-median 817     94.0s     0.656 Mmoves/s
+  epoch   4: best  875.0/1536  top10 [875, 875, 874, 873, 873, 873, 871, 870, 869, 869]  median 822  now-median 821    123.8s     0.664 Mmoves/s
+  epoch   5: best  892.0/1536  top10 [892, 892, 882, 880, 880, 878, 878, 876, 876, 876]  median 833  now-median 832    153.8s     0.668 Mmoves/s
+  epoch   6: best  892.0/1536  top10 [892, 892, 889, 889, 889, 887, 886, 882, 882, 882]  median 837  now-median 836    183.6s     0.671 Mmoves/s
+  epoch   7: best  902.0/1536  top10 [902, 897, 896, 895, 892, 889, 889, 889, 888, 888]  median 846  now-median 845    213.6s     0.673 Mmoves/s
+  epoch   8: best  911.0/1536  top10 [911, 902, 897, 897, 896, 894, 894, 892, 892, 892]  median 850  now-median 849    243.5s     0.675 Mmoves/s
+  epoch   9: best  911.0/1536  top10 [911, 908, 906, 902, 902, 902, 897, 897, 897, 896]  median 858  now-median 857    273.6s     0.676 Mmoves/s
+  epoch  10: best  911.0/1536  top10 [911, 909, 906, 906, 904, 902, 902, 902, 900, 900]  median 861  now-median 860    303.5s     0.677 Mmoves/s
+  epoch  11: best  911.0/1536  top10 [911, 909, 909, 908, 907, 907, 905, 904, 902, 902]  median 868  now-median 867    333.5s     0.678 Mmoves/s
+  epoch  12: best  911.0/1536  top10 [911, 910, 910, 909, 908, 907, 907, 907, 906, 905]  median 871  now-median 870    363.5s     0.678 Mmoves/s
+  epoch  13: best  912.0/1536  top10 [912, 911, 910, 910, 910, 910, 909, 909, 909, 909]  median 877  now-median 875    393.5s     0.679 Mmoves/s
+  epoch  14: best  920.0/1536  top10 [920, 911, 911, 910, 910, 910, 910, 910, 910, 910]  median 879  now-median 877    423.5s     0.679 Mmoves/s
+  epoch  15: best  920.0/1536  top10 [920, 915, 914, 913, 913, 913, 912, 911, 911, 911]  median 884  now-median 882    453.5s     0.680 Mmoves/s
+  epoch  16: best  920.0/1536  top10 [920, 917, 916, 915, 915, 914, 914, 913, 913, 913]  median 886  now-median 884    483.4s     0.680 Mmoves/s
+  epoch  17: best  920.0/1536  top10 [920, 920, 917, 917, 917, 917, 916, 916, 916, 916]  median 890  now-median 888    513.4s     0.680 Mmoves/s
+  epoch  18: best  920.0/1536  top10 [920, 920, 918, 917, 917, 917, 917, 916, 916, 916]  median 891  now-median 889    543.4s     0.681 Mmoves/s
+  epoch  19: best  922.0/1536  top10 [922, 920, 920, 919, 918, 918, 918, 917, 917, 917]  median 895  now-median 893    573.4s     0.681 Mmoves/s
+  epoch  20: best  926.0/1536  top10 [926, 923, 922, 920, 920, 919, 919, 918, 918, 918]  median 896  now-median 894    603.3s     0.681 Mmoves/s
+  time limit reached
+best coverage 926/1536  domain sizes [288, 254, 247, 294, 96]  time 606.7s  kernel 601.4s  moves 4.1e+08
+NOT a covering: 610 facets uncovered
+wrote results/klein_k5_v2/summary.json (partial)
+k=5: no full cover (partial summary.json written)
+=== RUN_KLEIN DONE 2026-09-23T03:50:18Z ===

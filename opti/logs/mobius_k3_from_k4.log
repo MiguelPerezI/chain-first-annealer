@@ -1,0 +1,22 @@
+=== gpu_sc chain-first annealer ===  K=Möbius band (5 vertices, 5 triangles, minimal & unique)  |F_L|=150  grid=25  k=3 cmax=40 S=4096 iters=5000  T0=1.2 T1=0.05  beta=1.0 gamma=0.5 mu=0.5 ptrack=0.5  guide=1.0/(max 4.0)  seed=5001
+  seeded population from results/mobius_k4_from_k5/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  131.0/150  top10 [131, 131, 130, 130, 129, 129, 129, 128, 128, 128]  median 120  now-median 114     13.5s     1.518 Mmoves/s
+  epoch   2: best  140.0/150  top10 [140, 138, 135, 135, 135, 135, 133, 132, 132, 132]  median 123  now-median 122     20.3s     2.030 Mmoves/s
+  epoch   3: best  146.0/150  top10 [146, 146, 143, 142, 142, 142, 142, 142, 141, 141]  median 126  now-median 126     27.0s     2.291 Mmoves/s
+  epoch   4: best  146.0/150  top10 [146, 146, 146, 146, 145, 145, 144, 144, 144, 144]  median 126  now-median 126     33.7s     2.446 Mmoves/s
+  epoch   5: best  147.0/150  top10 [147, 146, 146, 146, 146, 146, 146, 146, 146, 146]  median 128  now-median 127     40.4s     2.551 Mmoves/s
+  epoch   6: best  147.0/150  top10 [147, 147, 147, 146, 146, 146, 146, 146, 146, 146]  median 129  now-median 128     47.1s     2.625 Mmoves/s
+  epoch   7: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 146]  median 130  now-median 130     53.8s     2.682 Mmoves/s
+  epoch   8: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 131  now-median 130     60.5s     2.725 Mmoves/s
+  epoch   9: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 132  now-median 132     67.2s     2.760 Mmoves/s
+  epoch  10: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 132  now-median 132     73.9s     2.788 Mmoves/s
+  epoch  11: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 135  now-median 135     80.6s     2.812 Mmoves/s
+  epoch  12: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 136  now-median 135     87.4s     2.832 Mmoves/s
+  epoch  13: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 138  now-median 138     94.1s     2.850 Mmoves/s
+  epoch  14: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 138  now-median 138    100.8s     2.864 Mmoves/s
+  epoch  15: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 140  now-median 140    107.5s     2.877 Mmoves/s
+  epoch  16: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 140  now-median 140    114.2s     2.888 Mmoves/s
+  epoch  17: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 142  now-median 142    120.9s     2.899 Mmoves/s
+  epoch  18: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 142  now-median 142    127.6s     2.908 Mmoves/s

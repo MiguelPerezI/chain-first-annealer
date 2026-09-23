@@ -1,0 +1,4 @@
+=== gpu_sc chain-first annealer ===  K=Möbius band (5 vertices, 5 triangles, minimal & unique)  |F_L|=150  grid=25  k=4 cmax=40 S=4096 iters=5000  T0=1.2 T1=0.05  beta=1.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=1.0/(max 4.0)  seed=786
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  102.0/150  top10 [102, 102, 100, 99, 99, 98, 98, 98, 98, 97]  median 75  now-median 75     23.8s     0.863 Mmoves/s

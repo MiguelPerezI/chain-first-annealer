@@ -1,0 +1,46 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=777
+  seeded population from results/klein_cold666_seed_999_2/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 720  now-median 716     36.1s     0.570 Mmoves/s
+  epoch   2: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 722  now-median 706     67.1s     0.612 Mmoves/s
+  epoch   3: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1175     98.5s     0.627 Mmoves/s
+  epoch   4: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1149    129.8s     0.634 Mmoves/s
+  epoch   5: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1145    161.5s     0.637 Mmoves/s
+  epoch   6: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1122    193.0s     0.640 Mmoves/s
+  epoch   7: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1119    224.6s     0.641 Mmoves/s
+  epoch   8: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1099    256.2s     0.643 Mmoves/s
+  epoch   9: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1097    287.9s     0.643 Mmoves/s
+  epoch  10: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1080    319.5s     0.644 Mmoves/s
+  epoch  11: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1066    351.2s     0.645 Mmoves/s
+  epoch  12: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1054    382.8s     0.645 Mmoves/s
+  epoch  13: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1044    414.5s     0.646 Mmoves/s
+  epoch  14: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1035    446.0s     0.646 Mmoves/s
+  epoch  15: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1029    477.7s     0.646 Mmoves/s
+  epoch  16: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1024    509.3s     0.647 Mmoves/s
+  epoch  17: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1021    541.0s     0.647 Mmoves/s
+  epoch  18: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1018    572.5s     0.647 Mmoves/s
+  epoch  19: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1016    604.3s     0.647 Mmoves/s
+  epoch  20: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1015    635.8s     0.647 Mmoves/s
+  epoch  21: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1014    667.5s     0.648 Mmoves/s
+  epoch  22: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1013    699.1s     0.648 Mmoves/s
+  epoch  23: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1012    730.8s     0.648 Mmoves/s
+  epoch  24: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1012    762.4s     0.648 Mmoves/s
+  epoch  25: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1013    794.1s     0.648 Mmoves/s
+  epoch  26: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1012    825.6s     0.648 Mmoves/s
+  epoch  27: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1014    857.3s     0.648 Mmoves/s
+  epoch  28: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1014    888.9s     0.648 Mmoves/s
+  epoch  29: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1015    920.6s     0.648 Mmoves/s
+  epoch  30: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1015    952.2s     0.648 Mmoves/s
+  epoch  31: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1017    983.9s     0.649 Mmoves/s
+  epoch  32: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1018   1015.5s     0.649 Mmoves/s
+  epoch  33: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1019   1047.3s     0.649 Mmoves/s
+  epoch  34: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1020   1078.8s     0.649 Mmoves/s
+  epoch  35: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1020   1110.6s     0.649 Mmoves/s
+  epoch  36: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1022   1142.2s     0.649 Mmoves/s
+  epoch  37: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1022   1173.9s     0.649 Mmoves/s
+  epoch  38: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1023   1205.5s     0.649 Mmoves/s
+  epoch  39: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1024   1237.2s     0.649 Mmoves/s
+  epoch  40: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1025   1268.8s     0.649 Mmoves/s
+  epoch  41: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1026   1300.5s     0.649 Mmoves/s
+  epoch  42: best 1198.0/1536  top10 [1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198, 1198]  median 1198  now-median 1027   1332.1s     0.649 Mmoves/s

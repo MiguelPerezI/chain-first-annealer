@@ -1,0 +1,16 @@
+=== gpu_sc chain-first annealer ===  K=Möbius band (5 vertices, 5 triangles, minimal & unique)  |F_L|=150  grid=25  k=3 cmax=40 S=4096 iters=5000  T0=0.9 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=723
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  112.0/150  top10 [112, 111, 109, 108, 107, 106, 105, 105, 105, 104]  median 77  now-median 76     13.7s     1.503 Mmoves/s
+  epoch   2: best  142.0/150  top10 [142, 136, 134, 133, 131, 131, 131, 130, 130, 130]  median 101  now-median 101     19.2s     2.145 Mmoves/s
+  epoch   3: best  146.0/150  top10 [146, 145, 145, 145, 144, 143, 143, 143, 143, 143]  median 119  now-median 118     24.7s     2.502 Mmoves/s
+  epoch   4: best  147.0/150  top10 [147, 147, 147, 147, 147, 146, 146, 146, 146, 146]  median 126  now-median 126     30.2s     2.729 Mmoves/s
+  epoch   5: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 132  now-median 132     35.7s     2.887 Mmoves/s
+  epoch   6: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 134  now-median 134     41.2s     3.002 Mmoves/s
+  epoch   7: best  148.0/150  top10 [148, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 137  now-median 137     46.8s     3.091 Mmoves/s
+  epoch   8: best  148.0/150  top10 [148, 148, 148, 147, 147, 147, 147, 147, 147, 147]  median 138  now-median 138     52.2s     3.161 Mmoves/s
+  epoch   9: best  148.0/150  top10 [148, 148, 148, 148, 148, 147, 147, 147, 147, 147]  median 140  now-median 140     57.8s     3.218 Mmoves/s
+  epoch  10: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 147, 147, 147, 147]  median 141  now-median 140     63.2s     3.264 Mmoves/s
+best coverage 148/150  domain sizes [60, 57, 48]  time 65.2s  kernel 62.7s  moves 2.05e+08
+NOT a covering: 2 facets uncovered
+wrote results/mobius_seed_723/summary.json (partial)

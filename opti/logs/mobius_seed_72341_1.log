@@ -1,0 +1,17 @@
+=== gpu_sc chain-first annealer ===  K=Möbius band (5 vertices, 5 triangles, minimal & unique)  |F_L|=150  grid=25  k=3 cmax=40 S=4096 iters=5000  T0=0.9 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=1012
+  seeded population from results/mobius_seed_72341/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 128  now-median 126     12.0s     1.709 Mmoves/s
+  epoch   2: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 142  now-median 138     17.5s     2.349 Mmoves/s
+  epoch   3: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 143     23.0s     2.686 Mmoves/s
+  epoch   4: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 141     28.5s     2.891 Mmoves/s
+  epoch   5: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 142     34.0s     3.033 Mmoves/s
+  epoch   6: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 142     39.5s     3.134 Mmoves/s
+  epoch   7: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 142     45.0s     3.211 Mmoves/s
+  epoch   8: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 142     50.4s     3.271 Mmoves/s
+  epoch   9: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 142     56.0s     3.319 Mmoves/s
+  epoch  10: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 142     61.4s     3.358 Mmoves/s
+best coverage 148/150  domain sizes [58, 57, 46]  time 63.4s  kernel 61.0s  moves 2.05e+08
+NOT a covering: 2 facets uncovered
+wrote results/mobius_seed_72341_1/summary.json (partial)

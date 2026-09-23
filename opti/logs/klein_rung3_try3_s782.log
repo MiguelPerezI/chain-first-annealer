@@ -1,0 +1,34 @@
+[try3 s782] === gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=782
+[try3 s782]   seeded population from results/klein_rung2/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+[try3 s782] Traceback (most recent call last):
+[try3 s782]   File "/home/ubuntu/Documents/chain-first-annealer/opti/gpu_sc.py", line 1207, in <module>
+[try3 s782]     sys.exit(cli())
+[try3 s782]              ^^^^^
+[try3 s782]   File "/home/ubuntu/Documents/chain-first-annealer/opti/gpu_sc.py", line 1171, in cli
+[try3 s782]     chains, cov, hist, ann = anneal_cover(P, a.k, a.cmax, a.S, a.iters, a.epochs, a.T0, a.T1,
+[try3 s782]                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[try3 s782]   File "/home/ubuntu/Documents/chain-first-annealer/opti/gpu_sc.py", line 1081, in anneal_cover
+[try3 s782]     score = ann.epoch(iters, T0, T1, beta, pcopy, ptrack, gamma, mu)
+[try3 s782]             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[try3 s782]   File "/home/ubuntu/Documents/chain-first-annealer/opti/gpu_sc.py", line 589, in epoch
+[try3 s782]     self.kernel[blocks, self.threads](
+[try3 s782]   File "/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py", line 540, in __call__
+[try3 s782]     return self.dispatcher.call(args, self.griddim, self.blockdim,
+[try3 s782]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[try3 s782]   File "/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py", line 684, in call
+[try3 s782]     kernel.launch(args, griddim, blockdim, stream, sharedmem)
+[try3 s782]   File "/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py", line 328, in launch
+[try3 s782]     driver.launch_kernel(cufunc.handle,
+[try3 s782]   File "/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/cudadrv/driver.py", line 2565, in launch_kernel
+[try3 s782]     driver.cuLaunchKernel(cufunc_handle,
+[try3 s782]   File "/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/cudadrv/driver.py", line 327, in safe_cuda_api_call
+[try3 s782]     self._check_ctypes_error(fname, retcode)
+[try3 s782]   File "/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/cudadrv/driver.py", line 399, in _check_ctypes_error
+[try3 s782]     raise CudaAPIError(retcode, msg)
+[try3 s782] numba.cuda.cudadrv.driver.CudaAPIError: [2] Call to cuLaunchKernel results in CUDA_ERROR_OUT_OF_MEMORY
+[try3 s782] === gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=782
+[try3 s782]   seeded population from results/klein_rung2/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+[try3 s782]   epoch   1: best 1186.0/1536  top10 [1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186]  median 710  now-median 702     35.9s     0.573 Mmoves/s  [ep 1/1 | vs IN +1 | this epoch +1]
+[try3 s782] best coverage 1186/1536  domain sizes [293, 281, 278, 276, 260]  time 39.7s  kernel 35.8s  moves 2.05e+07
+[try3 s782] NOT a covering: 350 facets uncovered
+[try3 s782] wrote results/klein_rung3/try3_s782/summary.json (partial)

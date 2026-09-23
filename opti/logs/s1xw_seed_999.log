@@ -1,0 +1,11 @@
+=== gpu_sc chain-first annealer ===  K=S¹×(S¹∨S¹) (polyhedral product (S¹,*)^P₃, 12 vertices, 30 triangles)  |F_L|=5400  grid=144  k=5 cmax=40 S=4096 iters=5000  T0=0.9 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=999
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  340.0/5400  top10 [340, 338, 333, 332, 332, 331, 331, 331, 331, 330]  median 295  now-median 293     66.8s     0.308 Mmoves/s
+  epoch   2: best  352.0/5400  top10 [352, 349, 347, 344, 342, 342, 341, 341, 341, 340]  median 300  now-median 297    123.3s     0.334 Mmoves/s
+  epoch   3: best  356.0/5400  top10 [356, 356, 355, 355, 353, 352, 351, 350, 350, 350]  median 308  now-median 305    180.0s     0.343 Mmoves/s
+  epoch   4: best  373.0/5400  top10 [373, 364, 362, 362, 361, 360, 359, 357, 356, 356]  median 311  now-median 308    236.6s     0.348 Mmoves/s
+  epoch   5: best  376.0/5400  top10 [376, 375, 368, 366, 365, 365, 365, 362, 362, 361]  median 319  now-median 316    293.4s     0.351 Mmoves/s
+  epoch   6: best  380.0/5400  top10 [380, 376, 374, 374, 371, 369, 368, 368, 367, 366]  median 321  now-median 318    350.1s     0.353 Mmoves/s
+  epoch   7: best  384.0/5400  top10 [384, 380, 380, 377, 376, 374, 372, 371, 369, 369]  median 328  now-median 325    406.9s     0.355 Mmoves/s
+  epoch   8: best  390.0/5400  top10 [390, 386, 386, 380, 377, 377, 376, 375, 374, 374]  median 331  now-median 328    463.6s     0.356 Mmoves/s

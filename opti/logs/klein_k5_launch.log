@@ -1,0 +1,49 @@
+=== 2026-09-23T03:09:53Z klein k=5 cmax=24 beta=5 gamma=0.5 ptrack=0.3 time-limit=1200 seed=201   ===
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=24 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 ptrack=0.3  guide=0.0/(max 4.0)  seed=201
+  epoch   1: best  217.0/1536  top10 [217, 217, 216, 213, 212, 211, 211, 211, 211, 211]  median 178  now-median 176     32.2s     0.637 Mmoves/s
+  epoch   2: best  230.0/1536  top10 [230, 230, 226, 226, 224, 223, 223, 223, 222, 222]  median 186  now-median 183     61.5s     0.667 Mmoves/s
+  epoch   3: best  245.0/1536  top10 [245, 243, 241, 240, 240, 237, 236, 236, 235, 235]  median 196  now-median 193     91.0s     0.677 Mmoves/s
+  epoch   4: best  251.0/1536  top10 [251, 250, 248, 246, 245, 245, 245, 244, 244, 244]  median 201  now-median 197    120.4s     0.682 Mmoves/s
+  epoch   5: best  276.0/1536  top10 [276, 272, 264, 262, 261, 259, 259, 258, 258, 257]  median 210  now-median 207    150.1s     0.684 Mmoves/s
+  epoch   6: best  290.0/1536  top10 [290, 275, 272, 271, 269, 267, 267, 267, 266, 266]  median 215  now-median 211    179.7s     0.685 Mmoves/s
+  epoch   7: best  301.0/1536  top10 [301, 296, 296, 294, 284, 280, 280, 279, 278, 278]  median 224  now-median 221    209.5s     0.686 Mmoves/s
+  epoch   8: best  319.0/1536  top10 [319, 307, 304, 304, 298, 297, 296, 294, 291, 290]  median 229  now-median 225    239.2s     0.687 Mmoves/s
+  epoch   9: best  331.0/1536  top10 [331, 324, 323, 321, 314, 313, 312, 309, 306, 306]  median 239  now-median 236    269.1s     0.687 Mmoves/s
+  epoch  10: best  345.0/1536  top10 [345, 334, 328, 326, 326, 325, 325, 325, 324, 318]  median 244  now-median 241    298.9s     0.687 Mmoves/s
+  epoch  11: best  359.0/1536  top10 [359, 352, 348, 347, 346, 341, 340, 340, 339, 339]  median 255  now-median 252    328.9s     0.687 Mmoves/s
+  epoch  12: best  376.0/1536  top10 [376, 372, 366, 364, 358, 357, 356, 355, 352, 352]  median 260  now-median 257    358.7s     0.687 Mmoves/s
+  epoch  13: best  386.0/1536  top10 [386, 382, 379, 374, 374, 371, 371, 365, 364, 363]  median 273  now-median 270    388.7s     0.687 Mmoves/s
+  epoch  14: best  403.0/1536  top10 [403, 402, 400, 392, 388, 388, 386, 383, 377, 374]  median 279  now-median 276    418.5s     0.687 Mmoves/s
+  epoch  15: best  422.0/1536  top10 [422, 420, 416, 416, 406, 401, 401, 398, 397, 396]  median 292  now-median 290    448.6s     0.687 Mmoves/s
+  epoch  16: best  447.0/1536  top10 [447, 439, 436, 421, 417, 416, 415, 414, 413, 410]  median 298  now-median 296    478.5s     0.687 Mmoves/s
+  epoch  17: best  467.0/1536  top10 [467, 459, 453, 449, 444, 444, 441, 440, 430, 429]  median 313  now-median 311    508.5s     0.687 Mmoves/s
+  epoch  18: best  471.0/1536  top10 [471, 471, 459, 457, 456, 455, 453, 452, 450, 450]  median 320  now-median 318    538.5s     0.686 Mmoves/s
+  epoch  19: best  488.0/1536  top10 [488, 486, 472, 468, 467, 465, 464, 461, 461, 460]  median 336  now-median 334    568.5s     0.686 Mmoves/s
+  epoch  20: best  505.0/1536  top10 [505, 504, 491, 481, 481, 480, 480, 479, 476, 471]  median 342  now-median 341    598.4s     0.686 Mmoves/s
+  epoch  21: best  517.0/1536  top10 [517, 513, 513, 508, 506, 502, 500, 500, 498, 495]  median 359  now-median 358    628.5s     0.686 Mmoves/s
+  epoch  22: best  539.0/1536  top10 [539, 520, 518, 517, 514, 511, 510, 510, 508, 507]  median 367  now-median 365    658.4s     0.686 Mmoves/s
+  epoch  23: best  559.0/1536  top10 [559, 544, 544, 531, 530, 529, 528, 527, 526, 526]  median 383  now-median 381    688.5s     0.686 Mmoves/s
+  epoch  24: best  563.0/1536  top10 [563, 555, 551, 544, 544, 543, 539, 538, 537, 536]  median 391  now-median 389    718.4s     0.686 Mmoves/s
+  epoch  25: best  566.0/1536  top10 [566, 564, 562, 560, 558, 558, 557, 556, 555, 555]  median 408  now-median 407    748.4s     0.686 Mmoves/s
+  epoch  26: best  576.0/1536  top10 [576, 573, 571, 571, 571, 568, 567, 567, 567, 566]  median 417  now-median 415    778.4s     0.686 Mmoves/s
+  epoch  27: best  594.0/1536  top10 [594, 586, 584, 583, 582, 582, 581, 578, 577, 577]  median 435  now-median 434    808.4s     0.686 Mmoves/s
+  epoch  28: best  619.0/1536  top10 [619, 610, 592, 592, 591, 591, 589, 586, 586, 586]  median 443  now-median 442    838.4s     0.686 Mmoves/s
+  epoch  29: best  639.0/1536  top10 [639, 626, 623, 614, 613, 612, 604, 604, 603, 601]  median 462  now-median 461    868.4s     0.686 Mmoves/s
+  epoch  30: best  681.0/1536  top10 [681, 640, 636, 635, 631, 626, 624, 623, 620, 617]  median 471  now-median 469    898.4s     0.686 Mmoves/s
+  epoch  31: best  688.0/1536  top10 [688, 647, 644, 642, 640, 636, 635, 634, 634, 633]  median 489  now-median 488    928.5s     0.686 Mmoves/s
+  epoch  32: best  703.0/1536  top10 [703, 664, 661, 658, 653, 652, 647, 646, 644, 644]  median 497  now-median 496    958.4s     0.686 Mmoves/s
+  epoch  33: best  708.0/1536  top10 [708, 703, 683, 681, 678, 677, 674, 671, 667, 665]  median 516  now-median 515    988.5s     0.686 Mmoves/s
+  epoch  34: best  722.0/1536  top10 [722, 717, 703, 700, 697, 693, 693, 689, 685, 679]  median 524  now-median 523   1018.4s     0.686 Mmoves/s
+  epoch  35: best  726.0/1536  top10 [726, 725, 720, 713, 710, 710, 708, 703, 702, 702]  median 543  now-median 543   1048.5s     0.686 Mmoves/s
+  epoch  36: best  739.0/1536  top10 [739, 730, 724, 722, 721, 721, 718, 717, 711, 709]  median 551  now-median 550   1078.5s     0.686 Mmoves/s
+  epoch  37: best  771.0/1536  top10 [771, 759, 752, 749, 731, 731, 730, 729, 729, 729]  median 571  now-median 570   1108.6s     0.685 Mmoves/s
+  epoch  38: best  775.0/1536  top10 [775, 761, 759, 756, 753, 747, 740, 739, 737, 735]  median 578  now-median 577   1138.6s     0.685 Mmoves/s
+  epoch  39: best  779.0/1536  top10 [779, 776, 775, 773, 770, 770, 769, 761, 756, 747]  median 597  now-median 596   1168.7s     0.685 Mmoves/s
+  epoch  40: best  781.0/1536  top10 [781, 781, 779, 775, 774, 774, 772, 764, 762, 762]  median 605  now-median 604   1198.6s     0.685 Mmoves/s
+  epoch  41: best  806.0/1536  top10 [806, 800, 800, 787, 785, 784, 780, 779, 779, 777]  median 625  now-median 624   1228.7s     0.685 Mmoves/s
+  time limit reached
+best coverage 806/1536  domain sizes [96, 250, 236, 219, 243]  time 1230.6s  kernel 1225.2s  moves 8.4e+08
+NOT a covering: 730 facets uncovered
+wrote results/klein_k5/summary.json (partial)
+k=5: no full cover (partial summary.json written)
+=== RUN_KLEIN DONE 2026-09-23T03:30:25Z ===

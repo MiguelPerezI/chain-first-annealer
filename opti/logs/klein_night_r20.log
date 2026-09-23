@@ -1,0 +1,16 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.9 T1=0.02  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=5.0/(max 30.0)  seed=540
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  epoch   1: best  237.0/1536  top10 [237, 236, 230, 229, 229, 228, 228, 228, 228, 227]  median 197  now-median 195     68.6s     0.299 Mmoves/s
+  epoch   2: best  253.0/1536  top10 [253, 252, 249, 249, 248, 248, 247, 246, 246, 245]  median 207  now-median 205    134.1s     0.306 Mmoves/s
+  epoch   3: best  269.0/1536  top10 [269, 265, 261, 261, 260, 259, 259, 259, 258, 258]  median 219  now-median 217    199.9s     0.309 Mmoves/s
+  epoch   4: best  287.0/1536  top10 [287, 282, 279, 278, 275, 274, 274, 272, 272, 271]  median 227  now-median 224    265.6s     0.309 Mmoves/s
+  epoch   5: best  310.0/1536  top10 [310, 300, 294, 293, 292, 292, 289, 289, 289, 288]  median 239  now-median 237    331.2s     0.310 Mmoves/s
+  epoch   6: best  322.0/1536  top10 [322, 317, 315, 310, 308, 307, 306, 305, 305, 303]  median 248  now-median 245    397.1s     0.310 Mmoves/s
+  epoch   7: best  334.0/1536  top10 [334, 328, 328, 328, 325, 325, 324, 319, 318, 318]  median 262  now-median 259    463.0s     0.311 Mmoves/s
+  epoch   8: best  354.0/1536  top10 [354, 347, 343, 342, 341, 340, 339, 338, 338, 337]  median 271  now-median 269    528.9s     0.311 Mmoves/s
+  epoch   9: best  375.0/1536  top10 [375, 374, 363, 362, 360, 358, 358, 358, 357, 356]  median 287  now-median 285    594.8s     0.311 Mmoves/s
+  epoch  10: best  394.0/1536  top10 [394, 389, 388, 388, 386, 382, 380, 380, 375, 374]  median 298  now-median 296    645.7s     0.318 Mmoves/s
+  time limit reached
+best coverage 394/1536  domain sizes [105, 99, 98, 121, 104]  time 650.4s  kernel 643.4s  moves 2.05e+08
+NOT a covering: 1142 facets uncovered
+wrote results/klein_night_r20/summary.json (partial)

@@ -1,0 +1,9 @@
+=== gpu_sc chain-first annealer ===  K=Möbius band (5 vertices, 5 triangles, minimal & unique)  |F_L|=150  grid=25  k=4 cmax=40 S=4096 iters=5000  T0=1.2 T1=0.05  beta=1.0 gamma=0.5 mu=0.5 ptrack=0.5  guide=1.0/(max 4.0)  seed=4001
+  seeded population from results/mobius_k5/summary.json (reduced chains of the 4 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  150.0/150  top10 [150, 150, 150, 150, 150, 150, 150, 150, 150, 150]  median 130  now-median 128     14.2s     1.450 Mmoves/s
+  full coverage reached at epoch 1
+best coverage 150/150  domain sizes [54, 47, 46, 47]  time 16.7s  kernel 14.1s  moves 2.05e+07
+VERIFIED system of 4 motion planners: sizes [54, 37, 34, 25], reduced chain lengths [7, 6, 5, 4]  =>  SC_strict(Möbius band (5 vertices, 5 triangles, minimal & unique)) <= 3
+wrote results/mobius_k4_from_k5/cover.txt planners.txt summary.json

@@ -1,0 +1,11 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=777
+  seeded population from results/klein_rung2/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best 1186.0/1536  top10 [1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186]  median 714  now-median 706     36.0s     0.571 Mmoves/s
+  epoch   2: best 1186.0/1536  top10 [1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186]  median 716  now-median 700     67.1s     0.613 Mmoves/s
+  epoch   3: best 1186.0/1536  top10 [1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186]  median 1185  now-median 1164     98.5s     0.627 Mmoves/s
+  epoch   4: best 1186.0/1536  top10 [1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186, 1186]  median 1185  now-median 1147    129.8s     0.634 Mmoves/s
+best coverage 1186/1536  domain sizes [293, 281, 278, 276, 264]  time 133.8s  kernel 129.2s  moves 8.19e+07
+NOT a covering: 350 facets uncovered
+wrote results/klein_rung3/summary.json (partial)

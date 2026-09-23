@@ -273,6 +273,71 @@ def build(name):
             f.append(sorted((i, (i + 1) % 7, (i + 3) % 7)))
             f.append(sorted((i, (i + 2) % 7, (i + 3) % 7)))
         return Product(f, "Császár torus")
+    if name == "klein":
+        # The vertex-minimal triangulation of the Klein bottle: 8 vertices 0..7,
+        # 16 triangles, f-vector (8, 24, 16), chi = 0, valence vector
+        # (7,7,6,6,6,6,5,5).  It is the "242" member of Cervone's
+        # classification of the six combinatorially-distinct 8-vertex
+        # triangulations of K^2 (Vertex-Minimal Simplicial Immersions of the
+        # Klein Bottle in Three Space, Figure 5.10), relabelled
+        # A,B,...,H -> 0,1,...,7.  8 vertices is provably minimal: the
+        # Heawood-type bound V^2 - 7V + 6*chi >= 0 gives V >= 7, and
+        # Franklin's 6-colour theorem for the Klein bottle rules out V = 7
+        # (a 7-vertex Klein bottle would be 2-neighbourly, hence its
+        # 1-skeleton K7 would embed in K^2, needing 7 colours).
+        # independent_check.check_klein re-proves ||K|| ~= K^2 from this
+        # list alone: closed surface, chi = 0, no coherent orientation.
+        return Product([(0, 1, 2), (1, 2, 6), (0, 2, 4), (0, 4, 6),
+                        (0, 3, 6), (0, 1, 5), (1, 3, 5), (0, 5, 7),
+                        (0, 3, 7), (1, 3, 7), (2, 3, 5), (2, 3, 6),
+                        (2, 4, 5), (4, 5, 7), (1, 4, 7), (1, 4, 6)],
+                       "Klein bottle (8 vertices, 16 triangles, Cervone 242)")
+    if name == "mobius":
+        # The vertex-minimal triangulation of the Möbius band: 5 vertices,
+        # 5 triangles {i, i+1, i+2} (mod 5), f-vector (5, 10, 5), chi = 0,
+        # every vertex on the boundary, each in exactly 3 triangles.  The
+        # 1-skeleton is K5: the 5 "consecutive" edges (i, i+1) lie in 2
+        # triangles each (the central circle), the 5 "pentagram" edges
+        # (i, i+2) in 1 (together the single boundary 5-cycle 0-2-4-1-3).
+        # 5 vertices is provably minimal and the type unique up to
+        # relabelling: with b boundary edges, 3F = 2(E-b) + b and chi = 0
+        # give E = 3V - b; the boundary cycle is simple (b <= V) and
+        # E <= C(V,2), so 2V <= C(V,2), V >= 5.  At V = 5 everything is
+        # forced (b = 5, E = 10 = K5, F = 5) and an exhaustive search over
+        # the C(10,5) candidate lists finds one combinatorial type (12
+        # labelings; Aut = D5, order 10).  independent_check.check_mobius
+        # re-proves ||K|| = Möbius band from this list alone: manifold with
+        # boundary, one boundary circle, chi = 0, non-orientable.
+        return Product([(i, (i + 1) % 5, (i + 2) % 5) for i in range(5)],
+                       "Möbius band (5 vertices, 5 triangles, minimal & unique)")
+    if name == "s1xw":
+        # S^1 x (S^1 v S^1) = the polyhedral product (S^1,*)^K for K the flag
+        # path P_3 (the smallest connected flag complex beyond the edge,
+        # whose toric complex is the torus).  Aspherical: it is the
+        # classifying space of the right-angled Artin group Z x F_2.  The
+        # triangulation is the staircase product of this repo's own circle
+        # (0,1),(0,2),(1,2) with this repo's own wedge
+        # (0,1),(0,2),(0,3),(1,2),(1,3): grid vertex (a,b) gets id a*4+b,
+        # so the 12 product vertices are 0..11 and the 3x5 squares split
+        # into 30 triangles.  f-vector (12, 42, 30), chi = 0, homology
+        # (Z, Z^3, Z^2) by Kunneth (b_1 = 1 + 2, b_2 = 1*2, chi = 0*(-1)).
+        # TC = 4 EXACTLY: zero-divisor cup length 3 over Z/2 (g_t g_a g_b
+        # survives, e.g. the term tb (x) a), and TC(X x Y) <= TC(X) +
+        # TC(Y) - 1 = 2 + 3 - 1 with TC(S^1) = 2, TC(S^1 v S^1) = 3.
+        # independent_check.check_s1xw re-proves the staircase structure and
+        # the homology from this list alone; the goal for the annealer is
+        # 4 domains without subdivision (SC_strict = 3 = TC - 1).
+        return Product([(0, 1, 5), (0, 4, 5), (0, 2, 6),
+                        (0, 4, 6), (0, 3, 7), (0, 4, 7),
+                        (1, 2, 6), (1, 5, 6), (1, 3, 7),
+                        (1, 5, 7), (0, 1, 9), (0, 8, 9),
+                        (0, 2, 10), (0, 8, 10), (0, 3, 11),
+                        (0, 8, 11), (1, 2, 10), (1, 9, 10),
+                        (1, 3, 11), (1, 9, 11), (4, 5, 9),
+                        (4, 8, 9), (4, 6, 10), (4, 8, 10),
+                        (4, 7, 11), (4, 8, 11), (5, 6, 10),
+                        (5, 9, 10), (5, 7, 11), (5, 9, 11)],
+                       "S¹×(S¹∨S¹) (polyhedral product (S¹,*)^P₃, 12 vertices, 30 triangles)")
     raise ValueError(name)
 
 
@@ -298,7 +363,7 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, LMAX=8):
     @cuda.jit
     def anneal_kernel(chains, best, bad, score, seeds,
                       facet_verts, facet_nv, incid_off, incid_fac, is_simplex,
-                      weights, iters, T0, T1, beta, gamma, pmove_copy, ptrack):
+                      weights, iters, T0, T1, beta, gamma, mu, pmove_copy, ptrack):
         s = cuda.grid(1)
         if s >= chains.shape[0]:
             return
@@ -434,6 +499,7 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, LMAX=8):
                     bn = bo + d
                     mo = bo
                     mn = bn
+                    mult = int32(1) if bo == 0 else int32(0)   # chains covering f, before
                     for jj in range(KCH):
                         if jj != j:
                             bb = int32(bd[jj, f])
@@ -441,9 +507,21 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, LMAX=8):
                                 mo = bb
                             if bb < mn:
                                 mn = bb
+                            if bb == 0:
+                                mult += 1
                     po = float64(0.0) if mo == 0 else 1.0 + beta * float64(mo)
                     pn = float64(0.0) if mn == 0 else 1.0 + beta * float64(mn)
                     dE += weights[f] * (pn - po)
+                    # redundancy penalty: a facet covered by m > 1 chains wastes
+                    # m - 1 of them (they could be elsewhere); mu charges for it
+                    if mu > float64(0.0):
+                        mult_n = mult
+                        if bo == 0 and bn != 0:
+                            mult_n -= 1
+                        elif bo != 0 and bn == 0:
+                            mult_n += 1
+                        dE += mu * (float64(mult_n - 1 if mult_n > 1 else 0)
+                                    - float64(mult - 1 if mult > 1 else 0))
                     if mo == 0 and mn != 0:
                         dcov -= 1
                     elif mo != 0 and mn == 0:
@@ -547,9 +625,9 @@ class ChainAnnealer:
         self.weights = np.asarray(w, np.float32)
         self.d_w = cuda.to_device(self.weights)
 
-    def epoch(self, iters, T0, T1, beta=0.05, pmove_copy=0.5, ptrack=0.3, gamma=0.0):
+    def epoch(self, iters, T0, T1, beta=0.05, pmove_copy=0.5, ptrack=0.3, gamma=0.0, mu=0.0):
         validate_parameters(iters=iters, T0=T0, T1=T1, beta=beta,
-                            gamma=gamma, pcopy=pmove_copy, ptrack=ptrack)
+                            gamma=gamma, pcopy=pmove_copy, ptrack=ptrack, mu=mu)
         S = self.S
         d_ch = cuda.to_device(self.chains)
         d_best = cuda.to_device(self.chains)
@@ -563,7 +641,7 @@ class ChainAnnealer:
             d_ch, d_best, d_bad, d_score, d_seeds,
             self.d_fv, self.d_fnv, self.d_off, self.d_inc, self.d_iss, self.d_w,
             np.int32(iters), np.float64(T0), np.float64(T1), np.float64(beta), np.float64(gamma),
-            np.float64(pmove_copy), np.float64(ptrack))
+            np.float64(mu), np.float64(pmove_copy), np.float64(ptrack))
         cuda.synchronize()
         self.kernel_time += time.perf_counter() - t0
         self.moves += S * iters
@@ -1059,7 +1137,8 @@ def write_certificate(P: Product, parts, outdir, meta):
 def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
                  T0=0.6, T1=0.03, beta=0.05, pcopy=0.5, seed=0, time_limit=None,
                  log=print, stop_at_full=True, tournament_every=2, tournament_frac=0.25,
-                 init_chains=None, ptrack=0.05, guide=0.0, guide_max=4.0, gamma=0.0):
+                 init_chains=None, ptrack=0.05, guide=0.0, guide_max=4.0, gamma=0.0,
+                 mu=0.0):
     """guide > 0: adaptive weights (guided local search) — after each epoch the
     facets left uncovered by the best state get weight += guide (capped at
     guide_max), all weights decay toward 1; the reported coverage is always
@@ -1069,7 +1148,7 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
     move with it (exposed as --guide-max)."""
     validate_parameters(k=k, cmax=cmax, S=S, iters=iters, epochs=epochs,
                         T0=T0, T1=T1, beta=beta, gamma=gamma, pcopy=pcopy,
-                        ptrack=ptrack, guide=guide, guide_max=guide_max,
+                        ptrack=ptrack, guide=guide, guide_max=guide_max, mu=mu,
                         tournament_every=tournament_every,
                         tournament_frac=tournament_frac, seed=seed, time_limit=time_limit)
     ann = ChainAnnealer(P, k, cmax, S, seed=seed)
@@ -1081,7 +1160,7 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
     full = float(P.nf)
     best_chains, best_cov = None, -1.0
     for ep in range(1, epochs + 1):
-        score = ann.epoch(iters, T0, T1, beta, pcopy, ptrack, gamma)
+        score = ann.epoch(iters, T0, T1, beta, pcopy, ptrack, gamma, mu)
         chains, cov = ann.top()
         if guide > 0:
             _, covered = ann.coverage_of(chains)
@@ -1133,7 +1212,7 @@ def init_from_summary(P: Product, path: Path, k: int, cmax: int, S: int):
 
 def cli():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "torus"])
+    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "klein", "torus", "mobius", "s1xw"])
     ap.add_argument("--k", type=int, default=3, help="number of chains / domains")
     ap.add_argument("--cmax", type=int, default=40, help="links per chain")
     ap.add_argument("--S", type=int, default=4096, help="population (GPU threads)")
@@ -1143,6 +1222,10 @@ def cli():
     ap.add_argument("--T1", type=float, default=0.03)
     ap.add_argument("--beta", type=float, default=0.05, help="penalty slope per bad link of the best chain on a facet")
     ap.add_argument("--gamma", type=float, default=0.0, help="per-chain cleanliness: cost per bad link of every chain")
+    ap.add_argument("--mu", type=float, default=0.0, dest="mu",
+                    help="redundancy penalty: cost for a facet covered by m > 1 chains "
+                         "(m - 1 wasted chains); 0 = off.  Pushes the k domains apart "
+                         "instead of letting them overlap on easy facets")
     ap.add_argument("--pcopy", type=float, default=0.5)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--ptrack", type=float, default=0.05, help="probability of a multi-map track move")
@@ -1161,7 +1244,7 @@ def cli():
     try:
         validate_parameters(**{key: getattr(a, key) for key in (
             "k", "cmax", "S", "iters", "epochs", "T0", "T1", "beta", "gamma",
-            "pcopy", "ptrack", "guide", "tournament_every", "tournament_frac",
+            "mu", "pcopy", "ptrack", "guide", "tournament_every", "tournament_frac",
             "seed", "time_limit", "guide_max")})
     except ValueError as exc:
         ap.error(str(exc))
@@ -1169,7 +1252,8 @@ def cli():
     P = build(a.complex)
     print(f"=== gpu_sc chain-first annealer ===  K={P.name}  |F_L|={P.nf}  grid={P.ngrid}  "
           f"k={a.k} cmax={a.cmax} S={a.S} iters={a.iters}  T0={a.T0} T1={a.T1}  "
-          f"beta={a.beta} gamma={a.gamma} ptrack={a.ptrack}  guide={a.guide}/(max {a.guide_max})  seed={a.seed}")
+          f"beta={a.beta} gamma={a.gamma} mu={a.mu} ptrack={a.ptrack}  "
+          f"guide={a.guide}/(max {a.guide_max})  seed={a.seed}")
     init = None
     if a.init:
         init = init_from_summary(P, Path(a.init), a.k, a.cmax, a.S)
@@ -1181,7 +1265,7 @@ def cli():
                                           tournament_every=a.tournament_every,
                                           tournament_frac=a.tournament_frac,
                                           ptrack=a.ptrack, guide=a.guide, guide_max=a.guide_max,
-                                          gamma=a.gamma)
+                                          gamma=a.gamma, mu=a.mu)
     dt = time.perf_counter() - t0
     doms = [P.domain_of(chains[j]) for j in range(a.k)]
     covered = np.zeros(P.nf, bool)

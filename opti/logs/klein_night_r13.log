@@ -1,0 +1,16 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=1.2 T1=0.02  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=5.0/(max 30.0)  seed=491
+  seeded population from results/klein_night_r11/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  epoch   1: best 1185.0/1536  top10 [1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185]  median 711  now-median 700     73.0s     0.281 Mmoves/s
+  epoch   2: best 1185.0/1536  top10 [1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185]  median 718  now-median 671    139.6s     0.294 Mmoves/s
+  epoch   3: best 1186.0/1536  top10 [1186, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185]  median 1185  now-median 1122    206.9s     0.298 Mmoves/s
+  epoch   4: best 1186.0/1536  top10 [1186, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185]  median 1185  now-median 1089    273.7s     0.300 Mmoves/s
+  epoch   5: best 1186.0/1536  top10 [1186, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185]  median 1185  now-median 1087    341.4s     0.301 Mmoves/s
+  epoch   6: best 1186.0/1536  top10 [1186, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185]  median 1185  now-median 1064    408.9s     0.301 Mmoves/s
+  epoch   7: best 1186.0/1536  top10 [1186, 1186, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185]  median 1185  now-median 1064    476.8s     0.302 Mmoves/s
+  epoch   8: best 1186.0/1536  top10 [1186, 1186, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185]  median 1185  now-median 1047    544.6s     0.302 Mmoves/s
+  epoch   9: best 1186.0/1536  top10 [1186, 1186, 1185, 1185, 1185, 1185, 1185, 1185, 1185, 1185]  median 1185  now-median 1048    612.5s     0.302 Mmoves/s
+  time limit reached
+best coverage 1186/1536  domain sizes [291, 268, 281, 276, 255]  time 617.4s  kernel 610.5s  moves 1.84e+08
+NOT a covering: 350 facets uncovered
+wrote results/klein_night_r13/summary.json (partial)

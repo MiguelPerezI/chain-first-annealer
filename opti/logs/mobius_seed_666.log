@@ -1,0 +1,26 @@
+=== gpu_sc chain-first annealer ===  K=Möbius band (5 vertices, 5 triangles, minimal & unique)  |F_L|=150  grid=25  k=3 cmax=40 S=4096 iters=5000  T0=0.9 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=666
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  122.0/150  top10 [122, 110, 110, 108, 108, 107, 106, 106, 105, 105]  median 77  now-median 76     12.1s     1.701 Mmoves/s
+  epoch   2: best  136.0/150  top10 [136, 133, 133, 133, 132, 132, 132, 130, 130, 130]  median 102  now-median 101     17.6s     2.338 Mmoves/s
+  epoch   3: best  147.0/150  top10 [147, 146, 146, 145, 144, 144, 144, 143, 143, 143]  median 119  now-median 119     23.1s     2.674 Mmoves/s
+  epoch   4: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 146, 146, 146, 146]  median 127  now-median 127     28.6s     2.881 Mmoves/s
+  epoch   5: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 133  now-median 132     34.2s     3.020 Mmoves/s
+  epoch   6: best  148.0/150  top10 [148, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 135  now-median 135     39.7s     3.122 Mmoves/s
+  epoch   7: best  148.0/150  top10 [148, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 138  now-median 138     45.2s     3.199 Mmoves/s
+  epoch   8: best  148.0/150  top10 [148, 148, 148, 147, 147, 147, 147, 147, 147, 147]  median 139  now-median 139     50.7s     3.260 Mmoves/s
+  epoch   9: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 147, 147, 147, 147]  median 141  now-median 141     56.2s     3.309 Mmoves/s
+  epoch  10: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 147]  median 142  now-median 141     61.7s     3.348 Mmoves/s
+  epoch  11: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 143  now-median 142     67.2s     3.382 Mmoves/s
+  epoch  12: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 143  now-median 142     72.7s     3.410 Mmoves/s
+  epoch  13: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 144  now-median 143     78.2s     3.434 Mmoves/s
+  epoch  14: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 144  now-median 143     83.7s     3.455 Mmoves/s
+  epoch  15: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 145  now-median 143     89.2s     3.473 Mmoves/s
+  epoch  16: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 145  now-median 143     94.7s     3.489 Mmoves/s
+  epoch  17: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 146  now-median 144    100.2s     3.504 Mmoves/s
+  epoch  18: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 146  now-median 144    105.7s     3.517 Mmoves/s
+  epoch  19: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 147  now-median 144    111.2s     3.529 Mmoves/s
+  epoch  20: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 147  now-median 142    116.7s     3.540 Mmoves/s
+best coverage 148/150  domain sizes [60, 60, 48]  time 118.7s  kernel 115.7s  moves 4.1e+08
+NOT a covering: 2 facets uncovered
+wrote results/mobius_seed_666/summary.json (partial)

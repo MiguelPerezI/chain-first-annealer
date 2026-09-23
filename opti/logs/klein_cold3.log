@@ -1,0 +1,46 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=5 cmax=40 S=4096 iters=5000  T0=0.9 T1=0.03  beta=5.0 gamma=0.5 ptrack=0.3  guide=3.0/(max 11.0)  seed=888
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  236.0/1536  top10 [236, 233, 231, 230, 229, 227, 226, 226, 226, 225]  median 197  now-median 196     35.0s     0.588 Mmoves/s
+  epoch   2: best  258.0/1536  top10 [258, 252, 251, 250, 248, 248, 247, 246, 245, 244]  median 208  now-median 205     65.2s     0.631 Mmoves/s
+  epoch   3: best  277.0/1536  top10 [277, 272, 270, 265, 264, 264, 264, 263, 263, 261]  median 220  now-median 217     95.7s     0.646 Mmoves/s
+  epoch   4: best  287.0/1536  top10 [287, 285, 284, 281, 279, 278, 274, 272, 272, 271]  median 228  now-median 225    126.0s     0.654 Mmoves/s
+  epoch   5: best  300.0/1536  top10 [300, 296, 295, 294, 294, 292, 287, 286, 285, 285]  median 241  now-median 238    156.5s     0.658 Mmoves/s
+  epoch   6: best  309.0/1536  top10 [309, 306, 305, 305, 304, 304, 303, 302, 302, 300]  median 249  now-median 246    186.9s     0.661 Mmoves/s
+  epoch   7: best  342.0/1536  top10 [342, 340, 337, 333, 327, 321, 321, 320, 316, 315]  median 263  now-median 261    217.5s     0.663 Mmoves/s
+  epoch   8: best  370.0/1536  top10 [370, 353, 351, 348, 343, 343, 338, 337, 337, 336]  median 273  now-median 271    247.9s     0.665 Mmoves/s
+  epoch   9: best  380.0/1536  top10 [380, 374, 372, 370, 367, 366, 365, 364, 361, 361]  median 290  now-median 288    278.5s     0.666 Mmoves/s
+  epoch  10: best  407.0/1536  top10 [407, 396, 391, 390, 389, 384, 382, 382, 381, 380]  median 300  now-median 298    309.0s     0.667 Mmoves/s
+  epoch  11: best  420.0/1536  top10 [420, 419, 412, 411, 407, 407, 405, 404, 404, 401]  median 319  now-median 317    339.7s     0.667 Mmoves/s
+  epoch  12: best  457.0/1536  top10 [457, 441, 435, 434, 433, 432, 428, 427, 425, 425]  median 331  now-median 329    370.2s     0.668 Mmoves/s
+  epoch  13: best  484.0/1536  top10 [484, 477, 474, 460, 458, 457, 451, 448, 448, 446]  median 351  now-median 350    400.9s     0.668 Mmoves/s
+  epoch  14: best  521.0/1536  top10 [521, 491, 490, 481, 478, 474, 470, 470, 467, 465]  median 364  now-median 363    431.5s     0.669 Mmoves/s
+  epoch  15: best  542.0/1536  top10 [542, 540, 528, 524, 521, 506, 506, 492, 492, 490]  median 386  now-median 384    462.2s     0.669 Mmoves/s
+  epoch  16: best  567.0/1536  top10 [567, 554, 551, 551, 546, 545, 522, 517, 516, 513]  median 399  now-median 397    492.9s     0.669 Mmoves/s
+  epoch  17: best  595.0/1536  top10 [595, 570, 568, 568, 566, 563, 549, 540, 539, 537]  median 422  now-median 421    523.7s     0.669 Mmoves/s
+  epoch  18: best  597.0/1536  top10 [597, 595, 581, 581, 580, 580, 579, 567, 559, 556]  median 436  now-median 434    554.4s     0.669 Mmoves/s
+  epoch  19: best  617.0/1536  top10 [617, 617, 616, 608, 603, 601, 598, 593, 592, 590]  median 460  now-median 459    585.2s     0.669 Mmoves/s
+  epoch  20: best  640.0/1536  top10 [640, 632, 632, 623, 620, 618, 614, 611, 610, 610]  median 474  now-median 473    615.9s     0.669 Mmoves/s
+  epoch  21: best  657.0/1536  top10 [657, 647, 646, 644, 641, 641, 633, 632, 630, 629]  median 499  now-median 497    646.7s     0.669 Mmoves/s
+  epoch  22: best  705.0/1536  top10 [705, 660, 659, 656, 653, 652, 652, 652, 649, 648]  median 513  now-median 511    677.5s     0.669 Mmoves/s
+  epoch  23: best  719.0/1536  top10 [719, 700, 690, 683, 682, 679, 675, 672, 671, 665]  median 538  now-median 536    708.3s     0.669 Mmoves/s
+  epoch  24: best  740.0/1536  top10 [740, 730, 709, 699, 698, 693, 692, 687, 686, 685]  median 552  now-median 550    739.1s     0.669 Mmoves/s
+  epoch  25: best  744.0/1536  top10 [744, 743, 725, 720, 719, 718, 716, 711, 708, 707]  median 576  now-median 574    770.0s     0.669 Mmoves/s
+  epoch  26: best  778.0/1536  top10 [778, 775, 752, 750, 746, 738, 736, 735, 731, 729]  median 590  now-median 589    800.8s     0.669 Mmoves/s
+  epoch  27: best  788.0/1536  top10 [788, 787, 774, 769, 763, 761, 755, 753, 751, 750]  median 615  now-median 614    831.8s     0.669 Mmoves/s
+  epoch  28: best  802.0/1536  top10 [802, 794, 792, 778, 778, 776, 774, 771, 767, 763]  median 629  now-median 628    862.6s     0.669 Mmoves/s
+  epoch  29: best  817.0/1536  top10 [817, 808, 792, 791, 790, 790, 786, 785, 781, 778]  median 655  now-median 653    893.5s     0.669 Mmoves/s
+  epoch  30: best  826.0/1536  top10 [826, 825, 814, 800, 797, 797, 796, 795, 792, 792]  median 667  now-median 665    924.4s     0.669 Mmoves/s
+  epoch  31: best  856.0/1536  top10 [856, 837, 833, 831, 830, 827, 823, 822, 818, 817]  median 691  now-median 690    955.4s     0.669 Mmoves/s
+  epoch  32: best  864.0/1536  top10 [864, 848, 847, 844, 840, 839, 837, 836, 835, 835]  median 703  now-median 701    986.3s     0.669 Mmoves/s
+  epoch  33: best  866.0/1536  top10 [866, 856, 855, 853, 853, 851, 849, 849, 848, 847]  median 727  now-median 726   1017.3s     0.669 Mmoves/s
+  epoch  34: best  888.0/1536  top10 [888, 880, 871, 871, 867, 867, 866, 866, 866, 864]  median 739  now-median 737   1048.3s     0.668 Mmoves/s
+  epoch  35: best  906.0/1536  top10 [906, 891, 888, 884, 882, 882, 881, 881, 881, 880]  median 763  now-median 762   1079.3s     0.668 Mmoves/s
+  epoch  36: best  928.0/1536  top10 [928, 918, 913, 906, 903, 901, 900, 898, 897, 896]  median 776  now-median 774   1110.3s     0.668 Mmoves/s
+  epoch  37: best  937.0/1536  top10 [937, 934, 928, 923, 918, 918, 916, 915, 914, 913]  median 799  now-median 798   1141.4s     0.668 Mmoves/s
+  epoch  38: best  947.0/1536  top10 [947, 940, 939, 934, 932, 931, 930, 930, 929, 928]  median 811  now-median 811   1172.4s     0.668 Mmoves/s
+  epoch  39: best  954.0/1536  top10 [954, 953, 952, 952, 949, 947, 946, 946, 945, 943]  median 834  now-median 833   1203.5s     0.668 Mmoves/s
+  time limit reached
+best coverage 954/1536  domain sizes [185, 202, 261, 266, 193]  time 1207.4s  kernel 1195.9s  moves 7.99e+08
+NOT a covering: 582 facets uncovered
+wrote results/klein_cold3/summary.json (partial)
