@@ -80,6 +80,7 @@ class LadderTests(unittest.TestCase):
         p = copy.deepcopy(self.plan); p["rungs"][1]["guide_max"] = 1; cases.append(p)
         p = copy.deepcopy(self.plan); p["init"] = "s6_starcover/summary.json"; cases.append(p)
         p = copy.deepcopy(self.plan); p["common"]["gamma"] = -1; cases.append(p)
+        p = copy.deepcopy(self.plan); p["start"] = "external"; cases.append(p)
         for p in cases:
             path = Path(self.tmp.name) / "plan.json"
             path.write_text(json.dumps(p))
@@ -170,6 +171,66 @@ class LadderTests(unittest.TestCase):
                 ladder.campaign(self.plan, self.out, Path(sys.executable),
                                 runner=self.runner([]))
         self.assertFalse(self.out.exists())
+
+    def make_source_campaign(self, coverage=59072):
+        source_plan = copy.deepcopy(self.plan)
+        source_plan["rungs"] = source_plan["rungs"][:1]
+        source = Path(self.tmp.name) / "source"
+        original_out = self.out
+        self.out = source
+        try:
+            self.assertEqual(ladder.campaign(source_plan, source, Path(sys.executable),
+                                             runner=self.runner([coverage])), 2)
+        finally:
+            self.out = original_out
+        return source / "rung00/summary.json"
+
+    def test_guided_continuation_copies_hashed_incumbent(self):
+        initial = self.make_source_campaign()
+        self.plan = ladder.load_plan(ladder.OPTI / "experiments/s6_ladder_continuation.json")
+        self.calls.clear()
+        self.assertEqual(ladder.campaign(self.plan, self.out, Path(sys.executable),
+                                         stop_after=1, runner=self.runner([59100]),
+                                         initial_summary=initial), 3)
+        state = self.state()
+        self.assertEqual(state["status"], "paused")
+        self.assertEqual(state["initial"]["coverage"], 59072)
+        self.assertEqual(state["best_coverage"], 59100)
+        self.assertTrue((self.out / "initial_summary.json").is_file())
+        self.assertTrue((self.out / "initial_campaign.json").is_file())
+        init_arg = Path(self.calls[0][self.calls[0].index("--init") + 1])
+        self.assertEqual(init_arg, self.out / "initial_summary.json")
+        self.assertEqual(state["rungs"][0]["init_sha256"],
+                         ladder.digest(self.out / "initial_summary.json"))
+
+    def test_guided_continuation_rejects_missing_or_tampered_incumbent(self):
+        initial = self.make_source_campaign()
+        continuation = ladder.load_plan(ladder.OPTI / "experiments/s6_ladder_continuation.json")
+        with self.assertRaisesRegex(ValueError, "requires --initial-summary"):
+            ladder.campaign(continuation, self.out, Path(sys.executable), runner=self.runner([]))
+        campaign_path = initial.parent.parent / "campaign.json"
+        campaign = json.loads(campaign_path.read_text())
+        campaign["best_coverage"] -= 1
+        campaign_path.write_text(json.dumps(campaign))
+        with self.assertRaisesRegex(ValueError, "hashed incumbent"):
+            ladder.campaign(continuation, self.out, Path(sys.executable),
+                            runner=self.runner([]), initial_summary=initial)
+        self.assertFalse(self.out.exists())
+
+    def test_continuation_resume_uses_copied_incumbent(self):
+        initial = self.make_source_campaign()
+        self.plan = ladder.load_plan(ladder.OPTI / "experiments/s6_ladder_continuation.json")
+        self.calls.clear()
+        self.assertEqual(ladder.campaign(self.plan, self.out, Path(sys.executable),
+                                         stop_after=1, runner=self.runner([59100]),
+                                         initial_summary=initial), 3)
+        self.calls.clear()
+        self.assertEqual(ladder.campaign(self.plan, self.out, Path(sys.executable),
+                                         resume=True, stop_after=2,
+                                         runner=self.runner([59110])), 3)
+        self.assertEqual(self.state()["best_coverage"], 59110)
+        init_arg = self.calls[0][self.calls[0].index("--init") + 1]
+        self.assertIn("rung00", init_arg)
 
 
 if __name__ == "__main__":

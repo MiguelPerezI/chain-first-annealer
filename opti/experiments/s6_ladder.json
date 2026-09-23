@@ -1,7 +1,8 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "complex": "s6",
   "k": 3,
+  "start": "cold",
   "common": {
     "S": 64,
     "beta": 5.0,

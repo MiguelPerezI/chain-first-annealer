@@ -32,6 +32,59 @@ new population. It does not restore the previous population, facet weights,
 RNG state, or an interrupted epoch. The other half starts from random sweep
 chains, so every rung is still a chain-first annealer run.
 
+## First laboratory result and continuation
+
+The first complete ladder ran on an NVIDIA RTX PRO 6000 Blackwell Server
+Edition on 23 September 2026. Its unweighted coverage progressed as follows:
+
+| rung | coverage | uncovered | elapsed |
+|---:|---:|---:|---:|
+| 0 | 24,711 / 59,136 | 34,425 | 61 s |
+| 1 | 50,019 / 59,136 | 9,117 | 510 s |
+| 2 | 56,775 / 59,136 | 2,361 | 1,084 s |
+| 3 | 58,484 / 59,136 | 652 | 2,228 s |
+| 4 | 59,072 / 59,136 | 64 | 2,289 s |
+
+The campaign is incomplete and records no bound. Its hashed incumbent is
+`results/s6_k3_chain_first_ladder_run4/rung04/summary.json`.
+The 64 uncovered facets lie in 13 of the 64 ordered pairs of base facets,
+with at most 12 missing staircase facets in any one pair. Across the full
+product, 13,963 facets are covered by exactly one chain, 36,429 by two, and
+8,680 by all three. Thus the residual is localized amid substantial overlap;
+this supports concentrating the next search but does not prove that the same
+three chains can be completed.
+
+The continuation schedule in
+[s6_ladder_continuation.json](s6_ladder_continuation.json) starts from that
+incumbent. It uses `S=256`, four times the previous population, while its first
+rung keeps the same total 256,000 moves as rung 4 by reducing iterations per
+thread. Later rungs increase `cmax`, guide, cap and move budget. The complete
+continuation is bounded at 16 epochs and 2,560,000 moves:
+
+| rung | cmax | S | iters/epoch | epochs | guide / cap | seed |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 40 | 256 | 250 | 4 | 12 / 48 | 606 |
+| 1 | 48 | 256 | 500 | 4 | 16 / 64 | 607 |
+| 2 | 56 | 256 | 750 | 4 | 24 / 96 | 608 |
+| 3 | 64 | 256 | 1,000 | 4 | 32 / 128 | 609 |
+
+Run it from the repository root with a fresh output directory:
+
+```bash
+.venv/bin/python opti/scripts/run_s6_ladder.py \
+  --execute \
+  --python "$PWD/.venv/bin/python" \
+  --plan opti/experiments/s6_ladder_continuation.json \
+  --initial-summary opti/results/s6_k3_chain_first_ladder_run4/rung04/summary.json \
+  --outdir opti/results/s6_k3_chain_first_continuation_01
+```
+
+The runner verifies that the input is the hashed best result of an incomplete
+chain-first campaign, then copies both its summary and campaign manifest into
+the new directory. Subsequent warm starts are selected from the copied input
+and the best new rung. Resume at a clean rung boundary with the same `--plan`
+and `--outdir`, `--resume`, and no `--initial-summary`.
+
 ## Laboratory execution
 
 From the repository root, first inspect the plan. This command does not import

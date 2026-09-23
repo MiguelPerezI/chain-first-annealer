@@ -23,6 +23,8 @@ The pending chain-first search for S⁶ is prepared as a bounded, resumable
 unguided epoch and escalates through four guided warm restarts only if the
 cover remains incomplete. The script records partial results without a bound;
 only a full certificate accepted by the independent auditor is a success.
+The first laboratory ladder reached 59,072/59,136 facets; the same document
+records the committed continuation from its hashed incumbent.
 
 ## What to read first (the verified covers)
 
