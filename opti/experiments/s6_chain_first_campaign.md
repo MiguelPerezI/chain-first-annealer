@@ -85,6 +85,30 @@ the new directory. Subsequent warm starts are selected from the copied input
 and the best new rung. Resume at a clean rung boundary with the same `--plan`
 and `--outdir`, `--resume`, and no `--initial-summary`.
 
+### Continuation result
+
+The continuation completed on the same laboratory host:
+
+| rung | coverage | uncovered | elapsed | outcome |
+|---:|---:|---:|---:|---|
+| 0 | 59,124 / 59,136 | 12 | 629 s | incomplete |
+| 1 | 59,133 / 59,136 | 3 | 1,238 s | incomplete |
+| 2, epoch 1 | 59,135 / 59,136 | 1 | 464 s | continued |
+| 2, epoch 2 | 59,136 / 59,136 | 0 | 960 s total for rung | verified cover |
+
+The final certificate is
+`results/s6_k3_chain_first_continuation_01/rung02`. Its disjoint domain sizes
+are 44,909, 11,451 and 2,776 facets, and the reduced planner chains have 10, 9
+and 7 links. The independent checker rebuilt all 59,136 staircase facets,
+verified their partition, and checked every map and every contiguity link on
+each domain. Its output is retained in `rung02/audit.log`; the campaign
+manifest binds the checker and all certificate artifacts by SHA-256.
+
+The initial and continuation sequences used 1,862,400 moves and approximately
+2.5 hours of accumulated rung wall time. This is a sequence of warm restarts,
+not a single stationary annealing run. It establishes the explicit upper bound
+`SC_strict(boundary(Delta^7)) <= 2`; it does not establish optimality by itself.
+
 ## Laboratory execution
 
 From the repository root, first inspect the plan. This command does not import
@@ -156,5 +180,6 @@ status `failed` and never publishes a bound.
 The committed CPU tests exercise escalation, best-incumbent selection,
 pause/resume, plan and artifact tampering, bad exit/status contracts, stale
 certificate rejection, assertion enforcement, corrupt-certificate rejection,
-and the rule that only an audited full cover grants a bound. No S⁶ GPU search
-was run while preparing this campaign.
+and the rule that only an audited full cover grants a bound. These tests do not
+launch the S⁶ search; the GPU artifacts above were produced on the laboratory
+host and independently re-audited after being pulled into this repository.

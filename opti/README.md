@@ -18,17 +18,17 @@ of the impossibility of two domains. Historical results below retain their
 original timings. Code lives in `src/`, campaign scripts in `scripts/`, and
 notebooks in `experiments/`.
 
-The pending chain-first search for S⁶ is prepared as a bounded, resumable
-[guided ladder](experiments/s6_chain_first_campaign.md). It starts with one
-unguided epoch and escalates through four guided warm restarts only if the
-cover remains incomplete. The script records partial results without a bound;
-only a full certificate accepted by the independent auditor is a success.
-The first laboratory ladder reached 59,072/59,136 facets; the same document
-records the committed continuation from its hashed incumbent.
+The [S⁶ chain-first campaign](experiments/s6_chain_first_campaign.md) used a
+bounded, resumable guided ladder. Its first sequence reached 59,072/59,136
+facets; a continuation from that hashed incumbent reached full coverage and
+passed the independent audit. Partial stages record no bound.
 
 ## What to read first (the verified covers)
 
-Each certificate directory in `results/` contains:
+Standalone certificate directories in `results/` contain the files below.
+Campaign-managed certificates retain `cover.txt`, `planners.txt` and
+`summary.json` in the successful rung, with `audit.log` and the parent
+`campaign.json` providing the independent audit and provenance.
 
 | file | contents |
 |---|---|
@@ -47,7 +47,7 @@ The main results of the article:
 | ∂Δ⁴ (S³) | SC ≤ 2 | `results/s3_starcover` (320+140+40) | `results/s3_k3_v2` (309+130+61, 153 s) |
 | ∂Δ⁵ (S⁴) | SC = 2, sharp | `results/s4_starcover` (1750+630+140, <1 s) | `results/s4_k3_v2` (1634+653+233, one 13-min epoch) |
 | ∂Δ⁶ (S⁵) | SC ≤ 2 | `results/s5_starcover` (9072+2772+504, 1.2 s) | `results/s5_k3_v2` (7061+4239+1048, full coverage in epoch 2, ≈34 min) |
-| ∂Δ⁷ (S⁶) | SC ≤ 2 | `results/s6_starcover` (45276+12012+1848, 5 s) | — |
+| ∂Δ⁷ (S⁶) | SC ≤ 2 | `results/s6_starcover` (45276+12012+1848, 5 s) | `results/s6_k3_chain_first_continuation_01/rung02` (44909+11451+2776, ≈2.5 h sequence) |
 | ∂Δ⁸ (S⁷) | SC ≤ 2 | `results/s7_starcover` (219648+51480+6864, 25 s) | — |
 | ∂Δ⁹ (S⁸) | SC ≤ 2 | `results/s8_starcover` (1042470+218790+25740, 2:12) | — |
 | Császár torus | SC ≤ 10 | `results/torus_starcover_opt` (11 domains, ρ = 11 optimal) | — |
@@ -62,9 +62,9 @@ wall, the closed forms and `stream_starcover.py` (the streamed verifier for that
 audited certificates) are Section 21 of `optimized_algorithms.md`.
 
 A second and *independent* wall sits on the search side rather than the writing side: the chain-first GPU annealer
-cannot be launched on ∂Δ⁸ at all (its per-thread kernel state is 764 KB against a 512 KB limit) and is already ~300×
-more expensive per epoch on ∂Δ⁷ than on ∂Δ⁶, so the annealed certificates stop at S⁵ = ∂Δ⁶. Measured, with the
-arithmetic that reproduces the boundary: `s7_chain_first_wall.md`.
+cannot be launched on ∂Δ⁸ at all (its per-thread kernel state is 764 KB against a 512 KB limit). ∂Δ⁷ is expensive,
+but a staged guided campaign with small populations produced the S⁶ certificate above in about 2.5 accumulated
+hours. The launch boundary, earlier scaling probe and corrected campaign result are in `s7_chain_first_wall.md`.
 
 For the wedge of two circles of the paper's §5.2 — like the circle, a complex where no product cover reaches the
 bound (`ρ = 4`, so products give only `SC ≤ 3`) — the annealer finds 3 domains (18+16+16) with 2/5/5-link chains

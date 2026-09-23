@@ -1,12 +1,12 @@
 # S⁷ = ∂Δ⁸ with the chain-first annealer: the scaling wall
 
-*2026-09-19. Task: run the chain-first GPU annealer (`gpu_sc.py`) on S⁷ = ∂Δ⁸,
-the next sphere up from the ∂Δ⁴ campaign, and document. Result: **the
-annealer cannot run on ∂Δ⁸ at all** — the CUDA kernel fails to launch — and
-the measurement below locates the wall precisely between ∂Δ⁷ and ∂Δ⁸, with
-∂Δ⁷ already impractical. This is a different wall from the one the README
-records at S⁸ (which is about *writing and auditing* a facet-by-facet
-certificate); this one is about *searching*.*
+*2026-09-19, updated 2026-09-23. Task: run the chain-first GPU annealer
+(`gpu_sc.py`) on S⁷ = ∂Δ⁸ and locate its scaling boundary. Result: **the
+annealer cannot run on ∂Δ⁸ at all** because the CUDA kernel fails to launch.
+The original probe showed that ∂Δ⁷ is expensive, but a later bounded guided
+campaign did produce an audited S⁶ certificate. This is a different wall from
+the one the README records at S⁸, which concerns writing and auditing a
+facet-by-facet certificate; this one concerns search.*
 
 ## What was run
 
@@ -44,7 +44,7 @@ The 512 KB per-thread local-memory limit is what `CUDA_ERROR_INVALID_VALUE`
 is reporting, and the arithmetic reproduces the observed boundary exactly:
 S⁵ and S⁶ sit under it, S⁷ is 1.5× over.
 
-## ∂Δ⁷: it launches, and it is already hopeless
+## ∂Δ⁷: expensive per move, but reachable with staged guidance
 
 The ∂Δ⁷ probe (`results/s6_scale_probe`, S = 64, iters = 100, one epoch)
 covered 30,440 of 59,136 facets in **81.8 s for 6,400 moves — 12.8 ms per
@@ -53,6 +53,17 @@ move**. Scaled to the campaign's usual settings (S = 4096, iters = 20,000 =
 against 54 s for the same epoch on ∂Δ⁴. The ∂Δ⁶ plateau (S⁵) was reached in
 epochs of ~1,000 s; ∂Δ⁷ is ~300× that per epoch, and ∂Δ⁶ needed 2 epochs only
 because the search *started* near the answer.
+
+That extrapolation correctly rejected the usual 4,096 × 20,000 epoch, but its
+conclusion that S⁶ was impractical was too strong. On 23 September 2026, a
+small-population staged campaign on an NVIDIA RTX PRO 6000 Blackwell Server
+Edition reached a complete three-chain cover. The first ladder used 710,400
+moves and stopped at 59,072/59,136. A guided continuation increased the
+population from 64 to 256 and reached 59,136/59,136 after another 1,152,000
+moves. Accumulated rung wall time was approximately 2.5 hours. The independent
+auditor verified the resulting partition and planner chains; see
+`s6_chain_first_campaign.md` and
+`results/s6_k3_chain_first_continuation_01/rung02`.
 
 | complex | \|F_L\| | star | measured ns per move | relative to ∂Δ⁴ |
 |---|---:|---:|---:|---:|
@@ -87,12 +98,12 @@ says it would not produce a certificate:
 
 ## Conclusion
 
-The chain-first annealer's reach ends at **∂Δ⁶ = S⁵**: that is where the
-repository's only annealed certificate above S³ lives (`results/s5_k3_v2`),
-and the next sphere up is ~300× more expensive per epoch, the one after that
-cannot be launched at all. ∂Δ⁸ = S⁷ is out of range for this method on this
-hardware, by the kernel's per-thread state and its O(star) move evaluation
-together — not by any budget the user can set.
+The chain-first annealer now reaches **∂Δ⁷ = S⁶** through a staged guided
+campaign, despite the high per-move cost measured above. Its launch boundary
+remains at the next sphere: ∂Δ⁸ = S⁷ is out of range for this kernel on the
+tested hardware because its per-thread state exceeds the CUDA limit. The S⁶
+result corrects the earlier practical conclusion without changing that
+structural launch failure.
 
 Consequence for the programme: for S⁷ the chain-first formulation cannot be
 the instrument, and any statement about a *searched* certificate there would
