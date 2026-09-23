@@ -1,4 +1,5 @@
-# CPU certificate construction and optional CUDA search.
-numpy>=1.26
+# CPU certificate construction. NumPy 2.5 removed np.row_stack, which
+# numba-cuda 0.30.4 still registers while compiling its first kernel.
+numpy>=1.26,<2.5
 numba>=0.67
 scipy>=1.11

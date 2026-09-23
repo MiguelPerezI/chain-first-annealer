@@ -164,6 +164,13 @@ class LadderTests(unittest.TestCase):
         self.assertEqual(rc, 0)
         self.assertIn("True", log.read_text())
 
+    def test_runtime_preflight_failure_does_not_create_campaign(self):
+        with patch.object(ladder, "runtime_info", side_effect=subprocess.CalledProcessError(1, "preflight")):
+            with self.assertRaises(subprocess.CalledProcessError):
+                ladder.campaign(self.plan, self.out, Path(sys.executable),
+                                runner=self.runner([]))
+        self.assertFalse(self.out.exists())
+
 
 if __name__ == "__main__":
     unittest.main()

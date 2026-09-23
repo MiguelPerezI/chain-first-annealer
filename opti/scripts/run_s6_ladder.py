@@ -131,11 +131,32 @@ def git_info():
 
 def runtime_info(python):
     code = """import json, platform, importlib.metadata as m
+import numpy as np
+from numba import cuda
+
 versions = {}
 for p in ['numpy', 'numba', 'llvmlite', 'numba-cuda']:
     try: versions[p] = m.version(p)
     except m.PackageNotFoundError: versions[p] = None
-print(json.dumps(dict(python=platform.python_version(), packages=versions)))
+
+if not cuda.is_available():
+    raise RuntimeError('CUDA is not available to the selected Python environment')
+
+@cuda.jit
+def preflight_kernel(values):
+    i = cuda.grid(1)
+    if i < values.size:
+        values[i] += 1
+
+values = cuda.to_device(np.zeros(1, np.int32))
+preflight_kernel[1, 1](values)
+cuda.synchronize()
+if values.copy_to_host().tolist() != [1]:
+    raise RuntimeError('CUDA preflight kernel returned an invalid result')
+
+device = cuda.get_current_device()
+print(json.dumps(dict(python=platform.python_version(), packages=versions,
+                      cuda_preflight='passed', compute_capability=list(device.compute_capability))))
 """
     info = json.loads(subprocess.check_output([str(python), "-c", code], text=True, timeout=30))
     info.update(started_at=now(), host=platform.node(), platform=platform.platform(),

@@ -1,0 +1,3 @@
+# CUDA 12 search environment. Keep the base constraints in requirements.txt.
+-r requirements.txt
+numba-cuda[cu12]>=0.30.4

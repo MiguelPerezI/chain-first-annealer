@@ -42,13 +42,22 @@ python3 opti/scripts/run_s6_ladder.py \
   --outdir opti/results/s6_k3_chain_first_ladder
 ```
 
-Use the laboratory Python environment containing the versions in
-`requirements.txt`. Launch the full bounded ladder with:
+Create a CUDA 12 environment with the committed compatible constraints. The
+NumPy `<2.5` pin is required because `numba-cuda 0.30.4` still refers to the
+`np.row_stack` alias removed by NumPy 2.5:
 
 ```bash
-python3 opti/scripts/run_s6_ladder.py \
+python3 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip
+.venv/bin/python -m pip install -r requirements-cuda.txt
+```
+
+Launch the full bounded ladder with:
+
+```bash
+.venv/bin/python opti/scripts/run_s6_ladder.py \
   --execute \
-  --python /absolute/path/to/venv/bin/python \
+  --python "$PWD/.venv/bin/python" \
   --outdir opti/results/s6_k3_chain_first_ladder
 ```
 
@@ -57,9 +66,9 @@ rung boundary. Continue with the same repository revision, plan, Python path,
 and unmodified artifacts:
 
 ```bash
-python3 opti/scripts/run_s6_ladder.py \
+.venv/bin/python opti/scripts/run_s6_ladder.py \
   --execute --resume \
-  --python /absolute/path/to/venv/bin/python \
+  --python "$PWD/.venv/bin/python" \
   --outdir opti/results/s6_k3_chain_first_ladder
 ```
 
@@ -81,6 +90,9 @@ Start a new campaign directory instead.
 Python packages, Git revision, source hashes, input hashes, elapsed wall time,
 coverage and artifact hashes for every completed rung. It selects subsequent
 warm starts by maximum unweighted coverage, not by the most recent rung.
+Before creating the output directory, execution compiles and runs a one-element
+CUDA kernel. Missing CUDA support and incompatible compiler dependencies fail
+during this preflight rather than consuming a rung directory.
 
 An incomplete rung must return exit 2, contain no certificate files, and state
 `sc_strict_bound: null`. A reported full coverage is accepted only after
