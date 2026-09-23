@@ -18,6 +18,12 @@ of the impossibility of two domains. Historical results below retain their
 original timings. Code lives in `src/`, campaign scripts in `scripts/`, and
 notebooks in `experiments/`.
 
+The pending chain-first search for S⁶ is prepared as a bounded, resumable
+[guided ladder](experiments/s6_chain_first_campaign.md). It starts with one
+unguided epoch and escalates through four guided warm restarts only if the
+cover remains incomplete. The script records partial results without a bound;
+only a full certificate accepted by the independent auditor is a success.
+
 ## What to read first (the verified covers)
 
 Each certificate directory in `results/` contains:

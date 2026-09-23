@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "complex": "s6",
+  "k": 3,
+  "common": {
+    "S": 64,
+    "beta": 5.0,
+    "gamma": 0.5,
+    "ptrack": 0.3,
+    "pcopy": 0.5,
+    "T0": 0.6,
+    "T1": 0.03,
+    "tournament_every": 2,
+    "tournament_frac": 0.25
+  },
+  "rungs": [
+    {"cmax": 16, "iters": 100, "epochs": 1, "guide": 0.0, "guide_max": 1.0, "seed": 601},
+    {"cmax": 16, "iters": 250, "epochs": 4, "guide": 1.0, "guide_max": 4.0, "seed": 602},
+    {"cmax": 24, "iters": 500, "epochs": 4, "guide": 2.0, "guide_max": 8.0, "seed": 603},
+    {"cmax": 32, "iters": 1000, "epochs": 4, "guide": 4.0, "guide_max": 16.0, "seed": 604},
+    {"cmax": 40, "iters": 1000, "epochs": 4, "guide": 8.0, "guide_max": 32.0, "seed": 605}
+  ]
+}
