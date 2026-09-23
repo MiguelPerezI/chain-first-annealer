@@ -1,0 +1,11 @@
+=== gpu_sc chain-first annealer ===  K=∂Δ⁷ (S⁶)  |F_L|=59136  grid=64  k=3 cmax=16 S=64 iters=250  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 ptrack=0.3  guide=1.0/(max 4.0)  seed=602
+  seeded population from /home/jovyan/chain-first-annealer/opti/results/s6_k3_chain_first_ladder_run4/rung00/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/dispatcher.py:748: NumbaPerformanceWarning: Grid size 1 will likely result in GPU under-utilization due to low occupancy.
+  warn(errors.NumbaPerformanceWarning(msg))
+  epoch   1: best 37763.0/59136  top10 [37763, 36396, 34945, 34530, 34337, 34164, 34102, 34082, 33697, 33589]  median 27426  now-median 27426    129.5s     0.000 Mmoves/s
+  epoch   2: best 45960.0/59136  top10 [45960, 44645, 43126, 42460, 41944, 41680, 41240, 40573, 40424, 39586]  median 28696  now-median 28696    254.7s     0.000 Mmoves/s
+  epoch   3: best 48470.0/59136  top10 [48470, 46870, 45629, 45607, 44837, 44834, 44798, 44604, 44132, 43533]  median 38752  now-median 38596    379.4s     0.000 Mmoves/s
+  epoch   4: best 50019.0/59136  top10 [50019, 48961, 48898, 48529, 48315, 47814, 47432, 47403, 47355, 46842]  median 41383  now-median 41375    502.7s     0.000 Mmoves/s
+best coverage 50019/59136  domain sizes [25367, 30456, 25713]  time 503.3s  kernel 501.1s  moves 6.4e+04
+NOT a covering: 9117 facets uncovered
+wrote /home/jovyan/chain-first-annealer/opti/results/s6_k3_chain_first_ladder_run4/rung01/summary.json (partial)

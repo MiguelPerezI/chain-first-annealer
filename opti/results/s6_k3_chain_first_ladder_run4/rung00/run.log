@@ -1,0 +1,7 @@
+=== gpu_sc chain-first annealer ===  K=∂Δ⁷ (S⁶)  |F_L|=59136  grid=64  k=3 cmax=16 S=64 iters=100  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 ptrack=0.3  guide=0.0/(max 1.0)  seed=601
+/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/dispatcher.py:748: NumbaPerformanceWarning: Grid size 1 will likely result in GPU under-utilization due to low occupancy.
+  warn(errors.NumbaPerformanceWarning(msg))
+  epoch   1: best 24711.0/59136  top10 [24711, 24538, 24459, 23687, 23478, 23403, 23068, 23034, 23014, 22946]  median 20264  now-median 20264     57.9s     0.000 Mmoves/s
+best coverage 24711/59136  domain sizes [14297, 13682, 12465]  time 58.6s  kernel 57.9s  moves 6.4e+03
+NOT a covering: 34425 facets uncovered
+wrote /home/jovyan/chain-first-annealer/opti/results/s6_k3_chain_first_ladder_run4/rung00/summary.json (partial)

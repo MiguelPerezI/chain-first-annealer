@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-23T05:16:51.029381+00:00",
+  "status": "failed",
+  "plan": {
+    "schema_version": 1,
+    "complex": "s6",
+    "k": 3,
+    "common": {
+      "S": 64,
+      "beta": 5.0,
+      "gamma": 0.5,
+      "ptrack": 0.3,
+      "pcopy": 0.5,
+      "T0": 0.6,
+      "T1": 0.03,
+      "tournament_every": 2,
+      "tournament_frac": 0.25
+    },
+    "rungs": [
+      {
+        "cmax": 16,
+        "iters": 100,
+        "epochs": 1,
+        "guide": 0.0,
+        "guide_max": 1.0,
+        "seed": 601
+      },
+      {
+        "cmax": 16,
+        "iters": 250,
+        "epochs": 4,
+        "guide": 1.0,
+        "guide_max": 4.0,
+        "seed": 602
+      },
+      {
+        "cmax": 24,
+        "iters": 500,
+        "epochs": 4,
+        "guide": 2.0,
+        "guide_max": 8.0,
+        "seed": 603
+      },
+      {
+        "cmax": 32,
+        "iters": 1000,
+        "epochs": 4,
+        "guide": 4.0,
+        "guide_max": 16.0,
+        "seed": 604
+      },
+      {
+        "cmax": 40,
+        "iters": 1000,
+        "epochs": 4,
+        "guide": 8.0,
+        "guide_max": 32.0,
+        "seed": 605
+      }
+    ]
+  },
+  "python": "/home/jovyan/chain-first-annealer/.venv/bin/python",
+  "host": "gemelo-benchmark-0",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "git": {
+    "commit": "fdf7b48c641995f64d69ff42a0debebd95c8d47d",
+    "dirty": true
+  },
+  "source_sha256": {
+    "opti/scripts/run_s6_ladder.py": "832cfb8b12228a3d605c17bdba78efc79535940ebef8bd609cdc171e52de1014",
+    "opti/src/band_test.py": "2f6b6901032d9b13a533fb5fb9d17b1cc123c5cd57d446240104785cd58f0d75",
+    "opti/src/bench_ls.py": "e8593a7d001e5afb9a4a684d07869295cbc420b0b37409505c84cadfb0cf956f",
+    "opti/src/fixed_domain_test.py": "71ca0503801c20877a4b2308ad95b60134edb47b74ed2ab152ea83884bfd158c",
+    "opti/src/gpu_sc.py": "52bc5588ab0ee189975c5319072ead6fcec3161f16d76ca39341c370986c243e",
+    "opti/src/gpu_sc_equiv.py": "55732085882f862ac3a37f3daee71b53983c942ceef53febba1b7d4d808543c7",
+    "opti/src/h1_obstruction.py": "58d07100ce165450061edaaa16d333f36c789d241cc817865f3d35fbc7e88678",
+    "opti/src/hybrid_cover.py": "d809663fe2b27e456617d0b3a4ac714cea97eed8e3c72ed21bcc5b4f334e6de4",
+    "opti/src/independent_check.py": "6f9ebe0bb0dbb7902dc2f98236bbf9929b2abae8d1e4cf598f475ba1c270711a",
+    "opti/src/make_certificate_md.py": "a71fa8e66487e641bfc748581e35f11989342b337d91ac7339382e4ec2ad4f67",
+    "opti/src/make_definition_md.py": "f57ff130247ee2ec848e197a5137f6b5ab463872b809557a6dd1ed113d1d2362",
+    "opti/src/opti_sc.py": "c0f7557f7c20438e557edcd50bab8de958949f48833c29f6bf74c166d835202e",
+    "opti/src/provenance.py": "2439d1470370d911a339b17f71317a4f98dad04cb8e7c4cdde2e96d3412694cf",
+    "opti/src/rect2_optimum.py": "0783b89c138bfc5a208a0c1df0a9bd6f18cddf0d45bc02a80c2856a241e20c34",
+    "opti/src/rect_cover.py": "55303298b950d25da4576e8cf658a2e9017a606389a406afde098976e094a4c6",
+    "opti/src/star_cover.py": "d52a12c5bf49691ed0f8d6a2f8daf7ecd83a0d4cb35a058926667302c48011d4",
+    "opti/src/stream_starcover.py": "7051b7bc2078cfaebc1bcab4d7678b6697815e49ec3337de861d3ad7b10ec16b",
+    "opti/src/test_contracts.py": "97fa2d1ad859d6d97aac70a64caf23da96c45cdd87d3366fd395c3a3178c9603",
+    "opti/src/validation.py": "85fd0813607d24d0b08e77d8baf2697d1a3cfbd1281028beab599866d334b462",
+    "opti/src/wedge_paper_check.py": "75366ea2b38c6776fe92bbf3be82e5cb959e11dbcc8e3b9ecb0267ad4e579c3f"
+  },
+  "rungs": [],
+  "best_coverage": null,
+  "sc_strict_bound": null,
+  "sessions": [
+    {
+      "python": "3.12.13",
+      "packages": {
+        "numpy": "2.5.3",
+        "numba": "0.67.0",
+        "llvmlite": "0.49.0",
+        "numba-cuda": "0.30.4"
+      },
+      "started_at": "2026-09-23T05:16:50.995070+00:00",
+      "host": "gemelo-benchmark-0",
+      "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+      "cuda_visible_devices": null,
+      "nvidia_smi": {
+        "returncode": 0,
+        "stdout": "index, uuid, name, driver_version, memory.total [MiB]\n0, GPU-a6cad0e3-7094-36b9-bb03-73acb38683c9, NVIDIA RTX PRO 6000 Blackwell Server Edition, 595.91.07, 24576 MiB\n",
+        "stderr": "[HAMI-core Msg(113278:131258102642496:multiprocess_memory_limit.c:703)]: Cleanup on exit for PID 113278\n[HAMI-core Msg(113278:131258102642496:multiprocess_memory_limit.c:739)]: Exit cleanup complete for PID 113278\n"
+      }
+    }
+  ],
+  "method": "chain-first annealer only; warm restarts from this campaign",
+  "active_rung": {
+    "directory": "rung00",
+    "started_at": "2026-09-23T05:16:51.806304+00:00",
+    "command": [
+      "/home/jovyan/chain-first-annealer/.venv/bin/python",
+      "-u",
+      "/home/jovyan/chain-first-annealer/opti/src/gpu_sc.py",
+      "--complex",
+      "s6",
+      "--k",
+      "3",
+      "--S",
+      "64",
+      "--beta",
+      "5.0",
+      "--gamma",
+      "0.5",
+      "--ptrack",
+      "0.3",
+      "--pcopy",
+      "0.5",
+      "--T0",
+      "0.6",
+      "--T1",
+      "0.03",
+      "--tournament-every",
+      "2",
+      "--tournament-frac",
+      "0.25",
+      "--cmax",
+      "16",
+      "--iters",
+      "100",
+      "--epochs",
+      "1",
+      "--guide",
+      "0.0",
+      "--guide-max",
+      "1.0",
+      "--seed",
+      "601",
+      "--require-cover",
+      "--outdir",
+      "/home/jovyan/chain-first-annealer/opti/results/s6_k3_chain_first_ladder_run3/rung00"
+    ],
+    "session": 0,
+    "init": null,
+    "init_sha256": null,
+    "returncode": 1,
+    "elapsed_s": 4.976964453235269
+  },
+  "error": "ValueError: annealer process failed with exit 1"
+}

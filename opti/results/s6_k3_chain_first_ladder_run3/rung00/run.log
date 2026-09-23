@@ -1,0 +1,71 @@
+=== gpu_sc chain-first annealer ===  K=∂Δ⁷ (S⁶)  |F_L|=59136  grid=64  k=3 cmax=16 S=64 iters=100  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 ptrack=0.3  guide=0.0/(max 1.0)  seed=601
+/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/dispatcher.py:748: NumbaPerformanceWarning: Grid size 1 will likely result in GPU under-utilization due to low occupancy.
+  warn(errors.NumbaPerformanceWarning(msg))
+Traceback (most recent call last):
+  File "/home/jovyan/chain-first-annealer/opti/src/gpu_sc.py", line 1217, in <module>
+    sys.exit(cli())
+             ^^^^^
+  File "/home/jovyan/chain-first-annealer/opti/src/gpu_sc.py", line 1178, in cli
+    chains, cov, hist, ann = anneal_cover(P, a.k, a.cmax, a.S, a.iters, a.epochs, a.T0, a.T1,
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/opti/src/gpu_sc.py", line 1084, in anneal_cover
+    score = ann.epoch(iters, T0, T1, beta, pcopy, ptrack, gamma)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/opti/src/gpu_sc.py", line 562, in epoch
+    self.kernel[blocks, self.threads](
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/dispatcher.py", line 751, in __call__
+    return self.dispatcher.call(args, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/dispatcher.py", line 1846, in call
+    kernel = _dispatcher.Dispatcher._cuda_call(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/dispatcher.py", line 1863, in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/core/compiler_lock.py", line 74, in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/dispatcher.py", line 2146, in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/core/compiler_lock.py", line 74, in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/dispatcher.py", line 159, in __init__
+    cres = compile_cuda(
+           ^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/core/compiler_lock.py", line 74, in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/compiler.py", line 801, in compile_cuda
+    cres = compile_extra(
+           ^^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/compiler.py", line 600, in compile_extra
+    pipeline = pipeline_class(
+               ^^^^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/core/compiler.py", line 100, in __init__
+    typingctx.refresh()
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/typing/context.py", line 160, in refresh
+    self.load_additional_registries()
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/target.py", line 42, in load_additional_registries
+    from . import (
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/fp16.py", line 6, in <module>
+    from numba.cuda._internal.cuda_fp16 import (
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/_internal/cuda_fp16.py", line 34, in <module>
+    from numba.cuda._internal.cuda_bf16 import _type___nv_bfloat16
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/_internal/cuda_bf16.py", line 31, in <module>
+    from numba.cuda.typing.builtins import (
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/typing/builtins.py", line 1206, in <module>
+    make_attribute_wrapper(IndexValueType, "index", "index")
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/extending.py", line 55, in make_attribute_wrapper
+    from numba.cuda.cudaimpl import registry as cuda_impl_registry
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/cudaimpl.py", line 18, in <module>
+    from numba.cuda.np.npyimpl import register_ufuncs
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/np/npyimpl.py", line 16, in <module>
+    from numba.cuda.np import arrayobj
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/np/arrayobj.py", line 6860, in <module>
+    overload(np.row_stack)(impl_np_vstack)
+             ^^^^^^^^^^^^
+  File "/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numpy/__init__.py", line 769, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'row_stack'

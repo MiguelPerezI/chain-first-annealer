@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/jovyan/chain-first-annealer/opti/src/gpu_sc.py", line 47, in <module>
+    from numba import cuda, njit, int8, int32, uint8, uint32, uint64, float32, float64
+ModuleNotFoundError: No module named 'numba'
