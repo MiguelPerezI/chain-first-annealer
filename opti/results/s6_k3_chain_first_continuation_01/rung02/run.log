@@ -1,0 +1,10 @@
+=== gpu_sc chain-first annealer ===  K=∂Δ⁷ (S⁶)  |F_L|=59136  grid=64  k=3 cmax=56 S=256 iters=750  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 ptrack=0.3  guide=24.0/(max 96.0)  seed=608
+  seeded population from /home/jovyan/chain-first-annealer/opti/results/s6_k3_chain_first_continuation_01/rung01/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/jovyan/chain-first-annealer/.venv/lib/python3.12/site-packages/numba_cuda/numba/cuda/dispatcher.py:748: NumbaPerformanceWarning: Grid size 4 will likely result in GPU under-utilization due to low occupancy.
+  warn(errors.NumbaPerformanceWarning(msg))
+  epoch   1: best 59135.0/59136  top10 [59135, 59134, 59134, 59134, 59134, 59134, 59134, 59134, 59134, 59134]  median 48759  now-median 48724    463.9s     0.000 Mmoves/s
+  epoch   2: best 59136.0/59136  top10 [59136, 59135, 59135, 59135, 59134, 59134, 59134, 59134, 59134, 59134]  median 49052  now-median 48971    923.8s     0.000 Mmoves/s
+  full coverage reached at epoch 2
+best coverage 59136/59136  domain sizes [44909, 38635, 35332]  time 924.5s  kernel 921.0s  moves 3.84e+05
+VERIFIED system of 3 motion planners: sizes [44909, 11451, 2776], reduced chain lengths [10, 9, 7]  =>  SC_strict(∂Δ⁷ (S⁶)) <= 2
+wrote /home/jovyan/chain-first-annealer/opti/results/s6_k3_chain_first_continuation_01/rung02/cover.txt planners.txt summary.json

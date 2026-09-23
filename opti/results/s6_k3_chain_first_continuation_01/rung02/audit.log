@@ -1,0 +1,8 @@
+K = ∂Δ⁷ (S⁶): rebuilt KxK independently — 59136 maximal facets
+[1] facet table: 59136/59136 staircase facets match cover.txt
+[2] cover: 3 disjoint domains cover all 59136 facets (sizes [44909, 11451, 2776])
+[3] domain 0: 44909 facets, chain of 11 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+[3] domain 1: 11451 facets, chain of 10 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+[3] domain 2: 2776 facets, chain of 8 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+
+VERIFIED: SC_strict(∂Δ⁷ (S⁶)) <= 2 by 3 explicit planner domains (subdivision level 0)
