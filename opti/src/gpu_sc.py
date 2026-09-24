@@ -273,6 +273,18 @@ def build(name):
             f.append(sorted((i, (i + 1) % 7, (i + 3) % 7)))
             f.append(sorted((i, (i + 2) % 7, (i + 3) % 7)))
         return Product(f, "Császár torus")
+    if name == "rp2":
+        # The vertex-minimal triangulation of the real projective plane RP²:
+        # 6 vertices 0..5, 10 triangles, f-vector (6, 15, 10), chi = 1,
+        # every pair of vertices spans an edge (1-skeleton = K6).
+        # 6 vertices is provably minimal: a triangulation of RP² with V
+        # vertices has F = 2(V-1) faces (Euler + 3F=2E), so V >= 6 to get
+        # F >= 10 = C(V,2)-V+1.  The type is unique up to relabelling
+        # (it is the hemi-icosahedron: antipodal identification of the
+        # icosahedron's 12 vertices, 30 edges, 20 faces -> 6, 15, 10).
+        return Product([(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 5), (0, 1, 5),
+                        (1, 2, 4), (2, 3, 5), (3, 4, 1), (4, 5, 2), (5, 1, 3)],
+                       "RP² (6 vertices, 10 triangles, hemi-icosahedron)")
     if name == "klein":
         # The vertex-minimal triangulation of the Klein bottle: 8 vertices 0..7,
         # 16 triangles, f-vector (8, 24, 16), chi = 0, valence vector
@@ -1212,7 +1224,7 @@ def init_from_summary(P: Product, path: Path, k: int, cmax: int, S: int):
 
 def cli():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "klein", "torus", "mobius", "s1xw"])
+    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "rp2", "klein", "torus", "mobius", "s1xw"])
     ap.add_argument("--k", type=int, default=3, help="number of chains / domains")
     ap.add_argument("--cmax", type=int, default=40, help="links per chain")
     ap.add_argument("--S", type=int, default=4096, help="population (GPU threads)")
