@@ -26,3 +26,38 @@
   epoch  22: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 497    442.8s     1.021 Mmoves/s
   epoch  23: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 500    462.8s     1.021 Mmoves/s
   epoch  24: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 497    482.7s     1.022 Mmoves/s
+  epoch  25: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 501    502.7s     1.022 Mmoves/s
+  epoch  26: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 498    522.6s     1.022 Mmoves/s
+  epoch  27: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 501    542.6s     1.022 Mmoves/s
+  epoch  28: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 498    562.5s     1.023 Mmoves/s
+  epoch  29: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 496    582.5s     1.023 Mmoves/s
+  epoch  30: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 494    602.4s     1.023 Mmoves/s
+  epoch  31: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 493    622.4s     1.023 Mmoves/s
+  epoch  32: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 492    642.3s     1.024 Mmoves/s
+  epoch  33: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 492    662.3s     1.024 Mmoves/s
+  epoch  34: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 491    682.2s     1.024 Mmoves/s
+  epoch  35: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 492    702.2s     1.024 Mmoves/s
+  epoch  36: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 491    722.2s     1.024 Mmoves/s
+  epoch  37: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 492    742.1s     1.024 Mmoves/s
+  epoch  38: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 492    762.0s     1.025 Mmoves/s
+  epoch  39: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 492    782.0s     1.025 Mmoves/s
+  epoch  40: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 492    801.9s     1.025 Mmoves/s
+  epoch  41: best  541.0/600  top10 [541, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 492    821.9s     1.025 Mmoves/s
+  epoch  42: best  541.0/600  top10 [541, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 493    841.8s     1.025 Mmoves/s
+  epoch  43: best  541.0/600  top10 [541, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 495    861.8s     1.025 Mmoves/s
+  epoch  44: best  541.0/600  top10 [541, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 497    881.7s     1.025 Mmoves/s
+  epoch  45: best  541.0/600  top10 [541, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 499    901.7s     1.025 Mmoves/s
+  epoch  46: best  541.0/600  top10 [541, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 501    921.7s     1.025 Mmoves/s
+  epoch  47: best  541.0/600  top10 [541, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 502    941.7s     1.025 Mmoves/s
+  epoch  48: best  541.0/600  top10 [541, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 503    961.6s     1.026 Mmoves/s
+  epoch  49: best  542.0/600  top10 [542, 541, 541, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 504    981.6s     1.026 Mmoves/s
+  epoch  50: best  542.0/600  top10 [542, 541, 541, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 506   1001.5s     1.026 Mmoves/s
+  epoch  51: best  542.0/600  top10 [542, 541, 541, 541, 540, 540, 540, 540, 540, 540]  median 540  now-median 507   1021.5s     1.026 Mmoves/s
+  epoch  52: best  542.0/600  top10 [542, 541, 541, 541, 540, 540, 540, 540, 540, 540]  median 540  now-median 508   1041.4s     1.026 Mmoves/s
+  epoch  53: best  542.0/600  top10 [542, 541, 541, 541, 540, 540, 540, 540, 540, 540]  median 540  now-median 510   1061.4s     1.026 Mmoves/s
+  epoch  54: best  542.0/600  top10 [542, 541, 541, 541, 540, 540, 540, 540, 540, 540]  median 540  now-median 511   1081.3s     1.026 Mmoves/s
+  epoch  55: best  542.0/600  top10 [542, 541, 541, 541, 540, 540, 540, 540, 540, 540]  median 540  now-median 512   1101.4s     1.026 Mmoves/s
+  epoch  56: best  542.0/600  top10 [542, 541, 541, 541, 540, 540, 540, 540, 540, 540]  median 540  now-median 513   1121.3s     1.026 Mmoves/s
+  epoch  57: best  542.0/600  top10 [542, 541, 541, 541, 540, 540, 540, 540, 540, 540]  median 540  now-median 513   1141.3s     1.026 Mmoves/s
+  epoch  58: best  542.0/600  top10 [542, 541, 541, 541, 540, 540, 540, 540, 540, 540]  median 540  now-median 514   1161.2s     1.026 Mmoves/s
+  epoch  59: best  542.0/600  top10 [542, 541, 541, 541, 540, 540, 540, 540, 540, 540]  median 540  now-median 515   1181.2s     1.026 Mmoves/s

@@ -1,0 +1,11 @@
+=== gpu_sc chain-first annealer ===  K=RP² (6 vertices, 10 triangles, hemi-icosahedron)  |F_L|=600  grid=36  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=3.0/(max 11.0)  seed=673
+  seeded population from results/rp2_k6/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 366  now-median 360     23.9s     0.858 Mmoves/s
+  epoch   2: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 376  now-median 372     43.8s     0.938 Mmoves/s
+  epoch   3: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 532  now-median 520     63.7s     0.967 Mmoves/s
+  time limit reached
+best coverage 540/600  domain sizes [150, 150, 141, 150, 150]  time 65.5s  kernel 63.5s  moves 6.14e+07
+NOT a covering: 60 facets uncovered
+wrote /home/ubuntu/Documents/chain-first-annealer/opti/results/rp2_k5_hybrid/summary.json (partial)
