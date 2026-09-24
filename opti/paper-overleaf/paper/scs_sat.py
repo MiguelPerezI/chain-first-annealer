@@ -86,18 +86,54 @@ def build_complex(name):
     return NV, NG, NF, FAC, TRIS, PI1, PI2, P
 
 
+def _recompute_domains(chains, NV, NF, FAC, TRIS):
+    """Given chains [k][c+1][ngrid], recompute which facets each covers."""
+    tri_set = [set(t) for t in TRIS]
+    domains = []
+    for chain in chains:
+        clen = len(chain)
+        dom = []
+        for f in range(NF):
+            verts = FAC[f]
+            ok = True
+            for link in range(clen - 1):
+                img_a = {chain[link][v] for v in verts}
+                img_b = {chain[link + 1][v] for v in verts}
+                union = img_a | img_b
+                if not any(union <= ts for ts in tri_set):
+                    ok = False
+                    break
+            if ok:
+                dom.append(f)
+        domains.append(dom)
+    return domains
+
+
 def load_warm(path, NV, NG, NF, FAC, TRIS):
-    """Load annealer summary.json → (chains, domains, covered_set)."""
+    """Load annealer summary.json → (chains, domains, covered_set).
+
+    Handles both complete covers (have 'domains' key) and partial stalls
+    (only have 'best_chains' + 'chain_domain_sizes').
+    """
     data = json.load(open(path))
     raw_chains = data["best_chains"]
-    raw_domains = data["domains"]
-    k_warm = len(raw_domains)
+    k_warm = len(raw_chains)
+
+    if "domains" in data:
+        raw_domains = data["domains"]
+    else:
+        print(f"  partial summary (status={data.get('status','?')}), "
+              f"recomputing domains from chains...", flush=True)
+        raw_domains = _recompute_domains(raw_chains, NV, NF, FAC, TRIS)
+
     covered = set()
     for dom in raw_domains:
         covered.update(dom)
     print(f"  warm-start: {k_warm} domains, {len(covered)}/{NF} covered, "
-          f"{NF - len(covered)} residual")
+          f"{NF - len(covered)} residual", flush=True)
     sizes = [len(d) for d in raw_domains]
+    for i, s in enumerate(sizes):
+        print(f"    domain {i}: {s} facets", flush=True)
     order = sorted(range(k_warm), key=lambda i: sizes[i], reverse=True)
     return raw_chains, raw_domains, covered, order
 

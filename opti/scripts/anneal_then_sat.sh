@@ -60,17 +60,17 @@ if [ ! -f "$SUMMARY" ]; then
 fi
 
 COVERED=$($PY -c "
-import json
+import json, sys
 d = json.load(open('$SUMMARY'))
-covered = set()
-for dom in d['domains']:
-    covered.update(dom)
 nf = d['complex']['num_facets']
-print(f'{len(covered)}/{nf}')
-if len(covered) >= nf:
-    exit(0)
-else:
-    exit(1)
+cov = int(d.get('coverage', 0))
+if cov == 0 and 'domains' in d:
+    s = set()
+    for dom in d['domains']:
+        s.update(dom)
+    cov = len(s)
+print(f'{cov}/{nf}')
+sys.exit(0 if cov >= nf else 1)
 " 2>/dev/null) && COMPLETE=1 || COMPLETE=0
 
 echo "Coverage: $COVERED"
