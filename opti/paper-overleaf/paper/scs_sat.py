@@ -6,38 +6,34 @@ grid -> V(K); facet f is covered by the domain iff every link is
 1-contiguous AND simplicial on f: img(phi_i) | img(phi_{i+1}) on f lies
 in one triangle of K.
 
-Shorter chains embed into L links by stuttering (consecutive equal maps
-are allowed), so UNSAT at L covers every L' <= L; empty domains are
-allowed, so k = 3 covers every k' <= 3.
-
-Encoding:
-  m[d][i][v]  IntVar 0..NV-1   value of phi_i(v), d in {0..k-1}, i in 0..L
-  m[d][0][v] fixed = pi1(v) ;  m[d][L][v] fixed = pi2(v)
-  x[f][d]     Bool              domain d covers facet f ;  sum_d x[f,d] >= 1
-  y[d][f][i][T] Bool            pair (i,i+1) of domain d on facet f is good
-                                inside triangle T ; sum_T y >= x[f,d]
-  y => m[d][i][v] in T and m[d][i+1][v] in T for all grid vertices v of f
-  pair (0,1): pi1's image on f IS sigma(f), so goodness forces
-  img(phi_1) <= sigma(f):   x[f,d] => m[d][1][v] in sigma(f)   (no y needed)
-  pair (L-1,L): symmetric:  x[f,d] => m[d][L-1][v] in tau(f)
-  symmetry breaking: domain sizes sum_f x[f,0] >= sum_f x[f,1] >= ...
-
-UNSAT  => no such cover exists (machine-verifiable).
-SAT    => prints the domains + chains.
+Modes:
+  Cold (default):  solve from scratch — full CP-SAT encoding for k domains.
+  Hybrid (--warm): load annealer's best chains, freeze (k - free) domains,
+                   let CP-SAT re-solve the freed domains to cover the residual.
+                   Massive variable reduction for large-k stalls.
 
 Usage:
-  python scs_sat.py --complex mobius --k 3 --L 8 --timeout 600
-  python scs_sat.py --complex rp2 --k 3 --L 8 --timeout 3600
+  # Cold — RP² at k=3 (600 facets, should take minutes to hours)
+  python scs_sat.py --complex rp2 --k 3 --L 8 --timeout 3600 --witness
+
+  # Hybrid — use annealer's k=5 stall, free 2 worst domains for CP-SAT
+  python scs_sat.py --complex rp2 --k 5 --L 8 --timeout 3600 --witness \
+      --warm ../../results/rp2_k5/summary.json --free 2
+
+  # Torus — might need longer chains and more time
   python scs_sat.py --complex torus --k 3 --L 10 --timeout 7200
 """
 import argparse
+import json
 import sys
 import time
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "opti"))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "..", "opti"))
 try:
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                    "..", ".."))
     from opti.src import gpu_sc as _gs
     gpu_sc = _gs
 except Exception:
@@ -63,11 +59,28 @@ def build_complex(name):
     TRIS = [tuple(sorted(t)) for t in P.kfacets]
     PI1 = [v // NV for v in range(NG)]
     PI2 = [v % NV for v in range(NG)]
-    return NV, NG, NF, FAC, TRIS, PI1, PI2, P.name
+    return NV, NG, NF, FAC, TRIS, PI1, PI2, P
 
 
-def solve(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
-          want_solution=False, outdir=None):
+def load_warm(path, NV, NG, NF, FAC, TRIS):
+    """Load annealer summary.json → (chains, domains, covered_set)."""
+    data = json.load(open(path))
+    raw_chains = data["best_chains"]
+    raw_domains = data["domains"]
+    k_warm = len(raw_domains)
+    covered = set()
+    for dom in raw_domains:
+        covered.update(dom)
+    print(f"  warm-start: {k_warm} domains, {len(covered)}/{NF} covered, "
+          f"{NF - len(covered)} residual")
+    sizes = [len(d) for d in raw_domains]
+    order = sorted(range(k_warm), key=lambda i: sizes[i], reverse=True)
+    return raw_chains, raw_domains, covered, order
+
+
+def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
+               want_solution=False, outdir=None):
+    """Full CP-SAT solve from scratch."""
     NT = len(TRIS)
     model = cp_model.CpModel()
     m = {}
@@ -111,6 +124,7 @@ def solve(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
     for d in range(k - 1):
         model.Add(sum(x[f, d] for f in range(NF))
                   >= sum(x[f, d + 1] for f in range(NF)))
+
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = timeout_s
     solver.parameters.num_workers = workers
@@ -120,35 +134,163 @@ def solve(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
     dt = time.time() - t0
     st = solver.StatusName(status)
     print(f"k={k} L={L}: {st} in {dt:.1f}s "
-          f"(vars {len(model.proto.variables)}, cons {len(model.proto.constraints)})")
-    if st in ("OPTIMAL", "FEASIBLE"):
-        chains = []
-        for d in range(k):
-            ch = [[solver.Value(m[d, i, v]) for v in range(NG)]
-                  for i in range(L + 1)]
-            chains.append(ch)
-        doms = [[f for f in range(NF) if solver.Value(x[f, d]) == 1]
-                for d in range(k)]
-        for d in range(k):
-            print(f"  domain {d}: {len(doms[d])} facets")
-        if want_solution and outdir:
-            os.makedirs(outdir, exist_ok=True)
-            import json
-            path = os.path.join(outdir, f"scs_witness_k{k}_L{L}.json")
-            json.dump({"chains": chains, "domains": doms}, open(path, "w"))
-            print(f"  witness written to {path}")
-        elif want_solution:
-            import json
-            path = f"/tmp/scs_witness_k{k}_L{L}.json"
-            json.dump({"chains": chains, "domains": doms}, open(path, "w"))
-            print(f"  witness written to {path}")
+          f"(vars {len(model.proto.variables)}, "
+          f"cons {len(model.proto.constraints)})")
+    _report_solution(st, k, L, NG, NF, m, x, solver, want_solution, outdir)
     return st, dt
+
+
+def solve_hybrid(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
+                 warm_path, n_free,
+                 want_solution=False, outdir=None):
+    """Hybrid solve: freeze (k - n_free) best annealer domains, free the rest.
+
+    Frozen domains have their chains fixed as constants — zero CP-SAT variables.
+    Only the freed domains get m/x/y variables.  Coverage constraint: every facet
+    must be covered by either a frozen domain OR a freed domain.
+    """
+    NT = len(TRIS)
+    raw_chains, raw_domains, covered, order = load_warm(
+        warm_path, NV, NG, NF, FAC, TRIS)
+    k_warm = len(raw_domains)
+
+    n_frozen = k - n_free
+    if n_frozen > k_warm:
+        print(f"  WARNING: asked to freeze {n_frozen} but warm file has {k_warm} "
+              f"domains; freezing all {k_warm}")
+        n_frozen = k_warm
+        n_free = k - n_frozen
+
+    frozen_ids = order[:n_frozen]
+    frozen_covered = set()
+    for idx in frozen_ids:
+        frozen_covered.update(raw_domains[idx])
+    residual = [f for f in range(NF) if f not in frozen_covered]
+
+    print(f"  freezing {n_frozen} domains ({len(frozen_covered)} facets covered)")
+    print(f"  freeing {n_free} domains to cover {len(residual)} residual facets")
+    if not residual:
+        print("  nothing to solve — frozen domains already cover everything!")
+        return "FEASIBLE", 0.0
+
+    model = cp_model.CpModel()
+
+    # --- Frozen domains: chains become constants, coverage is automatic ---
+    # We still need m/x variables for frozen domains so the output format
+    # is uniform, but all m's are constants and x's are forced.
+    m = {}
+    x = {}
+    for di, frozen_idx in enumerate(frozen_ids):
+        chain = raw_chains[frozen_idx]
+        chain_len = len(chain) - 1
+        pad_L = max(L, chain_len)
+        for i in range(L + 1):
+            src_i = min(i, chain_len)
+            for v in range(NG):
+                m[di, i, v] = model.NewConstant(int(chain[src_i][v]))
+        for f in range(NF):
+            if f in set(raw_domains[frozen_idx]):
+                x[f, di] = model.NewConstant(1)
+            else:
+                x[f, di] = model.NewConstant(0)
+
+    # --- Free domains: full CP-SAT variables ---
+    free_start = n_frozen
+    for fd in range(n_free):
+        d = free_start + fd
+        for i in range(L + 1):
+            for v in range(NG):
+                if i == 0:
+                    m[d, i, v] = model.NewConstant(PI1[v])
+                elif i == L:
+                    m[d, i, v] = model.NewConstant(PI2[v])
+                else:
+                    m[d, i, v] = model.NewIntVar(0, NV - 1, f"m{d}_{i}_{v}")
+        for f in range(NF):
+            x[f, d] = model.NewBoolVar(f"x{f}_{d}")
+
+    # --- Coverage: every facet covered by at least one domain ---
+    for f in range(NF):
+        all_x = [x[f, d] for d in range(k)]
+        model.Add(sum(all_x) >= 1)
+
+    # --- Contiguity constraints for free domains only ---
+    for fd in range(n_free):
+        d = free_start + fd
+        for f in range(NF):
+            verts = FAC[f]
+            sig = sorted({g // NV for g in FAC[f]})
+            tau = sorted({g % NV for g in FAC[f]})
+            for v in verts:
+                model.AddLinearExpressionInDomain(
+                    m[d, 1, v], cp_model.Domain.FromValues(sig)
+                ).OnlyEnforceIf(x[f, d])
+                model.AddLinearExpressionInDomain(
+                    m[d, L - 1, v], cp_model.Domain.FromValues(tau)
+                ).OnlyEnforceIf(x[f, d])
+            for i in range(1, L - 1):
+                ys = [model.NewBoolVar(f"y{d}_{f}_{i}_{t}") for t in range(NT)]
+                model.Add(sum(ys) >= x[f, d])
+                for t, T in enumerate(TRIS):
+                    for v in verts:
+                        model.AddLinearExpressionInDomain(
+                            m[d, i, v], cp_model.Domain.FromValues(T)
+                        ).OnlyEnforceIf(ys[t])
+                        model.AddLinearExpressionInDomain(
+                            m[d, i + 1, v], cp_model.Domain.FromValues(T)
+                        ).OnlyEnforceIf(ys[t])
+
+    # Symmetry breaking among free domains only
+    for fd in range(n_free - 1):
+        d1 = free_start + fd
+        d2 = free_start + fd + 1
+        model.Add(sum(x[f, d1] for f in range(NF))
+                  >= sum(x[f, d2] for f in range(NF)))
+
+    solver = cp_model.CpSolver()
+    solver.parameters.max_time_in_seconds = timeout_s
+    solver.parameters.num_workers = workers
+    solver.parameters.log_search_progress = True
+    t0 = time.time()
+    status = solver.Solve(model)
+    dt = time.time() - t0
+    st = solver.StatusName(status)
+
+    n_vars = len(model.proto.variables)
+    n_cons = len(model.proto.constraints)
+    print(f"hybrid k={k} (frozen={n_frozen}, free={n_free}) L={L}: "
+          f"{st} in {dt:.1f}s (vars {n_vars}, cons {n_cons})")
+    _report_solution(st, k, L, NG, NF, m, x, solver, want_solution, outdir)
+    return st, dt
+
+
+def _report_solution(st, k, L, NG, NF, m, x, solver, want_solution, outdir):
+    if st not in ("OPTIMAL", "FEASIBLE"):
+        return
+    chains = []
+    for d in range(k):
+        ch = [[solver.Value(m[d, i, v]) for v in range(NG)]
+              for i in range(L + 1)]
+        chains.append(ch)
+    doms = [[f for f in range(NF) if solver.Value(x[f, d]) == 1]
+            for d in range(k)]
+    for d in range(k):
+        print(f"  domain {d}: {len(doms[d])} facets")
+    total = len(set(f for dom in doms for f in dom))
+    print(f"  total covered: {total}/{NF}")
+    if want_solution:
+        dest = outdir or "/tmp"
+        os.makedirs(dest, exist_ok=True)
+        path = os.path.join(dest, f"scs_witness_k{k}_L{L}.json")
+        json.dump({"chains": chains, "domains": doms}, open(path, "w"))
+        print(f"  witness written to {path}")
 
 
 if __name__ == "__main__":
     import multiprocessing
 
-    parser = argparse.ArgumentParser(description="CP-SAT cover decision for K×K")
+    parser = argparse.ArgumentParser(
+        description="CP-SAT cover decision for K×K (cold or hybrid warm-start)")
     parser.add_argument("--complex", default="mobius",
                         choices=["mobius", "rp2", "torus", "klein", "s1xw",
                                  "circle", "s2", "s3", "cube", "dodeca"],
@@ -165,15 +307,27 @@ if __name__ == "__main__":
                         help="directory for witness JSON output")
     parser.add_argument("--witness", action="store_true",
                         help="save witness JSON on SAT")
+    parser.add_argument("--warm", default=None,
+                        help="path to annealer summary.json for hybrid mode")
+    parser.add_argument("--free", type=int, default=0,
+                        help="number of domains to free in hybrid mode "
+                             "(0 = free all k, i.e. cold solve with hints)")
     args = parser.parse_args()
 
     workers = args.workers if args.workers > 0 else min(multiprocessing.cpu_count(), 16)
-    NV, NG, NF, FAC, TRIS, PI1, PI2, cname = build_complex(args.complex)
+    NV, NG, NF, FAC, TRIS, PI1, PI2, P = build_complex(args.complex)
 
-    print(f"{cname}: {NF} facets, {NG} grid vertices, "
+    print(f"{P.name}: {NF} facets, {NG} grid vertices, "
           f"{len(TRIS)} triangles, NV={NV}; workers={workers}")
-    print(f"Trying k={args.k}, L={args.L}, timeout={args.timeout}s")
 
-    solve(args.k, args.L, args.timeout, workers,
-          NV, NG, NF, FAC, TRIS, PI1, PI2,
-          want_solution=args.witness, outdir=args.outdir)
+    if args.warm and args.free > 0:
+        print(f"HYBRID mode: warm={args.warm}, free={args.free}/{args.k}")
+        solve_hybrid(args.k, args.L, args.timeout, workers,
+                     NV, NG, NF, FAC, TRIS, PI1, PI2,
+                     args.warm, args.free,
+                     want_solution=args.witness, outdir=args.outdir)
+    else:
+        print(f"COLD mode: k={args.k}, L={args.L}, timeout={args.timeout}s")
+        solve_cold(args.k, args.L, args.timeout, workers,
+                   NV, NG, NF, FAC, TRIS, PI1, PI2,
+                   want_solution=args.witness, outdir=args.outdir)
