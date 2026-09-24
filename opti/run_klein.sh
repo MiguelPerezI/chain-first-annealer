@@ -19,12 +19,19 @@
 # is therefore sharp, SC_strict = 4 = TC, and the k=4 control below must never
 # cover.
 #
+# Level-0 bracket: 5 <= min domains <= 12.  The 12 is rho(Klein), the exact
+# rectangle-cover number (ILP; src/rect_cover.py exhausts 1..8), so no product
+# cover exists below 12 domains.  Campaign log, the H1 proof that the k=8
+# plateau (1483/1536) cannot be completed by extension, and the winding-family
+# diagnosis: experiments/klein_anneal_log.md.
+#
 #   ./run_klein.sh k5      # k=5 cold, beta 5 / gamma 0.5 / track moves: TARGET
 #   ./run_klein.sh k5w     # k=5 continuation of a previous run's best state
 #   ./run_klein.sh k5g     # k=5 continuation + the coverage guide
 #   ./run_klein.sh k5c     # k=5 cold + the coverage guide
 #   ./run_klein.sh k4      # k=4 control — TC(K^2) = 4 forbids a 4-domain cover
-#   ./run_klein.sh k6      # k=6 comparison (covers trivially, gives SC <= 5)
+#   ./run_klein.sh k6      # k=6 comparison (NOT trivial: rho = 12 means no product
+#                           # cover below 12 domains; the recorded k=6 run reached 783/1536)
 #   TL=900 ./run_klein.sh k5   # override the time limit (seconds)
 #
 # Outputs: results/klein_k5/, klein_k4/, klein_k6/, ...; logs in logs/.

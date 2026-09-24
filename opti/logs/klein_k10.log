@@ -1,0 +1,16 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=10 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=666
+  seeded population from results/klein_k9/summary.json (reduced chains of the 10 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best 1536.0/1536  top10 [1536, 1536, 1536, 1536, 1536, 1536, 1536, 1536, 1536, 1536]  median 897  now-median 897     38.4s     0.536 Mmoves/s
+  full coverage reached at epoch 1
+best coverage 1536/1536  domain sizes [274, 252, 249, 245, 228, 219, 217, 199, 159, 1536]  time 42.5s  kernel 38.2s  moves 2.05e+07
+Traceback (most recent call last):
+  File "/home/ubuntu/Documents/chain-first-annealer/opti/src/gpu_sc.py", line 1370, in <module>
+    sys.exit(cli())
+             ^^^^^
+  File "/home/ubuntu/Documents/chain-first-annealer/opti/src/gpu_sc.py", line 1350, in cli
+    verify_system(P, parts)
+  File "/home/ubuntu/Documents/chain-first-annealer/opti/src/gpu_sc.py", line 1074, in verify_system
+    raise ValueError("chain does not start at pi1")
+ValueError: chain does not start at pi1

@@ -65,9 +65,14 @@ class CertificateContracts(unittest.TestCase):
 class ExecutionContracts(unittest.TestCase):
     def test_parameter_boundaries(self):
         validate_parameters(cmax=255,T0=0.6,T1=0.03,ptrack=1,seed=0)
+        validate_parameters(crossover=0,h1_guide=0)
+        validate_parameters(crossover=1,h1_guide=1)
         for values in [dict(cmax=256),dict(cmax=1),dict(S=0),dict(k=0),dict(iters=0),
                        dict(epochs=0),dict(T0=0),dict(T1=float('nan')),
-                       dict(ptrack=1.1),dict(tournament_every=0),dict(time_limit=-1)]:
+                       dict(ptrack=1.1),dict(tournament_every=0),dict(time_limit=-1),
+                       dict(crossover=-0.1),dict(crossover=1.1),dict(crossover=float('nan')),
+                       dict(crossover=True),dict(h1_guide=-1),dict(h1_guide=1.5),
+                       dict(h1_guide=True)]:
             with self.subTest(values=values):
                 with self.assertRaises(ValueError):validate_parameters(**values)
         with self.assertRaises(ValueError):gpu_sc.ChainAnnealer(None,2,256,1)
@@ -76,6 +81,10 @@ class ExecutionContracts(unittest.TestCase):
         r=subprocess.run([sys.executable,'-B',str(HERE/'gpu_sc.py'),'--cmax','256'],capture_output=True,text=True)
         self.assertEqual(r.returncode,2)
         self.assertIn('cmax must',r.stderr)
+        self.assertNotIn('CudaSupportError',r.stderr)
+        r=subprocess.run([sys.executable,'-B',str(HERE/'gpu_sc.py'),'--h1-guide','-1'],capture_output=True,text=True)
+        self.assertEqual(r.returncode,2)
+        self.assertIn('h1_guide must',r.stderr)
         self.assertNotIn('CudaSupportError',r.stderr)
 
     def test_incomplete_cli_status_and_record(self):

@@ -666,7 +666,7 @@ class ChainAnnealer:
         return score
 
     # -- population step: clone the elite over the weakest --------------------------
-    def tournament(self, frac=0.5, noise=0):
+    def tournament(self, frac=0.5, noise=0, crossover=0.0):
         S = self.S
         order = np.argsort(-self.bestscore)
         n = int(S * frac)
@@ -680,6 +680,26 @@ class ChainAnnealer:
             # random re-initialisation of a few slots for diversity
             for j in range(self.k):
                 self.chains[s, j] = self.sweep_chain()
+            self.bestscore[s] = -1.0
+        # -- chain-level crossover: recombine two elite incumbents -------------------
+        # The missing move class on the winding family (klein_anneal_log.md §3-4):
+        # point/track mutations can only extend or nudge domains, never hand a band
+        # of facets from one chain to another.  A child built from two different
+        # basin states carries a partition neither parent could reach by extension.
+        # crossover = 0 keeps the RNG stream bit-identical (no draws below).
+        nc = min(int(len(weak) * crossover), max(0, len(weak) - noise))
+        for s in weak[noise:noise + nc]:
+            ia = int(self.rng.integers(0, len(elite)))
+            ib = int(self.rng.integers(0, len(elite)))
+            if ib == ia and len(elite) > 1:
+                ib = (ib + 1) % len(elite)
+            pa, pb = elite[ia], elite[ib]
+            from_a = self.rng.integers(0, 2, size=self.k).astype(bool)
+            child = np.empty_like(self.best[pa])
+            child[from_a] = self.best[pa][from_a]
+            child[~from_a] = self.best[pb][~from_a]
+            self.chains[s] = child
+            self.best[s] = child
             self.bestscore[s] = -1.0
 
     def top(self):
@@ -1150,19 +1170,33 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
                  T0=0.6, T1=0.03, beta=0.05, pcopy=0.5, seed=0, time_limit=None,
                  log=print, stop_at_full=True, tournament_every=2, tournament_frac=0.25,
                  init_chains=None, ptrack=0.05, guide=0.0, guide_max=4.0, gamma=0.0,
-                 mu=0.0):
+                 mu=0.0, crossover=0.0, h1_guide=0):
     """guide > 0: adaptive weights (guided local search) — after each epoch the
     facets left uncovered by the best state get weight += guide (capped at
     guide_max), all weights decay toward 1; the reported coverage is always
     unweighted.  A facet left uncovered for many epochs saturates the cap:
     w* = 1 + guide/0.3, so guide = 1 already reaches the old default cap of 4
     (1 + 3.33) — escalating the increment alone does nothing, the cap has to
-    move with it (exposed as --guide-max)."""
+    move with it (exposed as --guide-max).
+
+    crossover > 0: that fraction of tournament-replacement slots are filled by
+    chain-uniform recombination of two elite incumbents instead of clones.
+    h1_guide > 0: every N epochs, the uncovered facets of the incumbent are
+    tested with the GF(2) H1 obstruction (h1_obstruction.h1_map_obstruction)
+    against each of the k chain domains; facets provably unabsorbable for ALL
+    chains from the current state (klein_anneal_log.md §3) get weight 0, so
+    the guide stops paying for closed doors.  Weight 0 still leaves a facet in
+    the (unweighted) coverage count and in the top() ranking — the objective
+    stays the true cover."""
     validate_parameters(k=k, cmax=cmax, S=S, iters=iters, epochs=epochs,
                         T0=T0, T1=T1, beta=beta, gamma=gamma, pcopy=pcopy,
                         ptrack=ptrack, guide=guide, guide_max=guide_max, mu=mu,
-                        tournament_every=tournament_every,
+                        tournament_every=tournament_every, crossover=crossover,
+                        h1_guide=h1_guide,
                         tournament_frac=tournament_frac, seed=seed, time_limit=time_limit)
+    if h1_guide:
+        # lazy import: h1_obstruction imports gpu_sc only in its __main__
+        from h1_obstruction import h1_map_obstruction
     ann = ChainAnnealer(P, k, cmax, S, seed=seed)
     if init_chains is not None:
         n = min(len(init_chains), S) // 2
@@ -1171,14 +1205,39 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
     hist = []
     full = float(P.nf)
     best_chains, best_cov = None, -1.0
+    h1_dead = None   # (P.nf,) bool: facets obstructed for all chains of the incumbent
     for ep in range(1, epochs + 1):
         score = ann.epoch(iters, T0, T1, beta, pcopy, ptrack, gamma, mu)
         chains, cov = ann.top()
+        covered = None
+        recompute_h1 = h1_guide and (ep - 1) % h1_guide == 0
+        if recompute_h1:
+            doms, covered = ann.coverage_of(chains)
+            U = [int(f) for f in np.nonzero(~covered)[0]]
+            if len(U) * k <= 2048:   # ~0.03 s/test; masks matter near plateaus, not in the early climb
+                dsets = [set(int(f) for f in d) for d in doms]
+                dead = np.zeros(P.nf, bool)
+                for f in U:
+                    if all(h1_map_obstruction(P, sorted(d | {f}))[1] for d in dsets):
+                        dead[f] = True
+                h1_dead = dead
+                if dead.any():
+                    log(f"  h1-guide: {int(dead.sum())}/{len(U)} uncovered facets are H1-obstructed "
+                        f"for all {k} chains (weight 0)")
         if guide > 0:
-            _, covered = ann.coverage_of(chains)
+            if covered is None:
+                _, covered = ann.coverage_of(chains)
             w = 1.0 + (ann.weights - 1.0) * 0.7
             w[~covered] += guide
-            ann.set_weights(np.minimum(w, guide_max))
+            w = np.minimum(w, guide_max)
+            if h1_dead is not None:
+                w[h1_dead] = 0.0   # the decay would otherwise heal the mask (0 -> 0.3 -> ...)
+            ann.set_weights(w)
+        elif recompute_h1:
+            w = np.ones(P.nf, np.float32)
+            if h1_dead is not None:
+                w[h1_dead] = 0.0
+            ann.set_weights(w)
         el = time.perf_counter() - t_start
         srt = np.sort(ann.bestscore)[::-1]
         log(f"  epoch {ep:3d}: best {cov:6.1f}/{P.nf}  top10 {srt[:10].astype(int).tolist()}  "
@@ -1194,7 +1253,7 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
             log("  time limit reached")
             break
         if ep % tournament_every == 0:
-            ann.tournament(frac=tournament_frac, noise=max(1, S // 32))
+            ann.tournament(frac=tournament_frac, noise=max(1, S // 32), crossover=crossover)
     return best_chains, best_cov, hist, ann
 
 
@@ -1245,8 +1304,16 @@ def cli():
     ap.add_argument("--guide-max", type=float, default=4.0, dest="guide_max",
                     help="cap on those adaptive weights; a persistently uncovered facet saturates at "
                          "1 + guide/0.3, so the cap must be raised for --guide above ~0.9 to bite")
+    ap.add_argument("--h1-guide", type=int, default=0, dest="h1_guide", metavar="N",
+                    help="every N epochs, mask to weight 0 the uncovered facets that the GF(2) H1 "
+                         "obstruction provably forbids for ALL chains of the incumbent "
+                         "(klein_anneal_log.md section 3); 0 = off")
     ap.add_argument("--tournament-every", type=int, default=2)
     ap.add_argument("--tournament-frac", type=float, default=0.25)
+    ap.add_argument("--crossover", type=float, default=0.0,
+                    help="fraction of tournament-replacement slots filled by chain-level crossover "
+                         "of two elite incumbents instead of clones — a restructuring move class "
+                         "(klein_anneal_log.md sections 3-4); 0 = off")
     ap.add_argument("--time-limit", type=float, default=None, help="seconds")
     ap.add_argument("--outdir", default=None)
     ap.add_argument("--require-cover", action="store_true", help="exit 2 for a completed search without a full cover")
@@ -1257,7 +1324,7 @@ def cli():
         validate_parameters(**{key: getattr(a, key) for key in (
             "k", "cmax", "S", "iters", "epochs", "T0", "T1", "beta", "gamma",
             "mu", "pcopy", "ptrack", "guide", "tournament_every", "tournament_frac",
-            "seed", "time_limit", "guide_max")})
+            "seed", "time_limit", "guide_max", "crossover", "h1_guide")})
     except ValueError as exc:
         ap.error(str(exc))
 
@@ -1265,7 +1332,8 @@ def cli():
     print(f"=== gpu_sc chain-first annealer ===  K={P.name}  |F_L|={P.nf}  grid={P.ngrid}  "
           f"k={a.k} cmax={a.cmax} S={a.S} iters={a.iters}  T0={a.T0} T1={a.T1}  "
           f"beta={a.beta} gamma={a.gamma} mu={a.mu} ptrack={a.ptrack}  "
-          f"guide={a.guide}/(max {a.guide_max})  seed={a.seed}")
+          f"guide={a.guide}/(max {a.guide_max})  seed={a.seed}"
+          + (f"  crossover={a.crossover} h1-guide={a.h1_guide}" if a.crossover or a.h1_guide else ""))
     init = None
     if a.init:
         init = init_from_summary(P, Path(a.init), a.k, a.cmax, a.S)
@@ -1277,7 +1345,8 @@ def cli():
                                           tournament_every=a.tournament_every,
                                           tournament_frac=a.tournament_frac,
                                           ptrack=a.ptrack, guide=a.guide, guide_max=a.guide_max,
-                                          gamma=a.gamma, mu=a.mu)
+                                          gamma=a.gamma, mu=a.mu,
+                                          crossover=a.crossover, h1_guide=a.h1_guide)
     dt = time.perf_counter() - t0
     doms = [P.domain_of(chains[j]) for j in range(a.k)]
     covered = np.zeros(P.nf, bool)

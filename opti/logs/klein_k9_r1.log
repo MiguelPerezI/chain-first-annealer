@@ -1,0 +1,47 @@
+=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=9 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=666
+  seeded population from results/klein_k9/summary.json (reduced chains of the 9 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best 1519.0/1536  top10 [1519, 1519, 1519, 1519, 1519, 1519, 1519, 1519, 1519, 1519]  median 892  now-median 882     38.0s     0.543 Mmoves/s
+  epoch   2: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1520, 1520, 1520, 1519, 1519]  median 904  now-median 890     72.7s     0.567 Mmoves/s
+  epoch   3: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1520, 1520, 1520, 1520]  median 1519  now-median 1508    107.9s     0.573 Mmoves/s
+  epoch   4: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1520, 1520, 1520, 1520]  median 1519  now-median 1505    142.9s     0.577 Mmoves/s
+  epoch   5: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1520, 1520, 1520]  median 1519  now-median 1508    178.5s     0.577 Mmoves/s
+  epoch   6: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1520, 1520, 1520]  median 1519  now-median 1505    213.9s     0.578 Mmoves/s
+  epoch   7: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1507    249.6s     0.578 Mmoves/s
+  epoch   8: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1504    285.2s     0.578 Mmoves/s
+  epoch   9: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1506    321.0s     0.578 Mmoves/s
+  epoch  10: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1503    356.5s     0.578 Mmoves/s
+  epoch  11: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1501    392.2s     0.578 Mmoves/s
+  epoch  12: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1499    427.8s     0.578 Mmoves/s
+  epoch  13: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1497    463.5s     0.578 Mmoves/s
+  epoch  14: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1495    499.0s     0.578 Mmoves/s
+  epoch  15: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1493    534.7s     0.578 Mmoves/s
+  epoch  16: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1491    570.3s     0.578 Mmoves/s
+  epoch  17: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1490    606.0s     0.578 Mmoves/s
+  epoch  18: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1489    641.5s     0.578 Mmoves/s
+  epoch  19: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1487    677.2s     0.578 Mmoves/s
+  epoch  20: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1486    712.8s     0.578 Mmoves/s
+  epoch  21: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1485    748.5s     0.578 Mmoves/s
+  epoch  22: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1484    784.1s     0.578 Mmoves/s
+  epoch  23: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1482    819.9s     0.578 Mmoves/s
+  epoch  24: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1482    855.4s     0.578 Mmoves/s
+  epoch  25: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1481    891.1s     0.578 Mmoves/s
+  epoch  26: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1480    926.7s     0.578 Mmoves/s
+  epoch  27: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1480    962.4s     0.578 Mmoves/s
+  epoch  28: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1478    997.9s     0.578 Mmoves/s
+  epoch  29: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1478   1033.7s     0.578 Mmoves/s
+  epoch  30: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1478   1069.2s     0.578 Mmoves/s
+  epoch  31: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1478   1104.9s     0.578 Mmoves/s
+  epoch  32: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1478   1140.5s     0.578 Mmoves/s
+  epoch  33: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1479   1176.2s     0.578 Mmoves/s
+  epoch  34: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1478   1211.8s     0.578 Mmoves/s
+  epoch  35: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1480   1247.5s     0.578 Mmoves/s
+  epoch  36: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1480   1283.1s     0.578 Mmoves/s
+  epoch  37: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1483   1318.8s     0.578 Mmoves/s
+  epoch  38: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1482   1354.4s     0.578 Mmoves/s
+  epoch  39: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1485   1390.1s     0.578 Mmoves/s
+  epoch  40: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1483   1425.6s     0.578 Mmoves/s
+  epoch  41: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1490   1461.4s     0.578 Mmoves/s
+  epoch  42: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1519  now-median 1489   1497.0s     0.578 Mmoves/s
+  epoch  43: best 1521.0/1536  top10 [1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 1520  now-median 1494   1532.8s     0.578 Mmoves/s

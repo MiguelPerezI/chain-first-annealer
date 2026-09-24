@@ -7,8 +7,8 @@ def validate_parameters(**values):
     integer_limits = {'k': (1, None), 'cmax': (2, 255), 'S': (1, None),
                       'iters': (1, None), 'epochs': (1, None),
                       'tournament_every': (1, None), 'threads': (1, 1024),
-                      'seed': (0, None)}
-    probabilities = {'pcopy', 'ptrack', 'tournament_frac'}
+                      'seed': (0, None), 'h1_guide': (0, None)}
+    probabilities = {'pcopy', 'ptrack', 'tournament_frac', 'crossover'}
     for name, value in values.items():
         if name in integer_limits:
             low, high = integer_limits[name]
