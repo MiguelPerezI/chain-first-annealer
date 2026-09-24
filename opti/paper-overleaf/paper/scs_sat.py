@@ -49,6 +49,30 @@ except Exception:
 from ortools.sat.python import cp_model
 
 
+class VerboseCallback(cp_model.CpSolverSolutionCallback):
+    """Prints progress each time CP-SAT finds a feasible solution."""
+    def __init__(self, NF, k, x):
+        super().__init__()
+        self._NF = NF
+        self._k = k
+        self._x = x
+        self._count = 0
+        self._t0 = time.time()
+
+    def on_solution_callback(self):
+        self._count += 1
+        dt = time.time() - self._t0
+        sizes = []
+        for d in range(self._k):
+            s = sum(self.Value(self._x[f, d]) for f in range(self._NF))
+            sizes.append(s)
+        total = len(set(f for d in range(self._k)
+                        for f in range(self._NF) if self.Value(self._x[f, d])))
+        print(f"  [SAT] solution #{self._count}  {dt:7.1f}s  "
+              f"covered {total}/{self._NF}  domains {sizes}",
+              flush=True)
+
+
 def build_complex(name):
     P = gpu_sc.build(name)
     NV = P.nv
@@ -83,6 +107,8 @@ def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
     """Full CP-SAT solve from scratch."""
     NT = len(TRIS)
     model = cp_model.CpModel()
+    print(f"  building model: {k} domains × {L} links × {NG} grid vertices...",
+          flush=True)
     m = {}
     for d in range(k):
         for i in range(L + 1):
@@ -98,6 +124,8 @@ def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
         for d in range(k):
             x[f, d] = model.NewBoolVar(f"x{f}_{d}")
         model.Add(sum(x[f, d] for d in range(k)) >= 1)
+    print(f"  adding contiguity constraints ({k}×{NF}×{L-2}×{NT} y-vars)...",
+          flush=True)
     for d in range(k):
         for f in range(NF):
             verts = FAC[f]
@@ -125,12 +153,19 @@ def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
         model.Add(sum(x[f, d] for f in range(NF))
                   >= sum(x[f, d + 1] for f in range(NF)))
 
+    n_vars = len(model.proto.variables)
+    n_cons = len(model.proto.constraints)
+    print(f"  model built: {n_vars} vars, {n_cons} constraints", flush=True)
+    print(f"  launching solver with {workers} workers, timeout {timeout_s}s...",
+          flush=True)
+
+    cb = VerboseCallback(NF, k, x)
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = timeout_s
     solver.parameters.num_workers = workers
     solver.parameters.log_search_progress = True
     t0 = time.time()
-    status = solver.Solve(model)
+    status = solver.Solve(model, cb)
     dt = time.time() - t0
     st = solver.StatusName(status)
     print(f"k={k} L={L}: {st} in {dt:.1f}s "
@@ -174,6 +209,8 @@ def solve_hybrid(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
         return "FEASIBLE", 0.0
 
     model = cp_model.CpModel()
+    print(f"  building hybrid model: {n_frozen} frozen + {n_free} free domains, "
+          f"L={L}...", flush=True)
 
     # --- Frozen domains: chains become constants, coverage is automatic ---
     # We still need m/x variables for frozen domains so the output format
@@ -247,12 +284,19 @@ def solve_hybrid(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
         model.Add(sum(x[f, d1] for f in range(NF))
                   >= sum(x[f, d2] for f in range(NF)))
 
+    n_vars = len(model.proto.variables)
+    n_cons = len(model.proto.constraints)
+    print(f"  model built: {n_vars} vars, {n_cons} constraints", flush=True)
+    print(f"  launching solver with {workers} workers, timeout {timeout_s}s...",
+          flush=True)
+
+    cb = VerboseCallback(NF, k, x)
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = timeout_s
     solver.parameters.num_workers = workers
     solver.parameters.log_search_progress = True
     t0 = time.time()
-    status = solver.Solve(model)
+    status = solver.Solve(model, cb)
     dt = time.time() - t0
     st = solver.StatusName(status)
 
