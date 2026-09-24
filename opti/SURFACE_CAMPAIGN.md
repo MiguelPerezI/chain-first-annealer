@@ -7,7 +7,7 @@
 | Möbius band | 150 | 1 | 2 (sharp at 3 domains) | **SC=2, done** | CP-SAT k=3 L=8 |
 | Torus | 1176 | 2 | 3 | 579/1176 (49%) anneal; hybrid 6+4 misses 5 facets | Stalling |
 | Klein bottle | 1536 | 4 | 5 | 1200/1536 (78%) | Stalling |
-| RP² | 600 | 2 | 3 | **Not tried** | — |
+| RP² | 600 | 2 | 3 | **SC≤5** (anneal ladder k=11→6); k=5 stalls 540/600, k=4 stalls 469/600, k=3 stalls 398/600 | Anneal wall; CP-SAT next |
 | S¹×(S¹∨S¹) | 5400 | 4 | 5 | **Not tried** | In code already |
 
 ## Full surface landscape, ranked by feasibility
@@ -16,7 +16,7 @@
 
 | Surface | V | Triangles | Product facets | TC (reduced) | Target k | Status |
 |---|---|---|---|---|---|---|
-| RP² | 6 | 10 | 600 | 2 | 3 | Not tried yet |
+| RP² | 6 | 10 | 600 | 2 | 3 | Ladder k=11→6 closed (SC≤5); k=5,4,3 all stall — CP-SAT pending |
 | Torus (Császár) | 7 | 14 | 1176 | 2 | 3 | Tried but stalling — best pure run 579/1176 (49%), best hybrid 283/288 remainder uncovered with 6 star + 4 anneal chains |
 
 **RP²** is the obvious next target: only 600 product facets (between S³
@@ -85,7 +85,8 @@ S¹∨S¹. Every result here is new.
    - 6 vertices, 10 triangles, 600 product facets
    - Verified: V=6, E=15, F=10, χ=1, 1-skeleton=K₆, non-orientable
 
-2. TODO: generalize `scs_sat.py` to accept `--complex` flag
+2. ✅ Generalized `scs_sat.py` to accept `--complex` flag (rp2, torus, klein, etc.)
+3. ✅ RP² ladder descent k=11→k=6 (SC_strict ≤ 5); k=5 stalls at 540/600, k=4 at 469/600, k=3 at 398/600
 
 ## Phase 1 — CPU (CP-SAT, no GPU needed)
 
