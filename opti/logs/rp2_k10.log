@@ -1,0 +1,9 @@
+=== gpu_sc chain-first annealer ===  K=RP² (6 vertices, 10 triangles, hemi-icosahedron)  |F_L|=600  grid=36  k=10 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=3.0/(max 11.0)  seed=668
+  seeded population from results/rp2_k11_cont/summary.json (reduced chains of the 10 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  600.0/600  top10 [600, 600, 600, 600, 600, 600, 600, 600, 600, 600]  median 416  now-median 410     28.9s     0.713 Mmoves/s
+  full coverage reached at epoch 1
+best coverage 600/600  domain sizes [144, 129, 115, 114, 114, 112, 111, 105, 104, 74]  time 32.3s  kernel 28.7s  moves 2.05e+07
+VERIFIED system of 10 motion planners: sizes [144, 105, 81, 73, 66, 49, 35, 28, 17, 2], reduced chain lengths [6, 9, 7, 6, 4, 3, 7, 6, 6, 4]  =>  SC_strict(RP² (6 vertices, 10 triangles, hemi-icosahedron)) <= 9
+wrote results/rp2_k10/cover.txt planners.txt summary.json

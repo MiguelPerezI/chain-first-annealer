@@ -1,0 +1,12 @@
+=== gpu_sc chain-first annealer ===  K=RP² (6 vertices, 10 triangles, hemi-icosahedron)  |F_L|=600  grid=36  k=3 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=3.0/(max 11.0)  seed=666
+  seeded population from results/rp2_k3_cold/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 300  now-median 298     21.7s     0.948 Mmoves/s
+  epoch   2: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 307  now-median 285     39.5s     1.040 Mmoves/s
+  epoch   3: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 398  now-median 369     57.3s     1.075 Mmoves/s
+  epoch   4: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 398  now-median 353     75.2s     1.093 Mmoves/s
+  epoch   5: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 398  now-median 352     93.0s     1.104 Mmoves/s
+  epoch   6: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 398  now-median 342    110.8s     1.112 Mmoves/s
+  epoch   7: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 398  now-median 344    128.6s     1.117 Mmoves/s
+  epoch   8: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 398  now-median 338    146.4s     1.121 Mmoves/s

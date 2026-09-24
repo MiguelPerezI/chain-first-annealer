@@ -1,0 +1,19 @@
+=== gpu_sc chain-first annealer ===  K=RP² (6 vertices, 10 triangles, hemi-icosahedron)  |F_L|=600  grid=36  k=6 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=3.0/(max 11.0)  seed=672
+  seeded population from results/rp2_k7/summary.json (reduced chains of the 6 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  579.0/600  top10 [579, 578, 577, 577, 577, 576, 576, 576, 576, 576]  median 388  now-median 388     26.4s     0.779 Mmoves/s
+  epoch   2: best  588.0/600  top10 [588, 585, 585, 584, 584, 583, 582, 582, 582, 582]  median 402  now-median 398     47.1s     0.872 Mmoves/s
+  epoch   3: best  589.0/600  top10 [589, 588, 588, 588, 587, 587, 587, 587, 587, 587]  median 569  now-median 568     68.0s     0.907 Mmoves/s
+  epoch   4: best  593.0/600  top10 [593, 590, 590, 589, 589, 588, 588, 588, 588, 588]  median 569  now-median 568     88.8s     0.927 Mmoves/s
+  epoch   5: best  594.0/600  top10 [594, 594, 593, 592, 592, 591, 591, 591, 591, 590]  median 573  now-median 571    109.7s     0.938 Mmoves/s
+  epoch   6: best  596.0/600  top10 [596, 595, 595, 594, 594, 594, 594, 593, 593, 593]  median 573  now-median 572    130.5s     0.946 Mmoves/s
+  epoch   7: best  598.0/600  top10 [598, 597, 596, 596, 595, 595, 595, 595, 594, 594]  median 576  now-median 575    151.4s     0.951 Mmoves/s
+  epoch   8: best  598.0/600  top10 [598, 598, 597, 596, 596, 596, 596, 596, 595, 595]  median 577  now-median 575    172.2s     0.955 Mmoves/s
+  epoch   9: best  599.0/600  top10 [599, 599, 598, 597, 597, 596, 596, 596, 596, 596]  median 579  now-median 579    193.1s     0.959 Mmoves/s
+  epoch  10: best  599.0/600  top10 [599, 599, 598, 598, 597, 597, 597, 597, 596, 596]  median 579  now-median 579    213.9s     0.961 Mmoves/s
+  epoch  11: best  600.0/600  top10 [600, 600, 600, 599, 599, 599, 599, 599, 598, 598]  median 582  now-median 581    234.8s     0.964 Mmoves/s
+  full coverage reached at epoch 11
+best coverage 600/600  domain sizes [132, 150, 148, 132, 138, 109]  time 236.9s  kernel 233.8s  moves 2.25e+08
+VERIFIED system of 6 motion planners: sizes [132, 126, 112, 80, 78, 72], reduced chain lengths [4, 4, 3, 4, 4, 3]  =>  SC_strict(RP² (6 vertices, 10 triangles, hemi-icosahedron)) <= 5
+wrote results/rp2_k6/cover.txt planners.txt summary.json

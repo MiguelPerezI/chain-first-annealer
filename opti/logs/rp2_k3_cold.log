@@ -1,0 +1,40 @@
+=== gpu_sc chain-first annealer ===  K=RP² (6 vertices, 10 triangles, hemi-icosahedron)  |F_L|=600  grid=36  k=3 cmax=40 S=4096 iters=5000  T0=0.9 T1=0.02  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=0.0/(max 4.0)  seed=42
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  185.0/600  top10 [185, 178, 177, 176, 175, 174, 174, 173, 172, 171]  median 136  now-median 133     41.9s     0.491 Mmoves/s
+  epoch   2: best  228.0/600  top10 [228, 220, 219, 217, 216, 215, 213, 212, 211, 210]  median 156  now-median 154     60.1s     0.690 Mmoves/s
+  epoch   3: best  275.0/600  top10 [275, 267, 266, 265, 263, 262, 261, 261, 258, 258]  median 187  now-median 185     77.8s     0.798 Mmoves/s
+  epoch   4: best  321.0/600  top10 [321, 318, 314, 310, 307, 303, 303, 303, 302, 302]  median 215  now-median 213     95.5s     0.865 Mmoves/s
+  epoch   5: best  359.0/600  top10 [359, 351, 349, 345, 342, 341, 340, 337, 337, 336]  median 249  now-median 247    113.3s     0.911 Mmoves/s
+  epoch   6: best  372.0/600  top10 [372, 367, 365, 365, 361, 361, 359, 355, 354, 354]  median 271  now-median 270    131.0s     0.945 Mmoves/s
+  epoch   7: best  382.0/600  top10 [382, 375, 375, 375, 375, 374, 374, 374, 372, 370]  median 299  now-median 298    148.7s     0.970 Mmoves/s
+  epoch   8: best  389.0/600  top10 [389, 388, 386, 384, 382, 379, 379, 379, 378, 378]  median 314  now-median 312    166.5s     0.990 Mmoves/s
+  epoch   9: best  390.0/600  top10 [390, 389, 389, 386, 385, 384, 384, 384, 384, 383]  median 333  now-median 332    184.2s     1.006 Mmoves/s
+  epoch  10: best  393.0/600  top10 [393, 392, 391, 390, 389, 389, 387, 387, 386, 385]  median 342  now-median 340    202.0s     1.019 Mmoves/s
+  epoch  11: best  396.0/600  top10 [396, 393, 392, 392, 392, 392, 391, 390, 389, 389]  median 354  now-median 353    219.7s     1.031 Mmoves/s
+  epoch  12: best  396.0/600  top10 [396, 396, 393, 392, 392, 392, 392, 392, 392, 392]  median 359  now-median 358    237.5s     1.040 Mmoves/s
+  epoch  13: best  396.0/600  top10 [396, 396, 396, 393, 393, 393, 392, 392, 392, 392]  median 367  now-median 366    255.2s     1.048 Mmoves/s
+  epoch  14: best  398.0/600  top10 [398, 397, 396, 396, 396, 396, 396, 394, 393, 393]  median 370  now-median 369    273.0s     1.055 Mmoves/s
+  epoch  15: best  398.0/600  top10 [398, 397, 396, 396, 396, 396, 396, 396, 396, 395]  median 374  now-median 374    290.7s     1.061 Mmoves/s
+  epoch  16: best  398.0/600  top10 [398, 398, 398, 397, 396, 396, 396, 396, 396, 396]  median 376  now-median 375    308.5s     1.067 Mmoves/s
+  epoch  17: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 397, 396, 396]  median 379  now-median 378    326.2s     1.072 Mmoves/s
+  epoch  18: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 397]  median 380  now-median 379    344.0s     1.076 Mmoves/s
+  epoch  19: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 383  now-median 382    361.8s     1.080 Mmoves/s
+  epoch  20: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 383  now-median 383    379.5s     1.083 Mmoves/s
+  epoch  21: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 384  now-median 384    397.3s     1.087 Mmoves/s
+  epoch  22: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 384  now-median 384    415.0s     1.090 Mmoves/s
+  epoch  23: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 385  now-median 385    432.8s     1.092 Mmoves/s
+  epoch  24: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 386  now-median 385    450.5s     1.095 Mmoves/s
+  epoch  25: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 387  now-median 387    468.3s     1.097 Mmoves/s
+  epoch  26: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 387  now-median 387    486.0s     1.099 Mmoves/s
+  epoch  27: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 388  now-median 388    503.7s     1.102 Mmoves/s
+  epoch  28: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 388  now-median 388    521.5s     1.103 Mmoves/s
+  epoch  29: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 390  now-median 389    539.2s     1.105 Mmoves/s
+  epoch  30: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 390  now-median 390    557.0s     1.107 Mmoves/s
+  epoch  31: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 392  now-median 391    574.7s     1.108 Mmoves/s
+  epoch  32: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 392  now-median 391    592.4s     1.110 Mmoves/s
+  epoch  33: best  398.0/600  top10 [398, 398, 398, 398, 398, 398, 398, 398, 398, 398]  median 392  now-median 392    610.2s     1.111 Mmoves/s
+  time limit reached
+best coverage 398/600  domain sizes [150, 148, 146]  time 611.5s  kernel 608.2s  moves 6.76e+08
+NOT a covering: 202 facets uncovered
+wrote results/rp2_k3_cold/summary.json (partial)

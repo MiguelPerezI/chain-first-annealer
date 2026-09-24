@@ -1,0 +1,11 @@
+=== gpu_sc chain-first annealer ===  K=RP² (6 vertices, 10 triangles, hemi-icosahedron)  |F_L|=600  grid=36  k=4 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=3.0/(max 11.0)  seed=673
+  seeded population from results/rp2_k6/summary.json (reduced chains of the 4 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  468.0/600  top10 [468, 468, 468, 468, 468, 468, 468, 468, 468, 468]  median 324  now-median 320     24.5s     0.838 Mmoves/s
+  epoch   2: best  469.0/600  top10 [469, 469, 469, 469, 469, 469, 469, 469, 469, 469]  median 348  now-median 340     43.5s     0.944 Mmoves/s
+  epoch   3: best  469.0/600  top10 [469, 469, 469, 469, 469, 469, 469, 469, 469, 469]  median 453  now-median 444     62.6s     0.984 Mmoves/s
+  epoch   4: best  469.0/600  top10 [469, 469, 469, 469, 469, 469, 469, 469, 469, 469]  median 453  now-median 433     81.7s     1.005 Mmoves/s
+  epoch   5: best  469.0/600  top10 [469, 469, 469, 469, 469, 469, 469, 469, 469, 469]  median 463  now-median 432    100.8s     1.018 Mmoves/s
+  epoch   6: best  469.0/600  top10 [469, 469, 469, 469, 469, 469, 469, 469, 469, 469]  median 463  now-median 424    119.9s     1.027 Mmoves/s
+  epoch   7: best  469.0/600  top10 [469, 469, 469, 469, 469, 469, 469, 469, 469, 469]  median 463  now-median 426    139.1s     1.034 Mmoves/s

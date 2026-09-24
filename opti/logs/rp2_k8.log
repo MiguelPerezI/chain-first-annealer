@@ -1,0 +1,14 @@
+=== gpu_sc chain-first annealer ===  K=RP² (6 vertices, 10 triangles, hemi-icosahedron)  |F_L|=600  grid=36  k=8 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=3.0/(max 11.0)  seed=670
+  seeded population from results/rp2_k9/summary.json (reduced chains of the 8 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  596.0/600  top10 [596, 595, 595, 595, 594, 594, 594, 594, 594, 594]  median 404  now-median 398     27.6s     0.744 Mmoves/s
+  epoch   2: best  596.0/600  top10 [596, 596, 596, 595, 595, 595, 595, 595, 595, 595]  median 420  now-median 412     49.6s     0.828 Mmoves/s
+  epoch   3: best  597.0/600  top10 [597, 596, 596, 596, 596, 596, 596, 596, 596, 596]  median 591  now-median 587     71.8s     0.860 Mmoves/s
+  epoch   4: best  597.0/600  top10 [597, 597, 597, 597, 596, 596, 596, 596, 596, 596]  median 591  now-median 587     93.9s     0.877 Mmoves/s
+  epoch   5: best  599.0/600  top10 [599, 597, 597, 597, 597, 597, 597, 597, 597, 597]  median 591  now-median 589    116.1s     0.887 Mmoves/s
+  epoch   6: best  600.0/600  top10 [600, 599, 599, 599, 598, 597, 597, 597, 597, 597]  median 591  now-median 588    138.3s     0.893 Mmoves/s
+  full coverage reached at epoch 6
+best coverage 600/600  domain sizes [138, 138, 117, 96, 105, 130, 106, 101]  time 141.1s  kernel 137.6s  moves 1.23e+08
+VERIFIED system of 8 motion planners: sizes [138, 114, 92, 62, 61, 51, 46, 36], reduced chain lengths [5, 5, 4, 5, 5, 4, 5, 4]  =>  SC_strict(RP² (6 vertices, 10 triangles, hemi-icosahedron)) <= 7
+wrote results/rp2_k8/cover.txt planners.txt summary.json
