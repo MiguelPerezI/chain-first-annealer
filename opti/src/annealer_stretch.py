@@ -441,6 +441,11 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
         cvv = cuda.local.array(NGRID, int8)   # stretch: per-vertex clone value
         mo_ = cuda.local.array(L1, int32)   # old masks of the touched maps on one facet
         mn_ = cuda.local.array(L1, int32)   # new masks
+        # cuda.local.array is UNINITIALIZED: every gpu_sc scratch is write-before-
+        # read, but `seen` is read as a marker before ever being written — zero it
+        # once here; the per-proposal mark/unmark keeps it clean for the walk.
+        for f in range(NF):
+            seen[f] = uint8(0)
 
         for j in range(KCH):
             for i in range(C1):
