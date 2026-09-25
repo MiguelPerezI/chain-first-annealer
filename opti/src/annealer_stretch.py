@@ -19,13 +19,28 @@ production path.  Only differences from gpu_sc.py:
     every single-vertex repair move loses 6 facets (surface_stall_analysis.md
     §4) — covering the leftover extreme-path facet needs a coordinated
     re-route of several vertices at once.
+
+    Collapse variant (--pcollapse, a fraction of the stretch proposals): the
+    block carries ONE fresh K-vertex value on every column of ft instead of a
+    cloned neighbour image.  This is the transition structure the exact covers
+    hold (an all-{v} collapsed map between the two pairwise-incompatible image
+    families adjoining a corner path) and the only proposal class the
+    mobius 149-state audit found reachable at all (surface_stall_analysis.md
+    §4.1: track moves touch one column, clones copy existing images; nobody
+    proposes a fresh value at all columns at once).  No contiguity guarantee —
+    the move is priced exactly like a clone and filtered by Metropolis; its
+    role is exploration (downhill trade tumbles that re-channel the domain
+    partition), not contiguity guarantees.
   * pstretch = 0 draws no extra RNG values: identical walk to gpu_sc.py at
-    the same seed (regression contract).
-  * ChainAnnealer.set_targets / anneal_cover(pstretch=...) / --pstretch:
-    the uncovered-facet list is refreshed by the driver each epoch (it is
-    exactly the set the guide-weight update already computes).
-  * score array widens to [S, 4]: (cov, best cov, stretch proposals, stretch
-    accepts) — the per-epoch log reports the stretch telemetry.
+    the same seed (regression contract); pcollapse = 0 likewise adds no draws
+    (the collapse coin is only tossed inside a fired stretch proposal).
+  * ChainAnnealer.set_targets / anneal_cover(pstretch=..., pcollapse=...) /
+    --pstretch / --pcollapse: the uncovered-facet list is refreshed by the
+    driver each epoch (it is exactly the set the guide-weight update already
+    computes).
+  * score array widens to [S, 6]: (cov, best cov, stretch proposals, stretch
+    accepts, collapse proposals, collapse accepts) — the per-epoch log
+    reports both telemetries.
 
 gpu_sc.py — GPU-accelerated versions of the optimized algorithms in
 optimized_algorithms.md for the paper
@@ -415,9 +430,12 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
       such guarantee (the mask of map i2+1 need not be a simplex); it is kept
       as proposal diversity and filtered by Metropolis.
 
-    score columns: [cov, best cov, stretch proposals, stretch accepts].
+    score columns: [cov, best cov, stretch proposals, stretch accepts,
+        collapse proposals, collapse accepts].
     pstretch = 0.0 draws no extra RNG values — the walk is bit-identical to
-    gpu_sc.py's at the same seed (regression contract).
+    gpu_sc.py's at the same seed (regression contract).  pcollapse = 0.0
+    adds no extra draws either: identical to runs compiled before the flag
+    (the collapse coin is only tossed inside a stretch proposal).
     """
     CMAX = C1 - 1
     L1 = LMAX + 2
@@ -426,7 +444,7 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
     @cuda.jit
     def anneal_kernel(chains, best, bad, score, seeds,
                       facet_verts, facet_nv, incid_off, incid_fac, is_simplex,
-                      weights, unc, n_unc, pstretch,
+                      weights, unc, n_unc, pstretch, pcollapse,
                       iters, T0, T1, beta, gamma, mu, pmove_copy, ptrack):
         s = cuda.grid(1)
         if s >= chains.shape[0]:
@@ -476,6 +494,8 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
         bestcov = cov
         st_prop = int32(0)
         st_acc = int32(0)
+        cp_prop = int32(0)
+        cp_acc = int32(0)
         for j in range(KCH):
             for i in range(C1):
                 for g in range(NGRID):
@@ -526,13 +546,38 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
                         srci = i1 - 1                    # left clone (guaranteed)
                         if (x & uint64(1)) != uint64(0):
                             srci = i2 + 1                # right clone (a proposal)
+                        # collapse variant (fraction pcollapse of the stretch
+                        # proposals): the block carries ONE fresh K-vertex value
+                        # for EVERY column of ft — the transition structure the
+                        # exact covers use (an all-{v} collapsed map between the
+                        # two incompatible image families, cf. the mobius 149
+                        # audit in surface_stall_analysis.md §4.1) and the only
+                        # proposal class neither the track move (one column, fresh
+                        # value) nor the clone (all columns, copied value) can
+                        # express.  No contiguity guarantee; priced exactly like a
+                        # clone and filtered by Metropolis.  Zero extra RNG at
+                        # pcollapse == 0 — the walk is bit-identical to runs
+                        # without the flag.
+                        collapse = int32(0)
+                        if pcollapse > float64(0.0):
+                            state, x = sm_next_dev(state)
+                            if sm_u01_dev(x) < pcollapse:
+                                collapse = int32(1)
                         nft = int32(facet_nv[ft])
                         for g in range(NGRID):
                             fwm[g] = uint8(0)
-                        for q in range(nft):
-                            w = int32(facet_verts[ft, q])
-                            fwm[w] = uint8(1)
-                            cvv[w] = ch[j, srci, w]
+                        if collapse:
+                            state, x = sm_next_dev(state)
+                            cv0 = int8(int32(x % uint64(NV)))
+                            for q in range(nft):
+                                w = int32(facet_verts[ft, q])
+                                fwm[w] = uint8(1)
+                                cvv[w] = cv0
+                        else:
+                            for q in range(nft):
+                                w = int32(facet_verts[ft, q])
+                                fwm[w] = uint8(1)
+                                cvv[w] = ch[j, srci, w]
                         # affected facets: dedup of the union of the stars of ft's vertices
                         naff = int32(0)
                         for q in range(nft):
@@ -544,7 +589,10 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
                                     if naff < UMAX:
                                         aff[naff] = g
                                         naff += 1
-                        st_prop += 1
+                        if collapse:
+                            cp_prop += 1
+                        else:
+                            st_prop += 1
                         # delta over the window maps i1-1 .. i2+1 of each affected facet
                         dE = float64(0.0)
                         dcov = int32(0)
@@ -613,7 +661,10 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
                             if sm_u01_dev(x) < math.exp(-dE / T):
                                 accept = True
                         if accept:
-                            st_acc += 1
+                            if collapse:
+                                cp_acc += 1
+                            else:
+                                st_acc += 1
                             for i in range(i1, i2 + 1):
                                 for q in range(nft):
                                     w = int32(facet_verts[ft, q])
@@ -779,6 +830,8 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
         score[s, 1] = float32(bestcov)
         score[s, 2] = float32(st_prop)
         score[s, 3] = float32(st_acc)
+        score[s, 4] = float32(cp_prop)
+        score[s, 5] = float32(cp_acc)
 
     return anneal_kernel
 
@@ -862,16 +915,18 @@ class ChainAnnealer:
         self.n_unc = np.int32(len(unc))
 
     def epoch(self, iters, T0, T1, beta=0.05, pmove_copy=0.5, ptrack=0.3, gamma=0.0, mu=0.0,
-              pstretch=0.0):
+              pstretch=0.0, pcollapse=0.0):
         validate_parameters(iters=iters, T0=T0, T1=T1, beta=beta,
                             gamma=gamma, pcopy=pmove_copy, ptrack=ptrack, mu=mu)
         if not (0.0 <= pstretch <= 1.0):    # not in validation.py (unknown key)
             raise ValueError(f"pstretch must be in [0, 1], got {pstretch}")
+        if not (0.0 <= pcollapse <= 1.0):
+            raise ValueError(f"pcollapse must be in [0, 1], got {pcollapse}")
         S = self.S
         d_ch = cuda.to_device(self.chains)
         d_best = cuda.to_device(self.chains)
         d_bad = cuda.device_array((S, self.k, self.P.nf), np.uint8)
-        d_score = cuda.device_array((S, 4), np.float32)
+        d_score = cuda.device_array((S, 6), np.float32)
         seeds = self.rng.integers(0, 2**63 - 1, size=S, dtype=np.int64).astype(np.uint64)
         d_seeds = cuda.to_device(seeds)
         blocks = (S + self.threads - 1) // self.threads
@@ -879,7 +934,7 @@ class ChainAnnealer:
         self.kernel[blocks, self.threads](
             d_ch, d_best, d_bad, d_score, d_seeds,
             self.d_fv, self.d_fnv, self.d_off, self.d_inc, self.d_iss, self.d_w,
-            self.d_unc, self.n_unc, np.float64(pstretch),
+            self.d_unc, self.n_unc, np.float64(pstretch), np.float64(pcollapse),
             np.int32(iters), np.float64(T0), np.float64(T1), np.float64(beta), np.float64(gamma),
             np.float64(mu), np.float64(pmove_copy), np.float64(ptrack))
         cuda.synchronize()
@@ -1398,7 +1453,7 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
                  T0=0.6, T1=0.03, beta=0.05, pcopy=0.5, seed=0, time_limit=None,
                  log=print, stop_at_full=True, tournament_every=2, tournament_frac=0.25,
                  init_chains=None, ptrack=0.05, guide=0.0, guide_max=4.0, gamma=0.0,
-                 mu=0.0, crossover=0.0, h1_guide=0, pstretch=0.0, verbose=0):
+                 mu=0.0, crossover=0.0, h1_guide=0, pstretch=0.0, pcollapse=0.0, verbose=0):
     """guide > 0: adaptive weights (guided local search) — after each epoch the
     facets left uncovered by the best state get weight += guide (capped at
     guide_max), all weights decay toward 1; the reported coverage is always
@@ -1413,6 +1468,12 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
     guide/guide-max with it so the Metropolis rule can pay for the re-route.
     The per-epoch log gains the stretch proposal/accept telemetry, and with
     verbose=1 the ids of the remaining uncovered facets (when few).
+
+    pcollapse > 0: fraction of the stretch proposals that carry one fresh
+    K-vertex value on all of the target facet's columns (the collapse
+    variant — the exploration move of the mobius 149 audit,
+    surface_stall_analysis.md §4.1).  Logged as its own proposal/accept
+    counters.
 
     crossover > 0: that fraction of tournament-replacement slots are filled by
     chain-uniform recombination of two elite incumbents instead of clones.
@@ -1446,7 +1507,8 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
     best_chains, best_cov = None, -1.0
     h1_dead = None   # (P.nf,) bool: facets obstructed for all chains of the incumbent
     for ep in range(1, epochs + 1):
-        score = ann.epoch(iters, T0, T1, beta, pcopy, ptrack, gamma, mu, pstretch=pstretch)
+        score = ann.epoch(iters, T0, T1, beta, pcopy, ptrack, gamma, mu,
+                          pstretch=pstretch, pcollapse=pcollapse)
         chains, cov = ann.top()
         covered = None
         recompute_h1 = h1_guide and (ep - 1) % h1_guide == 0
@@ -1489,6 +1551,10 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
         if pstretch > 0:
             nprop, nacc = float(score[:, 2].sum()), float(score[:, 3].sum())
             line += f"  stretch prop {nprop:.0f} acc {nacc:.0f} ({100.0 * nacc / max(1.0, nprop):.0f}%)"
+            if pcollapse > 0:
+                ncprop, ncacc = float(score[:, 4].sum()), float(score[:, 5].sum())
+                line += (f"  collapse prop {ncprop:.0f} acc {ncacc:.0f} "
+                         f"({100.0 * ncacc / max(1.0, ncprop):.0f}%)")
             if verbose:
                 U = np.flatnonzero(~covered)
                 line += f"  leftovers {U.tolist() if len(U) <= 10 else int(len(U))}"
@@ -1570,6 +1636,11 @@ def cli():
                          "cloning the neighbour map on ALL of the facet's grid vertices across a "
                          "block of links, priced as one Metropolis step "
                          "(surface_stall_analysis.md section 4); 0 = track-only, gpu_sc-identical")
+    ap.add_argument("--pcollapse", type=float, default=0.0,
+                    help="fraction of stretch proposals that carry ONE fresh K-vertex value on all "
+                         "of the facet's columns across the block instead of a cloned neighbour map "
+                         "(the all-{v} collapsed-map transition of the exact covers; the exploration "
+                         "move the mobius 149 audit showed missing, section 4.1); requires --pstretch")
     ap.add_argument("--verbose", action="store_true",
                     help="with --pstretch: also log the ids of the remaining uncovered facets each epoch")
     ap.add_argument("--time-limit", type=float, default=None, help="seconds")
@@ -1585,6 +1656,8 @@ def cli():
             "seed", "time_limit", "guide_max", "crossover", "h1_guide")})
     except ValueError as exc:
         ap.error(str(exc))
+    if a.pcollapse and not a.pstretch:
+        ap.error("--pcollapse rides the stretch branch; requires --pstretch > 0")
 
     P = build(a.complex)
     print(f"=== annealer_stretch chain-first annealer ===  K={P.name}  |F_L|={P.nf}  grid={P.ngrid}  "
@@ -1592,7 +1665,8 @@ def cli():
           f"beta={a.beta} gamma={a.gamma} mu={a.mu} ptrack={a.ptrack}  "
           f"guide={a.guide}/(max {a.guide_max})  seed={a.seed}"
           + (f"  crossover={a.crossover} h1-guide={a.h1_guide}" if a.crossover or a.h1_guide else "")
-          + (f"  pstretch={a.pstretch}" if a.pstretch else ""))
+          + (f"  pstretch={a.pstretch}" if a.pstretch else "")
+          + (f"  pcollapse={a.pcollapse}" if a.pcollapse else ""))
     init = None
     if a.init:
         init = init_from_summary(P, Path(a.init), a.k, a.cmax, a.S)
@@ -1606,7 +1680,7 @@ def cli():
                                           ptrack=a.ptrack, guide=a.guide, guide_max=a.guide_max,
                                           gamma=a.gamma, mu=a.mu,
                                           crossover=a.crossover, h1_guide=a.h1_guide,
-                                          pstretch=a.pstretch, verbose=int(a.verbose))
+                                          pstretch=a.pstretch, pcollapse=a.pcollapse, verbose=int(a.verbose))
     dt = time.perf_counter() - t0
     doms = [P.domain_of(chains[j]) for j in range(a.k)]
     covered = np.zeros(P.nf, bool)

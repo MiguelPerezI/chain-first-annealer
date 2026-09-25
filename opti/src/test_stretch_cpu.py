@@ -19,8 +19,17 @@ Tests:
      reported coverage must equal the host recompute from the returned chains.
      (This is the check that catches bad-link/cov bookkeeping corruption; it
      failed before the boundary-map fix in make_anneal_kernel.)
-  3. test_pstretch0_bit_identity — annealer_stretch at pstretch=0 must return
+     test_kernel_with_collapse (below) additionally turns pcollapse on at the
+     149/150 state: same bookkeeping assertions, plus the collapse counters
+     must fire.
+  4. test_collapse_delta_reference — the numpy mirror of the collapse delta
+     (a block of maps, all of ft's columns = ONE fresh K-vertex value) vs
+     from-scratch recompute on the 149/150 state, including the known
+     covering move (chain 2, map 1, v=0) whose coverage must hold at the
+     −7 trade the H1 obstruction predicts.
+  5. test_pstretch0_bit_identity — annealer_stretch at pstretch=0 must return
      exactly gpu_sc's best_chains at the same seed (regression contract).
+     pcollapse defaults to 0 there and draws nothing extra.
 """
 import os
 os.environ.setdefault("NUMBA_ENABLE_CUDASIM", "1")   # before numba import (fresh process!)
@@ -36,6 +45,7 @@ import gpu_sc
 import annealer_stretch as st
 
 SUM666 = Path(__file__).resolve().parents[1] / "results" / "mobius_seed_666" / "summary.json"
+SUM149 = Path(__file__).resolve().parents[1] / "results" / "mobius_k3_stretch_from_149" / "summary.json"
 
 
 def build_state(name="mobius", summary=SUM666, k=3, cmax=10, S=4, seed=1):
@@ -54,6 +64,22 @@ def stretch_mirror(P, chain, ft, i1, i2, direction):
     src = i1 - 1 if direction == "left" else i2 + 1
     for w in P.facet_verts[ft][: int(P.facet_nv[ft])]:
         ch[i1:i2 + 1, w] = ch[src, w]
+    affected = set()
+    for q in range(int(P.facet_nv[ft])):
+        w = int(P.facet_verts[ft, q])
+        affected.update(int(f) for f in
+                        P.incid_fac[P.incid_off[w]:P.incid_off[w + 1]])
+    return ch, affected
+
+
+def collapse_mirror(P, chain, ft, i1, i2, v):
+    """Numpy reference of one collapse proposal: the block maps i1..i2 take the
+    single fresh K-vertex value v on EVERY column of ft.  Returns (new_chain,
+    affected) with affected the dedup union of the stars of ft's columns."""
+    ch = chain.copy()
+    for q in range(int(P.facet_nv[ft])):
+        w = int(P.facet_verts[ft, q])
+        ch[i1:i2 + 1, w] = v
     affected = set()
     for q in range(int(P.facet_nv[ft])):
         w = int(P.facet_verts[ft, q])
@@ -193,6 +219,101 @@ class TestKernelIncremental(unittest.TestCase):
                              f"slot {s}: kernel cov != host recompute")
             bads = [P.chain_bad_counts(A.chains[s, j]) for j in range(A.k)]
             bads = np.stack(bads)
+            self.assertEqual(int((bads.min(axis=0) == 0).sum()), int(score[s, 0]),
+                             f"slot {s}: bad-array vs coverage mismatch")
+
+
+class TestCollapseDelta(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import json
+        cls.P = gpu_sc.build("mobius")
+        s = json.loads(SUM149.read_text())
+        cls.chains = [np.array(c, np.int8) for c in s["best_chains"]]
+        cls.doms = [sorted(int(f) for f in cls.P.domain_of(c)) for c in cls.chains]
+        covered = np.zeros(cls.P.nf, bool)
+        for d in cls.doms:
+            covered[d] = True
+        cls.leftovers = [int(f) for f in np.flatnonzero(~covered)]
+        assert cls.leftovers == [90], cls.leftovers      # the 149/150 state
+
+    def test_known_covering_collapse(self):
+        """The move the 149-audit found: chain 2, map 1, v=0 covers facet 90 —
+        and the H1 obstruction shows as its price: total coverage is the −7
+        trade (142), not 150."""
+        P, chains = self.P, self.chains
+        new, _ = collapse_mirror(P, chains[2], 90, 1, 1, 0)
+        self.assertEqual(int(P.chain_bad_counts(new)[90]), 0)
+        cov = np.zeros(P.nf, bool)
+        for c in (chains[0], chains[1], new):
+            cov[list(P.domain_of(c))] = True
+        self.assertEqual(int(cov.sum()), 142)
+
+    def test_collapse_delta_vs_full_recompute(self):
+        """Same contract as TestStretchDelta.test_delta_vs_full_recompute, for
+        the collapse value source: affected set == actually-changed facets and
+        the kernel-style incremental dE == the from-scratch energy difference,
+        over the leftover facet, maps 1..5, v in 0..nv-1, L' in {1,2,4,8}."""
+        P, chains = self.P, self.chains
+        CMAX = chains[0].shape[0] - 1
+        beta, gamma = 5.0, 0.5
+        ft = 90
+        weights = np.ones(P.nf, np.float32)
+        weights[ft] = 11.0
+        bads_all = [P.chain_bad_counts(c) for c in chains]
+        for j in range(3):
+            bad_old = bads_all[j]
+            others = np.stack([b for jj, b in enumerate(bads_all) if jj != j])
+            min_others = others.min(axis=0)
+            for m in (1, 2, 3, 5):
+                for v in range(P.nv):
+                    for Ls in (1, 2, 4, 8):
+                        i1, i2 = m, min(m + Ls - 1, CMAX - 1)
+                        new_ch, affected = collapse_mirror(P, chains[j], ft, i1, i2, v)
+                        bad_new = P.chain_bad_counts(new_ch)
+                        changed = {int(g): int(bad_new[g]) - int(bad_old[g])
+                                   for g in affected if bad_new[g] != bad_old[g]}
+                        recomputed = {int(g): int(bad_new[g]) - int(bad_old[g])
+                                      for g in np.flatnonzero(bad_new != bad_old)}
+                        self.assertEqual(changed, recomputed,
+                                         f"j={j} m={m} v={v} L'={Ls}: affected-set mismatch")
+                        dE = 0.0
+                        for g, d in changed.items():
+                            dE += gamma * float(d)
+                            bo = int(bad_old[g]); bn = bo + d
+                            mo = min(bo, int(min_others[g])); mn = min(bn, int(min_others[g]))
+                            po = 0.0 if mo == 0 else 1.0 + beta * mo
+                            pn = 0.0 if mn == 0 else 1.0 + beta * mn
+                            dE += float(weights[g]) * (pn - po)
+                        chains0 = list(chains)
+                        chains1 = list(chains); chains1[j] = new_ch
+                        e0 = energy(P, chains0, weights, beta, gamma)
+                        e1 = energy(P, chains1, weights, beta, gamma)
+                        self.assertAlmostEqual(dE, e1 - e0, places=6,
+                                               msg=f"j={j} m={m} v={v} L'={Ls}")
+
+
+class TestCollapseKernel(unittest.TestCase):
+    def test_bookkeeping_with_collapse(self):
+        """Warm start from the 149 state with BOTH compound moves on: kernel
+        coverage of every slot must equal the host recompute, bad arrays must
+        match, and the collapse move must actually fire."""
+        P, A, init = build_state(summary=SUM149, cmax=40, S=4, seed=11)
+        _, covered = A.coverage_of(init[0])
+        unc = np.flatnonzero(~covered)
+        self.assertEqual(unc.tolist(), [90])
+        w = np.ones(P.nf, np.float32); w[unc] = 11.0
+        A.set_weights(w)
+        A.set_targets(unc)
+        score = A.epoch(iters=400, T0=0.5, T1=0.05, beta=5.0,
+                        pmove_copy=0.5, ptrack=0.3, gamma=0.5, mu=0.0,
+                        pstretch=0.6, pcollapse=0.5)
+        self.assertGreater(float(score[:, 4].sum()), 0, "no collapse move fired")
+        for s in range(A.S):
+            doms, cov_host = A.coverage_of(A.chains[s])
+            self.assertEqual(int(cov_host.sum()), int(score[s, 0]),
+                             f"slot {s}: kernel cov != host recompute")
+            bads = np.stack([P.chain_bad_counts(A.chains[s, j]) for j in range(A.k)])
             self.assertEqual(int((bads.min(axis=0) == 0).sum()), int(score[s, 0]),
                              f"slot {s}: bad-array vs coverage mismatch")
 

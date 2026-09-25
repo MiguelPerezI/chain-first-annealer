@@ -266,7 +266,44 @@ width — confirmed exhaustively above — and completing the cover requires a
 **multi-chain trade**: redistribution of corners between domains. The SAT
 3-cover does exactly that — it puts 17 and 90 in the *same* 48-facet domain,
 a different partition altogether (65 + 46 + 48 vs the annealer's 60 + 58 +
-50). The move-set ladder of the stall: 148 binds at single-vertex width
+50).
+
+Two further audit facts close the escape search space:
+
+- **The co-channelling is complete:** facet 17 has no other legal absorber
+  either (D₀ ∪ {17} and D₂ ∪ {17} both obstructed). 17 and 90 are BOTH
+  chain-1-only facets under this partition — so no two-chain relay exists at
+  this state at all. The partition pins both corners onto the one chain that
+  cannot hold both.
+- **The 148 states have the same wall one layer up:** on `mobius_seed_999`
+  the legal absorbers sit at defect depth 2 with their two seams **26 links
+  apart** (chain 0 on 90: links 7 & 33; chain 2 on 23: links 9 & 29) —
+  beyond every block length — and zero covering track, clone, or single-map
+  rewrite moves exist on them. The covering edit is a global re-route of the
+  chain through the corner cell, not any bounded compound of local moves.
+
+**What the algorithm provably lacks (the patchable part).** Across every
+scan the only proposal class that mechanically covers a stalled facet at all
+is the **collapse**: a block of maps taking ONE fresh K-vertex value on all
+of the facet's columns (e.g. the 149 state's chain 2, map 1 → all-0, which
+covers 90 at the audited −7 H₁-trade). It is exactly the transition the SAT
+cover holds between the two incompatible image families (…{0,3,4}→{0}→{0,1,2}…),
+and exactly the gap between the two implemented families (track = fresh value
+at one column; stretch = cloned value at all columns). It cannot rescue the
+co-channelled 149 partition by itself (its only reachable covers there are on
+the forbidden chain, and every such cover is a downhill tumble under the guide
+weights — which is precisely the exploration route toward a re-partition, the
+only direction left), but it is the principled missing proposal class, now
+implemented in `annealer_stretch.py` (`--pcollapse`, fraction of stretch
+proposals carrying a fresh all-v block; CUDASIM test suite extended with the
+collapse delta mirror, the known-cover regression, and kernel bookkeeping with
+both compound moves on). The decisive experiments: (a) a collapse-armed
+continuation from the 149 state — expected behaviour is tumbles below 149 as
+chains re-channel; success criterion is any epoch landing on 150; (b)
+from-scratch k = 3 runs with both moves on — the corner-shell conjecture
+predicts different seed partitions co-channel different corner pairs, and a
+partition whose last corner trades into a chain with a second absorber
+closes 150 without any further machinery. The move-set ladder of the stall: 148 binds at single-vertex width
 (broken by compound-in-columns moves), 149 binds *between* chains (needs
 redistribution moves — domain trades or crossover that can move a corner
 between chains, not recombine within the converged family), and 150 is
