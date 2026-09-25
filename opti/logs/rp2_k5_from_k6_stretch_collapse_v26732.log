@@ -1,0 +1,10 @@
+=== annealer_stretch chain-first annealer ===  K=RP² (6 vertices, 10 triangles, hemi-icosahedron)  |F_L|=600  grid=36  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 17.0)  seed=6732  pstretch=0.5  pcollapse=0.3
+  seeded population from results/rp2_k5_from_k6_stretch_collapse7232/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  544.0/600  top10 [544, 544, 544, 544, 544, 544, 544, 544, 544, 544]  median 424  now-median 424     63.7s     0.322 Mmoves/s  stretch prop 5909983 acc 632402 (11%)  collapse prop 2531719 acc 121658 (5%)  leftovers 56
+  epoch   2: best  544.0/600  top10 [544, 544, 544, 544, 544, 544, 544, 544, 544, 544]  median 440  now-median 393    107.6s     0.381 Mmoves/s  stretch prop 3592059 acc 268373 (7%)  collapse prop 1540993 acc 73349 (5%)  leftovers 56
+  epoch   3: best  544.0/600  top10 [544, 544, 544, 544, 544, 544, 544, 544, 544, 544]  median 544  now-median 470    144.4s     0.426 Mmoves/s  stretch prop 1859391 acc 129492 (7%)  collapse prop 796261 acc 45707 (6%)  leftovers 56
+  epoch   4: best  544.0/600  top10 [544, 544, 544, 544, 544, 544, 544, 544, 544, 544]  median 544  now-median 467    176.0s     0.466 Mmoves/s  stretch prop 941474 acc 55732 (6%)  collapse prop 403606 acc 16233 (4%)  leftovers 56
+  epoch   5: best  544.0/600  top10 [544, 544, 544, 544, 544, 544, 544, 544, 544, 544]  median 544  now-median 474    207.1s     0.495 Mmoves/s  stretch prop 840418 acc 61436 (7%)  collapse prop 359369 acc 27153 (8%)  leftovers 56
+  epoch   6: best  544.0/600  top10 [544, 544, 544, 544, 544, 544, 544, 544, 544, 544]  median 544  now-median 477    233.8s     0.526 Mmoves/s  stretch prop 403886 acc 22511 (6%)  collapse prop 172516 acc 7619 (4%)  leftovers 56
