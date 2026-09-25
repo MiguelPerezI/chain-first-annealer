@@ -1,0 +1,47 @@
+=== annealer_stretch chain-first annealer ===  K=Möbius band (5 vertices, 5 triangles, minimal & unique)  |F_L|=150  grid=25  k=3 cmax=40 S=4096 iters=5000  T0=0.45 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=1  pstretch=0.35
+  seeded population from results/mobius_k4_from_k5/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  132.0/150  top10 [132, 132, 131, 131, 131, 131, 131, 131, 131, 131]  median 117  now-median 117     20.8s     0.987 Mmoves/s  stretch prop 6378426 acc 693811 (11%)  leftovers 18
+  epoch   2: best  136.0/150  top10 [136, 135, 135, 135, 135, 134, 134, 134, 134, 134]  median 123  now-median 119     31.8s     1.292 Mmoves/s  stretch prop 5600045 acc 530613 (9%)  leftovers 14
+  epoch   3: best  145.0/150  top10 [145, 144, 142, 142, 142, 141, 141, 139, 139, 138]  median 125  now-median 124     40.5s     1.521 Mmoves/s  stretch prop 1587318 acc 171607 (11%)  leftovers [11, 84, 134, 136, 137]
+  epoch   4: best  146.0/150  top10 [146, 146, 146, 146, 146, 146, 146, 146, 145, 144]  median 128  now-median 127     50.3s     1.632 Mmoves/s  stretch prop 1451932 acc 91742 (6%)  leftovers [17, 23, 60, 84]
+  epoch   5: best  147.0/150  top10 [147, 147, 147, 147, 147, 147, 147, 147, 146, 146]  median 131  now-median 131     60.7s     1.693 Mmoves/s  stretch prop 3224007 acc 200412 (6%)  leftovers [23, 60, 84]
+  epoch   6: best  148.0/150  top10 [148, 147, 147, 147, 147, 147, 147, 147, 147, 147]  median 133  now-median 133     70.7s     1.743 Mmoves/s  stretch prop 2493550 acc 123185 (5%)  leftovers [60, 84]
+  epoch   7: best  148.0/150  top10 [148, 148, 148, 148, 147, 147, 147, 147, 147, 147]  median 135  now-median 135     79.6s     1.806 Mmoves/s  stretch prop 979281 acc 46605 (5%)  leftovers [23, 90]
+  epoch   8: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 147, 147, 147, 147]  median 136  now-median 135     89.3s     1.841 Mmoves/s  stretch prop 2629347 acc 135247 (5%)  leftovers [23, 90]
+  epoch   9: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 147, 147]  median 136  now-median 135     98.8s     1.871 Mmoves/s  stretch prop 2230012 acc 124090 (6%)  leftovers [60, 90]
+  epoch  10: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 137  now-median 136    106.8s     1.923 Mmoves/s  stretch prop 563206 acc 32377 (6%)  leftovers [60, 90]
+  epoch  11: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 138  now-median 138    114.6s     1.972 Mmoves/s  stretch prop 496480 acc 31627 (6%)  leftovers [60, 90]
+  epoch  12: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 138  now-median 138    122.2s     2.017 Mmoves/s  stretch prop 393941 acc 24063 (6%)  leftovers [60, 90]
+  epoch  13: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 138  now-median 138    129.4s     2.064 Mmoves/s  stretch prop 334353 acc 25096 (8%)  leftovers [60, 90]
+  epoch  14: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 138  now-median 138    136.6s     2.106 Mmoves/s  stretch prop 269814 acc 19652 (7%)  leftovers [60, 90]
+  epoch  15: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 138  now-median 138    144.5s     2.133 Mmoves/s  stretch prop 290163 acc 21467 (7%)  leftovers [60, 90]
+  epoch  16: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 139  now-median 138    152.0s     2.163 Mmoves/s  stretch prop 250978 acc 17757 (7%)  leftovers [60, 90]
+  epoch  17: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 140  now-median 140    159.9s     2.185 Mmoves/s  stretch prop 265162 acc 19184 (7%)  leftovers [60, 90]
+  epoch  18: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 140  now-median 140    167.5s     2.208 Mmoves/s  stretch prop 234497 acc 14858 (6%)  leftovers [60, 90]
+  epoch  19: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 141  now-median 141    175.4s     2.226 Mmoves/s  stretch prop 257850 acc 19649 (8%)  leftovers [60, 90]
+  epoch  20: best  149.0/150  top10 [149, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 142  now-median 141    183.0s     2.246 Mmoves/s  stretch prop 221344 acc 13419 (6%)  leftovers [90]
+  epoch  21: best  149.0/150  top10 [149, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 142  now-median 142    191.1s     2.259 Mmoves/s  stretch prop 457110 acc 36557 (8%)  leftovers [90]
+  epoch  22: best  149.0/150  top10 [149, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 143  now-median 142    199.0s     2.272 Mmoves/s  stretch prop 429473 acc 32803 (8%)  leftovers [90]
+  epoch  23: best  149.0/150  top10 [149, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 143  now-median 143    208.2s     2.271 Mmoves/s  stretch prop 447112 acc 36788 (8%)  leftovers [90]
+  epoch  24: best  149.0/150  top10 [149, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 143  now-median 143    217.1s     2.272 Mmoves/s  stretch prop 409667 acc 33296 (8%)  leftovers [90]
+  epoch  25: best  149.0/150  top10 [149, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 144  now-median 143    225.6s     2.278 Mmoves/s  stretch prop 437078 acc 35406 (8%)  leftovers [90]
+  epoch  26: best  149.0/150  top10 [149, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 144  now-median 144    234.0s     2.284 Mmoves/s  stretch prop 397054 acc 33308 (8%)  leftovers [90]
+  epoch  27: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 144  now-median 144    243.0s     2.283 Mmoves/s  stretch prop 425683 acc 39203 (9%)  leftovers [90]
+  epoch  28: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 144  now-median 144    251.8s     2.286 Mmoves/s  stretch prop 391428 acc 35814 (9%)  leftovers [90]
+  epoch  29: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 144  now-median 144    259.5s     2.297 Mmoves/s  stretch prop 337317 acc 25811 (8%)  leftovers [90]
+  epoch  30: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 144  now-median 144    267.2s     2.307 Mmoves/s  stretch prop 305111 acc 20692 (7%)  leftovers [90]
+  epoch  31: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 144  now-median 144    275.2s     2.315 Mmoves/s  stretch prop 322449 acc 22206 (7%)  leftovers [90]
+  epoch  32: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 144  now-median 144    283.3s     2.321 Mmoves/s  stretch prop 293722 acc 18224 (6%)  leftovers [90]
+  epoch  33: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 144  now-median 144    291.3s     2.329 Mmoves/s  stretch prop 320527 acc 24541 (8%)  leftovers [90]
+  epoch  34: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 145  now-median 144    299.0s     2.337 Mmoves/s  stretch prop 278342 acc 19315 (7%)  leftovers [90]
+  epoch  35: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 147  now-median 145    307.4s     2.340 Mmoves/s  stretch prop 313211 acc 22879 (7%)  leftovers [90]
+  epoch  36: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 147  now-median 145    315.6s     2.345 Mmoves/s  stretch prop 276184 acc 18625 (7%)  leftovers [90]
+  epoch  37: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 147  now-median 147    324.2s     2.346 Mmoves/s  stretch prop 309904 acc 22658 (7%)  leftovers [90]
+  epoch  38: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 147  now-median 147    332.8s     2.347 Mmoves/s  stretch prop 284337 acc 17841 (6%)  leftovers [90]
+  epoch  39: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 147  now-median 147    342.0s     2.344 Mmoves/s  stretch prop 318511 acc 21893 (7%)  leftovers [90]
+  epoch  40: best  149.0/150  top10 [149, 149, 148, 148, 148, 148, 148, 148, 148, 148]  median 147  now-median 147    351.2s     2.341 Mmoves/s  stretch prop 287328 acc 15159 (5%)  leftovers [90]
+best coverage 149/150  domain sizes [58, 59, 50]  time 352.3s  kernel 349.9s  moves 8.19e+08
+NOT a covering: 1 facets uncovered
+wrote results/mobius_k3_stretch_from_k4/summary.json (partial)
