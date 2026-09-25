@@ -44,11 +44,14 @@ The action of A₅ on K is:
 *Proof.* Exhaustive enumeration over S₆ (720 permutations), retaining those
 that send every triangle to a triangle. Of the 60 automorphisms found, all
 are even permutations (parity check: count transpositions in each cycle
-decomposition). An order-60 subgroup of A₆ consisting entirely of even
-permutations, with the quotient S₆/A₆ ≅ Z/2 having no order-60 subgroup, is
-necessarily a copy of A₅. (Alternatively: the hemi-icosahedron's
-automorphism group is well known to be A₅ — the icosahedron has Aut ≅ A₅ ×
-Z/2, and the antipodal quotient kills the Z/2.)  ∎
+decomposition). A transitive subgroup of S₆ of order 60 is unique up to
+conjugation and isomorphic to A₅ — it is PSL(2,5) ≅ A₅ in its degree-6
+action on the projective line PG(1,5) (class 6T11 in the classification of
+transitive groups of degree 6) — and vertex-transitivity was verified in
+the enumeration. (This is also the classical description of the hemi-
+icosahedron as the regular map {3,5}/2, Conder census N1.2: the icosahedron
+has Aut ≅ A₅ × Z/2, and the antipodal quotient kills the Z/2 — see
+Coxeter–Moser and `rp2_literature_check.md` §1.)  ∎
 
 **Consequence for the search.** Since A₅ acts transitively on vertices,
 triangles, and edges, any plateau state obtained by "dropping rectangle
@@ -161,8 +164,17 @@ the A₅ lens:
 
 - This is the A₅ symmetry breaking: the 6 diagonal rectangles form a single
   orbit under A₅, the annealer picked 5 of the 6 (breaking the symmetry to the
-  stabilizer of vertex 5, which is A₄ of order 12), and the 60-facet hole is
-  the orbit of the dropped vertex's private cells under the residual symmetry.
+  stabilizer of vertex 5, which is **D₁₀ of order 10**, not A₄: orbit–stabilizer
+  in the degree-6 action gives 60/6 = 10, and the stabilizer is the pentagon
+  symmetry group of the vertex link — A₄ is the point stabilizer of A₅'s
+  degree-5 action, a different standard action), and the 60-facet hole is the
+  orbit of the dropped vertex's private cells under the residual symmetry.
+  The orbit count works *precisely because* the stabilizer is D₁₀: the 10
+  private cells (× 6 facets = 60) form a single orbit of size 10 with trivial
+  cell stabilizer, whereas an order-12 stabilizer has no orbit of size 10 at
+  all. Caveat: the realized plateau state's fifth domain only *approaches*
+  star(0)×star(0) (141/150 facets), so its actual residual symmetry may be a
+  proper subgroup; the D₁₀ claim applies to the idealized rectangle family.
 
 - The 540/600 count is **forced by the family, not reached by search**: the 50
   far cells (|s ∩ t| = 1) each have exactly one covering diagonal rectangle,
