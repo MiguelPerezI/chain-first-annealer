@@ -1,0 +1,108 @@
+=== RP² k=5 targeted push ===
+  |F| = 600, grid = 36, nv = 6
+  time budget: 3600.0s, seed: 42
+
+--- Phase 1: standard anneal (guide=3.0, γ=0.5) ---
+  → /home/ubuntu/Documents/Abstract_Motion_GPU/venv/bin/python -u src/gpu_sc.py --complex rp2 --k 5 --cmax 40 --S 4096 --iters 5000 --epochs 100 --T0 0.6 --T1 0.03 --beta 5.0 --gamma 0.5 --mu 0.5 --ptrack 0.3 --guide 3.0 --seed 42 --time-limit 600 --outdir results/rp2_k5_push_warm/phase1 --init results/rp2_k6/summary.json
+=== gpu_sc chain-first annealer ===  K=RP² (6 vertices, 10 triangles, hemi-icosahedron)  |F_L|=600  grid=36  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.5 ptrack=0.3  guide=3.0/(max 4.0)  seed=42
+  seeded population from results/rp2_k6/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 366  now-median 363     42.1s     0.488 Mmoves/s
+  epoch   2: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 376  now-median 368     62.3s     0.663 Mmoves/s
+  epoch   3: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 532  now-median 527     82.2s     0.752 Mmoves/s
+  epoch   4: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 532  now-median 526    102.1s     0.807 Mmoves/s
+  epoch   5: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 532  now-median 529    122.1s     0.843 Mmoves/s
+  epoch   6: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 532  now-median 528    142.1s     0.870 Mmoves/s
+  epoch   7: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 534  now-median 530    162.1s     0.889 Mmoves/s
+  epoch   8: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 534  now-median 529    182.0s     0.904 Mmoves/s
+  epoch   9: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 534  now-median 531    202.1s     0.916 Mmoves/s
+  epoch  10: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 534  now-median 529    222.1s     0.926 Mmoves/s
+  epoch  11: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 534  now-median 532    242.1s     0.935 Mmoves/s
+  epoch  12: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 534  now-median 530    262.1s     0.942 Mmoves/s
+  epoch  13: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 538  now-median 531    282.1s     0.948 Mmoves/s
+  epoch  14: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 538  now-median 529    302.1s     0.953 Mmoves/s
+  epoch  15: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 538  now-median 531    322.1s     0.958 Mmoves/s
+  epoch  16: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 538  now-median 529    342.0s     0.962 Mmoves/s
+  epoch  17: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 538  now-median 531    362.1s     0.965 Mmoves/s
+  epoch  18: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 538  now-median 529    382.1s     0.969 Mmoves/s
+  epoch  19: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 531    402.1s     0.971 Mmoves/s
+  epoch  20: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 530    422.1s     0.974 Mmoves/s
+  epoch  21: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 531    442.1s     0.977 Mmoves/s
+  epoch  22: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 531    462.1s     0.979 Mmoves/s
+  epoch  23: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 532    482.1s     0.981 Mmoves/s
+  epoch  24: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 531    502.1s     0.983 Mmoves/s
+  epoch  25: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 532    522.2s     0.984 Mmoves/s
+  epoch  26: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 531    542.1s     0.986 Mmoves/s
+  epoch  27: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 531    562.2s     0.987 Mmoves/s
+  epoch  28: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 529    582.1s     0.989 Mmoves/s
+  epoch  29: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 529    602.2s     0.990 Mmoves/s
+  time limit reached
+best coverage 540/600  domain sizes [150, 148, 141, 150, 150]  time 604.1s  kernel 600.0s  moves 5.94e+08
+NOT a covering: 60 facets uncovered
+wrote results/rp2_k5_push_warm/phase1/summary.json (partial)
+  Phase 1 result: 540/600
+
+--- Phase 2: ridge walk (guide=5.0, γ=0.1) ---
+  → /home/ubuntu/Documents/Abstract_Motion_GPU/venv/bin/python -u src/gpu_sc.py --complex rp2 --k 5 --cmax 40 --S 4096 --iters 5000 --epochs 200 --T0 0.6 --T1 0.03 --beta 5.0 --gamma 0.1 --mu 0.5 --ptrack 0.3 --guide 5.0 --seed 43 --time-limit 900 --outdir results/rp2_k5_push_warm/phase2 --init results/rp2_k5_push_warm/phase1/summary.json
+=== gpu_sc chain-first annealer ===  K=RP² (6 vertices, 10 triangles, hemi-icosahedron)  |F_L|=600  grid=36  k=5 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.1 mu=0.5 ptrack=0.3  guide=5.0/(max 4.0)  seed=43
+  seeded population from results/rp2_k5_push_warm/phase1/summary.json (reduced chains of the 5 largest domains, padded to cmax)
+/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 374  now-median 374     23.9s     0.858 Mmoves/s
+  epoch   2: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 386  now-median 374     43.8s     0.938 Mmoves/s
+  epoch   3: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 531     63.8s     0.966 Mmoves/s
+  epoch   4: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 529     83.8s     0.981 Mmoves/s
+  epoch   5: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 531    103.9s     0.989 Mmoves/s
+  epoch   6: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 529    123.9s     0.995 Mmoves/s
+  epoch   7: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 531    143.9s     0.999 Mmoves/s
+  epoch   8: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 530    163.9s     1.003 Mmoves/s
+  epoch   9: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 531    184.0s     1.005 Mmoves/s
+  epoch  10: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 529    203.9s     1.007 Mmoves/s
+  epoch  11: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 529    224.0s     1.009 Mmoves/s
+  epoch  12: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 529    243.9s     1.011 Mmoves/s
+  epoch  13: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 528    264.0s     1.012 Mmoves/s
+  epoch  14: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 528    284.0s     1.013 Mmoves/s
+  epoch  15: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 528    304.1s     1.014 Mmoves/s
+  epoch  16: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 528    324.0s     1.014 Mmoves/s
+  epoch  17: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 528    344.1s     1.015 Mmoves/s
+  epoch  18: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 527    364.1s     1.016 Mmoves/s
+  epoch  19: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 527    384.1s     1.016 Mmoves/s
+  epoch  20: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 526    404.1s     1.017 Mmoves/s
+  epoch  21: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 526    424.2s     1.017 Mmoves/s
+  epoch  22: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 526    444.2s     1.017 Mmoves/s
+  epoch  23: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 526    464.3s     1.018 Mmoves/s
+  epoch  24: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 526    484.3s     1.018 Mmoves/s
+  epoch  25: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 526    504.4s     1.018 Mmoves/s
+  epoch  26: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 526    524.3s     1.019 Mmoves/s
+  epoch  27: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 526    544.4s     1.019 Mmoves/s
+  epoch  28: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 526    564.4s     1.019 Mmoves/s
+  epoch  29: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 526    584.4s     1.019 Mmoves/s
+  epoch  30: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 525    604.4s     1.020 Mmoves/s
+  epoch  31: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 525    624.5s     1.020 Mmoves/s
+  epoch  32: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 525    644.4s     1.020 Mmoves/s
+  epoch  33: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 525    664.5s     1.020 Mmoves/s
+  epoch  34: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 525    684.5s     1.020 Mmoves/s
+  epoch  35: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 525    704.6s     1.021 Mmoves/s
+  epoch  36: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 524    724.5s     1.021 Mmoves/s
+  epoch  37: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 524    744.6s     1.021 Mmoves/s
+  epoch  38: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 524    764.6s     1.021 Mmoves/s
+  epoch  39: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 524    784.7s     1.021 Mmoves/s
+  epoch  40: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 524    804.6s     1.021 Mmoves/s
+  epoch  41: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 524    824.7s     1.021 Mmoves/s
+  epoch  42: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 524    844.7s     1.022 Mmoves/s
+  epoch  43: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 524    864.7s     1.022 Mmoves/s
+  epoch  44: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 524    884.7s     1.022 Mmoves/s
+  epoch  45: best  540.0/600  top10 [540, 540, 540, 540, 540, 540, 540, 540, 540, 540]  median 540  now-median 524    904.8s     1.022 Mmoves/s
+  time limit reached
+best coverage 540/600  domain sizes [150, 150, 150, 148, 141]  time 906.5s  kernel 902.0s  moves 9.22e+08
+NOT a covering: 60 facets uncovered
+wrote results/rp2_k5_push_warm/phase2/summary.json (partial)
+  Phase 2 result: 540/600
+
+--- Phase 3: targeted rewrite ---
+  attempt 1: 60 uncovered, 0 H1-open, 60 H1-dead
+  all remaining facets H1-dead — restructuring needed beyond this script
+
+=== Final: 540/600 in 1515s ===
+  60 facets remain — state saved for CP-SAT cold attack
