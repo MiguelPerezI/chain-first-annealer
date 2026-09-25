@@ -204,6 +204,75 @@ Same door, different key — now confirmed against eight runs rather than two:
 each seed finds an equivalent H₁-matching (a different key) and never walks
 through any of them.
 
+### 4.1 The stretch move breaks 148 → 149 — and 149 is a new, deeper stall
+
+A compound move (the "stretch" move, `src/annealer_stretch.py`: clone a
+neighbour map on ALL grid columns of an uncovered facet across a link block,
+one Metropolis step — the multi-vertex edit the audit above says is missing)
+breaks the eight-run barrier: warm-started from the verified 4-cover
+(`results/mobius_k4_from_k5`), γ = 0.1, it iterates the repair visibly
+(leftovers [23, 90] → [60, 90] → [90]) and reaches **149/150** — closing
+facet 23, one of the seed-999/666 corner pair, and leaving its sibling 90
+(`results/mobius_k3_stretch_from_k4`). This is the causal confirmation of
+the move-set diagnosis: the compound edit exists, and a move family that can
+express it walks straight through the 148 barrier.
+
+But the stall does not dissolve — it deepens by exactly one layer. A
+continuation from the 149 state (60 epochs, 4096 slots all converged to 149,
+~2.4 M stretch proposals/epoch aimed at facet 90, 6–7 % accepted)
+parks at 149 forever (`results/mobius_k3_stretch_from_149`). The accepted
+moves are real (uphill/neutral steps at T > 0) — none of them covers.
+
+**Exhaustive audit of the 149 state** (all single-chain edit families,
+priced exactly as the annealer would price them):
+
+| edit family (axis of compounding) | proposals | covers 90? | best total |
+|---|---:|---|---:|
+| track: 1 column × block ≤ 8 × fresh value | 17 040 | 13 do | **149** (trade) / 142 |
+| stretch: all 5 columns × block, cloned values | 4 680 | **0** | 149 |
+| arbitrary rewrite of one map (5⁵ values × maps 1–5 × 3 chains) | 46 875 | chain 2 only | 142 |
+| joint two-seam bridge (maps 1+4, legal image paths) | 1 190 cover | all lose f 17 | **149** |
+| four-map seam path (maps 1–4, zero-fill family) | 1 holds 17 ∧ 90 | loses 62–65 | 145 |
+
+The mechanism, layer by layer:
+
+1. **H₁ channels the last corner to one chain.** D₀ ∪ {90} and D₂ ∪ {90}
+   both wind (dim H₁ = 2, rank 1); only chain 1 — whose domain is the closest
+   approximation to rectangle (3, 0), the rectangle whose corner path 90 is —
+   may absorb it. But chain 1 sits at defect depth **2** on 90: two
+   non-adjacent bad links (1 and 4), a *two-seam* problem.
+2. **The argmin chain is the forbidden one.** The stretch move (and any
+   depth-greedy heuristic) targets chain 2, which holds 90 at depth 1 — and
+   chain 2 does have a mechanical bridge (collapse map 1's five values to 0:
+   the same {0}-image collapse the SAT cover uses, already present in its
+   maps 4+). Applying it covers 90 and loses 7 facets (142): the H₁
+   obstruction cashing out as an exact count, not a technicality.
+3. **The legal absorber's every road out trades.** Chain 1's bridges over
+   both seams exist (1 190 assignments), and **every single one loses facet
+   17** = cell (0, 2) · p5 — another far-corner extreme path. Facets 17 and
+   90 share exactly one grid column (column 2), and chain 1's route holds 17
+   with precisely the column-2 values that the 90-seam forbids: the values
+   that thread 90 through the seam are the values that hold 17. Holding both
+   is possible (a four-map seam path in the zero-fill family) but pays 4
+   facets elsewhere (145). Every exit from 149 is net ≤ 0.
+
+**Conjecture (the corner shell at k = ρ − 1).** The 20 far-corner
+extreme-path facets form a shell that the k domains partition. H₁ channels
+each corner to its legal absorbers; the annealed partition is a near-perfect
+matching one corner short, and the unmatched corner's unique legal absorber
+already holds a corner that conflicts with it through shared grid columns.
+So +1 coverage is unreachable by any single-chain edit at any compound
+width — confirmed exhaustively above — and completing the cover requires a
+**multi-chain trade**: redistribution of corners between domains. The SAT
+3-cover does exactly that — it puts 17 and 90 in the *same* 48-facet domain,
+a different partition altogether (65 + 46 + 48 vs the annealer's 60 + 58 +
+50). The move-set ladder of the stall: 148 binds at single-vertex width
+(broken by compound-in-columns moves), 149 binds *between* chains (needs
+redistribution moves — domain trades or crossover that can move a corner
+between chains, not recombine within the converged family), and 150 is
+reachable only by search that can express the redistribution (CP-SAT, or a
+deliberate domain-trade move — the natural next experiment).
+
 ## 5. The correlation: one signature, three depths
 
 Across all 14 stalled states tested (RP² k = 11/5/3, Klein k = 9/8/5,
@@ -242,11 +311,15 @@ Möbius k = 3 × 8 runs), the leftovers share the same fingerprint:
 
 The three surfaces are the **same failure at three depths**:
 
-- **Möbius — move-set binding.** The topological door is open (an H₁-valid
-  completion exists as a perfect matching, and a 3-cover exists,
-  `mobius_k3_sat`); the annealer's move set never produces the correlated
-  edit. Crossover does not help (klein log §7): the population has converged
-  to one shape family that does not contain the cover.
+- **Möbius — move-set binding, now two layers deep.** The topological door
+  is open (an H₁-valid completion exists as a perfect matching, and a
+  3-cover exists, `mobius_k3_sat`). The original stall binds at single-vertex
+  width: the compound stretch move breaks it (148 → 149, §4.1). The
+  residual binds *between* chains: the last corner's unique legal absorber
+  holds a conflicting corner, so no single-chain edit at any compound width
+  gains a facet (§4.1, exhaustive) — the completion is a redistribution of
+  corners across domains, which crossover cannot express once the population
+  has converged to one family (klein log §7).
 - **RP² — product-family trap.** At k = ρ − 1 the annealer falls back into
   the diagonal rectangle family — the warm start from a genuine
   non-rectangular k = 6 cover *lost shape* and re-converged to 1-link
@@ -300,5 +373,10 @@ $PY scripts/klein_h1_absorption.py rp2   results/rp2_k3_cold/summary.json     # 
 $PY scripts/klein_h1_absorption.py klein results/klein_k9/summary.json        # 15/17 dead
 $PY scripts/klein_h1_absorption.py klein results/klein_cold666_seed_999_2/summary.json  # 330/338
 $PY scripts/klein_h1_absorption.py mobius results/mobius_seed_999/summary.json # 0/2 dead
+# §4.1 — the stretch run (148 -> 149) and its continuation (149 parked), GPU:
+#   logs/mobius_k3_stretch_from_k4.log, logs/mobius_k3_stretch_from_149.log
+# 149-state audit battery (profiler + H1 + the edit-family audits of §4.1):
+$PY scripts/leftover_properties.py mobius results/mobius_k3_stretch_from_149/summary.json
+$PY scripts/klein_h1_absorption.py mobius results/mobius_k3_stretch_from_149/summary.json
 # rho: exact ILP over rect2_optimum.rect_masks cells (scipy.optimize.milp, §1)
 ```
