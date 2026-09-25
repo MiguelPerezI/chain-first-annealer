@@ -1,0 +1,217 @@
+#!/usr/bin/env python3
+"""test_stretch_cpu.py — correctness tests for the stretch move (annealer_stretch.py).
+
+Run on a CUDA-less machine with the numba CUDA simulator; the env var must be
+set BEFORE numba is imported, so run this file directly in a fresh process:
+
+    NUMBA_ENABLE_CUDASIM=1 ~/whisper_env/bin/python src/test_stretch_cpu.py
+    # or simply (the module sets it before importing numba):
+    ~/whisper_env/bin/python src/test_stretch_cpu.py
+
+Tests:
+  1. test_stretch_delta_reference — a numpy mirror of the kernel's incremental
+     stretch delta vs a from-scratch recompute (P.chain_bad_counts) on the real
+     mobius_seed_666 plateau state, for both leftover facets x L' in 1..8 x
+     both clone directions.  Also checks the left-clone guarantee: after a
+     left clone the links i1-1..i2-1 of the target facet are contiguous.
+  2. test_kernel_incremental_state — the compiled kernel (CUDASIM), warm-started
+     at the plateau with stretch on: for every population slot, the kernel's
+     reported coverage must equal the host recompute from the returned chains.
+     (This is the check that catches bad-link/cov bookkeeping corruption; it
+     failed before the boundary-map fix in make_anneal_kernel.)
+  3. test_pstretch0_bit_identity — annealer_stretch at pstretch=0 must return
+     exactly gpu_sc's best_chains at the same seed (regression contract).
+"""
+import os
+os.environ.setdefault("NUMBA_ENABLE_CUDASIM", "1")   # before numba import (fresh process!)
+
+import sys
+import unittest
+from pathlib import Path
+
+import numpy as np
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import gpu_sc
+import annealer_stretch as st
+
+SUM666 = Path(__file__).resolve().parents[1] / "results" / "mobius_seed_666" / "summary.json"
+
+
+def build_state(name="mobius", summary=SUM666, k=3, cmax=10, S=4, seed=1):
+    """Product + a ChainAnnealer whose first S//2 slots carry the plateau state."""
+    P = gpu_sc.build(name)
+    A = st.ChainAnnealer(P, k, cmax, S, seed=seed)
+    init = st.init_from_summary(P, summary, k, cmax, S)
+    A.chains[: S // 2] = init[: S // 2]
+    return P, A, init
+
+
+def stretch_mirror(P, chain, ft, i1, i2, direction):
+    """Numpy reference of one stretch proposal.  Returns (new_chain, affected)
+    where affected is the dedup union of the stars of ft's grid vertices."""
+    ch = chain.copy()
+    src = i1 - 1 if direction == "left" else i2 + 1
+    for w in P.facet_verts[ft][: int(P.facet_nv[ft])]:
+        ch[i1:i2 + 1, w] = ch[src, w]
+    affected = set()
+    for q in range(int(P.facet_nv[ft])):
+        w = int(P.facet_verts[ft, q])
+        affected.update(int(f) for f in
+                        P.incid_fac[P.incid_off[w]:P.incid_off[w + 1]])
+    return ch, affected
+
+
+def energy(P, chains_k, weights, beta, gamma):
+    """The kernel's energy, computed from scratch on the host."""
+    bads = [P.chain_bad_counts(c) for c in chains_k]
+    bads = np.stack(bads)                       # [k, nf]
+    minbad = bads.min(axis=0)
+    pen = np.where(minbad == 0, 0.0, 1.0 + beta * minbad)
+    return float((weights * pen).sum() + gamma * float(bads.sum()))
+
+
+class TestStretchDelta(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import json
+        cls.P = gpu_sc.build("mobius")
+        s = json.loads(SUM666.read_text())
+        cls.chains = [np.array(c, np.int8) for c in s["best_chains"]]
+        cls.doms = [sorted(int(f) for f in cls.P.domain_of(c)) for c in cls.chains]
+        covered = np.zeros(cls.P.nf, bool)
+        for d in cls.doms:
+            covered[d] = True
+        cls.leftovers = [int(f) for f in np.flatnonzero(~covered)]
+        assert len(cls.leftovers) == 2, cls.leftovers   # the 148/150 plateau
+
+    def _first_bad_link(self, chain, ft):
+        P = self.P
+        bads = P.chain_bad_counts(chain)
+        if bads[ft] == 0:
+            return -1
+        masks = []
+        for i in range(chain.shape[0]):
+            m = 0
+            for q in range(int(P.facet_nv[ft])):
+                m |= 1 << int(chain[i, P.facet_verts[ft, q]])
+            masks.append(m)
+        for i in range(len(masks) - 1):
+            if not P.is_simplex[masks[i] | masks[i + 1]]:
+                return i
+        return -1
+
+    def test_left_clone_guarantee(self):
+        """After a LEFT clone from i1 = max(i*, 1): links i1-1 .. i2-1 of the
+        target facet are contiguous by construction (the scientific point of
+        the move — a compound edit the track move cannot make)."""
+        P = self.P
+        CMAX = self.chains[0].shape[0] - 1
+        for ft in self.leftovers:
+            # argmin chain on ft
+            bads = [P.chain_bad_counts(c)[ft] for c in self.chains]
+            j = int(np.argmin(bads))
+            istar = self._first_bad_link(self.chains[j], ft)
+            self.assertGreaterEqual(istar, 0)
+            i1 = max(istar, 1)
+            for Ls in range(1, 9):
+                i2 = min(i1 + Ls - 1, CMAX - 1)
+                new_ch, _ = stretch_mirror(P, self.chains[j], ft, i1, i2, "left")
+                bads_new = P.chain_bad_counts(new_ch)
+                # every link of the block except the far boundary is good:
+                self.assertLessEqual(bads_new[ft], 1,
+                                     f"ft={ft} Ls={Ls}: bad={bads_new[ft]}")
+
+    def test_delta_vs_full_recompute(self):
+        """A numpy mirror of the kernel's incremental delta (window masks are
+        replaced by chain_bad_counts; the per-facet energy bookkeeping is
+        copied line-for-line) == the from-scratch recompute, for every
+        (leftover, L', direction)."""
+        P = self.P
+        CMAX = self.chains[0].shape[0] - 1
+        beta, gamma = 5.0, 0.5
+        weights = np.ones(P.nf, np.float32)
+        for ft in self.leftovers:
+            weights[ft] = 11.0                      # guide weight on the leftover
+            bads_all = [P.chain_bad_counts(c) for c in self.chains]
+            j = int(np.argmin([b[ft] for b in bads_all]))
+            istar = self._first_bad_link(self.chains[j], ft)
+            i1 = max(istar, 1)
+            for Ls in range(1, 9):
+                i2 = min(i1 + Ls - 1, CMAX - 1)
+                for direction in ("left", "right"):
+                    new_ch, affected = stretch_mirror(P, self.chains[j], ft, i1, i2, direction)
+                    bad_old = bads_all[j]
+                    bad_new = P.chain_bad_counts(new_ch)
+                    others = np.stack([b for jj, b in enumerate(bads_all) if jj != j])
+                    min_others = others.min(axis=0)
+
+                    # per-facet delta set: exactly the affected facets actually change
+                    changed = {int(g): int(bad_new[g]) - int(bad_old[g])
+                               for g in affected if bad_new[g] != bad_old[g]}
+                    recomputed = {int(g): int(bad_new[g]) - int(bad_old[g])
+                                  for g in np.flatnonzero(bad_new != bad_old)}
+                    self.assertEqual(changed, recomputed,
+                                     f"ft={ft} Ls={Ls} dir={direction}: affected-set mismatch")
+
+                    # kernel-style incremental dE over the affected facets
+                    dE = 0.0
+                    for g, d in changed.items():
+                        dE += gamma * float(d)
+                        bo = int(bad_old[g]); bn = bo + d
+                        mo = min(bo, int(min_others[g])); mn = min(bn, int(min_others[g]))
+                        po = 0.0 if mo == 0 else 1.0 + beta * mo
+                        pn = 0.0 if mn == 0 else 1.0 + beta * mn
+                        dE += float(weights[g]) * (pn - po)
+
+                    # full-recompute energy difference (all chains, from scratch)
+                    chains0 = [self.chains[j]] + [c for jj, c in enumerate(self.chains) if jj != j]
+                    chains1 = [new_ch] + [c for jj, c in enumerate(self.chains) if jj != j]
+                    e0 = energy(P, chains0, weights, beta, gamma)
+                    e1 = energy(P, chains1, weights, beta, gamma)
+                    self.assertAlmostEqual(dE, e1 - e0, places=6,
+                                           msg=f"ft={ft} Ls={Ls} dir={direction}")
+
+
+class TestKernelIncremental(unittest.TestCase):
+    def test_kernel_cov_matches_host_recompute(self):
+        """Warm-started at the plateau, stretch on: the kernel's per-slot
+        coverage must equal the host recompute from the returned chains."""
+        P, A, init = build_state()
+        _, covered = A.coverage_of(init[0])
+        unc = np.flatnonzero(~covered)
+        self.assertEqual(len(unc), 2)
+        w = np.ones(P.nf, np.float32); w[unc] = 11.0
+        A.set_weights(w)
+        A.set_targets(unc)
+        score = A.epoch(iters=400, T0=0.5, T1=0.05, beta=5.0,
+                        pmove_copy=0.5, ptrack=0.3, gamma=0.5, mu=0.0, pstretch=0.8)
+        self.assertGreater(float(score[:, 2].sum()), 0, "no stretch move fired")
+        for s in range(A.S):
+            doms, cov_host = A.coverage_of(A.chains[s])
+            self.assertEqual(int(cov_host.sum()), int(score[s, 0]),
+                             f"slot {s}: kernel cov != host recompute")
+            bads = [P.chain_bad_counts(A.chains[s, j]) for j in range(A.k)]
+            bads = np.stack(bads)
+            self.assertEqual(int((bads.min(axis=0) == 0).sum()), int(score[s, 0]),
+                             f"slot {s}: bad-array vs coverage mismatch")
+
+
+class TestBitIdentity(unittest.TestCase):
+    def test_pstretch0_equals_gpu_sc(self):
+        """pstretch = 0 draws no extra RNG values: the walk is bit-identical to
+        gpu_sc.py's at the same seed (the regression contract)."""
+        P = gpu_sc.build("mobius")
+        kw = dict(k=3, cmax=10, S=4, iters=120, epochs=2, T0=1.2, T1=0.05,
+                  beta=1.0, pcopy=0.5, seed=7, guide=1.0, guide_max=4.0,
+                  gamma=0.5, ptrack=0.3)
+        r0 = gpu_sc.anneal_cover(P, **kw)
+        r1 = st.anneal_cover(P, pstretch=0.0, **kw)
+        c0 = np.array(r0[0]); c1 = np.array(r1[0])
+        self.assertEqual(c0.shape, c1.shape)
+        self.assertTrue((c0 == c1).all(),
+                        f"pstretch=0 diverged from gpu_sc: best cov {r0[1]} vs {r1[1]}")
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
