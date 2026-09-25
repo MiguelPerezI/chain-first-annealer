@@ -134,3 +134,19 @@ python src/gpu_sc.py --complex s1xw --k 5 --cmax 40 --S 4096 --epochs 60 \
 For any surface where the annealer plateaus, try the constraint solver on
 the remaining uncovered facets (warm-start from the annealer's best
 partition).
+
+## Stall analysis (2026-09-24)
+
+ρ(RP²) = 6, ρ(Möbius) = 4 (exact ILP), so both surfaces stall at the first
+rung below their rectangle-cover number (RP² k = 5, Möbius k = 3) while the
+Klein bottle (ρ = 12) stalls far above it (k = 9, 8, 5). The RP² k = 5
+plateau is literally the six diagonal rectangles star(v)×star(v) minus one:
+its 60 leftovers are the private cells of star(5)×star(5), all far pairs,
+all one defect short, and provably unabsorbable by any of the five plateau
+domains (60/60 H₁-dead) though H₁-clean alone — completing means adding the
+sixth domain, i.e. it is not a k = 5 completion at all. Klein k = 9: 15/17
+dead; Klein k = 5: 330/338 dead and the leftover complex winds alone; Möbius
+k = 3: the same two facets {23, 90} across seeds, H₁-open with a perfect
+matching the move set never takes. Full battery, per-facet profiles and the
+three-depths correlation (Möbius = move-set binding, RP² = product-family
+trap, Klein = topology binding): `experiments/surface_stall_analysis.md`.
