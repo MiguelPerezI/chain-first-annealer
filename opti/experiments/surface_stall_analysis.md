@@ -3,7 +3,8 @@
 *2026-09-24. Follow-up to `klein_anneal_log.md` (§3–§5): the same H₁
 absorption battery and a new facet-property profiler
 (`scripts/leftover_properties.py`) applied to the stalled RP² states, the
-never-before-tested Klein k = 9 and k = 5 states, and a second Möbius seed.
+never-before-tested Klein k = 9 and k = 5 states, and the full eight-run
+Möbius k = 3 seed set.
 New exact values: **ρ(RP²) = 6**, ρ(Möbius) = 4 (ILP, below), ρ(Klein) = 12
 (known, §1 of the klein log). All statements at subdivision level 0 and all
 obstruction results are **state-relative** (they rule out completing the
@@ -128,26 +129,94 @@ tested (k = 8's 424/424 theorem is `klein_anneal_log.md` §3):
   (the dual diameter is 4); one plateau domain (D_1, 294 facets) is exactly
   star(0)×star(0) — the same product-family contamination as RP²'s k = 5.
 
-## 4. Möbius: the leftover set is seed-independent
+## 4. Möbius: eight seeds, always the same two-facet hole — shape invariant, position not
 
-`mobius_seed_999` stalls on **exactly the same two facets as seed 666**:
-L = {23, 90}, the single dead staircase path of cell (0, 3) and of its
-π-symmetric partner (3, 0) — antipodal far pairs (|s ∩ t| = 1, dual
-distance 2 = the dual diameter), both at defect depth exactly 1. The H₁
-matching exists (23 → chain 2, 90 → chain 0 here; 23 → 1, 90 → 0 for
-seed 666): 0/2 dead. Same door, different key — the two seeds find
-equivalent matchings but never walk through either.
+All eight k = 3 runs (seven seeds + a restart) stall at **exactly 148/150 —
+two dead facets, never one, never three**. Full sweep
+(`scripts/leftover_properties.py mobius` on every summary):
+
+| run | the two dead facets (cell · staircase path) | far pair(s) shared vertex |
+|---|---|---|
+| seed 999 / 666 / restart | (0,3)·p5 and (3,0)·p0 — facets 23 & 90 | 0 (π-mirror pair) |
+| seed 72341 / 72341_1 | (0,2)·p5 and (2,0)·p0 | 2 (π-mirror pair) |
+| seed 523 | (2,4)·p0 and (4,2)·p5 | 4 (π-mirror pair) |
+| seed 723 | (2,0)·p0 and (3,0)·p0 | 2 and 0 (mixed) |
+| seed 875 | (2,0)·p0 and (2,4)·p0 | 2 and 4 (mixed) |
+
+The earlier two-seed observation ("exactly the same two facets as seed 666")
+does **not** generalize: the seed-independent fact is the hole's *shape*, not
+its position — the same "the hole moves" phenomenon as RP² (§2) and the
+S³ k = 2 plateau. 6 of 8 runs leave the π-mirror pair (s, t) ↔ (t, s), with
+the path index flipping too (p5 ↔ p0 — the mirror swaps the staircase's two
+factors), which is itself evidence the hole is a family-level property
+rather than a pinned region.
+
+**What the two facets are (the invariant shape):**
+
+1. **Far pairs at the dual diameter.** Every dead facet lies on a cell (s, t)
+   with |s ∩ t| = 1 and dual distance 2 — the diameter of the 5-triangle dual
+   cycle. The Möbius triangulation's five unordered far pairs are
+   (sᵢ, sᵢ₊₂), which share exactly one boundary vertex c whose link path
+   sᵢ–sᵢ₊₁–sᵢ₊₂ has the two triangles at its ends: the hole is always
+   "the two ends of a boundary vertex's fan". Of the 20 far-pair
+   extreme-path facets (10 cells × 2 extreme paths), 18 are always eaten and
+   exactly 2 never are.
+2. **The dead path is always an extreme staircase ordering.** 16/16 dead
+   facets across the eight runs are path 0 or path 5 of the 6 — the two
+   *pure* orderings (path 5 crosses all of factor s before any of t, path 0
+   the reverse: the L-shaped corner tetrahedra of the 3×3 prism grid,
+   confirmed by decoding the facet vertex lists). The four interleaved
+   middle paths are never the ones left dead. A uniform-random dead path
+   would give this pattern with probability (1/3)¹⁶ ≈ 2 × 10⁻⁸ —
+   structural, not chance.
+3. **Partial cells at defect depth exactly 1.** Each holed cell has 1/6
+   paths dead (never fully dead), and every leftover is one non-contiguous
+   link away from the nearest chain — a flat-score plateau in the
+   `STALL_VERIFICATION.md` sense.
+
+**Why the annealer cannot reach them.** Every topological door is open: H₁
+absorption is **0/2 dead** (seed 999: facet 23 → chain 2, facet 90 → chain 0;
+the matching differs per seed but always exists), L alone passes, and CP-SAT
+closes the cover outright (`results/mobius_k3_sat`: 150/150, domains
+65 + 43 + 42, reduced chains 5–6 links, SC_strict⁰(Möbius) ≤ 2). No facet of
+the band is intrinsically uncoverable, and **link count is not the obstacle
+either**: the plateau chains reduce to 5–8 links (`reduce_chain` on the
+plateau domains), the same budget the SAT cover uses. The binding is the
+**move set**:
+
+- An interleaved middle path is reachable mid-chain — a chain crossing the
+  cell picks up the middle interleavings on the way through. A *pure*
+  ordering path sits at the end of the cell's staircase block: covering it
+  requires a chain to commit its entire traversal of that cell to one
+  direction, a coordinated re-route of several links at once.
+- Every single-facet edit toward that re-route breaks contiguity somewhere
+  else — defect depth 1 means the best chain is exactly one bad link short,
+  and repairing that link creates the next bad one — so each step on the path
+  to the corner path is uphill at w = 1. The annealer prices the steps,
+  never the correlated sequence.
+- At k = ρ − 1 = 3 the 18-of-20 far-corner frontier is shared out among the
+  three chains; every redistribution that releases a corner path is a
+  multi-chain edit. The population has converged to a shape family that
+  contains no completion, and crossover recombines only within the family
+  (klein log §7).
+
+Same door, different key — now confirmed against eight runs rather than two:
+each seed finds an equivalent H₁-matching (a different key) and never walks
+through any of them.
 
 ## 5. The correlation: one signature, three depths
 
-Across all 8 stalled states tested (RP² k = 11/5/3, Klein k = 9/8/5,
-Möbius k = 3 × 2 seeds), the leftovers share the same fingerprint:
+Across all 14 stalled states tested (RP² k = 11/5/3, Klein k = 9/8/5,
+Möbius k = 3 × 8 runs), the leftovers share the same fingerprint:
 
 1. **Far pairs.** Leftovers concentrate on cells with |s ∩ t| ≤ 1 at or near
    the dual-graph diameter (RP²: distance 2 of 2; Möbius: 2 of 2; Klein:
    3 of 4 at k = 8). Near-diagonal and adjacent cells are always eaten first
    by the star-shaped cores. The only departures are the deep stalls
    (RP² k = 3, Klein k = 9), where the hole has grown past the far frontier.
+   On the Möbius band the concentration is exact and stronger: the leftovers
+   are always *extreme* staircase paths of far cells (§4, point 2) — the
+   fingerprint includes the path index, not just the cell.
 2. **Defect depth exactly 1.** Every leftover on every surface is one bad
    link short (only RP² k = 3 has 28 facets at depth 2). The stalls are
    flat-score plateaus in the precise sense of `STALL_VERIFICATION.md`.
@@ -211,6 +280,21 @@ $PY scripts/leftover_properties.py rp2   results/rp2_k11/summary.json
 $PY scripts/leftover_properties.py klein results/klein_k9/summary.json
 $PY scripts/leftover_properties.py klein results/klein_k8_r1/summary.json
 $PY scripts/leftover_properties.py mobius results/mobius_seed_999/summary.json
+# §4 full sweep — all eight runs stall 148/150 on two far-cell extreme paths:
+for d in results/mobius_seed_* results/mobius_restart; do
+    $PY scripts/leftover_properties.py mobius $d/summary.json
+done
+# plateau chains reduce to 5-8 links (same budget as the SAT 3-cover's 5-6):
+$PY - <<'EOF'
+import sys, json; import numpy as np; sys.path.insert(0, 'src')
+import gpu_sc
+P = gpu_sc.build('mobius')
+for d in ['mobius_seed_999','mobius_seed_666','mobius_seed_523','mobius_seed_723']:
+    s = json.load(open(f'results/{d}/summary.json'))
+    ch = [np.array(c, np.int8) for c in s['best_chains']]
+    doms = [sorted(int(f) for f in P.domain_of(c)) for c in ch]
+    print(d, [len(gpu_sc.reduce_chain(P, c, dd)) - 1 for c, dd in zip(ch, doms)])
+EOF
 $PY scripts/klein_h1_absorption.py rp2   results/rp2_k5_hybrid/summary.json   # 60/60 dead
 $PY scripts/klein_h1_absorption.py rp2   results/rp2_k3_cold/summary.json     # 200/202 dead
 $PY scripts/klein_h1_absorption.py klein results/klein_k9/summary.json        # 15/17 dead
