@@ -30,6 +30,15 @@ Tests:
   5. test_pstretch0_bit_identity — annealer_stretch at pstretch=0 must return
      exactly gpu_sc's best_chains at the same seed (regression contract).
      pcollapse defaults to 0 there and draws nothing extra.
+  6. test_seam_delta_reference — the numpy mirror of the seam stitch (TWO
+     small collapse blocks at the first two bad links of the depth-2 chain,
+     one proposal) vs from-scratch recompute on the 149/150 state.
+  7. test_bookkeeping_with_seam / _with_pself — kernel runs with pseam / pself
+     on: coverage bookkeeping must match the host recompute and the seam
+     counters must fire.
+  8. test_epoch_temperatures / test_stall_hook — the reheat schedule and the
+     stall hook (snapshot + deterministic audit + claude-advice log) without
+     touching the GPU.
 """
 import os
 os.environ.setdefault("NUMBA_ENABLE_CUDASIM", "1")   # before numba import (fresh process!)
@@ -86,6 +95,36 @@ def collapse_mirror(P, chain, ft, i1, i2, v):
         affected.update(int(f) for f in
                         P.incid_fac[P.incid_off[w]:P.incid_off[w + 1]])
     return ch, affected
+
+
+def seam_mirror(P, chain, ft, a1, a2, b1, b2, vA, vB):
+    """Numpy reference of one seam-stitch proposal: block A = maps a1..a2 and
+    block B = maps b1..b2 (separated by untouched maps) each carry ONE fresh
+    K-vertex value (vA / vB) on EVERY column of ft — the depth-2 repair of
+    the mobius 149 audit.  Returns (new_chain, affected)."""
+    ch = chain.copy()
+    for q in range(int(P.facet_nv[ft])):
+        w = int(P.facet_verts[ft, q])
+        ch[a1:a2 + 1, w] = vA
+        ch[b1:b2 + 1, w] = vB
+    affected = set()
+    for q in range(int(P.facet_nv[ft])):
+        w = int(P.facet_verts[ft, q])
+        affected.update(int(f) for f in
+                        P.incid_fac[P.incid_off[w]:P.incid_off[w + 1]])
+    return ch, affected
+
+
+def bad_links_of(P, chain, ft):
+    """Link indices i (link i spans maps i, i+1) where ft is not contiguous."""
+    masks = []
+    for i in range(chain.shape[0]):
+        m = 0
+        for q in range(int(P.facet_nv[ft])):
+            m |= 1 << int(chain[i, P.facet_verts[ft, q]])
+        masks.append(m)
+    return [i for i in range(len(masks) - 1)
+            if not P.is_simplex[masks[i] | masks[i + 1]]]
 
 
 def energy(P, chains_k, weights, beta, gamma):
@@ -318,7 +357,173 @@ class TestCollapseKernel(unittest.TestCase):
                              f"slot {s}: bad-array vs coverage mismatch")
 
 
-class TestBitIdentity(unittest.TestCase):
+class TestSeamDelta(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import json
+        cls.P = gpu_sc.build("mobius")
+        s = json.loads(SUM149.read_text())
+        cls.chains = [np.array(c, np.int8) for c in s["best_chains"]]
+        cls.doms = [sorted(int(f) for f in cls.P.domain_of(c)) for c in cls.chains]
+        covered = np.zeros(cls.P.nf, bool)
+        for d in cls.doms:
+            covered[d] = True
+        cls.leftovers = [int(f) for f in np.flatnonzero(~covered)]
+        assert cls.leftovers == [90], cls.leftovers      # the 149/150 state
+
+    def test_seam_delta_vs_full_recompute(self):
+        """Kernel-style incremental seam delta == the from-scratch energy
+        difference, for every depth-2 chain on the leftover, block lengths
+        up to 3 and all fresh-value pairs — the contract the kernel's seam
+        branch must keep (window masks a1-1..b2+1, two interior bands)."""
+        P, chains, ft = self.P, self.chains, 90
+        CMAX = chains[0].shape[0] - 1
+        beta, gamma = 5.0, 0.5
+        weights = np.ones(P.nf, np.float32)
+        weights[ft] = 11.0
+        bads_all = [P.chain_bad_counts(c) for c in chains]
+        tested = 0
+        for j in range(len(chains)):
+            links = bad_links_of(P, chains[j], ft)
+            if len(links) < 2:
+                continue        # the seam move targets depth-2 chains only
+            a1 = max(links[0], 1)
+            b1 = links[1]
+            self.assertGreaterEqual(b1 - a1, 1)
+            bad_old = bads_all[j]
+            others = np.stack([b for jj, b in enumerate(bads_all) if jj != j])
+            min_others = others.min(axis=0)
+            for LA in range(1, min(3, b1 - a1) + 1):
+                a2 = a1 + LA - 1
+                for LB in (1, 2, 3):
+                    b2 = min(b1 + LB - 1, CMAX - 1)
+                    for vA in range(P.nv):
+                        for vB in range(P.nv):
+                            new_ch, affected = seam_mirror(P, chains[j], ft,
+                                                            a1, a2, b1, b2, vA, vB)
+                            bad_new = P.chain_bad_counts(new_ch)
+                            changed = {int(g): int(bad_new[g]) - int(bad_old[g])
+                                       for g in affected if bad_new[g] != bad_old[g]}
+                            recomputed = {int(g): int(bad_new[g]) - int(bad_old[g])
+                                          for g in np.flatnonzero(bad_new != bad_old)}
+                            self.assertEqual(changed, recomputed,
+                                             f"j={j} a=({a1},{a2}) b=({b1},{b2}) "
+                                             f"v=({vA},{vB}): affected-set mismatch")
+                            dE = 0.0
+                            for g, d in changed.items():
+                                dE += gamma * float(d)
+                                bo = int(bad_old[g]); bn = bo + d
+                                mo = min(bo, int(min_others[g])); mn = min(bn, int(min_others[g]))
+                                po = 0.0 if mo == 0 else 1.0 + beta * mo
+                                pn = 0.0 if mn == 0 else 1.0 + beta * mn
+                                dE += float(weights[g]) * (pn - po)
+                            chains0 = list(chains)
+                            chains1 = list(chains); chains1[j] = new_ch
+                            e0 = energy(P, chains0, weights, beta, gamma)
+                            e1 = energy(P, chains1, weights, beta, gamma)
+                            self.assertAlmostEqual(dE, e1 - e0, places=6,
+                                                   msg=f"j={j} a=({a1},{a2}) b=({b1},{b2}) v=({vA},{vB})")
+                            tested += 1
+        self.assertGreater(tested, 0, "no depth-2 chain on the leftover — seam untested")
+
+
+class TestSeamKernel(unittest.TestCase):
+    def test_bookkeeping_with_seam(self):
+        """Warm start from the 149 state with stretch, collapse AND seam on:
+        kernel coverage of every slot must equal the host recompute, bad
+        arrays must match, and the seam counters must fire."""
+        P, A, init = build_state(summary=SUM149, cmax=40, S=4, seed=3)
+        _, covered = A.coverage_of(init[0])
+        unc = np.flatnonzero(~covered)
+        self.assertEqual(unc.tolist(), [90])
+        w = np.ones(P.nf, np.float32); w[unc] = 11.0
+        A.set_weights(w)
+        A.set_targets(unc)
+        score = A.epoch(iters=400, T0=0.5, T1=0.05, beta=5.0,
+                        pmove_copy=0.5, ptrack=0.3, gamma=0.5, mu=0.0,
+                        pstretch=0.6, pcollapse=0.3, pseam=1.0)
+        self.assertGreater(float(score[:, 6].sum()), 0, "no seam proposal fired")
+        for s in range(A.S):
+            doms, cov_host = A.coverage_of(A.chains[s])
+            self.assertEqual(int(cov_host.sum()), int(score[s, 0]),
+                             f"slot {s}: kernel cov != host recompute")
+            bads = np.stack([P.chain_bad_counts(A.chains[s, j]) for j in range(A.k)])
+            self.assertEqual(int((bads.min(axis=0) == 0).sum()), int(score[s, 0]),
+                             f"slot {s}: bad-array vs coverage mismatch")
+
+
+class TestPselfKernel(unittest.TestCase):
+    def test_bookkeeping_with_pself(self):
+        """All compound proposals target the slot's OWN uncovered facets
+        (pself=1): bookkeeping contract unchanged — kernel coverage of every
+        slot must equal the host recompute."""
+        P, A, init = build_state()
+        _, covered = A.coverage_of(init[0])
+        unc = np.flatnonzero(~covered)
+        w = np.ones(P.nf, np.float32); w[unc] = 11.0
+        A.set_weights(w)
+        A.set_targets(unc)
+        score = A.epoch(iters=400, T0=0.5, T1=0.05, beta=5.0,
+                        pmove_copy=0.5, ptrack=0.3, gamma=0.5, mu=0.0,
+                        pstretch=0.8, pself=1.0)
+        ncompound = float(score[:, 2].sum() + score[:, 4].sum() + score[:, 6].sum())
+        self.assertGreater(ncompound, 0, "no compound proposal fired")
+        for s in range(A.S):
+            doms, cov_host = A.coverage_of(A.chains[s])
+            self.assertEqual(int(cov_host.sum()), int(score[s, 0]),
+                             f"slot {s}: kernel cov != host recompute")
+            bads = np.stack([P.chain_bad_counts(A.chains[s, j]) for j in range(A.k)])
+            self.assertEqual(int((bads.min(axis=0) == 0).sum()), int(score[s, 0]),
+                             f"slot {s}: bad-array vs coverage mismatch")
+
+
+class TestReheat(unittest.TestCase):
+    def test_epoch_temperatures(self):
+        """The reheat schedule: constant reheat_T once the best coverage has
+        stalled for a positive multiple of reheat_every epochs; disabled at
+        reheat_every <= 0 or reheat_T <= 0."""
+        f = st._epoch_temperatures
+        self.assertEqual(f(0, 0.6, 0.02, 10, 0.35), (0.6, 0.02, False))
+        self.assertEqual(f(3, 0.6, 0.02, 10, 0.35), (0.6, 0.02, False))
+        self.assertEqual(f(9, 0.6, 0.02, 10, 0.35), (0.6, 0.02, False))
+        self.assertEqual(f(10, 0.6, 0.02, 10, 0.35), (0.35, 0.35, True))
+        self.assertEqual(f(20, 0.6, 0.02, 10, 0.35), (0.35, 0.35, True))
+        self.assertEqual(f(10, 0.6, 0.02, 0, 0.35), (0.6, 0.02, False))
+        self.assertEqual(f(10, 0.6, 0.02, 10, 0.0), (0.6, 0.02, False))
+
+
+class TestStallHook(unittest.TestCase):
+    def test_hook_snapshot_audit_and_advice(self):
+        """The stall hook writes the snapshot, the deterministic audit runs
+        against it (leftovers + H1 doors + suggestion block), and the claude
+        stub's output lands in claude_advice.log — without raising."""
+        import tempfile
+        import json
+        P, A, init = build_state()
+        with tempfile.TemporaryDirectory() as tmp:
+            old = os.environ.get("STRETCH_CLAUDE")
+            os.environ["STRETCH_CLAUDE"] = "/bin/echo"
+            try:
+                lines = []
+                st._run_stall_hook(P, A, init[0], [{"epoch": 1}], tmp, 7, 8,
+                                   dict(complex="mobius"), lines.append)
+            finally:
+                if old is None:
+                    os.environ.pop("STRETCH_CLAUDE", None)
+                else:
+                    os.environ["STRETCH_CLAUDE"] = old
+            self.assertTrue((Path(tmp) / "stall_snapshot.json").exists(),
+                            "no snapshot written")
+            audit = json.loads((Path(tmp) / "stall_audit.json").read_text())
+            self.assertEqual(audit["complex"], "mobius")
+            self.assertEqual(len(audit["leftovers"]), 2)   # the 148/150 plateau
+            self.assertIn("guide_targets", audit["suggestion"])
+            self.assertTrue(all(k in audit["suggestion"]
+                                for k in ("seam_targets", "reheat", "h1_audited")))
+            advice = (Path(tmp) / "claude_advice.log").read_text()
+            self.assertIn("stalled 8 epochs", advice)
+
+
     def test_pstretch0_equals_gpu_sc(self):
         """pstretch = 0 draws no extra RNG values: the walk is bit-identical to
         gpu_sc.py's at the same seed (the regression contract)."""

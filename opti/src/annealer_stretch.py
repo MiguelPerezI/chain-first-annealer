@@ -32,15 +32,39 @@ production path.  Only differences from gpu_sc.py:
     role is exploration (downhill trade tumbles that re-channel the domain
     partition), not contiguity guarantees.
   * pstretch = 0 draws no extra RNG values: identical walk to gpu_sc.py at
-    the same seed (regression contract); pcollapse = 0 likewise adds no draws
-    (the collapse coin is only tossed inside a fired stretch proposal).
-  * ChainAnnealer.set_targets / anneal_cover(pstretch=..., pcollapse=...) /
-    --pstretch / --pcollapse: the uncovered-facet list is refreshed by the
+    the same seed (regression contract); pcollapse = 0, pself = 0 and
+    pseam = 0 likewise add no draws (their coins are only tossed inside a
+    fired stretch proposal).
+  * ChainAnnealer.set_targets / anneal_cover(pstretch=..., pcollapse=...,
+    pself=..., pseam=..., reheat_..., stall_hook=...) /
+    --pstretch / --pcollapse / --pself / --pseam / --reheat-every /
+    --reheat-T / --stall-hook: the uncovered-facet list is refreshed by the
     driver each epoch (it is exactly the set the guide-weight update already
     computes).
-  * score array widens to [S, 6]: (cov, best cov, stretch proposals, stretch
-    accepts, collapse proposals, collapse accepts) — the per-epoch log
-    reports both telemetries.
+  * score array widens to [S, 8]: (cov, best cov, stretch proposals, stretch
+    accepts, collapse proposals, collapse accepts, seam proposals, seam
+    accepts) — the per-epoch log reports all telemetries.
+  * pself: per-slot targeting — with that probability the stretch/seam target
+    is rejection-sampled from THIS thread's own uncovered facets instead of
+    the consensus list (a thread that covers the consensus leftover can
+    otherwise never aim a compound move at its own defects; the mobius/rp2
+    logs show whole epochs with zero stretch proposals for that reason).
+  * pseam: the seam stitch — with that probability of stretch proposals, when
+    a chain has >= 2 bad links on the target, TWO small collapse blocks (one
+    per bad link, separated by untouched maps) are proposed as ONE Metropolis
+    step on the shallowest depth-2 chain.  A uniform block spanning both
+    links destroys the good middle maps (audited: best single-block cover
+    trade -4 mobius 149 / -11 rp2 544); the seam keeps them — the depth-2
+    repair class of surface_stall_analysis.md 4.1.
+  * reheat_every/reheat_T: after that many stalled epochs the next epoch runs
+    at a constant reheat_T (best-ever is kept), then the schedule resumes.
+  * stall_hook: after that many stalled epochs, write a stall snapshot and
+    run scripts/stall_audit.py (deterministic: defect depths, H1 absorption
+    doors, seam positions) next to it; if the claude CLI (or $STRETCH_CLAUDE)
+    is available, ask it for campaign advice, appended to claude_advice.log —
+    logged for the owner, NEVER auto-applied.  Annealer-supervised search:
+    the audit is the method, the LLM is an optional advisor at the epoch
+    boundary.
 
 gpu_sc.py — GPU-accelerated versions of the optimized algorithms in
 optimized_algorithms.md for the paper
@@ -431,11 +455,33 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
       as proposal diversity and filtered by Metropolis.
 
     score columns: [cov, best cov, stretch proposals, stretch accepts,
-        collapse proposals, collapse accepts].
+        collapse proposals, collapse accepts, seam proposals, seam accepts].
     pstretch = 0.0 draws no extra RNG values — the walk is bit-identical to
-    gpu_sc.py's at the same seed (regression contract).  pcollapse = 0.0
-    adds no extra draws either: identical to runs compiled before the flag
-    (the collapse coin is only tossed inside a stretch proposal).
+    gpu_sc.py's at the same seed (regression contract).  pcollapse = 0.0,
+    pself = 0.0 and pseam = 0.0 add no extra draws either: identical to runs
+    compiled before each flag (their coins are only tossed inside a stretch
+    proposal).
+
+    pself > 0 (per-slot targeting): with that probability the target facet is
+    rejection-sampled from THIS thread's own uncovered set (up to 6 draws,
+    accept when min_j bad_j[f] > 0), falling back to the host list.  Without
+    it, a thread that already covers the consensus leftover can never aim a
+    compound move at its own defects — the mobius/rp2 stretch logs show whole
+    epochs with zero stretch proposals for exactly this reason.
+
+    pseam > 0 (seam stitch, the depth-2 repair of surface_stall_analysis.md
+    4.1): with that probability of stretch proposals, when some chain has >= 2
+    bad links on the target, TWO small collapse blocks are proposed as ONE
+    Metropolis step — block A at the first bad link, block B at the second
+    (each one fresh K-vertex value on all of ft's columns, lengths <= LMAX,
+    separated by at least one untouched map).  The chain is re-selected to the
+    shallowest one with >= 2 bad links (argmin usually points at a depth-1
+    chain the audits showed is the wrong one; the legal absorber sits at
+    depth 2 — mobius 149: links 21/33; rp2 544: links 0/7).  A uniform block
+    spanning both links destroys the good middle maps (exhaustively verified:
+    best single-block cover trade is -4 mobius / -11 rp2); the seam keeps them.
+    Both blocks edit only ft's grid columns, so the affected-facet set is the
+    same star-union the single-block move already deduplicates.
     """
     CMAX = C1 - 1
     L1 = LMAX + 2
@@ -444,7 +490,7 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
     @cuda.jit
     def anneal_kernel(chains, best, bad, score, seeds,
                       facet_verts, facet_nv, incid_off, incid_fac, is_simplex,
-                      weights, unc, n_unc, pstretch, pcollapse,
+                      weights, unc, n_unc, pstretch, pcollapse, pself, pseam,
                       iters, T0, T1, beta, gamma, mu, pmove_copy, ptrack):
         s = cuda.grid(1)
         if s >= chains.shape[0]:
@@ -456,9 +502,12 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
         seen = cuda.local.array(NF, uint8)    # stretch: dedup mark of affected facets
         aff = cuda.local.array(UMAX, int32)   # stretch: affected facet ids
         fwm = cuda.local.array(NGRID, uint8)  # stretch: membership of ft's grid vertices
-        cvv = cuda.local.array(NGRID, int8)   # stretch: per-vertex clone value
+        cvv = cuda.local.array(NGRID, int8)   # stretch: per-vertex clone/collapse value
+        cvv2 = cuda.local.array(NGRID, int8)  # seam: second block's per-vertex value
         mo_ = cuda.local.array(L1, int32)   # old masks of the touched maps on one facet
         mn_ = cuda.local.array(L1, int32)   # new masks
+        so_ = cuda.local.array(C1, int32)   # seam: old masks over the seam window
+        sn_ = cuda.local.array(C1, int32)   # seam: new masks
         # cuda.local.array is UNINITIALIZED: every gpu_sc scratch is write-before-
         # read, but `seen` is read as a marker before ever being written — zero it
         # once here; the per-proposal mark/unmark keeps it clean for the walk.
@@ -496,6 +545,8 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
         st_acc = int32(0)
         cp_prop = int32(0)
         cp_acc = int32(0)
+        sm_prop = int32(0)
+        sm_acc = int32(0)
         for j in range(KCH):
             for i in range(C1):
                 for g in range(NGRID):
@@ -509,32 +560,248 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
             # ---- stretch move: compound, defect-targeted (falls through to the
             # track move below when it cannot be set up).  Zero RNG draws at
             # pstretch == 0, so the track-only walk is bit-identical to gpu_sc.
-            if pstretch > float64(0.0) and n_unc > 0:
+            if pstretch > float64(0.0) and (n_unc > 0 or pself > float64(0.0)):
                 state, x = sm_next_dev(state)
                 if sm_u01_dev(x) < pstretch:
-                    state, x = sm_next_dev(state)
-                    ft = int32(unc[int32(x % uint64(n_unc))])
-                    # chain j = argmin_j bad_j[ft]; covered here -> track move
-                    j = int32(0)
-                    bmin = int32(bd[0, ft])
-                    for jj in range(1, KCH):
-                        if int32(bd[jj, ft]) < bmin:
-                            bmin = int32(bd[jj, ft])
-                            j = int32(jj)
+                    ft = int32(-1)
+                    # per-slot targeting (pself): with that probability the
+                    # target is rejection-sampled from THIS thread's own
+                    # uncovered facets (min_j bad_j[f] > 0), falling back to
+                    # the host list.  Without it, a thread that covers the
+                    # consensus leftover can never aim a compound move at its
+                    # own defects.  Zero RNG draws at pself == 0.
+                    if pself > float64(0.0):
+                        state, x = sm_next_dev(state)
+                        if sm_u01_dev(x) < pself:
+                            for t in range(6):
+                                state, x = sm_next_dev(state)
+                                cand = int32(x % uint64(NF))
+                                bc = int32(bd[0, cand])
+                                for jj in range(1, KCH):
+                                    if int32(bd[jj, cand]) < bc:
+                                        bc = int32(bd[jj, cand])
+                                if bc > 0:
+                                    ft = cand
+                                    break
+                    if ft < 0 and n_unc > 0:
+                        state, x = sm_next_dev(state)
+                        ft = int32(unc[int32(x % uint64(n_unc))])
                     istar = int32(-1)
-                    if bmin > 0:
-                        # first bad link i* of (j, ft): link i spans maps i, i+1
-                        mprev = int32(0)
-                        for q in range(facet_nv[ft]):
-                            mprev |= int32(1) << int32(ch[j, 0, facet_verts[ft, q]])
-                        for i in range(CMAX):
-                            mcur = int32(0)
-                            for q in range(facet_nv[ft]):
-                                mcur |= int32(1) << int32(ch[j, i + 1, facet_verts[ft, q]])
-                            if is_simplex[mprev | mcur] == 0:
-                                istar = int32(i)
-                                break
-                            mprev = mcur
+                    ibstar = int32(-1)
+                    a1s = int32(1)
+                    seam = int32(0)
+                    jdeep = int32(-1)
+                    j = int32(0)          # only read when istar >= 0 (ft was valid)
+                    if ft >= 0:
+                        # chain j = argmin_j bad_j[ft]; covered here -> track move
+                        j = int32(0)
+                        bmin = int32(bd[0, ft])
+                        for jj in range(1, KCH):
+                            if int32(bd[jj, ft]) < bmin:
+                                bmin = int32(bd[jj, ft])
+                                j = int32(jj)
+                        # seam coin (pseam): the depth-2 two-block repair of the
+                        # stall audits — tossed before the bad-link scans; zero
+                        # draws at pseam == 0.  When armed and some chain has
+                        # >= 2 bad links on ft, the proposal chain moves to the
+                        # shallowest such chain (argmin usually points at a
+                        # depth-1 chain the audits ruled out; the legal absorber
+                        # sits at depth 2 — mobius 149: links 21/33, rp2 544:
+                        # links 0/7, surface_stall_analysis.md 4.1).
+                        if pseam > float64(0.0):
+                            state, x = sm_next_dev(state)
+                            if sm_u01_dev(x) < pseam:
+                                bdeep = int32(-1)
+                                for jj in range(KCH):
+                                    bb = int32(bd[jj, ft])
+                                    if bb >= 2:
+                                        if bdeep < 0 or bb < bdeep:
+                                            bdeep = bb
+                                            jdeep = int32(jj)
+                                if jdeep >= 0:
+                                    seam = int32(1)
+                        if bmin > 0:
+                            if seam == int32(1):
+                                # first TWO bad links of (jdeep, ft)
+                                mprev = int32(0)
+                                for q in range(facet_nv[ft]):
+                                    mprev |= int32(1) << int32(ch[jdeep, 0, facet_verts[ft, q]])
+                                for i in range(CMAX):
+                                    mcur = int32(0)
+                                    for q in range(facet_nv[ft]):
+                                        mcur |= int32(1) << int32(ch[jdeep, i + 1, facet_verts[ft, q]])
+                                    if is_simplex[mprev | mcur] == 0:
+                                        istar = int32(i)
+                                        break
+                                    mprev = mcur
+                                if istar >= 0:
+                                    mprev = int32(0)
+                                    for q in range(facet_nv[ft]):
+                                        mprev |= int32(1) << int32(ch[jdeep, istar + 1, facet_verts[ft, q]])
+                                    for i in range(istar + 1, CMAX):
+                                        mcur = int32(0)
+                                        for q in range(facet_nv[ft]):
+                                            mcur |= int32(1) << int32(ch[jdeep, i + 1, facet_verts[ft, q]])
+                                        if is_simplex[mprev | mcur] == 0:
+                                            ibstar = int32(i)
+                                            break
+                                        mprev = mcur
+                                a1s = istar if istar >= int32(1) else int32(1)
+                                # blocks must stay separated by >= 1 untouched map and in range
+                                if istar < 0 or ibstar < 0 or ibstar - a1s < 1 or ibstar > CMAX - 1:
+                                    seam = int32(0)     # infeasible: single-block fallback
+                                    jdeep = int32(-1)
+                            if seam == int32(0):
+                                # first bad link i* of (j, ft): link i spans maps i, i+1
+                                mprev = int32(0)
+                                for q in range(facet_nv[ft]):
+                                    mprev |= int32(1) << int32(ch[j, 0, facet_verts[ft, q]])
+                                for i in range(CMAX):
+                                    mcur = int32(0)
+                                    for q in range(facet_nv[ft]):
+                                        mcur |= int32(1) << int32(ch[j, i + 1, facet_verts[ft, q]])
+                                    if is_simplex[mprev | mcur] == 0:
+                                        istar = int32(i)
+                                        break
+                                    mprev = mcur
+                    # ---- seam proposal (pseam): TWO small collapse blocks at the
+                    # two bad links of (jdeep, ft), one Metropolis step.  A uniform
+                    # block spanning both links destroys the good middle maps
+                    # (exhaustively audited: best single-block cover trade -4
+                    # mobius / -11 rp2); the seam keeps them untouched.  Both
+                    # blocks edit only ft's columns, so the affected-facet set is
+                    # the same star-union the single-block move deduplicates.
+                    if seam == int32(1) and istar >= 0 and ibstar >= 0:
+                        a1 = a1s
+                        b1 = ibstar
+                        state, x = sm_next_dev(state)
+                        LA = int32(1) + int32(x % uint64(LMAX))
+                        if LA > b1 - a1:
+                            LA = b1 - a1
+                        a2 = a1 + LA - 1
+                        state, x = sm_next_dev(state)
+                        LB = int32(1) + int32(x % uint64(LMAX))
+                        b2 = b1 + LB - 1
+                        if b2 > CMAX - 1:
+                            b2 = CMAX - 1
+                        state, x = sm_next_dev(state)
+                        cv0a = int8(int32(x % uint64(NV)))
+                        state, x = sm_next_dev(state)
+                        cv0b = int8(int32(x % uint64(NV)))
+                        nft = int32(facet_nv[ft])
+                        for g in range(NGRID):
+                            fwm[g] = uint8(0)
+                        for q in range(nft):
+                            w = int32(facet_verts[ft, q])
+                            fwm[w] = uint8(1)
+                            cvv[w] = cv0a
+                            cvv2[w] = cv0b
+                        # affected facets: dedup of the union of the stars of ft's vertices
+                        naff = int32(0)
+                        for q in range(nft):
+                            w = int32(facet_verts[ft, q])
+                            for ii in range(incid_off[w], incid_off[w + 1]):
+                                g = int32(incid_fac[ii])
+                                if seen[g] == uint8(0):
+                                    seen[g] = uint8(1)
+                                    if naff < UMAX:
+                                        aff[naff] = g
+                                        naff += 1
+                        sm_prop += 1
+                        # delta over the window maps a1-1 .. b2+1 of each affected facet
+                        dE = float64(0.0)
+                        dcov = int32(0)
+                        span = b2 - a1 + 3
+                        la2 = a2 - a1 + 1
+                        lb1 = b1 - a1 + 1
+                        lb2 = b2 - a1 + 1
+                        for a in range(naff):
+                            g = int32(aff[a])
+                            for l in range(span):
+                                i = a1 - 1 + l
+                                m0 = int32(0)
+                                m1 = int32(0)
+                                for qq in range(facet_nv[g]):
+                                    v = int32(facet_verts[g, qq])
+                                    m0 |= int32(1) << int32(ch[jdeep, i, v])
+                                    if fwm[v] != uint8(0) and l >= 1 and (l <= la2 or (l >= lb1 and l <= lb2)):
+                                        m1 |= int32(1) << int32(cvv[v] if l <= la2 else cvv2[v])
+                                    else:
+                                        m1 |= int32(1) << int32(ch[jdeep, i, v])
+                                so_[l] = m0
+                                sn_[l] = m1
+                            ob = int32(0)
+                            nb = int32(0)
+                            for l in range(span - 1):
+                                if is_simplex[so_[l] | so_[l + 1]] == 0:
+                                    ob += 1
+                                if is_simplex[sn_[l] | sn_[l + 1]] == 0:
+                                    nb += 1
+                            d = nb - ob
+                            dfac[g] = int8(d)
+                            if d != 0:
+                                dE += gamma * float64(d)      # per-chain cleanliness (all chains)
+                                bo = int32(bd[jdeep, g])
+                                bn = bo + d
+                                mo = bo
+                                mn = bn
+                                mult = int32(1) if bo == 0 else int32(0)   # chains covering g, before
+                                for jj in range(KCH):
+                                    if jj != jdeep:
+                                        bb = int32(bd[jj, g])
+                                        if bb < mo:
+                                            mo = bb
+                                        if bb < mn:
+                                            mn = bb
+                                        if bb == 0:
+                                            mult += 1
+                                po = float64(0.0) if mo == 0 else 1.0 + beta * float64(mo)
+                                pn = float64(0.0) if mn == 0 else 1.0 + beta * float64(mn)
+                                dE += weights[g] * (pn - po)
+                                # redundancy penalty: a facet covered by m > 1 chains wastes
+                                # m - 1 of them (they could be elsewhere); mu charges for it
+                                if mu > float64(0.0):
+                                    mult_n = mult
+                                    if bo == 0 and bn != 0:
+                                        mult_n -= 1
+                                    elif bo != 0 and bn == 0:
+                                        mult_n += 1
+                                    dE += mu * (float64(mult_n - 1 if mult_n > 1 else 0)
+                                            - float64(mult - 1 if mult > 1 else 0))
+                                if mo == 0 and mn != 0:
+                                    dcov -= 1
+                                elif mo != 0 and mn == 0:
+                                    dcov += 1
+                        for a in range(naff):
+                            seen[int32(aff[a])] = uint8(0)
+                        accept = dE <= 0.0
+                        if not accept:
+                            state, x = sm_next_dev(state)
+                            if sm_u01_dev(x) < math.exp(-dE / T):
+                                accept = True
+                        if accept:
+                            sm_acc += 1
+                            for i in range(a1, a2 + 1):
+                                for q in range(nft):
+                                    w = int32(facet_verts[ft, q])
+                                    ch[jdeep, i, w] = cvv[w]
+                            for i in range(b1, b2 + 1):
+                                for q in range(nft):
+                                    w = int32(facet_verts[ft, q])
+                                    ch[jdeep, i, w] = cvv2[w]
+                            for a in range(naff):
+                                g = int32(aff[a])
+                                d = int32(dfac[g])
+                                if d != 0:
+                                    bd[jdeep, g] = uint8(int32(bd[jdeep, g]) + d)
+                            cov += dcov
+                            if cov > bestcov:
+                                bestcov = cov
+                                for jj in range(KCH):
+                                    for i2_ in range(C1):
+                                        for g in range(NGRID):
+                                            best[s, jj, i2_, g] = ch[jj, i2_, g]
+                        continue      # this iteration was a seam proposal, accepted or not
                     if istar >= 0:
                         i1 = istar if istar >= int32(1) else int32(1)
                         state, x = sm_next_dev(state)
@@ -832,6 +1099,8 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
         score[s, 3] = float32(st_acc)
         score[s, 4] = float32(cp_prop)
         score[s, 5] = float32(cp_acc)
+        score[s, 6] = float32(sm_prop)
+        score[s, 7] = float32(sm_acc)
 
     return anneal_kernel
 
@@ -915,18 +1184,22 @@ class ChainAnnealer:
         self.n_unc = np.int32(len(unc))
 
     def epoch(self, iters, T0, T1, beta=0.05, pmove_copy=0.5, ptrack=0.3, gamma=0.0, mu=0.0,
-              pstretch=0.0, pcollapse=0.0):
+              pstretch=0.0, pcollapse=0.0, pself=0.0, pseam=0.0):
         validate_parameters(iters=iters, T0=T0, T1=T1, beta=beta,
                             gamma=gamma, pcopy=pmove_copy, ptrack=ptrack, mu=mu)
         if not (0.0 <= pstretch <= 1.0):    # not in validation.py (unknown key)
             raise ValueError(f"pstretch must be in [0, 1], got {pstretch}")
         if not (0.0 <= pcollapse <= 1.0):
             raise ValueError(f"pcollapse must be in [0, 1], got {pcollapse}")
+        if not (0.0 <= pself <= 1.0):
+            raise ValueError(f"pself must be in [0, 1], got {pself}")
+        if not (0.0 <= pseam <= 1.0):
+            raise ValueError(f"pseam must be in [0, 1], got {pseam}")
         S = self.S
         d_ch = cuda.to_device(self.chains)
         d_best = cuda.to_device(self.chains)
         d_bad = cuda.device_array((S, self.k, self.P.nf), np.uint8)
-        d_score = cuda.device_array((S, 6), np.float32)
+        d_score = cuda.device_array((S, 8), np.float32)
         seeds = self.rng.integers(0, 2**63 - 1, size=S, dtype=np.int64).astype(np.uint64)
         d_seeds = cuda.to_device(seeds)
         blocks = (S + self.threads - 1) // self.threads
@@ -935,6 +1208,7 @@ class ChainAnnealer:
             d_ch, d_best, d_bad, d_score, d_seeds,
             self.d_fv, self.d_fnv, self.d_off, self.d_inc, self.d_iss, self.d_w,
             self.d_unc, self.n_unc, np.float64(pstretch), np.float64(pcollapse),
+            np.float64(pself), np.float64(pseam),
             np.int32(iters), np.float64(T0), np.float64(T1), np.float64(beta), np.float64(gamma),
             np.float64(mu), np.float64(pmove_copy), np.float64(ptrack))
         cuda.synchronize()
@@ -1449,11 +1723,81 @@ def write_certificate(P: Product, parts, outdir, meta):
 # --------------------------------------------------------------------------- #
 #  Driver: chain-first covering search                                         #
 # --------------------------------------------------------------------------- #
+def _epoch_temperatures(stall, T0, T1, reheat_every, reheat_T):
+    """(T0_ep, T1_ep, reheating): a reheat epoch runs at a CONSTANT reheat_T
+    once the best coverage has stalled for a positive multiple of reheat_every
+    epochs; the schedule resumes afterwards (best-ever is kept).  reheat_every
+    <= 0 or reheat_T <= 0 disables."""
+    if reheat_every > 0 and reheat_T > 0.0 and stall > 0 and stall % reheat_every == 0:
+        return reheat_T, reheat_T, True
+    return T0, T1, False
+
+
+def _run_stall_hook(P, ann, chains, hist, outdir, ep, stall, ctx, log):
+    """Stall hook (annealer-supervised search).  After `stall` epochs without
+    improvement: (1) write a snapshot of the incumbent to <outdir>/stall_
+    snapshot.json, (2) run the DETERMINISTIC audit (scripts/stall_audit.py:
+    leftover defect depths, H1 absorption doors, bad-link seams) next to it,
+    and (3) if the claude CLI (or $STRETCH_CLAUDE) exists, ask it for
+    campaign advice, appended to <outdir>/claude_advice.log — for the owner
+    to apply by hand, NEVER auto-applied.  Best-effort: a failure inside the
+    hook must never kill the run."""
+    import subprocess
+    import shutil
+    try:
+        out = Path(outdir)
+        out.mkdir(parents=True, exist_ok=True)
+        doms = [P.domain_of(chains[j]) for j in range(ann.k)]
+        covered = np.zeros(P.nf, bool)
+        for d in doms:
+            covered[d] = True
+        snap = dict(status="stalled", epoch=ep, stall_epochs=stall,
+                    complex=dict(name=P.name, nv=P.nv, num_facets=P.nf),
+                    coverage=int(covered.sum()),
+                    chain_domain_sizes=[int(len(d)) for d in doms],
+                    history=hist, best_chains=[c.tolist() for c in chains],
+                    params=dict(ctx or {}))
+        snap_path = out / "stall_snapshot.json"
+        snap_path.write_text(json.dumps(snap, indent=2, default=str))
+        audit = Path(__file__).resolve().parents[1] / "scripts" / "stall_audit.py"
+        if audit.exists():
+            r = subprocess.run([sys.executable, str(audit), str(snap_path)],
+                               capture_output=True, text=True, timeout=1800)
+            if r.stdout.strip():
+                log("  stall-audit: " + r.stdout.strip().replace("\n", "\n  "))
+        claude = os.environ.get("STRETCH_CLAUDE") or shutil.which("claude")
+        if claude:
+            audit_json = out / "stall_audit.json"
+            payload = (audit_json.read_text()[:6000] if audit_json.exists()
+                       else snap_path.read_text()[:4000])
+            prompt = (f"A simulated-annealing search for an explicit cover of {P.name} "
+                      f"(k={ann.k} chains, {int(covered.sum())}/{P.nf} facets covered) has "
+                      f"stalled for {stall} epochs.  Below is its deterministic stall audit "
+                      f"(uncovered facets, defect depths, GF(2) H1 absorption doors, bad-link "
+                      f"seams).  Suggest the next campaign for the owner to apply by hand: "
+                      f"guide weights, reheat temperature, seam targets, restart-from, seeds, "
+                      f"or abort.  Be concrete and brief.\n\n{payload}")
+            r2 = subprocess.run([claude, "-p", prompt],
+                                capture_output=True, text=True, timeout=600)
+            with open(out / "claude_advice.log", "a") as fh:
+                fh.write(f"=== epoch {ep}: stalled {stall} epochs at "
+                         f"{int(covered.sum())}/{P.nf} ===\n")
+                fh.write((r2.stdout or "").strip() + "\n\n")
+            log(f"  stall hook: claude advice appended to {out}/claude_advice.log")
+        else:
+            log(f"  stall hook: snapshot + audit in {out} "
+                f"(no claude CLI found; set $STRETCH_CLAUDE for advice)")
+    except Exception as exc:      # supervision must never kill the search
+        log(f"  stall hook failed (ignored): {exc}")
+
+
 def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
                  T0=0.6, T1=0.03, beta=0.05, pcopy=0.5, seed=0, time_limit=None,
                  log=print, stop_at_full=True, tournament_every=2, tournament_frac=0.25,
                  init_chains=None, ptrack=0.05, guide=0.0, guide_max=4.0, gamma=0.0,
-                 mu=0.0, crossover=0.0, h1_guide=0, pstretch=0.0, pcollapse=0.0, verbose=0):
+                 mu=0.0, crossover=0.0, h1_guide=0, pstretch=0.0, pcollapse=0.0,
+                 pself=0.0, pseam=0.0, reheat_every=0, reheat_T=0.35,
+                 stall_hook=0, outdir=None, stall_ctx=None, verbose=0):
     """guide > 0: adaptive weights (guided local search) — after each epoch the
     facets left uncovered by the best state get weight += guide (capped at
     guide_max), all weights decay toward 1; the reported coverage is always
@@ -1474,6 +1818,32 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
     variant — the exploration move of the mobius 149 audit,
     surface_stall_analysis.md §4.1).  Logged as its own proposal/accept
     counters.
+
+    pself > 0: with that probability the compound-move target is
+    rejection-sampled from each thread's OWN uncovered facets (min_j bad_j
+    > 0, up to 6 tries), falling back to the incumbent's uncovered list —
+    without it a thread that covers the consensus leftover can never aim a
+    compound move at its own defects.
+
+    pseam > 0: fraction of stretch proposals that become a SEAM STITCH —
+    two small collapse blocks at the first two bad links of the shallowest
+    depth-2 chain, one Metropolis step (the depth-2 repair class of the
+    mobius 149 / rp2 544 audits, surface_stall_analysis.md §4.1).  Logged as
+    its own counters.
+
+    reheat_every > 0: after that many consecutive stalled epochs (no
+    improvement of the best coverage) the next epoch runs at a CONSTANT
+    reheat_T instead of the schedule (best-ever is kept per slot and on the
+    host; the stall valleys a frozen population cannot cross are exactly
+    what the reheat re-opens).  reheat_T <= 0 disables.
+
+    stall_hook > 0 (with outdir): after that many stalled epochs, write
+    <outdir>/stall_snapshot.json, run the deterministic scripts/stall_audit.py
+    next to it, and — if the claude CLI or $STRETCH_CLAUDE is available —
+    ask for campaign advice, appended to <outdir>/claude_advice.log.  The
+    audit is the method; the LLM advice is logged for the owner, never
+    auto-applied.  stall_ctx: dict recorded in the snapshot (the CLI passes
+    its parsed arguments).
 
     crossover > 0: that fraction of tournament-replacement slots are filled by
     chain-uniform recombination of two elite incumbents instead of clones.
@@ -1505,10 +1875,17 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
     hist = []
     full = float(P.nf)
     best_chains, best_cov = None, -1.0
+    stall = 0        # consecutive epochs without improvement of the best coverage
     h1_dead = None   # (P.nf,) bool: facets obstructed for all chains of the incumbent
     for ep in range(1, epochs + 1):
-        score = ann.epoch(iters, T0, T1, beta, pcopy, ptrack, gamma, mu,
-                          pstretch=pstretch, pcollapse=pcollapse)
+        ep_T0, ep_T1, reheating = _epoch_temperatures(stall, T0, T1, reheat_every, reheat_T)
+        if reheating:
+            log(f"  reheat: best unchanged for {stall} epochs, epoch {ep} runs at T={reheat_T}")
+        if stall_hook > 0 and outdir and stall > 0 and stall % stall_hook == 0:
+            _run_stall_hook(P, ann, best_chains if best_chains is not None else ann.top()[0],
+                            hist, outdir, ep, stall, stall_ctx, log)
+        score = ann.epoch(iters, ep_T0, ep_T1, beta, pcopy, ptrack, gamma, mu,
+                          pstretch=pstretch, pcollapse=pcollapse, pself=pself, pseam=pseam)
         chains, cov = ann.top()
         covered = None
         recompute_h1 = h1_guide and (ep - 1) % h1_guide == 0
@@ -1555,6 +1932,10 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
                 ncprop, ncacc = float(score[:, 4].sum()), float(score[:, 5].sum())
                 line += (f"  collapse prop {ncprop:.0f} acc {ncacc:.0f} "
                          f"({100.0 * ncacc / max(1.0, ncprop):.0f}%)")
+            if pseam > 0:
+                nsprop, nsacc = float(score[:, 6].sum()), float(score[:, 7].sum())
+                line += (f"  seam prop {nsprop:.0f} acc {nsacc:.0f} "
+                         f"({100.0 * nsacc / max(1.0, nsprop):.0f}%)")
             if verbose:
                 U = np.flatnonzero(~covered)
                 line += f"  leftovers {U.tolist() if len(U) <= 10 else int(len(U))}"
@@ -1562,6 +1943,9 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
         hist.append(dict(epoch=ep, best=cov, median=float(np.median(srt)), elapsed=el))
         if cov > best_cov:
             best_cov, best_chains = cov, chains.copy()
+            stall = 0
+        else:
+            stall += 1
         if stop_at_full and cov >= full - 1e-6:
             log(f"  full coverage reached at epoch {ep}")
             break
@@ -1641,6 +2025,28 @@ def cli():
                          "of the facet's columns across the block instead of a cloned neighbour map "
                          "(the all-{v} collapsed-map transition of the exact covers; the exploration "
                          "move the mobius 149 audit showed missing, section 4.1); requires --pstretch")
+    ap.add_argument("--pself", type=float, default=0.0,
+                    help="fraction of stretch proposals whose target facet is drawn from THIS "
+                         "thread's own uncovered set instead of the consensus list — without it a "
+                         "thread that covers the consensus leftover can never aim a compound move "
+                         "at its own defects (whole epochs of zero stretch proposals in the logs); "
+                         "requires --pstretch")
+    ap.add_argument("--pseam", type=float, default=0.0,
+                    help="fraction of stretch proposals that become a SEAM STITCH: when a chain has "
+                         ">= 2 bad links on the target, two small collapse blocks (one per bad link, "
+                         "separated by untouched maps) on the shallowest depth-2 chain, ONE Metropolis "
+                         "step — the depth-2 repair class of the mobius 149 / rp2 544 audits "
+                         "(section 4.1); requires --pstretch")
+    ap.add_argument("--reheat-every", type=int, default=0, dest="reheat_every",
+                    help="after this many consecutive stalled epochs the next epoch runs at a "
+                         "constant --reheat-T (best-ever is kept), then the schedule resumes; 0 = off")
+    ap.add_argument("--reheat-T", type=float, default=0.35, dest="reheat_T",
+                    help="temperature of a reheat epoch (with --reheat-every)")
+    ap.add_argument("--stall-hook", type=int, default=0, dest="stall_hook",
+                    help="after this many stalled epochs: write <outdir>/stall_snapshot.json, run the "
+                         "deterministic scripts/stall_audit.py next to it, and — if the claude CLI or "
+                         "$STRETCH_CLAUDE exists — append campaign advice to <outdir>/claude_advice.log "
+                         "(logged for the owner, never auto-applied); requires --outdir; 0 = off")
     ap.add_argument("--verbose", action="store_true",
                     help="with --pstretch: also log the ids of the remaining uncovered facets each epoch")
     ap.add_argument("--time-limit", type=float, default=None, help="seconds")
@@ -1658,6 +2064,12 @@ def cli():
         ap.error(str(exc))
     if a.pcollapse and not a.pstretch:
         ap.error("--pcollapse rides the stretch branch; requires --pstretch > 0")
+    if a.pself and not a.pstretch:
+        ap.error("--pself rides the stretch branch; requires --pstretch > 0")
+    if a.pseam and not a.pstretch:
+        ap.error("--pseam rides the stretch branch; requires --pstretch > 0")
+    if a.stall_hook and not a.outdir:
+        ap.error("--stall-hook writes its snapshot under --outdir; pass --outdir")
 
     P = build(a.complex)
     print(f"=== annealer_stretch chain-first annealer ===  K={P.name}  |F_L|={P.nf}  grid={P.ngrid}  "
@@ -1666,7 +2078,10 @@ def cli():
           f"guide={a.guide}/(max {a.guide_max})  seed={a.seed}"
           + (f"  crossover={a.crossover} h1-guide={a.h1_guide}" if a.crossover or a.h1_guide else "")
           + (f"  pstretch={a.pstretch}" if a.pstretch else "")
-          + (f"  pcollapse={a.pcollapse}" if a.pcollapse else ""))
+          + (f"  pcollapse={a.pcollapse}" if a.pcollapse else "")
+          + (f"  pself={a.pself} pseam={a.pseam}" if a.pself or a.pseam else "")
+          + (f"  reheat={a.reheat_every}@{a.reheat_T}" if a.reheat_every else "")
+          + (f"  stall-hook={a.stall_hook}" if a.stall_hook else ""))
     init = None
     if a.init:
         init = init_from_summary(P, Path(a.init), a.k, a.cmax, a.S)
@@ -1680,7 +2095,11 @@ def cli():
                                           ptrack=a.ptrack, guide=a.guide, guide_max=a.guide_max,
                                           gamma=a.gamma, mu=a.mu,
                                           crossover=a.crossover, h1_guide=a.h1_guide,
-                                          pstretch=a.pstretch, pcollapse=a.pcollapse, verbose=int(a.verbose))
+                                          pstretch=a.pstretch, pcollapse=a.pcollapse,
+                                          pself=a.pself, pseam=a.pseam,
+                                          reheat_every=a.reheat_every, reheat_T=a.reheat_T,
+                                          stall_hook=a.stall_hook, outdir=a.outdir,
+                                          stall_ctx=vars(a), verbose=int(a.verbose))
     dt = time.perf_counter() - t0
     doms = [P.domain_of(chains[j]) for j in range(a.k)]
     covered = np.zeros(P.nf, bool)

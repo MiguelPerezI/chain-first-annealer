@@ -310,6 +310,67 @@ between chains, not recombine within the converged family), and 150 is
 reachable only by search that can express the redistribution (CP-SAT, or a
 deliberate domain-trade move — the natural next experiment).
 
+### 4.2 The collapse-armed runs: 149 re-confirmed cold (Möbius), 540 → 544
+###     (RP²), and the seam-stitch move (`--pseam`, `--pself`)
+
+Two collapse-armed GPU runs (commit `766b116`) validate the §4.1 predictions
+and expose one final, common failure mode — which is now implemented.
+
+**Möbius k = 3, cold, seed 4** (`results/mobius_k3_cold_s4`, 149/150, domains
+60 + 57 + 48). The climb 115 → 141 → 147 → 148 → 149 took 15 epochs (faster
+than any warm-start path) and the hole *traded* — [17,90,137] → [36,41] →
+[60,84] → [60,90] → **[17]** — exactly the behaviour the pre-collapse runs
+could not produce (from-149's [90] never moved in 60 epochs). The terminal
+park is the mirror twin of the audited state: leftover 17 (= (0,2)·p5, the
+co-channelled partner; 90 is now *covered*, by chain 1). New audit facts on
+this state:
+
+- **The topological door is OPEN:** D₁ ∪ {17} is H₁-trivial (rank 0); chains
+  0 and 2 are obstructed. So this 149 stall is *not* co-channelling — the
+  partition is legal; the binding is pure move-set.
+- **Strict local optimum over the complete compound family:** an exhaustive
+  scan of every track move, every collapse, every clone — including
+  *unrestricted* block lengths up to CMAX — reaches max 149. All 84 proposals
+  that cover 17 lose ≥ 4 facets (best trade 145).
+- The cause is a **12-map seam**: chain 1's two bad links on 17 sit at maps
+  21 and 33. Any uniform block spanning both destroys the good middle
+  (maps 22–32 are exactly what holds chain 1's 57-facet domain); any block
+  short of both fixes nothing. Covering 17 needs a *heterogeneous* two-site
+  repair.
+
+**RP² k = 5 from the k = 6 cover, stretch + collapse, seed 7232**
+(`results/rp2_k5_from_k6_stretch_collapse7232`, **544/600**, domains
+151 + 132 + 123 + 150 + 132). First run of any kind above the 540 diagonal-
+rectangle product plateau: the compound moves did not nudge the old partition,
+they **re-formed it** — D₃ is now an exact diagonal rectangle (2,2), D₁/D₄
+near (4,4)/(3,3), and the 7 fully-dead cells are exactly the cells of the
+missing rectangle (1,1). Unlike the old plateau (60/60 leftovers extension-
+H₁-dead), this state has **2 live doors**: facets 421/422, absorbable only
+into chain 0 (rank 0), both at defect depth 2 with bad links **[0, 7]** — a
+seam of gap 7, inside the kernel's LMAX = 8. Yet the best single-block edit
+covering 421 costs **−11** (533): same failure shape as Möbius, because the
+seam's middle maps are good and a uniform block overwrites them. (54/56
+leftovers remain H₁-dead — 60/60 became 54/56; the partition improved but
+the exit is the same kind.)
+
+**The seam stitch** (`--pseam`). Both surfaces end at a depth-2 chain whose
+two bad links must be fixed *simultaneously and independently* — two small
+collapse blocks (one fresh value each) at the two links, separated by
+untouched maps, ONE Metropolis step. Both blocks edit only the target
+facet's columns, so the affected-facet set is the same star-union the
+single-block move already deduplicates; the chain is re-selected to the
+shallowest depth-2 chain (argmin points at a depth-1 chain the audits rule
+out). Implemented with `--pself` (per-slot target sampling from the thread's
+own uncovered set — the logs showed whole epochs of zero stretch proposals
+because threads covering the consensus leftover could not aim at their own
+defects), a reheat schedule (`--reheat-every/--reheat-T`), and a stall hook
+(`--stall-hook`: snapshot + deterministic `scripts/stall_audit.py` — depths,
+H₁ doors, seam positions — plus optional claude-CLI advice logged, never
+auto-applied). Decisive experiments: Möbius cold seeds with `--pseam 0.3
+--pself 0.8` (does the s4-style open-door 149 close?); RP² continuation from
+the 7232 state (do facets 421/422 — the two live doors, seam gap 7 ≤ LMAX —
+close at 546+?).
+
 ## 5. The correlation: one signature, three depths
 
 Across all 14 stalled states tested (RP² k = 11/5/3, Klein k = 9/8/5,
