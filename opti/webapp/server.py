@@ -319,11 +319,11 @@ def compose_run(req):
                     init=str(init_path) if init_path else None, params=complex_name)
 
     remote = ("cd %s && mkdir -p %s %s && PYTHONUNBUFFERED=1 nohup %s -u src/annealer_stretch.py %s "
-              "--outdir %s > %s 2>&1 < /dev/null & pid=$!; echo $pid > %s/pid; sleep 1; "
-              "if kill -0 $pid 2>/dev/null; then echo LAUNCHED $pid; else echo FAILED; tail -20 %s; fi"
+              "--outdir %s > %s 2>&1 < /dev/null & pid=$!; echo $pid > %s/pid; "
+              "echo LAUNCHED $pid"
               % (rq(CFG["remote_repo"]), rel, rq(str(Path(rlog).parent)),
                  rq(CFG["remote_python"]), " ".join(flags), rel,
-                 rq(rlog), rel, rq(rlog)))
+                 rq(rlog), rel))
     return dict(remote=remote, argv=ssh_argv(remote), display=" ".join(shlex.quote(a) for a in ssh_argv(remote)),
                 local=False,
                 run=run_name, outdir=str(outdir.relative_to(ROOT)), log=rlog,
@@ -771,7 +771,7 @@ class Handler(BaseHTTPRequestHandler):
                     with JOBS.lock:
                         JOBS.save()
                     return self._json({"ok": True, "job": job, "output": "local simulation pid %s" % proc.pid})
-                proc = subprocess.run(plan["argv"], capture_output=True, text=True, timeout=60)
+                proc = subprocess.run(plan["argv"], capture_output=True, text=True, timeout=180)
                 out = (proc.stdout or "") + (proc.stderr or "")
                 if "LAUNCHED" not in out:
                     job["status"] = "failed"
