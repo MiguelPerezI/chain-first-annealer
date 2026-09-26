@@ -8,18 +8,25 @@
 </head>
 <body>
 <header>
-  <h1>K × K</h1>
-  <span id="subtitle" class="muted">loading…</span>
-  <span class="spacer"></span>
-  <span id="runner-badge" class="badge" title="GPU host for launching runs">runner: …</span>
+  <div class="header-left">
+    <h1>K × K</h1>
+    <span id="subtitle" class="subtitle">chain-first annealer</span>
+  </div>
+  <div class="header-right">
+    <span id="runner-badge" class="conn-badge" title="GPU host status">
+      <span class="conn-dot"></span>
+      <span id="runner-text">checking…</span>
+    </span>
+  </div>
 </header>
 
 <main>
   <!-- ── left: the runs ─────────────────────────────────────────────── -->
   <section id="left">
-    <div class="panel-title">
-      Results <span id="run-count" class="muted"></span>
-      <input id="filter" type="search" placeholder="filter by name / complex…">
+    <div class="panel-head">
+      <span class="panel-label">Results</span>
+      <span id="run-count" class="count-badge">0</span>
+      <input id="filter" type="search" placeholder="filter…" autocomplete="off">
     </div>
     <div id="runs" class="scroll"></div>
   </section>
@@ -27,18 +34,31 @@
   <!-- ── middle: the map ────────────────────────────────────────────── -->
   <section id="middle">
     <div id="map-toolbar">
-      <span id="map-title" class="strong">pick a run</span>
+      <span id="map-title" class="toolbar-title">select a run →</span>
       <span class="spacer"></span>
-      <label class="chk"><input type="checkbox" id="opt-shared" checked> mark shared facets</label>
-      <label class="chk"><input type="checkbox" id="opt-dead"> outline dead blocks</label>
-      <button id="btn-fit" class="ghost">fit</button>
-      <button id="btn-export" class="ghost" disabled>export PNG / PDF</button>
-      <a id="export-link" class="muted" target="_blank"></a>
+      <label class="chk"><input type="checkbox" id="opt-shared" checked> shared</label>
+      <label class="chk"><input type="checkbox" id="opt-dead"> outlines</label>
+      <button id="btn-target" class="toolbar-btn target-btn" disabled title="Target mode: choose a domain + click a red facet to attack">🎯 Target</button>
+      <button id="btn-fit" class="toolbar-btn" title="Fit to view">⊞</button>
+      <button id="btn-export" class="toolbar-btn" disabled title="Export PNG/PDF">📥</button>
     </div>
     <div id="map-wrap">
       <canvas id="map"></canvas>
-      <div id="tip" class="tip" hidden></div>
-      <div id="map-status" class="overlay">no state selected</div>
+      <div id="tip" class="tip"></div>
+      <div id="map-status" class="overlay">
+        <div class="overlay-inner">
+          <div class="spinner" id="spinner"></div>
+          <div id="status-text">select a run from the left panel</div>
+        </div>
+      </div>
+      <!-- target mode bar -->
+      <div id="target-bar" class="target-bar" hidden>
+        <span id="target-info">🎯 Target mode: click a domain in the legend, then click a red facet</span>
+        <span class="spacer"></span>
+        <button id="btn-audit" class="toolbar-btn">Run stall audit</button>
+        <button id="btn-launch-target" class="toolbar-btn accent-btn" disabled>Launch attack</button>
+        <button id="btn-cancel-target" class="toolbar-btn">✕</button>
+      </div>
     </div>
     <div id="legend" class="legend"></div>
     <div id="notes" class="notes"></div>
@@ -47,35 +67,94 @@
   <!-- ── right: launch + live ───────────────────────────────────────── -->
   <section id="right">
     <div class="tabs">
-      <button class="tab active" data-tab="launch">Launch</button>
-      <button class="tab" data-tab="live">Live <span id="live-dot" class="dot"></span></button>
+      <button class="tab active" data-tab="launch">
+        <span class="tab-icon">🚀</span> Launch
+      </button>
+      <button class="tab" data-tab="live">
+        <span class="tab-icon">📡</span> Live
+        <span id="live-dot" class="live-indicator"></span>
+      </button>
+      <button class="tab" data-tab="target">
+        <span class="tab-icon">🎯</span> Target
+      </button>
     </div>
 
+    <!-- launch tab -->
     <div id="tab-launch" class="tabpane">
-      <div id="mode" class="mode">
-        <label><input type="radio" name="mode" value="cold" checked> start cold</label>
-        <label><input type="radio" name="mode" value="warm"> continue from the selected state</label>
+      <div id="mode" class="mode-group">
+        <label class="mode-option"><input type="radio" name="mode" value="cold" checked>
+          <span class="mode-label">Cold start</span>
+          <span class="mode-desc">new random population</span>
+        </label>
+        <label class="mode-option"><input type="radio" name="mode" value="warm">
+          <span class="mode-label">Continue from selected</span>
+          <span class="mode-desc">seed from the best chains</span>
+        </label>
       </div>
-      <div id="warm-info" class="muted"></div>
-      <div id="params" class="params"></div>
-      <label class="chk"><input type="checkbox" id="opt-cont"> write into &lt;run&gt;/phase&lt;N&gt;/ instead of a new dir</label>
+      <div id="warm-info" class="info-box"></div>
+      <div class="param-section">
+        <div class="param-title">Parameters</div>
+        <div id="params" class="params"></div>
+      </div>
+      <label class="chk opt-cont"><input type="checkbox" id="opt-cont"> write into &lt;run&gt;/phase&lt;N&gt;/</label>
       <div id="plan-out" class="planout"></div>
-      <div class="row">
-        <button id="btn-plan">Preview command</button>
-        <button id="btn-launch" disabled>Launch on GPU host</button>
+      <div class="action-row">
+        <button id="btn-plan" class="action-btn">Preview command</button>
+        <button id="btn-launch" class="action-btn accent-btn" disabled>Launch on GPU</button>
       </div>
       <div id="launch-msg" class="msg"></div>
     </div>
 
+    <!-- live tab -->
     <div id="tab-live" class="tabpane" hidden>
       <div id="jobs"></div>
       <div id="live-body" hidden>
-        <div class="panel-title">progress <span id="live-cov" class="muted"></span></div>
-        <canvas id="chart" height="120"></canvas>
-        <div class="panel-title">current best (live checkpoint)</div>
-        <canvas id="live-map"></canvas>
-        <div class="panel-title">log</div>
+        <div class="live-header">
+          <span class="live-label">Coverage</span>
+          <span id="live-cov" class="live-number">—</span>
+        </div>
+        <canvas id="chart" height="140"></canvas>
+        <div class="panel-label" style="margin-top:12px">Live K×K map</div>
+        <div id="live-map-wrap" style="height:280px; overflow:auto; border:1px solid var(--line); border-radius:8px;">
+          <canvas id="live-map"></canvas>
+        </div>
+        <div class="panel-label" style="margin-top:12px">Log</div>
         <pre id="logtail" class="log"></pre>
+        <div class="action-row" style="margin-top:8px">
+          <button id="btn-stop" class="action-btn danger-btn" disabled>⏹ Stop run</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- target tab -->
+    <div id="tab-target" class="tabpane" hidden>
+      <div class="target-panel">
+        <h3>Targeted facet attack</h3>
+        <p class="muted">When the annealer stalls and domains form predictable patterns,
+        you can help it by choosing which red facet should join which domain.</p>
+        <div class="target-steps">
+          <div class="step"><span class="step-num">1</span> Load a stalled state from the runs list</div>
+          <div class="step"><span class="step-num">2</span> Click <strong>Run stall audit</strong> to check which (facet, domain) pairs are topologically absorbable</div>
+          <div class="step"><span class="step-num">3</span> Click a domain in the legend to select it</div>
+          <div class="step"><span class="step-num">4</span> Click a red facet — the app checks if absorption is possible (H₁ obstruction test)</div>
+          <div class="step"><span class="step-num">5</span> If absorbable: launch a targeted run with <code>--target-facets F:D</code></div>
+        </div>
+        <div id="target-state" class="info-box">No state loaded yet</div>
+        <div id="target-selected" class="info-box" hidden></div>
+        <div id="target-result" class="info-box" hidden></div>
+        <div id="target-queue" class="target-queue" hidden>
+          <div class="panel-label">Target queue</div>
+          <div id="target-list"></div>
+        </div>
+        <div id="target-attack-status"></div>
+        <div class="panel-label" style="margin-top:8px">Attack log</div>
+        <pre id="target-log" class="log" style="min-height:80px"></pre>
+        <div style="margin-top:8px">
+          <div class="panel-label">Live map (during attack)</div>
+          <div style="height:200px; overflow:auto; border:1px solid var(--line); border-radius:8px; margin-top:4px">
+            <canvas id="target-live-map"></canvas>
+          </div>
+        </div>
       </div>
     </div>
   </section>

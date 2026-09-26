@@ -61,6 +61,7 @@ ROOT = HERE.parent                                   # opti/
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "src"))
 
+import numpy as np     # noqa: E402
 import gpu_sc          # noqa: E402
 import kxk_state as K  # noqa: E402
 import live            # noqa: E402
@@ -580,6 +581,8 @@ class Handler(BaseHTTPRequestHandler):
                                    if (ROOT / job["outdir"] / "epochs.jsonl").is_file() else
                                    live.series_from_log(job.get("log_local", "")),
                                    "live_state": str(mirror.relative_to(ROOT)) if mirror.is_file() else None})
+            if path == "/api/runner/health":
+                return self._runner_health()
             if path == "/api/export":
                 return self._export(q)
             if path in ("/", "/index.html"):
@@ -607,6 +610,95 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, body, ctype, {"Content-Encoding": "gzip"})
         return self._send(200, body, ctype)
 
+    def _runner_health(self):
+        """Quick SSH check of the GPU server: is it reachable, does it have numba, can it see the GPU?"""
+        if is_local():
+            return self._json({"ok": True, "mode": "local", "message": "local CUDASIM mode"})
+        if not CFG["host"]:
+            return self._json({"ok": False, "error": "no GPU host configured"})
+        try:
+            proc = subprocess.run(
+                ssh_argv(rq(CFG["remote_python"]) + ' -c "import numba; from numba import cuda; '
+                         'print(cuda.gpus[0].name)"'),
+                capture_output=True, text=True, timeout=15)
+            if proc.returncode == 0:
+                return self._json({"ok": True, "host": CFG["host"], "gpu": proc.stdout.strip()})
+            return self._json({"ok": False, "host": CFG["host"], "error": proc.stderr.strip()[-300:]})
+        except Exception as exc:
+            return self._json({"ok": False, "host": CFG["host"], "error": str(exc)})
+
+    def _h1_check(self, body):
+        """Check if a facet can be absorbed into a domain (H1 obstruction test)."""
+        state_path = self._state_path(body["state"])
+        facet = int(body["facet"])
+        chain = int(body["chain"])
+        state, chains = K.load_state(state_path)
+        name = K.infer_complex(state, state_path)
+        P = CACHE.product(name)
+        A = K.analyse(P, chains)
+        dom_j = sorted(A["dom"][chain])
+        # check if the facet is already covered by this domain
+        if facet in A["dom"][chain]:
+            return self._json({"absorbable": True, "already_covered": True,
+                               "message": "facet %d is already in D%d" % (facet, chain)})
+        from h1_obstruction import h1_map_obstruction
+        candidate = sorted(set(dom_j) | {facet})
+        h1_dim, h1_rank = h1_map_obstruction(P, candidate)
+        # defect depth: how many bad links does chain j have on this facet
+        bad = P.chain_bad_counts(chains[chain])
+        depth = int(bad[facet])
+        # bad link positions
+        ch = chains[chain]
+        bad_links = []
+        for link in range(len(ch) - 1):
+            img_a = ch[link]
+            img_b = ch[link + 1]
+            # check if this link is contiguous on the facet
+            fv = P.facet_verts[facet, :P.facet_nv[facet]]
+            mask = 0
+            for v in fv:
+                mask |= (1 << int(img_a[v])) | (1 << int(img_b[v]))
+            if not P.is_simplex[mask]:
+                bad_links.append(link)
+        return self._json({
+            "absorbable": h1_rank == 0,
+            "h1_dim": int(h1_dim), "h1_rank": int(h1_rank),
+            "defect_depth": depth, "bad_links": bad_links,
+            "reason": ("H₁ obstructed: adding f=%d to D%d makes rank (π₁−π₂)* = %d "
+                       "(the domain would wind)" % (facet, chain, h1_rank)) if h1_rank > 0 else None
+        })
+
+    def _stall_audit(self, body):
+        """Run the stall analysis: for each uncovered facet, which chains have an H1 door?"""
+        state_path = self._state_path(body["state"])
+        state, chains = K.load_state(state_path)
+        name = K.infer_complex(state, state_path)
+        P = CACHE.product(name)
+        A = K.analyse(P, chains)
+        k = len(chains)
+        uncovered = [int(f) for f in np.flatnonzero(~A["covered"])]
+        from h1_obstruction import h1_map_obstruction
+        doors = []
+        cap = int(body.get("cap", 2048))
+        if len(uncovered) * k > cap:
+            return self._json({"ok": False, "error": "too many tests (%d × %d = %d > cap %d): "
+                               "reduce k or the uncovered count first" %
+                               (len(uncovered), k, len(uncovered) * k, cap),
+                               "uncovered": len(uncovered), "k": k})
+        for f in uncovered:
+            for j in range(k):
+                candidate = sorted(set(A["dom"][j]) | {f})
+                h1_dim, h1_rank = h1_map_obstruction(P, candidate)
+                if h1_rank == 0:
+                    bad = int(P.chain_bad_counts(chains[j])[f])
+                    doors.append({"facet": f, "chain": j, "defect_depth": bad})
+        return self._json({
+            "ok": True, "uncovered": len(uncovered), "k": k,
+            "doors": doors,
+            "absorbable_facets": len(set(d["facet"] for d in doors)),
+            "obstructed_facets": len(uncovered) - len(set(d["facet"] for d in doors)),
+        })
+
     def _export(self, q):
         state = self._state_path(q["state"])
         fmt = q.get("fmt", "both")
@@ -630,6 +722,10 @@ class Handler(BaseHTTPRequestHandler):
         path = urllib.parse.urlparse(self.path).path
         try:
             body = self._body()
+            if path == "/api/h1-check":
+                return self._h1_check(body)
+            if path == "/api/stall-audit":
+                return self._stall_audit(body)
             if path == "/api/plan":
                 plan = compose_run(body)
                 return self._json({"ok": True, "command": plan["display"], "run": plan["run"],
