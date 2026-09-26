@@ -411,106 +411,76 @@ async function launchTargeted() {
   const targets = STATE.targetQueue.map(t => t.chain >= 0 ? `${t.facet}:${t.chain}` : `${t.facet}`).join(',');
   const run = STATE.selected;
 
-  // switch to Target tab and show progress there
+  // switch to Target tab
   document.querySelector('.tab[data-tab=target]').click();
-  const log = $('target-log');
   const status = $('target-attack-status');
-  log.textContent = '';
-  status.innerHTML = `<div class="info-box">⏳ Launching targeted attack: f=${targets} warm from ${run.run}…</div>`;
+  const log = $('target-log');
 
-  // 1. plan
-  const body = {
-    complex: run.complex,
-    params: {
-      k: run.k || 5, cmax: 40, S: 4096, iters: 5000, epochs: 20,
-      seed: Math.floor(Math.random() * 10000),
-      T0: 0.6, T1: 0.03, beta: 5, gamma: 0.5, mu: 0,
-      guide: 8, guide_max: 15, ptrack: 0.3, pstretch: 0.5, pcollapse: 0.3,
-      time_limit: 300,
-    },
-    warm_from: run.state,
-    continue_run: run.run,
-    checkpoint_every: 1,
+  // build the command the user would paste on the GPU server
+  const p = run.params || {};
+  const k = run.k || p.k || 5;
+  const cmax = p.cmax || 40;
+  const seed = Math.floor(Math.random() * 10000);
+  const outdir = `results/${run.run}/phase_attack_${Date.now()}`;
+  const initPath = run.state.replace(/.*\/opti\//, '');  // repo-relative
+
+  const cmd = [
+    `cd ~/chain-first-annealer/opti`,
+    ``,
+    `~/miniforge3/bin/python3 -u src/annealer_stretch.py \\`,
+    `  --complex ${run.complex} --k ${k} --cmax ${cmax} \\`,
+    `  --S 4096 --iters 5000 --epochs 20 --seed ${seed} \\`,
+    `  --T0 0.6 --T1 0.03 --beta 5 --gamma 0.5 --mu 0 \\`,
+    `  --guide 8 --guide-max 15 --ptrack 0.3 \\`,
+    `  --pstretch 0.5 --pcollapse 0.3 \\`,
+    `  --init ${initPath} \\`,
+    `  --outdir ${outdir} \\`,
+    `  --jsonl ${outdir}/epochs.jsonl \\`,
+    `  --checkpoint-every 1 --graceful-stop \\`,
+    `  --time-limit 300`,
+  ].join('\n');
+
+  status.innerHTML =
+    `<div class="info-box success" style="margin-bottom:8px">` +
+    `🎯 <strong>Targeted attack command ready</strong><br>` +
+    `Facets: <code>${targets}</code> · Warm start from: <code>${run.run}</code></div>` +
+    `<div style="font-size:11px;color:var(--muted);margin-bottom:4px">` +
+    `Copy this command and paste it on the GPU server (${STATE.config?.runner?.host || 'mike666@136.108.172.74'}):</div>`;
+
+  log.textContent = cmd;
+  log.style.userSelect = 'all';  // easy to select all
+
+  // add a copy button
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'toolbar-btn';
+  copyBtn.textContent = '📋 Copy to clipboard';
+  copyBtn.style.marginTop = '6px';
+  copyBtn.onclick = () => {
+    navigator.clipboard.writeText(cmd).then(() => {
+      copyBtn.textContent = '✅ Copied!';
+      setTimeout(() => { copyBtn.textContent = '📋 Copy to clipboard'; }, 2000);
+    });
   };
-  try {
-    const planRes = await api.post('/api/plan', body);
-    if (!planRes.ok) {
-      status.innerHTML = `<div class="info-box error">Plan failed: ${planRes.error}</div>`;
-      return;
-    }
-    log.textContent += `Command: ${planRes.command.slice(0, 200)}…\n`;
-    log.textContent += `Output dir: ${planRes.outdir}\n`;
-    if (planRes.warnings) planRes.warnings.forEach(w => { log.textContent += `⚠️ ${w.msg}\n`; });
-    log.textContent += `\nLaunching on GPU…\n`;
+  status.appendChild(copyBtn);
 
-    // 2. launch
-    const launchRes = await api.post('/api/launch', { ...body, token: planRes.token });
-    if (!launchRes.ok) {
-      status.innerHTML = `<div class="info-box error">Launch failed: ${launchRes.error || launchRes.output}</div>`;
-      log.textContent += `ERROR: ${launchRes.error || launchRes.output}\n`;
-      return;
-    }
-    const jid = launchRes.job.id;
-    status.innerHTML = `<div class="info-box success">🚀 Running! pid=${launchRes.job.pid} | target: f=${targets}</div>`;
-    log.textContent += `Launched: pid=${launchRes.job.pid}\n\n`;
-    $('btn-launch-target').disabled = true;
-    $('btn-launch-target').textContent = '⏳ Running…';
-
-    // 3. poll progress right here in the Target tab
-    const pollTarget = async () => {
-      try {
-        const job = await api.get('/api/jobs/' + jid);
-        // update log
-        if (job.log && job.log.length) {
-          log.textContent = job.log.map(l => l.text).join('\n');
-          log.scrollTop = log.scrollHeight;
-        }
-        // update status with coverage
-        const hist = job.history || [];
-        if (hist.length) {
-          const last = hist[hist.length - 1];
-          status.innerHTML = `<div class="info-box${job.status === 'running' ? '' : ' success'}">` +
-            `${job.status === 'running' ? '🔄' : '✅'} ${job.status} | ` +
-            `epoch ${last.epoch}: best ${last.best} | target: f=${targets}</div>`;
-        }
-        // check if target facet got covered by refreshing the live map
-        if (job.live_state) {
-          try {
-            const mp = await api.get('/api/map?state=' + encodeURIComponent(job.live_state));
-            if (mp.nf) {
-              const lp = decodePayload(mp);
-              // check if any of our targeted facets are now covered
-              let covered = 0;
-              for (const t of STATE.targetQueue) {
-                if (lp.covered[t.facet]) covered++;
-              }
-              if (covered > 0) {
-                status.innerHTML = `<div class="info-box success">🎯 ${covered}/${STATE.targetQueue.length} targeted facets now COVERED!</div>`;
-              }
-              const m = targetLiveMap || liveMap; m.setPayload(lp);
-              m.fit();
-            }
-          } catch (_) {}
-        }
-        if (job.status === 'running') {
-          setTimeout(pollTarget, 5000);
-        } else {
-          log.textContent += `\n=== ${job.status} ===\n`;
-          $('btn-launch-target').disabled = false;
-          $('btn-launch-target').textContent = '🎯 Launch attack';
-          // refresh runs list to show the new state
-          STATE.runs = (await api.get('/api/runs')).runs || [];
-          renderRuns();
-        }
-      } catch (err) {
-        log.textContent += `Poll error: ${err.message}\n`;
-        setTimeout(pollTarget, 10000);
-      }
-    };
-    setTimeout(pollTarget, 3000);
-  } catch (err) {
-    status.innerHTML = `<div class="info-box error">Error: ${err.message}</div>`;
-  }
+  // also explain what the flags do for this specific attack
+  const explain = document.createElement('div');
+  explain.className = 'info-box';
+  explain.style.marginTop = '8px';
+  explain.innerHTML =
+    `<strong>What this does:</strong><br>` +
+    `• Warm-starts from <code>${run.run}</code> (${run.coverage}/${run.nf} covered)<br>` +
+    `• <code>--pstretch 0.5 --pcollapse 0.3</code>: the stretch/collapse compound moves that target uncovered facets<br>` +
+    `• <code>--guide 8 --guide-max 15</code>: high adaptive weight on the uncovered facets to concentrate effort there<br>` +
+    `• <code>--checkpoint-every 1</code>: writes live_state.json each epoch so you can watch or resume<br>` +
+    `• <code>--graceful-stop</code>: Ctrl+C saves the partial state instead of losing it<br>` +
+    `• <code>--time-limit 300</code>: 5 minutes (adjust as needed)<br>` +
+    `<br><strong>To target specific facets</strong>, add to the command:<br>` +
+    `<code style="background:#1e293b;padding:2px 6px;border-radius:3px;color:#94a3b8">` +
+    `# not yet a CLI flag — the stretch move targets ALL uncovered facets;</code><br>` +
+    `<code style="background:#1e293b;padding:2px 6px;border-radius:3px;color:#94a3b8">` +
+    `# the guide weight concentrates effort on the hardest ones</code>`;
+  status.appendChild(explain);
 }
 
 /* ── live tab ────────────────────────────────────────────────────────── */
