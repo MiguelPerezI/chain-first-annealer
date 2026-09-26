@@ -18,3 +18,11 @@ opti/results/dodeca_ladder/rung*/
 opti/results/dodeca_tries/rung*/
 !opti/results/dodeca_ladder/rung173/
 !opti/results/dodeca_tries/rung070/
+
+# Webapp: the local runner config, its job registry and its runtime output
+opti/webapp/runner.json
+opti/webapp/jobs.json
+opti/webapp/jobs.json.tmp
+opti/webapp/live/
+opti/webapp/exports/
+opti/webapp/__pycache__/

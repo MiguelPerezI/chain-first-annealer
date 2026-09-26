@@ -1170,7 +1170,7 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
                  T0=0.6, T1=0.03, beta=0.05, pcopy=0.5, seed=0, time_limit=None,
                  log=print, stop_at_full=True, tournament_every=2, tournament_frac=0.25,
                  init_chains=None, ptrack=0.05, guide=0.0, guide_max=4.0, gamma=0.0,
-                 mu=0.0, crossover=0.0, h1_guide=0):
+                 mu=0.0, crossover=0.0, h1_guide=0, on_epoch=None, stop_when=None):
     """guide > 0: adaptive weights (guided local search) — after each epoch the
     facets left uncovered by the best state get weight += guide (capped at
     guide_max), all weights decay toward 1; the reported coverage is always
@@ -1246,6 +1246,17 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
         hist.append(dict(epoch=ep, best=cov, median=float(np.median(srt)), elapsed=el))
         if cov > best_cov:
             best_cov, best_chains = cov, chains.copy()
+        # Both hooks are None by default, so an unflagged run does exactly what
+        # it did before: nothing is written and no signal handling is involved.
+        # `on_epoch` is the webapp's live feed (JSONL telemetry + a consistent
+        # snapshot of the incumbent); `stop_when` is how a stop lands on an
+        # epoch boundary and still reaches the end-of-run writer below, so the
+        # run keeps its partial summary instead of vanishing (see --graceful-stop).
+        if on_epoch is not None:
+            on_epoch(ep, cov, best_chains, hist, ann, el)
+        if stop_when is not None and stop_when():
+            log(f"  stop requested after epoch {ep} — writing the partial summary")
+            break
         if stop_at_full and cov >= full - 1e-6:
             log(f"  full coverage reached at epoch {ep}")
             break
@@ -1279,6 +1290,71 @@ def init_from_summary(P: Product, path: Path, k: int, cmax: int, S: int):
     init = np.zeros((S, k, cmax + 1, P.ngrid), np.int8)
     init[: S // 2] = out
     return init
+
+
+# ---- live monitoring: opt-in telemetry and a survivable stop ---------------- #
+_STOP = {"requested": False, "reason": None}
+
+
+def _request_stop(signum, _frame):
+    """Signal handler: only records the request.  The main thread is inside the
+    CUDA call for the whole epoch, and CPython runs this between bytecodes, so
+    the flag is seen at the next epoch boundary -- which is where the loop
+    checks it, exactly like the time limit.  Nothing is interrupted mid-move."""
+    import signal as _signal
+    _STOP["requested"] = True
+    _STOP["reason"] = _signal.Signals(signum).name
+
+
+def _atomic_write_json(path, obj):
+    """Write JSON via a sibling .tmp + replace: a reader polling the file either
+    sees the old version or the new one, never a half-written document.  The
+    .tmp suffix also keeps the file out of `find_state`'s *.json scan."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(obj, indent=2, default=str))
+    tmp.replace(path)
+
+
+def make_monitors(a, P):
+    """(on_epoch, stop_when) for `anneal_cover`, or (None, None) when unused.
+
+    With none of --jsonl / --checkpoint-every / --graceful-stop / --stop-file
+    given, both are None and the run behaves exactly as it always has.
+    """
+    if a.checkpoint_every and not a.outdir:
+        raise SystemExit("--checkpoint-every needs --outdir")
+    if a.jsonl:                                     # its directory may not exist yet
+        Path(a.jsonl).parent.mkdir(parents=True, exist_ok=True)
+    jsonl_fh = open(a.jsonl, "a", buffering=1) if a.jsonl else None      # line-buffered
+    live_path = Path(a.outdir) / "live_state.json" if (a.checkpoint_every and a.outdir) else None
+
+    def on_epoch(ep, cov, best_chains, hist, ann, el):
+        row = dict(epoch=ep, best=cov, median=float(hist[-1]["median"]), elapsed=el,
+                   moves_per_s=(ann.moves / ann.kernel_time if ann.kernel_time else 0.0))
+        if jsonl_fh:
+            jsonl_fh.write(json.dumps(row) + "\n")
+        if live_path is not None and ep % a.checkpoint_every == 0 and best_chains is not None:
+            _atomic_write_json(live_path, dict(
+                complex=dict(name=P.name, nv=P.nv, num_facets=P.nf),
+                status="running", epoch=ep, coverage=int(cov),
+                best_chains=best_chains.tolist(), history=hist[-200:], params=vars(a)))
+
+    if a.graceful_stop:
+        import signal as _signal
+        for s in (_signal.SIGINT, _signal.SIGTERM):
+            _signal.signal(s, _request_stop)
+
+    def stop_when():
+        if a.stop_file and Path(a.stop_file).exists():
+            _STOP["requested"] = True
+            _STOP["reason"] = "stop-file"
+        return _STOP["requested"]
+
+    if not a.graceful_stop and not a.stop_file:
+        stop_when = None
+    return on_epoch if (jsonl_fh or live_path) else None, stop_when
 
 
 def cli():
@@ -1319,6 +1395,21 @@ def cli():
     ap.add_argument("--require-cover", action="store_true", help="exit 2 for a completed search without a full cover")
     ap.add_argument("--no-stop", action="store_true", help="keep annealing after full coverage")
     ap.add_argument("--init", default=None, help="summary.json of a previous run to seed the population")
+    ap.add_argument("--jsonl", default=None, metavar="PATH",
+                    help="append one JSON object per epoch to PATH (epoch, best, median, "
+                         "now-median, elapsed, moves/s, top10, stretch/collapse counters).  "
+                         "For live monitoring; the search is unaffected")
+    ap.add_argument("--checkpoint-every", type=int, default=0, dest="checkpoint_every", metavar="N",
+                    help="every N epochs write <outdir>/live_state.json (atomically) holding the "
+                         "incumbent's best_chains with the same keys as the partial summary, so a "
+                         "monitor can show the run's current map and a later run can --init from it; "
+                         "0 = off (nothing is written during the run, as before)")
+    ap.add_argument("--graceful-stop", action="store_true", dest="graceful_stop",
+                    help="catch SIGINT/SIGTERM and stop at the next epoch boundary, keeping the "
+                         "partial summary.json (without it a signal kills the run and saves nothing, "
+                         "which is the long-standing behaviour)")
+    ap.add_argument("--stop-file", default=None, metavar="PATH", dest="stop_file",
+                    help="also stop when PATH appears (a stop channel that survives a lost pid)")
     a = ap.parse_args()
     try:
         validate_parameters(**{key: getattr(a, key) for key in (
@@ -1338,10 +1429,12 @@ def cli():
     if a.init:
         init = init_from_summary(P, Path(a.init), a.k, a.cmax, a.S)
         print(f"  seeded population from {a.init} (reduced chains of the {a.k} largest domains, padded to cmax)")
+    on_epoch, stop_when = make_monitors(a, P)
     t0 = time.perf_counter()
     chains, cov, hist, ann = anneal_cover(P, a.k, a.cmax, a.S, a.iters, a.epochs, a.T0, a.T1,
                                           a.beta, a.pcopy, a.seed, a.time_limit,
                                           stop_at_full=not a.no_stop, init_chains=init,
+                                          on_epoch=on_epoch, stop_when=stop_when,
                                           tournament_every=a.tournament_every,
                                           tournament_frac=a.tournament_frac,
                                           ptrack=a.ptrack, guide=a.guide, guide_max=a.guide_max,

@@ -13,4 +13,6 @@ jobs:
       - run: python -O -B opti/src/test_contracts.py
       - run: python -B opti/scripts/test_s6_ladder.py
       - run: python -O -B opti/scripts/test_s6_ladder.py
+      - run: python -B opti/scripts/test_webapp_payload.py
+      - run: python -O -B opti/scripts/test_webapp_payload.py
       - run: bash -n opti/reproduce_all.sh

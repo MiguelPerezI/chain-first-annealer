@@ -1,0 +1,14 @@
+=== annealer_stretch chain-first annealer ===  K=∂Δ³ (S²)  |F_L|=96  grid=16  k=2 cmax=6 S=16 iters=30  T0=0.9 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=0
+/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py:104: RuntimeWarning: overflow encountered in scalar multiply
+  z = (z ^ (z >> np.uint64(30))) * _MUL1
+/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py:105: RuntimeWarning: overflow encountered in scalar multiply
+  z = (z ^ (z >> np.uint64(27))) * _MUL2
+/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py:102: RuntimeWarning: overflow encountered in scalar add
+  state = state + GOLDEN
+  epoch   1: best   52.0/96  top10 [52, 51, 49, 47, 45, 45, 44, 44, 43, 42]  median 44  now-median 44      8.5s     0.000 Mmoves/s
+  epoch   2: best   58.0/96  top10 [58, 55, 52, 51, 50, 49, 47, 45, 45, 45]  median 45  now-median 45     17.7s     0.000 Mmoves/s
+  epoch   3: best   67.0/96  top10 [67, 62, 56, 55, 54, 54, 53, 53, 52, 50]  median 52  now-median 52     26.4s     0.000 Mmoves/s
+  epoch   4: best   67.0/96  top10 [67, 67, 62, 57, 56, 55, 55, 54, 54, 54]  median 54  now-median 54     35.3s     0.000 Mmoves/s
+best coverage 67/96  domain sizes [37, 43]  time 35.3s  kernel 35.3s  moves 1.92e+03
+NOT a covering: 29 facets uncovered
+wrote /home/mike666/chain-first-annealer/opti/results/s2_k2_20260926T002911Z/summary.json (partial)

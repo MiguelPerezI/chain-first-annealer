@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K × K — chain-first annealer</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>K × K</h1>
+  <span id="subtitle" class="muted">loading…</span>
+  <span class="spacer"></span>
+  <span id="runner-badge" class="badge" title="GPU host for launching runs">runner: …</span>
+</header>
+
+<main>
+  <!-- ── left: the runs ─────────────────────────────────────────────── -->
+  <section id="left">
+    <div class="panel-title">
+      Results <span id="run-count" class="muted"></span>
+      <input id="filter" type="search" placeholder="filter by name / complex…">
+    </div>
+    <div id="runs" class="scroll"></div>
+  </section>
+
+  <!-- ── middle: the map ────────────────────────────────────────────── -->
+  <section id="middle">
+    <div id="map-toolbar">
+      <span id="map-title" class="strong">pick a run</span>
+      <span class="spacer"></span>
+      <label class="chk"><input type="checkbox" id="opt-shared" checked> mark shared facets</label>
+      <label class="chk"><input type="checkbox" id="opt-dead"> outline dead blocks</label>
+      <button id="btn-fit" class="ghost">fit</button>
+      <button id="btn-export" class="ghost" disabled>export PNG / PDF</button>
+      <a id="export-link" class="muted" target="_blank"></a>
+    </div>
+    <div id="map-wrap">
+      <canvas id="map"></canvas>
+      <div id="tip" class="tip" hidden></div>
+      <div id="map-status" class="overlay">no state selected</div>
+    </div>
+    <div id="legend" class="legend"></div>
+    <div id="notes" class="notes"></div>
+  </section>
+
+  <!-- ── right: launch + live ───────────────────────────────────────── -->
+  <section id="right">
+    <div class="tabs">
+      <button class="tab active" data-tab="launch">Launch</button>
+      <button class="tab" data-tab="live">Live <span id="live-dot" class="dot"></span></button>
+    </div>
+
+    <div id="tab-launch" class="tabpane">
+      <div id="mode" class="mode">
+        <label><input type="radio" name="mode" value="cold" checked> start cold</label>
+        <label><input type="radio" name="mode" value="warm"> continue from the selected state</label>
+      </div>
+      <div id="warm-info" class="muted"></div>
+      <div id="params" class="params"></div>
+      <label class="chk"><input type="checkbox" id="opt-cont"> write into &lt;run&gt;/phase&lt;N&gt;/ instead of a new dir</label>
+      <div id="plan-out" class="planout"></div>
+      <div class="row">
+        <button id="btn-plan">Preview command</button>
+        <button id="btn-launch" disabled>Launch on GPU host</button>
+      </div>
+      <div id="launch-msg" class="msg"></div>
+    </div>
+
+    <div id="tab-live" class="tabpane" hidden>
+      <div id="jobs"></div>
+      <div id="live-body" hidden>
+        <div class="panel-title">progress <span id="live-cov" class="muted"></span></div>
+        <canvas id="chart" height="120"></canvas>
+        <div class="panel-title">current best (live checkpoint)</div>
+        <canvas id="live-map"></canvas>
+        <div class="panel-title">log</div>
+        <pre id="logtail" class="log"></pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="/static/geometry.js"></script>
+<script src="/static/map.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

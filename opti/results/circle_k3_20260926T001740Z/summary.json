@@ -1,0 +1,448 @@
+{
+  "complex": {
+    "name": "\u2202\u0394\u00b2 (S\u00b9)",
+    "nv": 3,
+    "ngrid": 9,
+    "num_facets": 18,
+    "facets": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ]
+  },
+  "n_domains": 3,
+  "sc_strict_bound": 2,
+  "n_verified": 3,
+  "all_domains_verified": true,
+  "domain_sizes": [
+    7,
+    6,
+    5
+  ],
+  "chain_lengths": [
+    4,
+    3,
+    3
+  ],
+  "domains": [
+    [
+      1,
+      2,
+      3,
+      8,
+      10,
+      12,
+      13
+    ],
+    [
+      0,
+      4,
+      5,
+      6,
+      7,
+      9
+    ],
+    [
+      11,
+      14,
+      15,
+      16,
+      17
+    ]
+  ],
+  "certification": {
+    "internal": "passed",
+    "independent_audit": "not_run"
+  },
+  "provenance": {
+    "exported_at_utc": "2026-09-26T00:18:00.510096+00:00",
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-31-generic-x86_64-with-glibc2.39",
+    "packages": {
+      "numpy": "2.2.5",
+      "numba": "0.61.2",
+      "llvmlite": "0.44.0",
+      "scipy": "1.15.3"
+    },
+    "git_commit": "edeca0bdceb0a4f9289e2eb697c25593c5931763",
+    "git_dirty": true,
+    "source_sha256": {
+      "gpu_sc.py": "9d578898cb3c9f4939c929b81fc5c2d9a047aa73999d0c6c0df4389ea9898ee3",
+      "validation.py": "e44066479bc854a363a5047c36f72878b78d02444b5c87cca4f39dc54eec8e12",
+      "provenance.py": "2439d1470370d911a339b17f71317a4f98dad04cb8e7c4cdde2e96d3412694cf",
+      "independent_check.py": "c54331644bf8628d79cbfd1582e950f2a8d7921f54daece3e70b9c48b0a35fd1"
+    },
+    "scope": "Current export environment; does not attest historical search hardware or timing."
+  },
+  "params": {
+    "complex": "circle",
+    "k": 3,
+    "cmax": 8,
+    "S": 32,
+    "iters": 100,
+    "epochs": 5,
+    "T0": 0.9,
+    "T1": 0.03,
+    "beta": 5.0,
+    "gamma": 0.5,
+    "mu": 0.0,
+    "pcopy": 0.5,
+    "seed": 0,
+    "ptrack": 0.3,
+    "guide": 3.0,
+    "guide_max": 11.0,
+    "h1_guide": 0,
+    "tournament_every": 2,
+    "tournament_frac": 0.25,
+    "crossover": 0.0,
+    "pstretch": 0.0,
+    "pcollapse": 0.0,
+    "verbose": false,
+    "time_limit": 600.0,
+    "outdir": "/home/mike666/chain-first-annealer/opti/results/circle_k3_20260926T001740Z",
+    "require_cover": false,
+    "no_stop": false,
+    "init": null,
+    "jsonl": "results/circle_k3_20260926T001740Z/epochs.jsonl",
+    "checkpoint_every": 1,
+    "graceful_stop": true,
+    "stop_file": null
+  },
+  "elapsed_s": 17.886216796003282,
+  "kernel_time_s": 17.782469609053805,
+  "moves": 6400,
+  "history": [
+    {
+      "epoch": 1,
+      "best": 17.0,
+      "median": 12.0,
+      "elapsed": 9.556441847991664
+    },
+    {
+      "epoch": 2,
+      "best": 18.0,
+      "median": 15.0,
+      "elapsed": 17.858608513022773
+    }
+  ],
+  "best_chains": [
+    [
+      [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      [
+        1,
+        0,
+        0,
+        2,
+        2,
+        1,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        2,
+        2,
+        2,
+        1,
+        2,
+        0,
+        2,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        2,
+        1,
+        2,
+        0,
+        2,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        2,
+        1,
+        2,
+        0,
+        2,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        2,
+        1,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        2,
+        1,
+        2,
+        0,
+        2,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        0,
+        1,
+        2,
+        0,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        2
+      ],
+      [
+        0,
+        2,
+        2,
+        1,
+        1,
+        0,
+        1,
+        1,
+        2
+      ],
+      [
+        0,
+        2,
+        2,
+        1,
+        1,
+        0,
+        1,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        1,
+        1,
+        0,
+        1,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        0,
+        1,
+        0,
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        0,
+        1,
+        0,
+        1,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        0,
+        1,
+        2,
+        0,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        0,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        0,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        2
+      ],
+      [
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        2
+      ],
+      [
+        0,
+        1,
+        1,
+        0,
+        1,
+        2,
+        0,
+        0,
+        2
+      ],
+      [
+        0,
+        1,
+        1,
+        0,
+        1,
+        2,
+        0,
+        0,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        0,
+        1,
+        2,
+        0,
+        0,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        0,
+        1,
+        2,
+        0,
+        1,
+        2
+      ]
+    ]
+  ],
+  "coverage": 18,
+  "chain_domain_sizes": [
+    5,
+    8,
+    8
+  ]
+}

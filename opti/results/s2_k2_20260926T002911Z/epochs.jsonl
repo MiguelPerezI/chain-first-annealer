@@ -1,0 +1,4 @@
+{"epoch": 1, "best": 52.0, "median": 43.5, "elapsed": 8.508647839014884, "moves_per_s": 56.42154127514513}
+{"epoch": 2, "best": 58.0, "median": 45.0, "elapsed": 17.72259145398857, "moves_per_s": 54.29853455437945}
+{"epoch": 3, "best": 67.0, "median": 52.5, "elapsed": 26.42317704699235, "moves_per_s": 54.59671376231973}
+{"epoch": 4, "best": 67.0, "median": 54.0, "elapsed": 35.325666229007766, "moves_per_s": 54.429010944194296}

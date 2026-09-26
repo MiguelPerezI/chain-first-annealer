@@ -1,0 +1,13 @@
+=== annealer_stretch chain-first annealer ===  K=∂Δ² (S¹)  |F_L|=18  grid=9  k=3 cmax=8 S=32 iters=100  T0=0.9 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=0
+/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py:102: RuntimeWarning: overflow encountered in scalar add
+  state = state + GOLDEN
+/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py:105: RuntimeWarning: overflow encountered in scalar multiply
+  z = (z ^ (z >> np.uint64(27))) * _MUL2
+/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py:104: RuntimeWarning: overflow encountered in scalar multiply
+  z = (z ^ (z >> np.uint64(30))) * _MUL1
+  epoch   1: best   17.0/18  top10 [17, 15, 15, 15, 14, 14, 14, 13, 13, 13]  median 12  now-median 12      9.6s     0.000 Mmoves/s
+  epoch   2: best   18.0/18  top10 [18, 18, 17, 17, 15, 15, 15, 15, 15, 15]  median 15  now-median 15     17.9s     0.000 Mmoves/s
+  full coverage reached at epoch 2
+best coverage 18/18  domain sizes [5, 8, 8]  time 17.9s  kernel 17.8s  moves 6.4e+03
+VERIFIED system of 3 motion planners: sizes [7, 6, 5], reduced chain lengths [4, 3, 3]  =>  SC_strict(∂Δ² (S¹)) <= 2
+wrote /home/mike666/chain-first-annealer/opti/results/circle_k3_20260926T001740Z/cover.txt planners.txt summary.json

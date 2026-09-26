@@ -1,0 +1,12 @@
+=== annealer_stretch chain-first annealer ===  K=∂Δ² (S¹)  |F_L|=18  grid=9  k=3 cmax=8 S=32 iters=100  T0=0.9 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=0
+Traceback (most recent call last):
+  File "/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py", line 1808, in <module>
+    sys.exit(cli())
+             ^^^^^
+  File "/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py", line 1764, in cli
+    on_epoch, stop_when = make_monitors(a, P)
+                          ^^^^^^^^^^^^^^^^^^^
+  File "/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py", line 1645, in make_monitors
+    jsonl_fh = open(a.jsonl, "a", buffering=1) if a.jsonl else None      # line-buffered
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'results/circle_k3_20260926T001005Z/epochs.jsonl'

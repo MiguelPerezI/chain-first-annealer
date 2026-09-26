@@ -1,0 +1,13 @@
+=== annealer_stretch chain-first annealer ===  K=Möbius band (5 vertices, 5 triangles, minimal & unique)  |F_L|=150  grid=25  k=3 cmax=6 S=32 iters=300  T0=0.9 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=0
+/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py:104: RuntimeWarning: overflow encountered in scalar multiply
+  z = (z ^ (z >> np.uint64(30))) * _MUL1
+/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py:105: RuntimeWarning: overflow encountered in scalar multiply
+  z = (z ^ (z >> np.uint64(27))) * _MUL2
+/home/mike666/chain-first-annealer/opti/src/annealer_stretch.py:102: RuntimeWarning: overflow encountered in scalar add
+  state = state + GOLDEN
+  epoch   1: best   76.0/150  top10 [76, 64, 61, 61, 61, 59, 59, 59, 58, 57]  median 54  now-median 54    150.6s     0.000 Mmoves/s
+  epoch   2: best   89.0/150  top10 [89, 89, 79, 79, 78, 76, 75, 74, 74, 72]  median 70  now-median 70    297.3s     0.000 Mmoves/s
+  stop requested after epoch 2 — writing the partial summary
+best coverage 89/150  domain sizes [48, 46, 38]  time 297.3s  kernel 297.2s  moves 1.92e+04
+NOT a covering: 61 facets uncovered
+wrote /home/mike666/chain-first-annealer/opti/results/mobius_k3_20260926T003021Z/summary.json (partial)

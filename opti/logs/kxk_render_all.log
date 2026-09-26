@@ -1,0 +1,180 @@
+ok     bary_k1  figures/bary_kxk_k1_54.png
+ok     bary_k1_c3  figures/bary_kxk_k1_c3_54.png
+ok     bary_k3  figures/bary_kxk_k3_54.png
+ok     circle_equiv_k2  figures/circle_kxk_equiv_k2_14.png
+ok     circle_probe  figures/circle_kxk_probe_15.png
+ok     circle_probe2  figures/circle_kxk_probe2_16.png
+ok     circle_probe3  figures/circle_kxk_probe3_18.png
+skip   circle_starcover  (no state)
+ok     cube_k3  figures/cube_kxk_k3_662.png
+ok     cube_k3_gcold  figures/cube_kxk_k3_gcold_858.png
+ok     cube_k3_guided  figures/cube_kxk_k3_guided_864.png
+ok     cube_k3_v2  figures/cube_kxk_k3_v2_820.png
+skip   cube_starcover  (no state)
+ok     dodeca_half_hour_from2566  figures/dodeca_kxk_half_hour_from2566_2570.png
+ok     dodeca_hour_from2553  figures/dodeca_kxk_hour_from2553_2566.png
+ok     dodeca_k3  figures/dodeca_kxk_k3_644.png
+ok     dodeca_k3_escal  figures/dodeca_kxk_k3_escal_1208.png
+ok     dodeca_k3_escal2  figures/dodeca_kxk_k3_escal2_1579.png
+ok     dodeca_k3_escal3  figures/dodeca_kxk_k3_escal3_1749.png
+ok     dodeca_k3_escal4  figures/dodeca_kxk_k3_escal4_1802.png
+ok     dodeca_k3_escal5  figures/dodeca_kxk_k3_escal5_1831.png
+ok     dodeca_ladder  figures/dodeca_kxk_rung173_2553.png
+ok     dodeca_tries  figures/dodeca_kxk_rung070_2602.png
+ok     klein_cold2  figures/klein_kxk_cold2_1015.png
+ok     klein_cold3  figures/klein_kxk_cold3_954.png
+ok     klein_cold666_repro  figures/klein_kxk_cold666_repro_1170.png
+skip   klein_cold666_seed_999  (figure already delivered)
+ok     klein_cold666_seed_999_1  figures/klein_kxk_cold666_seed_999_1_1195.png
+ok     klein_cold666_seed_999_2  figures/klein_kxk_cold666_seed_999_2_1198.png
+ok     klein_cold666_seed_999_3  figures/klein_kxk_cold666_seed_999_3_1198.png
+ok     klein_hybrid  figures/klein_kxk_hybrid_1162.png
+ok     klein_hybrid_run  figures/klein_kxk_hybrid_run_1172.png
+ok     klein_k5  figures/klein_kxk_k5_806.png
+ok     klein_k5_guided  figures/klein_kxk_k5_guided_1007.png
+FAIL   klein_k5_v2
+           File "/home/mike666/chain-first-annealer/opti/scripts/kxk_state.py", line 59, in _color_dist
+             return sum((x - y) ** 2 for x, y in zip(hex_rgb(a), hex_rgb(b))) ** 0.5
+                                                     ^^^^^^^
+         NameError: name 'hex_rgb' is not defined
+FAIL   klein_k6
+           File "/home/mike666/chain-first-annealer/opti/scripts/kxk_state.py", line 59, in _color_dist
+             return sum((x - y) ** 2 for x, y in zip(hex_rgb(a), hex_rgb(b))) ** 0.5
+                                                     ^^^^^^^
+         NameError: name 'hex_rgb' is not defined
+FAIL   klein_k8
+           File "/home/mike666/chain-first-annealer/opti/scripts/kxk_state.py", line 59, in _color_dist
+             return sum((x - y) ** 2 for x, y in zip(hex_rgb(a), hex_rgb(b))) ** 0.5
+                                                     ^^^^^^^
+         NameError: name 'hex_rgb' is not defined
+FAIL   klein_k8_r1
+           File "/home/mike666/chain-first-annealer/opti/scripts/kxk_state.py", line 59, in _color_dist
+             return sum((x - y) ** 2 for x, y in zip(hex_rgb(a), hex_rgb(b))) ** 0.5
+                                                     ^^^^^^^
+         NameError: name 'hex_rgb' is not defined
+ok     klein_k9  figures/klein_kxk_k9_1519.png
+ok     klein_night_melt1  figures/klein_kxk_night_melt1_1174.png
+ok     klein_night_r1  figures/klein_kxk_night_r1_1176.png
+ok     klein_night_r10  figures/klein_kxk_night_r10_409.png
+ok     klein_night_r11  figures/klein_kxk_night_r11_1185.png
+ok     klein_night_r12  figures/klein_kxk_night_r12_410.png
+ok     klein_night_r13  figures/klein_kxk_night_r13_1186.png
+ok     klein_night_r14  figures/klein_kxk_night_r14_394.png
+ok     klein_night_r15  figures/klein_kxk_night_r15_1187.png
+ok     klein_night_r16  figures/klein_kxk_night_r16_406.png
+ok     klein_night_r17  figures/klein_kxk_night_r17_1187.png
+ok     klein_night_r18  figures/klein_kxk_night_r18_384.png
+ok     klein_night_r19  figures/klein_kxk_night_r19_1187.png
+ok     klein_night_r2  figures/klein_kxk_night_r2_409.png
+ok     klein_night_r20  figures/klein_kxk_night_r20_394.png
+ok     klein_night_r21  figures/klein_kxk_night_r21_1187.png
+ok     klein_night_r22  figures/klein_kxk_night_r22_430.png
+ok     klein_night_r23  figures/klein_kxk_night_r23_1187.png
+ok     klein_night_r24  figures/klein_kxk_night_r24_405.png
+ok     klein_night_r25  figures/klein_kxk_night_r25_1187.png
+ok     klein_night_r26  figures/klein_kxk_night_r26_408.png
+ok     klein_night_r27  figures/klein_kxk_night_r27_1187.png
+ok     klein_night_r28  figures/klein_kxk_night_r28_395.png
+ok     klein_night_r29  figures/klein_kxk_night_r29_1187.png
+ok     klein_night_r3  figures/klein_kxk_night_r3_1178.png
+ok     klein_night_r30  figures/klein_kxk_night_r30_426.png
+ok     klein_night_r4  figures/klein_kxk_night_r4_414.png
+ok     klein_night_r5  figures/klein_kxk_night_r5_1181.png
+ok     klein_night_r6  figures/klein_kxk_night_r6_409.png
+ok     klein_night_r7  figures/klein_kxk_night_r7_1183.png
+ok     klein_night_r8  figures/klein_kxk_night_r8_387.png
+ok     klein_night_r9  figures/klein_kxk_night_r9_1184.png
+ok     klein_rung2  figures/klein_kxk_rung2_1185.png
+ok     klein_rung3  figures/klein_kxk_rung3_1186.png
+ok     klein_rung4  figures/klein_kxk_rung4_1054.png
+ok     klein_rung5  figures/klein_kxk_rung5_1125.png
+ok     klein_rung6  figures/klein_kxk_rung6_1155.png
+ok     klein_rung7  figures/klein_kxk_rung7_1164.png
+ok     klein_rung8_mu  figures/klein_kxk_rung8_mu_1170.png
+ok     klein_rung_next  figures/klein_kxk_rung_next_1180.png
+ok     mobius_k3_cold_s4  figures/mobius_kxk_k3_cold_s4_149.png
+ok     mobius_k3_sat  figures/mobius_kxk_k3_sat_150.png
+ok     mobius_k3_stretch_from_149  figures/mobius_kxk_k3_stretch_from_149_149.png
+ok     mobius_k3_stretch_from_k4  figures/mobius_kxk_k3_stretch_from_k4_149.png
+ok     mobius_k4_from_k5  figures/mobius_kxk_k4_from_k5_150.png
+ok     mobius_k5  figures/mobius_kxk_k5_150.png
+ok     mobius_restart  figures/mobius_kxk_restart_148.png
+ok     mobius_seed_523  figures/mobius_kxk_seed_523_148.png
+ok     mobius_seed_666  figures/mobius_kxk_seed_666_148.png
+ok     mobius_seed_723  figures/mobius_kxk_seed_723_148.png
+ok     mobius_seed_72341  figures/mobius_kxk_seed_72341_148.png
+ok     mobius_seed_72341_1  figures/mobius_kxk_seed_72341_1_148.png
+ok     mobius_seed_875  figures/mobius_kxk_seed_875_148.png
+ok     mobius_seed_999  figures/mobius_kxk_seed_999_148.png
+ok     rp2_k10  figures/rp2_kxk_k10_600.png
+ok     rp2_k11  figures/rp2_kxk_k11_590.png
+ok     rp2_k11_cont  figures/rp2_kxk_k11_cont_600.png
+ok     rp2_k3_cold  figures/rp2_kxk_k3_cold_398.png
+ok     rp2_k5_from_k6_stretch_collapse7232  figures/rp2_kxk_k5_from_k6_stretch_collapse7232_544.png
+ok     rp2_k5_hybrid  figures/rp2_kxk_k5_hybrid_540.png
+skip   rp2_k5_push_warm  (figure already delivered)
+ok     rp2_k6  figures/rp2_kxk_k6_600.png
+ok     rp2_k7  figures/rp2_kxk_k7_600.png
+ok     rp2_k8  figures/rp2_kxk_k8_600.png
+ok     rp2_k9  figures/rp2_kxk_k9_600.png
+ok     s2_equiv_k3  figures/s2_kxk_equiv_k3_60.png
+ok     s2_k3_test  figures/s2_kxk_k3_test_96.png
+ok     s2_k3_v2  figures/s2_kxk_k3_v2_96.png
+skip   s2_starcover  (no state)
+ok     s3_k2_A  figures/s3_kxk_k2_A_460.png
+ok     s3_k2_B  figures/s3_kxk_k2_B_460.png
+ok     s3_k2_C  figures/s3_kxk_k2_C_460.png
+ok     s3_k2_D  figures/s3_kxk_k2_D_460.png
+ok     s3_k2_longcor_5  figures/s3_kxk_k2_longcor_5_460.png
+ok     s3_k2_longflat_5  figures/s3_kxk_k2_longflat_5_460.png
+ok     s3_k2_v2_point  figures/s3_kxk_k2_v2_point_460.png
+ok     s3_k2_v2_track  figures/s3_kxk_k2_v2_track_460.png
+ok     s3_k3_20260918T164956Z  figures/s3_kxk_k3_20260918T164956Z_500.png
+ok     s3_k3_c80  figures/s3_kxk_k3_c80_500.png
+ok     s3_k3_run1  figures/s3_kxk_k3_run1_500.png
+ok     s3_k3_v2  figures/s3_kxk_k3_v2_500.png
+skip   s3_lower_ends_probe  (no state)
+skip   s3_starcover  (no state)
+skip   s3_upper_probe  (no state)
+ok     s4_k2_v2  figures/s4_kxk_k2_v2_2380.png
+ok     s4_k3_v2  figures/s4_kxk_k3_v2_2520.png
+skip   s4_starcover  (no state)
+ok     s5_k3_v2  figures/s5_kxk_k3_v2_12348.png
+skip   s5_starcover  (no state)
+ok     s6_k3_chain_first_continuation_01  figures/s6_kxk_rung02_59136.png
+skip   s6_k3_chain_first_ladder  (no state)
+skip   s6_k3_chain_first_ladder_run3  (no state)
+ok     s6_k3_chain_first_ladder_run4  figures/s6_kxk_rung04_59072.png
+ok     s6_scale_probe  figures/s6_kxk_scale_probe_30440.png
+skip   s6_starcover  (no state)
+skip   s7_starcover  (no state)
+skip   s8_starcover  (no state)
+ok     torus_hybrid_m3_k5  figures/torus_kxk_hybrid_m3_k5_631.png
+ok     torus_hybrid_m4_k4  figures/torus_kxk_hybrid_m4_k4_492.png
+ok     torus_hybrid_m5_k3  figures/torus_kxk_hybrid_m5_k3_340.png
+ok     torus_hybrid_m5_k4  figures/torus_kxk_hybrid_m5_k4_410.png
+ok     torus_hybrid_m5_k5  figures/torus_kxk_hybrid_m5_k5_435.png
+ok     torus_hybrid_m6_k2  figures/torus_kxk_hybrid_m6_k2_214.png
+ok     torus_hybrid_m6_k3  figures/torus_kxk_hybrid_m6_k3_306.png
+ok     torus_hybrid_m6_k3_long  figures/torus_kxk_hybrid_m6_k3_long_280.png
+ok     torus_hybrid_m6_k4  figures/torus_kxk_hybrid_m6_k4_337.png
+ok     torus_hybrid_m6_k4_cont  figures/torus_kxk_hybrid_m6_k4_cont_337.png
+ok     torus_hybrid_m6_k4_s41  figures/torus_kxk_hybrid_m6_k4_s41_346.png
+ok     torus_hybrid_m6_k4_s42  figures/torus_kxk_hybrid_m6_k4_s42_342.png
+ok     torus_hybrid_m7_k2  figures/torus_kxk_hybrid_m7_k2_192.png
+ok     torus_hybrid_m7_k3  figures/torus_kxk_hybrid_m7_k3_249.png
+ok     torus_hybrid_m8_k2  figures/torus_kxk_hybrid_m8_k2_146.png
+ok     torus_k11_c20_b5  figures/torus_kxk_k11_c20_b5_563.png
+ok     torus_k1_c40_b5  figures/torus_kxk_k1_c40_b5_228.png
+ok     torus_k1_c40_g0  figures/torus_kxk_k1_c40_g0_228.png
+ok     torus_k3_c20_b5  figures/torus_kxk_k3_c20_b5_579.png
+ok     torus_k4_c20_b5  figures/torus_kxk_k4_c20_b5_722.png
+ok     torus_k4_c40_b5  figures/torus_kxk_k4_c40_b5_733.png
+ok     torus_k4_L1  figures/torus_kxk_k4_L1_618.png
+ok     torus_k4_smoke  figures/torus_kxk_k4_smoke_498.png
+ok     torus_k6_L1  figures/torus_kxk_k6_L1_569.png
+ok     torus_k8_c40_b5  figures/torus_kxk_k8_c40_b5_705.png
+skip   torus_starcover_greedy  (no state)
+skip   torus_starcover_opt  (no state)
+ok     wedge_k2  figures/wedge_kxk_k2_39.png
+---- 142 rendered, 21 skipped/failed

@@ -1,0 +1,23 @@
+{
+  "_": "Copy to webapp/runner.json and fill in host.  Nothing here is hardcoded in the code: the GPU box is elastically addressed, so it is configuration.  Env vars OPTIMAP_HOST / OPTIMAP_KEY / OPTIMAP_REPO / OPTIMAP_PYTHON override the file.",
+  "host": "",
+  "_host": "user@host or a Host alias -- e.g. ubuntu@203.0.113.10 or ubuntu@100.48.53.44 (tailscale). Empty = browsing/export only, launching disabled.  Use \"local\" to run the SAME kernels here through numba's CUDA simulator (NUMBA_ENABLE_CUDASIM=1, ~1000x slower: tiny S/iters, small complex) -- that is how the launch/live/stop loop can be exercised without the GPU box.",
+  "identity": "~/.ssh/gcp_key",
+  "remote_repo": "~/Documents/opti",
+  "remote_python": "~/Documents/Abstract_Motion_GPU/venv/bin/python",
+  "_remote_python": "the numba+CUDA interpreter on the GPU host; a repo-root .venv/bin/python also works (see experiments/s6_chain_first_campaign.md)",
+  "ssh_options": [
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ConnectTimeout=10",
+    "-o",
+    "ServerAliveInterval=15",
+    "-o",
+    "ServerAliveCountMax=4",
+    "-o",
+    "StrictHostKeyChecking=accept-new"
+  ],
+  "local_python": "/home/mike666/whisper_env/bin/python",
+  "_local_python": "interpreter for simulations: needs numba (+ matplotlib only for the export button)"
+}
