@@ -444,7 +444,7 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
     @cuda.jit
     def anneal_kernel(chains, best, bad, score, seeds,
                       facet_verts, facet_nv, incid_off, incid_fac, is_simplex,
-                      weights, unc, n_unc, pstretch, pcollapse,
+                      weights, unc, unc_chains, n_unc, pstretch, pcollapse,
                       iters, T0, T1, beta, gamma, mu, pmove_copy, ptrack):
         s = cuda.grid(1)
         if s >= chains.shape[0]:
@@ -513,14 +513,20 @@ def make_anneal_kernel(KCH, C1, NGRID, NF, NV, STARMAX, MAXFV, LMAX=8):
                 state, x = sm_next_dev(state)
                 if sm_u01_dev(x) < pstretch:
                     state, x = sm_next_dev(state)
-                    ft = int32(unc[int32(x % uint64(n_unc))])
-                    # chain j = argmin_j bad_j[ft]; covered here -> track move
-                    j = int32(0)
-                    bmin = int32(bd[0, ft])
-                    for jj in range(1, KCH):
-                        if int32(bd[jj, ft]) < bmin:
-                            bmin = int32(bd[jj, ft])
-                            j = int32(jj)
+                    idx = int32(x % uint64(n_unc))
+                    ft = int32(unc[idx])
+                    # chain j: pinned by unc_chains if >= 0, else argmin_j bad_j[ft]
+                    j_pin = int32(unc_chains[idx])
+                    if j_pin >= int32(0) and j_pin < int32(KCH):
+                        j = j_pin
+                        bmin = int32(bd[j, ft])
+                    else:
+                        j = int32(0)
+                        bmin = int32(bd[0, ft])
+                        for jj in range(1, KCH):
+                            if int32(bd[jj, ft]) < bmin:
+                                bmin = int32(bd[jj, ft])
+                                j = int32(jj)
                     istar = int32(-1)
                     if bmin > 0:
                         # first bad link i* of (j, ft): link i spans maps i, i+1
@@ -860,6 +866,7 @@ class ChainAnnealer:
         self.d_w = cuda.to_device(self.weights)
         # stretch targets: currently-uncovered facets the kernel aims at
         self.d_unc = cuda.to_device(np.zeros(1, np.int32))
+        self.d_unc_chains = cuda.to_device(np.full(1, -1, np.int32))
         self.n_unc = np.int32(0)
         self.chains = self.random_init(S)
         self.best = self.chains.copy()
@@ -905,14 +912,27 @@ class ChainAnnealer:
         self.weights = np.asarray(w, np.float32)
         self.d_w = cuda.to_device(self.weights)
 
-    def set_targets(self, unc):
+    def set_targets(self, unc, unc_chains=None):
         """Upload the list of currently-uncovered facets the stretch move aims
         at (driver refreshes it each epoch, alongside the guide weights).  Capped
         at 1024 — plenty for the stall regimes the move is for; the kernel draws
-        uniformly from the list it is given."""
+        uniformly from the list it is given.
+
+        unc_chains: optional parallel int32 array of chain indices.  When
+        unc_chains[i] >= 0, the stretch move for facet unc[i] is pinned to
+        that chain instead of argmin_j bad_j[f].  Value -1 means "let the
+        kernel pick" (the default when unc_chains is None)."""
         unc = np.asarray(unc, np.int32).ravel()[:1024]
         self.d_unc = cuda.to_device(unc)
         self.n_unc = np.int32(len(unc))
+        if unc_chains is not None:
+            ch = np.asarray(unc_chains, np.int32).ravel()[:1024]
+            # pad to same length as unc, fill with -1
+            if len(ch) < len(unc):
+                ch = np.concatenate([ch, np.full(len(unc) - len(ch), -1, np.int32)])
+            self.d_unc_chains = cuda.to_device(ch)
+        else:
+            self.d_unc_chains = cuda.to_device(np.full(len(unc), -1, np.int32))
 
     def epoch(self, iters, T0, T1, beta=0.05, pmove_copy=0.5, ptrack=0.3, gamma=0.0, mu=0.0,
               pstretch=0.0, pcollapse=0.0):
@@ -934,7 +954,7 @@ class ChainAnnealer:
         self.kernel[blocks, self.threads](
             d_ch, d_best, d_bad, d_score, d_seeds,
             self.d_fv, self.d_fnv, self.d_off, self.d_inc, self.d_iss, self.d_w,
-            self.d_unc, self.n_unc, np.float64(pstretch), np.float64(pcollapse),
+            self.d_unc, self.d_unc_chains, self.n_unc, np.float64(pstretch), np.float64(pcollapse),
             np.int32(iters), np.float64(T0), np.float64(T1), np.float64(beta), np.float64(gamma),
             np.float64(mu), np.float64(pmove_copy), np.float64(ptrack))
         cuda.synchronize()
@@ -1454,7 +1474,8 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
                  log=print, stop_at_full=True, tournament_every=2, tournament_frac=0.25,
                  init_chains=None, ptrack=0.05, guide=0.0, guide_max=4.0, gamma=0.0,
                  mu=0.0, crossover=0.0, h1_guide=0, pstretch=0.0, pcollapse=0.0, verbose=0,
-                 on_epoch=None, stop_when=None):
+                 on_epoch=None, stop_when=None,
+                 target_facets=None, target_chains=None, target_weight=8.0):
     """guide > 0: adaptive weights (guided local search) — after each epoch the
     facets left uncovered by the best state get weight += guide (capped at
     guide_max), all weights decay toward 1; the reported coverage is always
@@ -1542,8 +1563,18 @@ def anneal_cover(P: Product, k: int, cmax=40, S=4096, iters=20000, epochs=50,
                 w[h1_dead] = 0.0
             ann.set_weights(w)
         if pstretch > 0:
-            # stretch targets: exactly the facets the guide is paying for
-            ann.set_targets(np.flatnonzero(~covered))
+            if target_facets is not None:
+                # targeted attack: only the user-specified facets, with pinned chains
+                ann.set_targets(np.array(target_facets, np.int32),
+                                np.array(target_chains, np.int32) if target_chains is not None else None)
+                # floor their guide weights so the guide decay doesn't wash them out
+                w = ann.weights.copy()
+                for tf in target_facets:
+                    w[tf] = max(w[tf], target_weight)
+                ann.set_weights(w)
+            else:
+                # default: all uncovered facets
+                ann.set_targets(np.flatnonzero(~covered))
         el = time.perf_counter() - t_start
         srt = np.sort(ann.bestscore)[::-1]
         line = (f"  epoch {ep:3d}: best {cov:6.1f}/{P.nf}  top10 {srt[:10].astype(int).tolist()}  "
@@ -1720,6 +1751,14 @@ def cli():
                          "move the mobius 149 audit showed missing, section 4.1); requires --pstretch")
     ap.add_argument("--verbose", action="store_true",
                     help="with --pstretch: also log the ids of the remaining uncovered facets each epoch")
+    ap.add_argument("--target-facets", default=None, dest="target_facets",
+                    help="comma-separated list of F[:C] pairs: concentrate the stretch move on "
+                         "facet F, optionally pinning it to chain C instead of argmin.  "
+                         "Example: --target-facets 90:2,421:0 attacks facet 90 into chain 2 "
+                         "and facet 421 into chain 0.  Requires --pstretch > 0.  The guide "
+                         "weight for targeted facets is floored at --target-weight.")
+    ap.add_argument("--target-weight", type=float, default=8.0, dest="target_weight",
+                    help="minimum guide weight for --target-facets (default 8)")
     ap.add_argument("--time-limit", type=float, default=None, help="seconds")
     ap.add_argument("--outdir", default=None)
     ap.add_argument("--require-cover", action="store_true", help="exit 2 for a completed search without a full cover")
@@ -1750,6 +1789,22 @@ def cli():
         ap.error(str(exc))
     if a.pcollapse and not a.pstretch:
         ap.error("--pcollapse rides the stretch branch; requires --pstretch > 0")
+    if a.target_facets and not a.pstretch:
+        ap.error("--target-facets rides the stretch branch; requires --pstretch > 0")
+
+    # parse --target-facets F[:C],G[:D],...
+    _target_facets, _target_chains = [], []
+    if a.target_facets:
+        for spec in a.target_facets.split(","):
+            spec = spec.strip()
+            if ":" in spec:
+                f, c = spec.split(":", 1)
+                _target_facets.append(int(f))
+                _target_chains.append(int(c))
+            else:
+                _target_facets.append(int(spec))
+                _target_chains.append(-1)  # let the kernel pick
+        print(f"  targeting {len(_target_facets)} facets: {list(zip(_target_facets, _target_chains))}")
 
     P = build(a.complex)
     print(f"=== annealer_stretch chain-first annealer ===  K={P.name}  |F_L|={P.nf}  grid={P.ngrid}  "
@@ -1774,7 +1829,10 @@ def cli():
                                           ptrack=a.ptrack, guide=a.guide, guide_max=a.guide_max,
                                           gamma=a.gamma, mu=a.mu,
                                           crossover=a.crossover, h1_guide=a.h1_guide,
-                                          pstretch=a.pstretch, pcollapse=a.pcollapse, verbose=int(a.verbose))
+                                          pstretch=a.pstretch, pcollapse=a.pcollapse, verbose=int(a.verbose),
+                                          target_facets=_target_facets or None,
+                                          target_chains=_target_chains or None,
+                                          target_weight=a.target_weight)
     dt = time.perf_counter() - t0
     doms = [P.domain_of(chains[j]) for j in range(a.k)]
     covered = np.zeros(P.nf, bool)

@@ -433,6 +433,7 @@ async function launchTargeted() {
     `  --T0 0.6 --T1 0.03 --beta 5 --gamma 0.5 --mu 0 \\`,
     `  --guide 8 --guide-max 15 --ptrack 0.3 \\`,
     `  --pstretch 0.5 --pcollapse 0.3 \\`,
+    `  --target-facets ${targets} --target-weight 10 \\`,
     `  --init ${initPath} \\`,
     `  --outdir ${outdir} \\`,
     `  --jsonl ${outdir}/epochs.jsonl \\`,
@@ -475,11 +476,9 @@ async function launchTargeted() {
     `• <code>--checkpoint-every 1</code>: writes live_state.json each epoch so you can watch or resume<br>` +
     `• <code>--graceful-stop</code>: Ctrl+C saves the partial state instead of losing it<br>` +
     `• <code>--time-limit 300</code>: 5 minutes (adjust as needed)<br>` +
-    `<br><strong>To target specific facets</strong>, add to the command:<br>` +
-    `<code style="background:#1e293b;padding:2px 6px;border-radius:3px;color:#94a3b8">` +
-    `# not yet a CLI flag — the stretch move targets ALL uncovered facets;</code><br>` +
-    `<code style="background:#1e293b;padding:2px 6px;border-radius:3px;color:#94a3b8">` +
-    `# the guide weight concentrates effort on the hardest ones</code>`;
+    `<br><code>--target-facets ${targets}</code>: the stretch/collapse moves are ` +
+    `pinned to these specific facets (and their specified chains), not all uncovered facets. ` +
+    `<code>--target-weight 10</code> floors the guide weight so the annealer concentrates there.`;
   status.appendChild(explain);
 }
 
