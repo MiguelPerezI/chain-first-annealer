@@ -28,6 +28,19 @@ def truncated(chain, L):
     return [chain[min(i, len(chain) - 1)] for i in range(L + 1)]
 
 
+class LoadWarm(unittest.TestCase):
+    def test_domains_are_paired_with_their_own_chains(self):
+        # complete summaries store domains sorted by size, not in chain order
+        import numpy as np
+        sys.path.insert(0, str(OPTI / "src"))
+        import gpu_sc
+        P = gpu_sc.build("mobius")
+        chains, domains, _, _ = scs_order()
+        for c, d in zip(chains, domains):
+            own = set(int(f) for f in P.domain_of(np.array(c, np.int8)))
+            self.assertLessEqual(set(d), own)
+
+
 class Converter(unittest.TestCase):
     def test_cold_witness_certifies(self):
         s = json.loads(WARM.read_text())

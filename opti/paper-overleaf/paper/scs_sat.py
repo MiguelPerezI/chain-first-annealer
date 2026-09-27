@@ -119,12 +119,12 @@ def load_warm(path, NV, NG, NF, FAC, TRIS):
     raw_chains = data["best_chains"]
     k_warm = len(raw_chains)
 
-    if "domains" in data:
-        raw_domains = data["domains"]
-    else:
-        print(f"  partial summary (status={data.get('status','?')}), "
-              f"recomputing domains from chains...", flush=True)
-        raw_domains = _recompute_domains(raw_chains, NV, NF, FAC, TRIS)
+    # Complete summaries store "domains" sorted by size, not in best_chains
+    # order, so pairing them by index freezes a domain under the wrong chain.
+    # Recompute each chain's own domain in both cases.
+    print(f"  warm summary (status={data.get('status','complete')}), "
+          f"recomputing domains from chains...", flush=True)
+    raw_domains = _recompute_domains(raw_chains, NV, NF, FAC, TRIS)
 
     covered = set()
     for dom in raw_domains:
