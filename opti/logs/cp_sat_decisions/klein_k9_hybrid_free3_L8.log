@@ -1,0 +1,47 @@
+Klein bottle (8 vertices, 16 triangles, Cervone 242): 1536 facets, 64 grid vertices, 16 maximal facets of K, NV=8; workers=8
+HYBRID mode: warm=results/warm_reduced/klein_k9_v3_red.json, free=3/9
+  warm-start: 9 domains, 1494/1536 covered, 42 residual
+    domain 0: 276 facets
+    domain 1: 270 facets
+    domain 2: 268 facets
+    domain 3: 266 facets
+    domain 4: 261 facets
+    domain 5: 238 facets
+    domain 6: 236 facets
+    domain 7: 226 facets
+    domain 8: 187 facets
+  freezing 6 domains (1231 facets covered)
+  freeing 3 domains to cover 305 residual facets
+  building hybrid model: 6 frozen + 3 free domains, L=8...
+  model built: 448328 vars, 4498946 constraints
+  launching solver with 8 workers, timeout 7200s...
+
+Starting CP-SAT solver v9.15.6755
+Parameters: max_time_in_seconds: 7200 log_search_progress: true num_workers: 8
+
+Initial satisfaction model '': (model_fingerprint: 0x83312b29d7993ae)
+#Variables: 448'328 (448'328 primary variables)
+  - 446'976 Booleans in [0,1]
+  - 1'344 in [0,7]
+  - 8 constants in {0,1,2,3,4,5,6,7} 
+#kLinear1: 4'469'760 (#enforced: 4'469'760)
+#kLinearN: 29'186 (#terms: 483'535)
+
+Starting presolve at 3.83s
+  6.47e+00s  0.00e+00d  [DetectDominanceRelations] 
+  2.53e+02s  0.00e+00d  [PresolveToFixPoint] #num_loops=5 #num_dual_strengthening=3 
+  4.06e-01s  0.00e+00d  [ExtractEncodingFromLinear] #potential_supersets=121 
+  8.36e-01s  0.00e+00d  [DetectDuplicateColumns] 
+  2.96e+00s  0.00e+00d  [DetectDuplicateConstraints] #duplicates=97'499 
+[Symmetry] Graph for symmetry has 3'768'552 nodes and 7'714'806 arcs.
+[Symmetry] Graph too large. Skipping. You can use symmetry_level:3 or more to force it.
+[SAT presolve] num removable Booleans: 121 / 328'658
+[SAT presolve] num trivial clauses: 0
+[SAT presolve] [0s] clauses:415'684 literals:1'175'079 vars:328'658 one_side_vars:317598 simple_definition:9'971 singleton_clauses:0
+[SAT presolve] [1.23645s] clauses:415'684 literals:1'174'344 vars:328'658 one_side_vars:318333 simple_definition:9'236 singleton_clauses:0
+[SAT presolve] [1.37275s] clauses:415'684 literals:1'174'344 vars:328'658 one_side_vars:318333 simple_definition:9'236 singleton_clauses:0
+  1.36e+01s  0.00e+00d  [DetectDuplicateConstraintsWithDifferentEnforcements] #without_enforcements=3'236'234 
+  6.24e+01s  1.01e+00d *[Probe] #probed=41'316 #new_binary_clauses=1'933'405 
+  2.78e+00s  1.03e+00d *[MaxClique] Merged 375'500 constraints with 751'000 literals into 312'026 constraints with 684'705 literals
+  5.49e+00s  0.00e+00d  [DetectDominanceRelations] 
+  1.17e+02s  0.00e+00d  [PresolveToFixPoint] #num_loops=3 #num_dual_strengthening=2 

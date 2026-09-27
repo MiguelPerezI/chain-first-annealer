@@ -1,0 +1,85 @@
+RP² (6 vertices, 10 triangles, hemi-icosahedron): 600 facets, 36 grid vertices, 10 maximal facets of K, NV=6; workers=8
+HYBRID mode: warm=results/warm_reduced/rp2_k5_stretch_red.json, free=1/5
+  warm-start: 5 domains, 544/600 covered, 56 residual
+    domain 0: 151 facets
+    domain 1: 132 facets
+    domain 2: 123 facets
+    domain 3: 150 facets
+    domain 4: 132 facets
+  freezing 4 domains (454 facets covered)
+  freeing 1 domains to cover 146 residual facets
+  building hybrid model: 4 frozen + 1 free domains, L=10...
+  model built: 48930 vars, 491400 constraints
+  launching solver with 8 workers, timeout 3600s...
+
+Starting CP-SAT solver v9.15.6755
+Parameters: max_time_in_seconds: 3600 log_search_progress: true num_workers: 8
+
+Initial satisfaction model '': (model_fingerprint: 0xefaece620ac74abe)
+#Variables: 48'930 (48'930 primary variables)
+  - 48'600 Booleans in [0,1]
+  - 324 in [0,5]
+  - 6 constants in {0,1,2,3,4,5} 
+#kLinear1: 486'000 (#enforced: 486'000)
+#kLinear2: 146
+#kLinear3: 454
+#kLinearN: 4'800 (#terms: 52'800)
+
+Starting presolve at 0.25s
+INFEASIBLE: 'linear: never in domain'
+Unsat after presolving constraint #265397 (warning, dump might be inconsistent): linear { domain: 1 domain: 2 }
+  2.92e+00s  0.00e+00d  [PresolveToFixPoint] 
+
+Presolve summary:
+  - 77 affine relations were detected.
+  - rule 'affine: new relation' was applied 77 times.
+  - rule 'bool_and: always false' was applied 406 times.
+  - rule 'bool_and: non-reified' was applied 35 times.
+  - rule 'bool_and: setting unused literal in rhs to true' was applied 792 times.
+  - rule 'bool_or: fixed literals' was applied 1'713 times.
+  - rule 'bool_or: implications' was applied 2'967 times.
+  - rule 'bool_or: only one literal' was applied 42'671 times.
+  - rule 'bool_or: singleton' was applied 84 times.
+  - rule 'enforcement: false literal' was applied 342'773 times.
+  - rule 'enforcement: literal not used' was applied 76 times.
+  - rule 'enforcement: true literal' was applied 4'389 times.
+  - rule 'linear1: always true' was applied 573 times.
+  - rule 'linear1: x in domain' was applied 146 times.
+  - rule 'linear2: convert ax + by != cte to clauses' was applied 777 times.
+  - rule 'linear: always true' was applied 20'013 times.
+  - rule 'linear: divide by GCD' was applied 18'102 times.
+  - rule 'linear: empty' was applied 60'306 times.
+  - rule 'linear: fixed or dup variables' was applied 95'794 times.
+  - rule 'linear: infeasible' was applied 1'272 times.
+  - rule 'linear: negative clause' was applied 2'896 times.
+  - rule 'linear: never in domain' was applied 40'126 times.
+  - rule 'linear: not satisfied after GCD' was applied 320 times.
+  - rule 'linear: positive clause' was applied 877 times.
+  - rule 'linear: reduced variable domains' was applied 1'081 times.
+  - rule 'linear: remapped using affine relations' was applied 23'577 times.
+  - rule 'linear: simplified rhs' was applied 11'174 times.
+  - rule 'new_bool: var with 2 values' was applied 62 times.
+  - rule 'presolve: iteration' was applied 1 time.
+  - rule 'variables with 2 values: create encoding literal' was applied 62 times.
+  - rule 'variables with 2 values: new affine relation' was applied 62 times.
+  - rule 'variables: canonicalize affine domain' was applied 15 times.
+  - rule 'variables: detect half reified value encoding' was applied 18'863 times.
+Problem closed by presolve.
+CpSolverResponse summary:
+status: INFEASIBLE
+objective: NA
+best_bound: NA
+integers: 0
+booleans: 0
+conflicts: 0
+branches: 0
+propagations: 0
+integer_propagations: 0
+restarts: 0
+lp_iterations: 0
+walltime: 4.00654
+usertime: 4.00654
+deterministic_time: 0
+gap_integral: 0
+
+hybrid k=5 (frozen=4, free=1) L=10: INFEASIBLE in 4.0s (vars 48930, cons 491400)
