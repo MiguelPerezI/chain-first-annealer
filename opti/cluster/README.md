@@ -8,7 +8,7 @@ independent audit, one log row) and writes to a PVC.
 | file | role |
 |---|---|
 | `run_rung.sh` | pod entrypoint: installs git/time if missing, clones the repo at `REPO_REF`, builds the ortools venv, runs the rung chosen by `JOB_COMPLETION_INDEX` |
-| `rp2_k5_jobs.yaml` | three Jobs: `rp2-controls` (k=6 L=8), `rp2-k5-ladder` (L=4..16, 14 CPU / 16 GiB), `rp2-k5-giants` (L=24..40, 8 CPU / 64 GiB) |
+| `rp2_k5_jobs.yaml` | three Jobs: `rp2-controls` (k=6 L=8), `rp2-k5-ladder` (L=4..16, 14 CPU / 32 GiB), `rp2-k5-giants` (L=24..40, 8 CPU / 64 GiB) |
 
 ## Before applying
 

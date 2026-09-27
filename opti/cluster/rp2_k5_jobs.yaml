@@ -32,8 +32,8 @@ spec:
             - name: GIT_TOKEN
               valueFrom: {secretKeyRef: {name: "[GIT_TOKEN_SECRET]", key: token}}
           resources:
-            requests: {cpu: "14", memory: 16Gi}
-            limits: {cpu: "14", memory: 16Gi}
+            requests: {cpu: "14", memory: 32Gi}
+            limits: {cpu: "14", memory: 32Gi}
           volumeMounts:
             - {name: sat-script, mountPath: /opt/sat}
             - {name: results, mountPath: /results}
@@ -43,7 +43,8 @@ spec:
         - name: results
           persistentVolumeClaim: {claimName: "[PVC_NAME]"}
 ---
-# Runbook §5, first wave: RP² k=5 cold, L = 4 5 6 8 12 16 (≤ 4.3 M constraints, ≤ ~10 GB).
+# Runbook §5, first wave: RP² k=5 cold, L = 4 5 6 8 12 16 (≤ 4.3 M constraints).
+# RAM grows with workers: rp2 k=6 L=8 (2.2 M constraints) hit 6 GB with 8 workers on the laptop.
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -73,8 +74,8 @@ spec:
             - name: GIT_TOKEN
               valueFrom: {secretKeyRef: {name: "[GIT_TOKEN_SECRET]", key: token}}
           resources:
-            requests: {cpu: "14", memory: 16Gi}
-            limits: {cpu: "14", memory: 16Gi}
+            requests: {cpu: "14", memory: 32Gi}
+            limits: {cpu: "14", memory: 32Gi}
           volumeMounts:
             - {name: sat-script, mountPath: /opt/sat}
             - {name: results, mountPath: /results}
