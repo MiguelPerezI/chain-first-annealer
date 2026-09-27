@@ -1,0 +1,16 @@
+=== annealer_stretch chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=9 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/klein_k9_v3/summary.json (reduced chains of the 9 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  h1-guide: 40/42 uncovered facets are H1-obstructed for all 9 chains (weight 0)
+  epoch   1: best 1494.0/1536  top10 [1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494]  median 925  now-median 922     96.0s     0.232 Mmoves/s  stretch prop 4805045 acc 777396 (16%)  collapse prop 4808488 acc 116867 (2%)  leftovers 42
+  epoch   2: best 1494.0/1536  top10 [1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494]  median 934  now-median 930    179.4s     0.239 Mmoves/s  stretch prop 4684691 acc 614236 (13%)  collapse prop 4681910 acc 81701 (2%)  leftovers 42
+  h1-guide: 40/42 uncovered facets are H1-obstructed for all 9 chains (weight 0)
+  epoch   3: best 1494.0/1536  top10 [1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494]  median 1494  now-median 1493    277.7s     0.235 Mmoves/s  stretch prop 4758308 acc 390923 (8%)  collapse prop 4757235 acc 66887 (1%)  leftovers 42
+  epoch   4: best 1494.0/1536  top10 [1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494]  median 1494  now-median 1492    368.0s     0.233 Mmoves/s  stretch prop 4746820 acc 380700 (8%)  collapse prop 4749209 acc 63781 (1%)  leftovers 42
+  h1-guide: 40/42 uncovered facets are H1-obstructed for all 9 chains (weight 0)
+  epoch   5: best 1494.0/1536  top10 [1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494]  median 1494  now-median 1493    468.9s     0.230 Mmoves/s  stretch prop 4929948 acc 191935 (4%)  collapse prop 4929671 acc 40202 (1%)  leftovers 42
+  epoch   6: best 1494.0/1536  top10 [1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494, 1494]  median 1494  now-median 1493    561.9s     0.228 Mmoves/s  stretch prop 4923643 acc 184581 (4%)  collapse prop 4924985 acc 37685 (1%)  leftovers 42
+best coverage 1494/1536  domain sizes [276, 270, 268, 266, 261, 238, 236, 226, 187]  time 565.7s  kernel 537.8s  moves 1.23e+08
+NOT a covering: 42 facets uncovered
+wrote results/klein_k9_v4/summary.json (partial)

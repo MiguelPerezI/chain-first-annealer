@@ -1,0 +1,9 @@
+=== annealer_stretch chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=9 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/klein_k9/summary.json (reduced chains of the 9 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  h1-guide: 41/43 uncovered facets are H1-obstructed for all 9 chains (weight 0)
+  epoch   1: best 1493.0/1536  top10 [1493, 1493, 1493, 1493, 1493, 1493, 1493, 1493, 1493, 1493]  median 924  now-median 922    102.5s     0.217 Mmoves/s  stretch prop 4792303 acc 784545 (16%)  collapse prop 4794513 acc 108597 (2%)  leftovers 43
+best coverage 1493/1536  domain sizes [288, 270, 268, 266, 261, 238, 236, 226, 185]  time 106.3s  kernel 94.3s  moves 2.05e+07
+NOT a covering: 43 facets uncovered
+wrote results/klein_k9_v2/summary.json (partial)
