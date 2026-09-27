@@ -150,3 +150,110 @@ k = 3: the same two facets {23, 90} across seeds, H₁-open with a perfect
 matching the move set never takes. Full battery, per-facet profiles and the
 three-depths correlation (Möbius = move-set binding, RP² = product-family
 trap, Klein = topology binding): `experiments/surface_stall_analysis.md`.
+
+
+# NOTES:
+
+What checks out
+- Surface classification (answer 1): closed connected with H₁(;Z/2) = 0 ⟺ S²; with boundary ⟺ disjoint unions of disks and S². Möbius ≃ S¹, RP², torus, Klein all have H₁(;Z/2) ≠ 0 — correct. (Note H₁(;Z/2) = H₁(;Z)⊗Z/2, so the table is right.)
+- All line refs verified: annealer_formal_properties.md:188-193 (Thm 3), :214-218 (winding/sparsity), klein_anneal_log.md:267 (Möbius --h1-guide masks nothing), s3_k2_push_log.md:163 ("no teeth"), dodeca_campaign_analysis.md:661-675 (cyclic-order vs K₅).
+- nf = F²·C(4,2) = F²·6 for surface complexes ✓ (optimized_algorithms.md:564); 96/864/7776/1176/1536 all correct.
+- Antipodal layer: deg A = det(−I) = (−1)^{n+1}; 1 − A_* = 0 (n odd) or 2 (n even) on H_n(−;Z); A_* = id over Z/2 at every n. The two-branch planner and "chainable ⟺ id ≃ A" are the classical proof of TC(S^n) = 1/2 (normalized). Degree-n (π₁−π₂)_* ≠ 0 obstructs a domain in any degree/coefficients — valid Theorem-2 analogue.
+What's wrong
+1. Torus TC row is a repo bug you inherited. klein_anneal_log.md:177,193 say torus TC = 3; but the repo's own convention is normalized — optimized_algorithms.md:571 and :952 say TC(T²) = 2, and Cohen–Vandembroucq's abstract literally says "(normalized) TC of the Klein bottle is 4". So "torsion lifts TC from the torus's 3 to Klein's 4" should read 2 → 4 (unshifted 3 → 5). The whole table is normalized except that one cell.
+2. Torus runs mis-attributed. Best 733/1176 (62%) is torus_k4_c40_b5 (k = 4); k = 3 best is 579 (optimized_algorithms.md:665-672). "k=4 → 705, k=11 → 563" is really k = 4 → 8 → 11 = 733 → 705 → 563, and the k=8/k=11 runs only got 5 epochs (local-state/throughput), so the non-monotonicity is confounded.
+3. Cube stall numbers. guided_sphere_k2_plan.md:49-52: cold k3 → 662/864 in 300 s; cube_k3_v2 ran 60 epochs (814 s) pinned at 820/864; cube_k3_guided closed 864/864 in 22 epochs. Not "662 for 60 epochs".
+4. "SC⁰ = TC = 1 is the one value the level-0 annealer never attains" — false: the circle attains it (results/circle_probe3, 18/18 at k=2). True only for 2-dimensional instances at k=2 (that's C1).
+5. "Every completed cover is level-0-sharp" — the Möbius k = 4, 5 covers are completed and not sharp (TC = 1). The repo's parenthetical list (circle, bary, cube, ∂Δ³/⁵/⁷, wedge) is the correct sharp set.
+6. Punchline self-contradiction. "Every hard stall is invisible over Z/2 — and the surfaces are the lucky case where it is visible" contradicts its own table (row 1 says winding is visible). Correct: the Z/2 tool has teeth only on winding; every stall outside that family is out of its field of view.
+7. "460-style ceiling on even spheres" — 460/500 is S³ (odd). Even-sphere k=2 ceilings are 84/96 (S²) and 2380/2520 (S⁴) (guided_sphere_k2_plan.md:30). All three are exactly the best 2-rectangle covers (rect2_optimum.py, C3) — the shared mechanism is the rectangle attractor, not parity; parity only decides whether a non-rectangle 2-cover exists.
+8. "Dodeca failed at 23%" is stale: 23 % = escal-5 checkpoint 1831/7776; the same k=3 campaign later saturated at 2602/7776 = 33.5 % (dodeca_anneal_log.md "100 tries", 73 % of restarts gain 0).
+9. Minor: "384 and 2400 facets — between Klein's 1536 and dodeca's 7776" — 384 < 1536. And "cup-length 3 → 4" for Klein: Z/2 zero-divisor cup-length gives 3 (over Z only 1 — the mod-2 structure is why), and the last step to 4 is Cohen–Vandembroucq's theorem, not cup-length.
+Improved experiment plan
+The density ladder idea is right; here it is with the missing invariants computed (I verified f-vectors, links, χ = 2, dual diameters, and ρ by the repo's own set-cover bounds):
+K	V/F	density	dual diam	ρ
+∂Δ³ (S²)	4/4	100 %	1	3
+octahedron	6/8	40.0 %	3	4
+cube	8/12	21.4 %	4	8
+icosahedron	12/20	9.1 %	5	≥ 24
+dodecahedron	20/36	3.2 %	7	≥ 32
+Density and dual diameter are both monotone down the ladder, and ρ explodes — so octa/icosa at k = 3 cleanly separate "sparsity threshold" from "dodeca-specific". Run both; prediction if density is the disease: success at 40 %, failure or heavy stall at 9.1 %.
+Second test — C1, stated correctly (optimized_algorithms.md:965): SC_strict⁰(∂Δ⁴) = 2 > 1 = TC(S³). The 16-cell (S³, 8 vertices, 16 tetrahedra, nf = 16²·20 = 5120) is the right probe: it has a simplicial antipodal map (unlike ∂Δ⁴, which has no A at all — 5 vertices), so the antipodal branch is an honest subcomplex and the only question is facet-respect. If it also pins at its 2-rectangle optimum, the gap is triangulation-independent; if it covers at k=2, C1 is a fact about ∂Δ⁴'s K₅ combinatorics (dodeca_campaign_analysis.md:661-675) and SC_strict⁰ depends on the triangulation.
+Third — don't build a tool for the degree-n statement. The even-sphere k=2 wall is already certified by TC(S^{even}) = 2 ≤ SC_strict (González, Cor. 3); 1 − A_* = 2 is a 5-line lemma (deg A = (−1)^{n+1}) for the paper, and its only code-level payoff is per-domain certification (e.g. "the antipodal branch is not one domain"). Two implementation notes: the cube and dodeca facet lists in build() are not A-invariant (cube face diagonal 0–5 maps under (0 6)(1 7)(2 4)(3 5) to 3–6, absent from the opposite face's fan) — use cross-polytopes only; and the octahedron already serves both tests (density rung + A-simplicial S² control), so only the 16-cell and icosa need new facet lists. Optional genus-2: 10 vertices / 24 triangles (χ = −2), nf = 3456, H₁(;Z/2) rank 4 — fine as a rank test, but record TC in the normalized convention so it doesn't inherit the torus row's bug.
+
+
+
+Short answer: not one disease — two, with the same dynamical signature. And "search limitation" gets a different verdict per family, which the repo already splits cleanly.
+Topologically: no correlation (they're complementary)
+family	homology
+odd spheres (S³, S⁵)	H₁ = 0, and 1−A_* = 0 in every degree, over Z and Z/2
+winding surfaces	H₁(;Z/2) ≠ 0
+The two never overlap: odd dimension and H₁ ≠ 0 are mutually exclusive here. So there is no shared topological cause — if there were, the H₁ tool would fire on the spheres (it can't) or be vacuous on the surfaces (it isn't).
+Dynamically: identical signature, one shared cause in the annealer
+Both stall types show the same log shape: population collapses to one shape family, spread zero from epoch 1, --h1-guide/--crossover inert, extension moves dead, plateau at an exact combinatorial number. That number is always the ceiling of the reachable family:
+- spheres at k=2: 84/96, 460/500, 2380/2520 = the proven best 2-rectangle covers (rect2_optimum.py);
+- surfaces: shape-family optima (58+60+48 on Möbius, star rectangles on torus).
+The shared cause is documented: single-entry + track moves cannot cut a domain (klein_anneal_log.md §6 — restructuring is the one missing move class), and on Möbius the barrier is coverage-structural, not weight-dependent (every repair costs ≥6 covered, swap nets −5). That part is a search limitation — with a proven reason, not a tuning problem.
+The real correlation: SC_strict⁰ > TC
+Every stall is a discretization gap; every completed cover is sharp. But the gap has two unrelated sources:
+1. winding — topology survives discretization (Möbius: SC_strict⁰ ≥ 2 > 1 = TC, gap of exactly one unit, mobius_sc_strict.tex);
+2. parity — the continuous planner isn't facet-respectable (C1: SC_strict⁰(∂Δ⁴) = 2 > 1 = TC; the cyclic-order/K₅ argument is the only positive evidence).
+So: limitation or answer?
+- Möbius k=3 — proven pure dynamics. A cover exists (mobius_k3_sat, CP-SAT, 42 s: 65+43+42) and the annealer never enters that family. annealer_formal_properties.md:140-142 says it outright: "the annealer's failure is purely its own dynamics, on a solvable instance."
+- RP² k=5, Klein k≤8 — open, and either SAT answer is a theorem (SC_strict⁰(RP²) = 4 or 5).
+- Odd spheres k=2 — probably the answer, not a failure. Pinning at exactly the 2-rectangle optimum is what the true level-0 answer looks like (C1), and the K₅/no-cyclic-order argument says the circle's mechanism doesn't lift. But it's a conjecture: nothing proves 460/500 is optimal among all 2-chain covers.
+The one run that settles your question
+python paper-overleaf/paper/scs_sat.py --complex s3 --k 2 --L 8 --timeout 7200
+COVER(2, c, ∂Δ⁴) on 500 facets is the smallest open instance in the repo and the same instrument that settled the Möbius in 42 s. UNSAT ⇒ C1 becomes a theorem, the odd-sphere stall is the true answer, and the correlation you sense is purely the annealer's attractor; SAT ⇒ it's a search limitation after all, and the rectangle attractor (C2/C3) is the culprit on both families. Until that returns, the honest claim is: surfaces = certified search failure, odd spheres = conjectured discretization gap — same signature, different epistemic status.
+
+
+
+
+
+Yes — there is a correlation, and it's sharper than "winding vs not". Your SAT run changes the picture first:
+1. Your INFEASIBLE is the C1 theorem
+∂Δ⁴, k=2, L=8: no two contiguity chains cover all 500 facets. Together with the known 3-cover (ρ=3, 2-link chains): SC_strict⁰(∂Δ⁴) = 2 > 1 = TC(S³) — a one-unit discretization gap, exactly like the Möbius band (mobius_sc_strict.tex). So the odd-sphere stall is the true level-0 answer, not a search failure — the annealer pinning at the proven 2-rectangle optimum (460) was it reporting the optimum. One caveat to close: the verified covers elsewhere use chains up to 9–10 links (e.g. klein_k13), so rerun --complex s3 --k 2 --L 16 to lift "within L≤8" to essentially unconditional (the model grows only in the map vars).
+2. Your Klein ladder
+k	result	evidence
+15 → 10	covered (1536/1536), verified	SC_strict⁰(Klein) ≤ 9 — first bound below ρ−1 = 11
+9	stall 1491/1536, 300 epochs, 6.1e9 moves	seeded from the k=10 cover minus its smallest domain, still stuck at 45 leftovers
+8	stall 1483/1536 (53 leftovers)	old run
+Sharp boundary: k≥10 covers in 4–28 epochs (minutes); k=9 is dead after 8.6 h. Also note the new moves don't fire there: stretch accepted 3%, collapse 0%.
+3. The correlation — I ran the leftover analysis across all stalls
+stall	|L|	rank(π₁−π₂)_* on L	rank(D_j ∪ L)	per-facet absorption
+Klein k=8	53	2 (L winds, H₁=4)	2 for all 8	53/53 dead
+RP² k=3	202	1 (L winds, H₁=2)	1 for all 3	200/202 dead
+Klein k=9	45	0	2 for all 9	43/45 dead
+RP² k=5	60	0	1 for all 5	60/60 dead
+Möbius k=3	2	0	1 for all 3	0/2 dead (each f absorbable, pair not)
+S³ k=2	40	vacuous (H₁=0)	—	tool silent
+The rule that falls out (3/3 boundary predictions correct):
+- rank(L) ≠ 0 — the leftover complex itself winds; no fresh chain can take it, even alone. Stall survives k→k+1.
+- rank(L) = 0 — L is chainable; the plateau is exactly one domain short; k+1 covers immediately.
+- Leftover geometry matches everywhere: far pairs (Klein k=9: \|s∩t\|≤1, dual dist 2–3; RP² k=5: all \|s∩t\|=1, dual 2), fully-dead cells (Klein 4 cells 6/6 dead; RP² 10), defect depth exactly 1 on every leftover, plateau domains near-exact star rectangles (RP² k=5: 4 of 5 are exact diagonal rectangles).
+4. So: three stall species, one log signature
+The stall signature is identical across all families (zero top10 spread, defect depth 1, dead extension, exact plateau number) — that's the annealer. The cause splits, and the arbiter is SAT + rank(L):
+1. The answer is the plateau — S³ k=2 (your UNSAT), even spheres k=2 (TC floor).
+2. One domain short, winding-locked — Klein k=9, RP² k=5: extension provably dead for the existing domains (43/45, 60/60), but L chainable; existence of the k-cover still open.
+3. Pure dynamics — Möbius k=3: cover exists, leftovers H₁-open individually, only the joint D_j∪L is obstructed (the two facets must be split across domains — exactly what the SAT cover 65+43+42 does).
+5. Next runs (all decisive, one per open question)
+python paper-overleaf/paper/scs_sat.py --complex s3   --k 2 --L 16 --timeout 720000   # close the L-caveat
+python paper-overleaf/paper/scs_sat.py --complex rp2  --k 5 --L 8  --timeout 86400    # cold (docs' open item)
+python paper-overleaf/paper/scs_sat.py --complex klein --k 9 --L 8 --timeout 86400    # new boundary
+Prediction from the rank(L) rule: k=9 UNSAT (so SC_strict⁰(Klein) = 9) and k=5 UNSAT (SC_strict⁰(RP²) = 5) — either would be the first exact SC_strict⁰ for a closed non-orientable surface. The klein model is ~40× the s3 one (16 triangles, 1536 facets); if it's too heavy, the hybrid mode (8 frozen plateau domains + 1 free) answers "can this plateau be completed" at ~1/9 the size. And log rank(L) at every plateau going forward — it's a seconds-cheap predictor of the ladder boundary.
+
+
+
+L-caveat closed. L=16 is INFEASIBLE and subsumes all smaller L (shorter chains are special cases of ≤15-link chains), and every verified cover in the repo uses ≤10 links — so this is unconditional:
+SC_strict⁰(∂Δ⁴) = 2 > 1 = TC(S³) — the s3 stall is the true answer, second exact level-0 value with a gap after the Möbius band. The s3 k=2 plateau at 460/500 was the annealer reporting the optimum, not failing.
+Scaling across your four runs is clean and confirms the model formula y = k·NF·(L−2)·NT:
+L
+4
+5
+8
+16
+Near-linear in model size, trivially tractable. Extrapolating to the open boundary runs:
+- rp2 k=5, L=8 — 5·600·6·NT y-vars, ~2–3× the s3 L=8 model. Should finish in minutes. Never run; the docs' open item (SC_strict⁰(RP²)=5 prediction).
+- klein k=9, L=8 — 9·1536·6·16 ≈ 1.3M y-vars, ~40× s3 L=8. Hours, possibly overnight; if too heavy, hybrid mode with 8 frozen plateau domains + 1 free.
+
+

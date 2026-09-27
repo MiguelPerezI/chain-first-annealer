@@ -4,7 +4,8 @@ strictly-contiguous planner domains with chains of <= L links?
 A domain is a chain phi_0 = pi1 -> ... -> phi_L = pi2 of maps
 grid -> V(K); facet f is covered by the domain iff every link is
 1-contiguous AND simplicial on f: img(phi_i) | img(phi_{i+1}) on f lies
-in one triangle of K.
+in one maximal facet of K (called TRIS below; for surfaces these are
+triangles, for s3 the 5 tetrahedra of the 4-simplex boundary).
 
 Modes:
   Cold (default):  solve from scratch — full CP-SAT encoding for k domains.
@@ -141,6 +142,7 @@ def load_warm(path, NV, NG, NF, FAC, TRIS):
 def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
                want_solution=False, outdir=None):
     """Full CP-SAT solve from scratch."""
+    assert L >= 2, "L must be >= 2 (chain of >= 2 links; L=1 is not encoded)"
     NT = len(TRIS)
     model = cp_model.CpModel()
     print(f"  building model: {k} domains × {L} links × {NG} grid vertices...",
@@ -220,6 +222,7 @@ def solve_hybrid(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
     Only the freed domains get m/x/y variables.  Coverage constraint: every facet
     must be covered by either a frozen domain OR a freed domain.
     """
+    assert L >= 2, "L must be >= 2 (chain of >= 2 links; L=1 is not encoded)"
     NT = len(TRIS)
     raw_chains, raw_domains, covered, order = load_warm(
         warm_path, NV, NG, NF, FAC, TRIS)
@@ -256,9 +259,12 @@ def solve_hybrid(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
     for di, frozen_idx in enumerate(frozen_ids):
         chain = raw_chains[frozen_idx]
         chain_len = len(chain) - 1
-        pad_L = max(L, chain_len)
+        if chain_len > L:
+            raise ValueError(
+                f"warm chain {frozen_idx} has {chain_len} links > L={L}; "
+                f"truncating would break m[d,L]=pi2. Re-run with --L {chain_len}.")
         for i in range(L + 1):
-            src_i = min(i, chain_len)
+            src_i = min(i, chain_len)   # pad with repeated pi2 at the tail
             for v in range(NG):
                 m[di, i, v] = model.NewConstant(int(chain[src_i][v]))
         for f in range(NF):
@@ -398,7 +404,7 @@ if __name__ == "__main__":
     NV, NG, NF, FAC, TRIS, PI1, PI2, P = build_complex(args.complex)
 
     print(f"{P.name}: {NF} facets, {NG} grid vertices, "
-          f"{len(TRIS)} triangles, NV={NV}; workers={workers}")
+          f"{len(TRIS)} maximal facets of K, NV={NV}; workers={workers}")
 
     if args.warm and args.free > 0:
         print(f"HYBRID mode: warm={args.warm}, free={args.free}/{args.k}")

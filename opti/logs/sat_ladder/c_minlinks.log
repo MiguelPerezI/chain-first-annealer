@@ -1,0 +1,11 @@
+seed 0: |D|=320 min_links=2
+seed 1: |D|=140 min_links=2
+seed 2: |D|=40 min_links=2
+seed 3: |D|=309 min_links=3
+seed 4: |D|=130 min_links=3
+seed 5: |D|=61 min_links=3
+rect(0,0): |D|=320 min_links=2
+rect(3,2): |D|=320 min_links=3
+rect(2,3): |D|=320 min_links=3
+rect(3,0): |D|=320 min_links=3
+growing from |D|=320

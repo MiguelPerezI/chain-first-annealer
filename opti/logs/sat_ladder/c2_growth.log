@@ -1,0 +1,8 @@
+grow start: |D|=320 min-L=2
+GROWN |D|=320 min-L=2 peak=2 rejected=131
+random |D|=400: chainable(24)=False min-L=None
+random |D|=420: chainable(24)=False min-L=None
+random |D|=440: chainable(24)=False min-L=None
+random |D|=460: chainable(24)=False min-L=None
+random |D|=480: chainable(24)=False min-L=None
+random |D|=500: chainable(24)=False min-L=None

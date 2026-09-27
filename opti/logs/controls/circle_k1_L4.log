@@ -1,0 +1,57 @@
+∂Δ² (S¹): 18 facets, 9 grid vertices, 3 triangles, NV=3; workers=2
+COLD mode: k=1, L=4, timeout=300s
+  building model: 1 domains × 4 links × 9 grid vertices...
+  adding contiguity constraints (1×18×2×3 y-vars)...
+  model built: 156 vars, 810 constraints
+  launching solver with 2 workers, timeout 300s...
+
+Starting CP-SAT solver v9.15.6755
+Parameters: max_time_in_seconds: 300 log_search_progress: true num_workers: 2
+
+Initial satisfaction model '': (model_fingerprint: 0x1af0a16e30cb335)
+#Variables: 156 (156 primary variables)
+  - 126 Booleans in [0,1]
+  - 27 in [0,2]
+  - 3 constants in {0,1,2} 
+#kLinear1: 774 (#enforced: 756)
+#kLinearN: 36 (#terms: 144)
+
+Starting presolve at 0.01s
+INFEASIBLE: 'linear: never in domain'
+Unsat after presolving constraint #280 (warning, dump might be inconsistent): linear { domain: 1 domain: 2 }
+  6.95e-03s  0.00e+00d  [PresolveToFixPoint] 
+
+Presolve summary:
+  - 0 affine relations were detected.
+  - rule 'bool_or: only one literal' was applied 72 times.
+  - rule 'enforcement: false literal' was applied 261 times.
+  - rule 'enforcement: true literal' was applied 23 times.
+  - rule 'linear1: always true' was applied 20 times.
+  - rule 'linear1: x in domain' was applied 18 times.
+  - rule 'linear: always true' was applied 29 times.
+  - rule 'linear: empty' was applied 279 times.
+  - rule 'linear: fixed or dup variables' was applied 388 times.
+  - rule 'linear: never in domain' was applied 72 times.
+  - rule 'linear: reduced variable domains' was applied 76 times.
+  - rule 'linear: simplified rhs' was applied 6 times.
+  - rule 'presolve: iteration' was applied 1 time.
+  - rule 'variables: detect half reified value encoding' was applied 198 times.
+Problem closed by presolve.
+CpSolverResponse summary:
+status: INFEASIBLE
+objective: NA
+best_bound: NA
+integers: 0
+booleans: 0
+conflicts: 0
+branches: 0
+propagations: 0
+integer_propagations: 0
+restarts: 0
+lp_iterations: 0
+walltime: 0.0164636
+usertime: 0.0164637
+deterministic_time: 0
+gap_integral: 0
+
+k=1 L=4: INFEASIBLE in 0.0s (vars 156, cons 810)
