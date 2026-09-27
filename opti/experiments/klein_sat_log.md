@@ -1,9 +1,11 @@
 # Klein bottle CP-SAT log
 
 Spec: `docs/superpowers/specs/2026-09-26-klein-sat-cover-design.md`.
-Rows are appended by `scripts/sat_rung.sh`. INFEASIBLE at (k, L) means no cover
-whose chains have at most L links; it is not a lower bound. Smoke rows (60 s,
-laptop) measure model size and RSS only.
+Rows are appended by `scripts/sat_rung.sh`. A cold INFEASIBLE at (k, L) means
+no cover whose chains have at most L links; it is not a lower bound. A hybrid
+INFEASIBLE is weaker: it only rules out covers that keep the frozen warm chains
+and add free chains of at most L links. Smoke rows (60 s, laptop) measure model
+size and RSS only.
 
 Smoke notes (laptop, 14 GB RAM, capped with `ulimit -v 5000000`):
 

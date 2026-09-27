@@ -22,7 +22,9 @@ import scs_sat  # noqa: E402
 
 def full_chains(witness, warm, k, n_free, dims):
     chains = [list(c) for c in witness["chains"]]
-    if warm:
+    # scs_sat only runs the hybrid model when --free > 0; otherwise the
+    # witness is a cold solve and its chains are the solver's own.
+    if warm and n_free > 0:
         raw_chains, raw_domains, _, order = scs_sat.load_warm(warm, *dims)
         n_frozen = min(k - n_free, len(raw_domains))
         chains[:n_frozen] = [raw_chains[i] for i in order[:n_frozen]]

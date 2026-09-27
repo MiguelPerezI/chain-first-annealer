@@ -8,10 +8,15 @@ Smoke notes (laptop, 14 GB RAM, capped with `ulimit -v 5000000`, 60 s):
 
 - S^3, L = 12: **INFEASIBLE**, proved by CP-SAT in 60.2 s (51,555 variables,
   724,501 constraints, peak RSS 2.73 GB). This is a solver proof, not a time
-  cap. A shorter chain pads to L links by repeating pi1 (allowed by the model),
-  so the statement covers every L <= 12: no 2-domain level-0 cover of the
-  boundary of Delta^4 with chains of at most 12 links. Evidence for C1, not a
-  proof; the CP-SAT infeasibility proof is not independently checked.
+  cap. For the boundary of Delta^4, sigma(f) and tau(f) are maximal simplices
+  of K for every product facet f, so the model's end-link constraints
+  (m_1 inside sigma(f), m_{L-1} inside tau(f)) and middle-link constraints
+  (both maps inside one maximal simplex) are exactly 1-contiguity. A chain with
+  L' < 12 links pads to 12 by repeating pi1 at the start (L' >= 2) or pi2 at
+  the end (L' = 1). So the statement covers every L <= 12: no 2-domain level-0
+  cover of the boundary of Delta^4 with chains of at most 12 links. Evidence
+  for C1, not a proof; the CP-SAT infeasibility proof is not independently
+  checked.
 - S^5, L = 3: model built (197,771 variables, 4,383,541 constraints; 2.98 GB
   while building), then `std::bad_alloc` at solve start under the 5 GB cap.
 - S^5, L = 4: model built (370,741 variables, 8,211,421 constraints; 3.36 GB

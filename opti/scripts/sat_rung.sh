@@ -4,6 +4,9 @@
 set -euo pipefail
 [ $# -ge 7 ] || { echo "usage: $0 COMPLEX K L TIMEOUT WORKERS OUTDIR LOG_MD [WARM FREE]" >&2; exit 64; }
 cx=$1 k=$2 L=$3 to=$4 wk=$5 out=$6 log=$7 warm=${8:-} free=${9:-0}
+if [ -n "$warm" ] && [ "$free" -lt 1 ]; then
+  echo "WARM needs FREE >= 1 (scs_sat runs a cold solve with --free 0)" >&2; exit 64
+fi
 OPTI=$(cd "$(dirname "$0")/.." && pwd)
 PY=${PY:-$OPTI/.venv-sat/bin/python}
 mkdir -p "$out"

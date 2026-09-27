@@ -64,6 +64,18 @@ class Converter(unittest.TestCase):
                           "--L", str(L), "--warm", str(WARM), "--free", "1"])
             self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
+    def test_warm_with_zero_free_does_not_overwrite_witness(self):
+        # scs_sat runs a cold solve when --free is 0; the witness is the
+        # solver's own and must not be replaced by the annealer's chains
+        chains, _, _, order = scs_order()
+        witness = [truncated(chains[i], 4) for i in order]
+        with tempfile.TemporaryDirectory() as d:
+            w = Path(d) / "w.json"
+            w.write_text(json.dumps({"chains": witness, "domains": []}))
+            r = run_conv([str(w), f"{d}/cert", "--complex", "mobius", "--k", "5",
+                          "--L", "4", "--warm", str(WARM), "--free", "0"])
+            self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+
     def test_truncated_without_warm_is_rejected(self):
         chains, _, _, order = scs_order()
         witness = [truncated(chains[i], 4) for i in order]
