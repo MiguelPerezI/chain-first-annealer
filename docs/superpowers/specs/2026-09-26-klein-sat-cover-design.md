@@ -74,13 +74,16 @@ annealer lacks.
 
 ### Resource limits
 
-This laptop has 14 GB RAM (about 6 GB free), 24 cores and an RTX 5080 (unused
-by CP-SAT). The cold model at k = 5, L = 8 has about 737,000 y variables and
-about 7.4 million enforced domain constraints (estimate: k * 1536 * (L - 2) *
-16 y variables, ten constraints each). Before each cold rung the model is built
-once with a 60 s solve to measure variables, constraints and peak RSS. If peak
-RSS exceeds 5 GB, that rung moves to the RTX PRO 6000 server used for the S^6
-campaign.
+CP-SAT runs on CPU and RAM; it does not use the GPU. Production runs execute
+on the AI lab machine ([cores], [RAM], [OS], [how jobs are launched]: to be
+filled in). The laptop (14 GB RAM, 24 cores) is used only for smoke tests.
+
+The cold model at k = 5, L = 8 has about 737,000 y variables and about 7.4
+million enforced domain constraints (estimate: k * 1536 * (L - 2) * 16 y
+variables, ten constraints each). Before each rung the model is built once on
+the laptop with a 60 s solve to measure variables, constraints and peak RSS;
+the lab run then sets `--workers` to the lab core count and is launched only if
+the measured RSS fits the lab RAM.
 
 ### Recording
 

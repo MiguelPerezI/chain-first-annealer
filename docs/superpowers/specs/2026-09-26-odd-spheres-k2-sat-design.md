@@ -34,11 +34,14 @@ constraints per y per vertex of a product facet):
 | S^5 | boundary Delta^6 | 12,348 | 7 | 11 | about 1.0 M | about 23 M |
 | S^7 | boundary Delta^8 | 277,992 | 9 | 15 | about 30 M | about 900 M |
 
-S^3 is small enough to run to completion here. S^5 is at the edge of this
-laptop (14 GB RAM, about 6 GB free). S^7 is roughly 900 times S^3 in
-constraints and is not expected to fit on any available machine. The ladder
-measures instead of assuming: each rung records real model size and peak RSS,
-and the next rung runs only if the measured growth says it can.
+CP-SAT runs on CPU and RAM; it does not use the GPU. Production runs execute
+on the AI lab machine ([cores], [RAM], [OS], [how jobs are launched]: to be
+filled in); the laptop (14 GB RAM, 24 cores) is used only for smoke tests.
+
+S^3 is small. S^5 needs lab-scale RAM. S^7 is roughly 900 times S^3 in
+constraints and may not fit even there. The ladder measures instead of
+assuming: each rung records real model size and peak RSS, and the next rung
+runs only if the measured growth fits the lab RAM.
 
 ## Approach
 
@@ -56,8 +59,8 @@ and the next rung runs only if the measured growth says it can.
 | rung | sphere | k | L | cap per run | gate to run |
 |---|---|---:|---|---|---|
 | A | S^3 | 2 | 3, 4, 6, 8, 10, 12 | 2 h | none |
-| B | S^5 | 2 | 3, 4, 6, 8 | 8 h | a 60 s build fits in 5 GB RSS here, otherwise run on the RTX PRO 6000 server |
-| C | S^7 | 2 | 3, 4 | 24 h | rung B built and solved at L = 4, and extrapolated RSS from A and B fits the server |
+| B | S^5 | 2 | 3, 4, 6, 8 | 8 h | the smoke-test RSS fits the lab RAM |
+| C | S^7 | 2 | 3, 4 | 24 h | rung B built and solved at L = 4, and RSS extrapolated from A and B fits the lab RAM |
 
 Rung A runs L upward and stops at the first FEASIBLE. L = 3 is the smallest
 L whose model has a middle link (`scs_sat.py` adds y variables for links
