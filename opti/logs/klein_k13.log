@@ -1,0 +1,32 @@
+=== annealer_stretch chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=13 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/klein_k14/summary.json (reduced chains of the 13 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  h1-guide: 14/26 uncovered facets are H1-obstructed for all 13 chains (weight 0)
+  epoch   1: best 1510.0/1536  top10 [1510, 1510, 1509, 1508, 1508, 1507, 1507, 1507, 1507, 1507]  median 929  now-median 928    100.9s     0.214 Mmoves/s  stretch prop 4424298 acc 779173 (18%)  collapse prop 4425737 acc 143869 (3%)  leftovers 26
+  epoch   2: best 1513.0/1536  top10 [1513, 1512, 1512, 1512, 1511, 1510, 1510, 1510, 1510, 1510]  median 940  now-median 934    186.5s     0.226 Mmoves/s  stretch prop 3783822 acc 527908 (14%)  collapse prop 3787463 acc 104999 (3%)  leftovers 23
+  h1-guide: 3/18 uncovered facets are H1-obstructed for all 13 chains (weight 0)
+  epoch   3: best 1518.0/1536  top10 [1518, 1516, 1515, 1514, 1513, 1513, 1513, 1512, 1512, 1512]  median 1494  now-median 1491    276.9s     0.228 Mmoves/s  stretch prop 3477164 acc 390831 (11%)  collapse prop 3478637 acc 88855 (3%)  leftovers 18
+  epoch   4: best 1520.0/1536  top10 [1520, 1519, 1518, 1517, 1516, 1516, 1516, 1515, 1515, 1514]  median 1495  now-median 1492    348.5s     0.241 Mmoves/s  stretch prop 2043374 acc 269659 (13%)  collapse prop 2042829 acc 60609 (3%)  leftovers 16
+  h1-guide: 3/16 uncovered facets are H1-obstructed for all 13 chains (weight 0)
+  epoch   5: best 1520.0/1536  top10 [1520, 1519, 1518, 1518, 1517, 1517, 1517, 1517, 1517, 1517]  median 1498  now-median 1497    421.7s     0.249 Mmoves/s  stretch prop 1957570 acc 142585 (7%)  collapse prop 1959346 acc 43768 (2%)  leftovers 16
+  epoch   6: best 1520.0/1536  top10 [1520, 1520, 1518, 1518, 1518, 1517, 1517, 1517, 1517, 1517]  median 1499  now-median 1498    492.5s     0.255 Mmoves/s  stretch prop 1858319 acc 130411 (7%)  collapse prop 1857458 acc 39291 (2%)  leftovers 16
+  h1-guide: 6/14 uncovered facets are H1-obstructed for all 13 chains (weight 0)
+  epoch   7: best 1522.0/1536  top10 [1522, 1522, 1520, 1520, 1520, 1519, 1519, 1519, 1519, 1519]  median 1502  now-median 1501    564.3s     0.260 Mmoves/s  stretch prop 1760858 acc 96501 (5%)  collapse prop 1760156 acc 30681 (2%)  leftovers 14
+  epoch   8: best 1527.0/1536  top10 [1527, 1526, 1526, 1525, 1525, 1525, 1525, 1525, 1525, 1524]  median 1504  now-median 1504    651.4s     0.257 Mmoves/s  stretch prop 3670075 acc 231338 (6%)  collapse prop 3674711 acc 62261 (2%)  leftovers [1140, 1200, 1201, 1202, 1238, 1240, 1244, 1246, 1296]
+  h1-guide: 7/9 uncovered facets are H1-obstructed for all 13 chains (weight 0)
+  epoch   9: best 1527.0/1536  top10 [1527, 1527, 1527, 1527, 1527, 1527, 1527, 1526, 1526, 1526]  median 1507  now-median 1507    734.4s     0.256 Mmoves/s  stretch prop 3415209 acc 232378 (7%)  collapse prop 3417361 acc 54635 (2%)  leftovers [1140, 1200, 1201, 1202, 1206, 1236, 1237, 1239, 1296]
+  epoch  10: best 1527.0/1536  top10 [1527, 1527, 1527, 1527, 1527, 1527, 1527, 1526, 1526, 1526]  median 1508  now-median 1508    818.2s     0.255 Mmoves/s  stretch prop 3379009 acc 250492 (7%)  collapse prop 3379431 acc 53854 (2%)  leftovers [1140, 1200, 1201, 1202, 1206, 1236, 1237, 1239, 1296]
+  h1-guide: 1/8 uncovered facets are H1-obstructed for all 13 chains (weight 0)
+  epoch  11: best 1528.0/1536  top10 [1528, 1527, 1527, 1527, 1527, 1527, 1527, 1527, 1527, 1527]  median 1511  now-median 1510    903.2s     0.254 Mmoves/s  stretch prop 3254388 acc 246518 (8%)  collapse prop 3254746 acc 52545 (2%)  leftovers [1200, 1206, 1209, 1405, 1406, 1407, 1408, 1489]
+  epoch  12: best 1532.0/1536  top10 [1532, 1529, 1529, 1528, 1528, 1528, 1528, 1527, 1527, 1527]  median 1512  now-median 1511    975.8s     0.256 Mmoves/s  stretch prop 1704302 acc 133351 (8%)  collapse prop 1704226 acc 30966 (2%)  leftovers [1140, 1211, 1241, 1247]
+  h1-guide: 1/4 uncovered facets are H1-obstructed for all 13 chains (weight 0)
+  epoch  13: best 1532.0/1536  top10 [1532, 1531, 1530, 1529, 1529, 1529, 1529, 1529, 1529, 1529]  median 1514  now-median 1514   1041.1s     0.260 Mmoves/s  stretch prop 1539812 acc 84793 (6%)  collapse prop 1540800 acc 26045 (2%)  leftovers [1140, 1211, 1241, 1247]
+  epoch  14: best 1534.0/1536  top10 [1534, 1532, 1531, 1531, 1531, 1530, 1530, 1529, 1529, 1529]  median 1515  now-median 1514   1105.2s     0.264 Mmoves/s  stretch prop 1443084 acc 76548 (5%)  collapse prop 1443389 acc 23642 (2%)  leftovers [1140, 1244]
+  epoch  15: best 1535.0/1536  top10 [1535, 1534, 1533, 1532, 1531, 1531, 1531, 1531, 1531, 1531]  median 1516  now-median 1516   1168.9s     0.267 Mmoves/s  stretch prop 2389500 acc 145333 (6%)  collapse prop 2388362 acc 40261 (2%)  leftovers [1244]
+  epoch  16: best 1535.0/1536  top10 [1535, 1535, 1534, 1533, 1532, 1532, 1532, 1531, 1531, 1531]  median 1517  now-median 1517   1228.5s     0.271 Mmoves/s  stretch prop 2251526 acc 115484 (5%)  collapse prop 2254857 acc 37187 (2%)  leftovers [1244]
+  epoch  17: best 1536.0/1536  top10 [1536, 1535, 1535, 1534, 1534, 1533, 1533, 1533, 1532, 1532]  median 1518  now-median 1518   1288.6s     0.274 Mmoves/s  stretch prop 2060030 acc 108208 (5%)  collapse prop 2058575 acc 34947 (2%)  leftovers []
+  full coverage reached at epoch 17
+best coverage 1536/1536  domain sizes [202, 245, 244, 232, 190, 212, 225, 214, 210, 189, 183, 176, 197]  time 1293.7s  kernel 1269.0s  moves 3.48e+08
+VERIFIED system of 13 motion planners: sizes [238, 202, 193, 157, 150, 125, 122, 95, 74, 61, 60, 44, 15], reduced chain lengths [6, 9, 6, 5, 9, 9, 7, 5, 4, 7, 6, 8, 5]  =>  SC_strict(Klein bottle (8 vertices, 16 triangles, Cervone 242)) <= 12
+wrote results/klein_k13/cover.txt planners.txt summary.json

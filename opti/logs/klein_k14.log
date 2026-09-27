@@ -1,0 +1,13 @@
+=== annealer_stretch chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=14 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/klein_k15_8233_v2/summary.json (reduced chains of the 14 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  h1-guide: 1/13 uncovered facets are H1-obstructed for all 14 chains (weight 0)
+  epoch   1: best 1523.0/1536  top10 [1523, 1522, 1522, 1521, 1521, 1521, 1521, 1521, 1521, 1521]  median 924  now-median 924     90.2s     0.235 Mmoves/s  stretch prop 4276035 acc 710727 (17%)  collapse prop 4272495 acc 133304 (3%)  leftovers 13
+  epoch   2: best 1527.0/1536  top10 [1527, 1527, 1526, 1526, 1526, 1526, 1526, 1525, 1525, 1524]  median 938  now-median 931    163.8s     0.255 Mmoves/s  stretch prop 2235476 acc 366658 (16%)  collapse prop 2238797 acc 95720 (4%)  leftovers [23, 29, 47, 141, 618, 906, 907, 1386, 1518]
+  epoch   3: best 1533.0/1536  top10 [1533, 1530, 1530, 1530, 1529, 1528, 1528, 1528, 1528, 1528]  median 1514  now-median 1509    243.4s     0.257 Mmoves/s  stretch prop 1752042 acc 249515 (14%)  collapse prop 1752089 acc 35648 (2%)  leftovers [1482, 1483, 1485]
+  epoch   4: best 1536.0/1536  top10 [1536, 1534, 1531, 1531, 1531, 1530, 1530, 1530, 1530, 1530]  median 1515  now-median 1511    314.2s     0.264 Mmoves/s  stretch prop 2179310 acc 284909 (13%)  collapse prop 2183292 acc 74678 (3%)  leftovers []
+  full coverage reached at epoch 4
+best coverage 1536/1536  domain sizes [202, 240, 232, 226, 229, 184, 241, 205, 206, 197, 178, 186, 176, 133]  time 319.6s  kernel 310.0s  moves 8.19e+07
+VERIFIED system of 14 motion planners: sizes [222, 202, 198, 174, 114, 106, 103, 101, 79, 69, 53, 45, 43, 27], reduced chain lengths [6, 9, 6, 8, 8, 8, 9, 7, 6, 6, 6, 8, 7, 4]  =>  SC_strict(Klein bottle (8 vertices, 16 triangles, Cervone 242)) <= 13
+wrote results/klein_k14/cover.txt planners.txt summary.json

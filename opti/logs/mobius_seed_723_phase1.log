@@ -1,0 +1,27 @@
+=== annealer_stretch chain-first annealer ===  K=Möbius band (5 vertices, 5 triangles, minimal & unique)  |F_L|=150  grid=25  k=3 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=8.0/(max 15.0)  seed=809  pstretch=0.5  pcollapse=0.3
+  seeded population from results/mobius_seed_723/summary.json (reduced chains of the 3 largest domains, padded to cmax)
+/home/mike666/miniforge3/lib/python3.14/site-packages/numba_cuda/numba/cuda/dispatcher.py:748: NumbaPerformanceWarning: [1mGrid size 64 will likely result in GPU under-utilization due to low occupancy.[0m
+  warn(errors.NumbaPerformanceWarning(msg))
+  epoch   1: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 131  now-median 128     23.6s     0.869 Mmoves/s  stretch prop 4759711 acc 230201 (5%)  collapse prop 2041037 acc 53614 (3%)
+  epoch   2: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 140  now-median 134     33.0s     1.243 Mmoves/s  stretch prop 1628255 acc 71534 (4%)  collapse prop 698482 acc 17985 (3%)
+  epoch   3: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 135     39.9s     1.544 Mmoves/s  stretch prop 176157 acc 8763 (5%)  collapse prop 75262 acc 3818 (5%)
+  epoch   4: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 135     46.3s     1.773 Mmoves/s  stretch prop 37289 acc 2349 (6%)  collapse prop 15946 acc 231 (1%)
+  epoch   5: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 137     53.1s     1.933 Mmoves/s  stretch prop 97546 acc 3244 (3%)  collapse prop 41995 acc 2726 (6%)
+  epoch   6: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 138     59.3s     2.079 Mmoves/s  stretch prop 12632 acc 674 (5%)  collapse prop 5499 acc 23 (0%)
+  epoch   7: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 137     66.5s     2.163 Mmoves/s  stretch prop 108263 acc 3678 (3%)  collapse prop 46352 acc 3091 (7%)
+  epoch   8: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 138     73.1s     2.247 Mmoves/s  stretch prop 10839 acc 670 (6%)  collapse prop 4702 acc 5 (0%)
+  epoch   9: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 135     80.2s     2.307 Mmoves/s  stretch prop 101765 acc 3767 (4%)  collapse prop 44012 acc 3140 (7%)
+  epoch  10: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 138     86.8s     2.367 Mmoves/s  stretch prop 9182 acc 502 (5%)  collapse prop 3981 acc 13 (0%)
+  epoch  11: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 138     93.6s     2.414 Mmoves/s  stretch prop 103084 acc 3251 (3%)  collapse prop 44517 acc 3256 (7%)
+  epoch  12: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 138    100.7s     2.448 Mmoves/s  stretch prop 8597 acc 535 (6%)  collapse prop 3657 acc 35 (1%)
+  epoch  13: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 138    108.3s     2.468 Mmoves/s  stretch prop 101599 acc 2727 (3%)  collapse prop 43534 acc 3126 (7%)
+  epoch  14: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 138    115.3s     2.496 Mmoves/s  stretch prop 5980 acc 306 (5%)  collapse prop 2547 acc 5 (0%)
+  epoch  15: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 138    122.5s     2.517 Mmoves/s  stretch prop 103043 acc 3497 (3%)  collapse prop 43912 acc 3079 (7%)
+  epoch  16: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 139    129.6s     2.537 Mmoves/s  stretch prop 12981 acc 728 (6%)  collapse prop 5609 acc 18 (0%)
+  epoch  17: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 139    136.7s     2.556 Mmoves/s  stretch prop 97073 acc 2815 (3%)  collapse prop 41623 acc 3165 (8%)
+  epoch  18: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 140    143.1s     2.586 Mmoves/s  stretch prop 3034 acc 207 (7%)  collapse prop 1287 acc 6 (0%)
+  epoch  19: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 140    150.1s     2.603 Mmoves/s  stretch prop 102038 acc 2826 (3%)  collapse prop 43674 acc 3154 (7%)
+  epoch  20: best  148.0/150  top10 [148, 148, 148, 148, 148, 148, 148, 148, 148, 148]  median 148  now-median 141    156.7s     2.624 Mmoves/s  stretch prop 7476 acc 380 (5%)  collapse prop 3217 acc 22 (1%)
+best coverage 148/150  domain sizes [60, 57, 48]  time 157.9s  kernel 156.1s  moves 4.1e+08
+NOT a covering: 2 facets uncovered
+wrote results/mobius_seed_723/phase1/summary.json (partial)

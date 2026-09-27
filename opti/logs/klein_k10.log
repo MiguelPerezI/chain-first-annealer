@@ -1,16 +1,15 @@
-=== gpu_sc chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=10 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.03  beta=5.0 gamma=0.5 mu=0.0 ptrack=0.3  guide=3.0/(max 11.0)  seed=666
-  seeded population from results/klein_k9/summary.json (reduced chains of the 10 largest domains, padded to cmax)
-/home/ubuntu/Documents/Abstract_Motion_GPU/venv/lib/python3.12/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+=== annealer_stretch chain-first annealer ===  K=Klein bottle (8 vertices, 16 triangles, Cervone 242)  |F_L|=1536  grid=64  k=10 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/klein_k11/summary.json (reduced chains of the 10 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
   warn(NumbaPerformanceWarning(msg))
-  epoch   1: best 1536.0/1536  top10 [1536, 1536, 1536, 1536, 1536, 1536, 1536, 1536, 1536, 1536]  median 897  now-median 897     38.4s     0.536 Mmoves/s
-  full coverage reached at epoch 1
-best coverage 1536/1536  domain sizes [274, 252, 249, 245, 228, 219, 217, 199, 159, 1536]  time 42.5s  kernel 38.2s  moves 2.05e+07
-Traceback (most recent call last):
-  File "/home/ubuntu/Documents/chain-first-annealer/opti/src/gpu_sc.py", line 1370, in <module>
-    sys.exit(cli())
-             ^^^^^
-  File "/home/ubuntu/Documents/chain-first-annealer/opti/src/gpu_sc.py", line 1350, in cli
-    verify_system(P, parts)
-  File "/home/ubuntu/Documents/chain-first-annealer/opti/src/gpu_sc.py", line 1074, in verify_system
-    raise ValueError("chain does not start at pi1")
-ValueError: chain does not start at pi1
+  epoch   1: best 1533.0/1536  top10 [1533, 1533, 1532, 1532, 1532, 1532, 1532, 1532, 1532, 1532]  median 912  now-median 910     70.6s     0.292 Mmoves/s  stretch prop 4082929 acc 682168 (17%)  collapse prop 4089761 acc 142477 (3%)  leftovers [924, 1115, 1500]
+  epoch   2: best 1534.0/1536  top10 [1534, 1534, 1534, 1533, 1533, 1533, 1533, 1533, 1533, 1533]  median 921  now-median 920    129.4s     0.318 Mmoves/s  stretch prop 3782372 acc 480923 (13%)  collapse prop 3781380 acc 97830 (3%)  leftovers [924, 1500]
+  epoch   3: best 1534.0/1536  top10 [1534, 1534, 1534, 1534, 1534, 1534, 1534, 1534, 1534, 1534]  median 1529  now-median 1529    185.5s     0.333 Mmoves/s  stretch prop 3909466 acc 223107 (6%)  collapse prop 3909758 acc 45737 (1%)  leftovers [1115, 1500]
+  epoch   4: best 1535.0/1536  top10 [1535, 1535, 1534, 1534, 1534, 1534, 1534, 1534, 1534, 1534]  median 1529  now-median 1529    245.1s     0.336 Mmoves/s  stretch prop 3835594 acc 401295 (10%)  collapse prop 3837472 acc 107447 (3%)  leftovers [1500]
+  epoch   5: best 1535.0/1536  top10 [1535, 1535, 1535, 1535, 1535, 1535, 1535, 1534, 1534, 1534]  median 1529  now-median 1529    296.3s     0.348 Mmoves/s  stretch prop 4522799 acc 114995 (3%)  collapse prop 4526341 acc 21495 (0%)  leftovers [1500]
+  epoch   6: best 1535.0/1536  top10 [1535, 1535, 1535, 1535, 1535, 1535, 1535, 1535, 1535, 1535]  median 1529  now-median 1529    347.3s     0.356 Mmoves/s  stretch prop 4504317 acc 113698 (3%)  collapse prop 4500889 acc 20756 (0%)  leftovers [1500]
+  epoch   7: best 1536.0/1536  top10 [1536, 1535, 1535, 1535, 1535, 1535, 1535, 1535, 1535, 1535]  median 1530  now-median 1530    396.5s     0.364 Mmoves/s  stretch prop 4852269 acc 24339 (1%)  collapse prop 4855104 acc 3487 (0%)  leftovers []
+  full coverage reached at epoch 7
+best coverage 1536/1536  domain sizes [266, 281, 282, 261, 248, 238, 216, 224, 210, 197]  time 400.3s  kernel 394.3s  moves 1.43e+08
+VERIFIED system of 10 motion planners: sizes [266, 257, 238, 203, 125, 106, 101, 89, 80, 71], reduced chain lengths [4, 5, 6, 7, 5, 6, 6, 5, 6, 6]  =>  SC_strict(Klein bottle (8 vertices, 16 triangles, Cervone 242)) <= 9
+wrote results/klein_k10/cover.txt planners.txt summary.json
