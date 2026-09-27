@@ -1,0 +1,126 @@
+# CP-SAT jobs for RP² k=5 (runbook: opti/experiments/cluster_runbook_rp2_k5_klein_k9.md).
+# Fill [NAMESPACE], [PVC_NAME] and [GIT_TOKEN_SECRET] before applying (see opti/cluster/README.md).
+# Apply one Job at a time, in order: rp2-controls, then rp2-k5-ladder, then rp2-k5-giants.
+---
+# Runbook §4: the known 6-cover must come back SAT before any UNSAT is reported.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rp2-controls
+  namespace: "[NAMESPACE]"
+spec:
+  completionMode: Indexed
+  completions: 1
+  parallelism: 1
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 604800
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: cp-sat
+          image: python:3.14-slim
+          command: ["bash", "/opt/sat/run_rung.sh"]
+          env:
+            - {name: COMPLEX, value: "rp2"}
+            - {name: K, value: "6"}
+            - {name: L_LIST, value: "8"}
+            - {name: TIMEOUT, value: "21600"}
+            - {name: WORKERS, value: "14"}
+            - {name: REPO_REF, value: "e1e6fc62b87f59900169ed246d4f5c3c7c6ba226"}
+            - {name: OUT_ROOT, value: "/results/cp_sat_rp2_k5/controls"}
+            - name: GIT_TOKEN
+              valueFrom: {secretKeyRef: {name: "[GIT_TOKEN_SECRET]", key: token}}
+          resources:
+            requests: {cpu: "14", memory: 16Gi}
+            limits: {cpu: "14", memory: 16Gi}
+          volumeMounts:
+            - {name: sat-script, mountPath: /opt/sat}
+            - {name: results, mountPath: /results}
+      volumes:
+        - name: sat-script
+          configMap: {name: sat-rung}
+        - name: results
+          persistentVolumeClaim: {claimName: "[PVC_NAME]"}
+---
+# Runbook §5, first wave: RP² k=5 cold, L = 4 5 6 8 12 16 (≤ 4.3 M constraints, ≤ ~10 GB).
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rp2-k5-ladder
+  namespace: "[NAMESPACE]"
+spec:
+  completionMode: Indexed
+  completions: 6
+  parallelism: 2
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 604800
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: cp-sat
+          image: python:3.14-slim
+          command: ["bash", "/opt/sat/run_rung.sh"]
+          env:
+            - {name: COMPLEX, value: "rp2"}
+            - {name: K, value: "5"}
+            - {name: L_LIST, value: "4 5 6 8 12 16"}
+            - {name: TIMEOUT, value: "86400"}
+            - {name: WORKERS, value: "14"}
+            - {name: REPO_REF, value: "e1e6fc62b87f59900169ed246d4f5c3c7c6ba226"}
+            - {name: OUT_ROOT, value: "/results/cp_sat_rp2_k5"}
+            - name: GIT_TOKEN
+              valueFrom: {secretKeyRef: {name: "[GIT_TOKEN_SECRET]", key: token}}
+          resources:
+            requests: {cpu: "14", memory: 16Gi}
+            limits: {cpu: "14", memory: 16Gi}
+          volumeMounts:
+            - {name: sat-script, mountPath: /opt/sat}
+            - {name: results, mountPath: /results}
+      volumes:
+        - name: sat-script
+          configMap: {name: sat-rung}
+        - name: results
+          persistentVolumeClaim: {claimName: "[PVC_NAME]"}
+---
+# Runbook §5, giants: L = 24 32 40 (6.7-11.5 M constraints); fewer workers, more RAM.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rp2-k5-giants
+  namespace: "[NAMESPACE]"
+spec:
+  completionMode: Indexed
+  completions: 3
+  parallelism: 1
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 604800
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: cp-sat
+          image: python:3.14-slim
+          command: ["bash", "/opt/sat/run_rung.sh"]
+          env:
+            - {name: COMPLEX, value: "rp2"}
+            - {name: K, value: "5"}
+            - {name: L_LIST, value: "24 32 40"}
+            - {name: TIMEOUT, value: "259200"}
+            - {name: WORKERS, value: "8"}
+            - {name: REPO_REF, value: "e1e6fc62b87f59900169ed246d4f5c3c7c6ba226"}
+            - {name: OUT_ROOT, value: "/results/cp_sat_rp2_k5"}
+            - name: GIT_TOKEN
+              valueFrom: {secretKeyRef: {name: "[GIT_TOKEN_SECRET]", key: token}}
+          resources:
+            requests: {cpu: "8", memory: 64Gi}
+            limits: {cpu: "8", memory: 64Gi}
+          volumeMounts:
+            - {name: sat-script, mountPath: /opt/sat}
+            - {name: results, mountPath: /results}
+      volumes:
+        - name: sat-script
+          configMap: {name: sat-rung}
+        - name: results
+          persistentVolumeClaim: {claimName: "[PVC_NAME]"}
