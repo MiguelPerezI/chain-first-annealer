@@ -1,0 +1,29 @@
+Klein bottle (8 vertices, 16 triangles, Cervone 242): 1536 facets, 64 grid vertices, 16 triangles, NV=8; workers=8
+COLD mode: k=5, L=10, timeout=60s
+  building model: 5 domains × 10 links × 64 grid vertices...
+  adding contiguity constraints (5×1536×8×16 y-vars)...
+  model built: 993608 vars, 9970180 constraints
+  launching solver with 8 workers, timeout 60s...
+
+Starting CP-SAT solver v9.15.6755
+Parameters: max_time_in_seconds: 60 log_search_progress: true num_workers: 8
+
+Traceback (most recent call last):
+  File [35m"/home/jaziel-flores/repos/JazzzFM/MikeSimplex/chain-first-annealer/.claude/worktrees/sat-tooling/opti/paper-overleaf/paper/scs_sat.py"[0m, line [35m411[0m, in [35m<module>[0m
+    [31msolve_cold[0m[1;31m(args.k, args.L, args.timeout, workers,[0m
+    [31m~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+               [1;31mNV, NG, NF, FAC, TRIS, PI1, PI2,[0m
+               [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+               [1;31mwant_solution=args.witness, outdir=args.outdir)[0m
+               [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File [35m"/home/jaziel-flores/repos/JazzzFM/MikeSimplex/chain-first-annealer/.claude/worktrees/sat-tooling/opti/paper-overleaf/paper/scs_sat.py"[0m, line [35m204[0m, in [35msolve_cold[0m
+    status = solver.Solve(model, cb)
+  File [35m"/home/jaziel-flores/repos/JazzzFM/MikeSimplex/chain-first-annealer/.claude/worktrees/sat-tooling/opti/.venv-sat/lib/python3.14/site-packages/ortools/sat/python/cp_model.py"[0m, line [35m203[0m, in [35mdeprecated_func[0m
+    return func(*args, **kwargs)
+  File [35m"/home/jaziel-flores/repos/JazzzFM/MikeSimplex/chain-first-annealer/.claude/worktrees/sat-tooling/opti/.venv-sat/lib/python3.14/site-packages/ortools/sat/python/cp_model.py"[0m, line [35m2021[0m, in [35mSolve[0m
+    return [31mself.solve[0m[1;31m(model, callback)[0m
+           [31m~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^[0m
+  File [35m"/home/jaziel-flores/repos/JazzzFM/MikeSimplex/chain-first-annealer/.claude/worktrees/sat-tooling/opti/.venv-sat/lib/python3.14/site-packages/ortools/sat/python/cp_model.py"[0m, line [35m1771[0m, in [35msolve[0m
+    self.__response = [31mself.__solve_wrapper.solve[0m[1;31m(model.proto)[0m
+                      [31m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^[0m
+[1;35mMemoryError[0m: [35mstd::bad_alloc[0m
