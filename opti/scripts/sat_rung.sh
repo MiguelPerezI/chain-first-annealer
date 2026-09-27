@@ -14,7 +14,10 @@ args=(--complex "$cx" --k "$k" --L "$L" --timeout "$to" --workers "$wk" --outdir
 mode=cold; freecol=-
 if [ -n "$warm" ]; then args+=(--warm "$warm" --free "$free"); mode=hybrid; freecol=$free; fi
 
-/usr/bin/time -v -o "$out/time.txt" "$PY" -u "$OPTI/paper-overleaf/paper/scs_sat.py" "${args[@]}" \
+TIME_BIN=${TIME_BIN:-/usr/bin/time}
+if [ -x "$TIME_BIN" ]; then timer=("$TIME_BIN" -v -o "$out/time.txt")
+else timer=("$PY" "$OPTI/scripts/rss_run.py" "$out/time.txt"); fi
+"${timer[@]}" "$PY" -u "$OPTI/paper-overleaf/paper/scs_sat.py" "${args[@]}" \
     > "$out/solver.log" 2>&1 || true
 
 line=$(grep -oE '(OPTIMAL|FEASIBLE|INFEASIBLE|UNKNOWN|MODEL_INVALID) in [0-9.]+s \(vars [0-9]+, cons [0-9]+\)' "$out/solver.log" | tail -1 || true)
