@@ -17,6 +17,11 @@ if bash "$OPTI/scripts/sat_rung.sh" mobius 5 4 120 4 "$tmp/nofree" "$tmp/log.md"
      "$OPTI/results/mobius_k5/summary.json" 0 2>/dev/null; then
   echo "FAIL: WARM with FREE=0 was accepted"; exit 1
 fi
+# images without GNU time (e.g. the Kubeflow notebook image) fall back to rss_run.py
+TIME_BIN=/nonexistent bash "$OPTI/scripts/sat_rung.sh" mobius 1 3 120 4 "$tmp/notime" "$tmp/notime.md"
+grep -qE '\| mobius \| 1 \| 3 \| cold \| - \| INFEASIBLE \|' "$tmp/notime.md"
+grep -q "measured by rss_run.py" "$tmp/notime/time.txt" || { echo "FAIL: TIME_BIN ignored"; exit 1; }
+grep -qE '\| 0\.[0-9][1-9] \||\| [1-9][0-9]*\.[0-9]+ \|' "$tmp/notime.md" || { echo "FAIL: no RSS without GNU time"; cat "$tmp/notime.md"; exit 1; }
 cat "$tmp/log.md"
 grep -qE "\| mobius \| 5 \| $L \| hybrid \| 1 \| (OPTIMAL|FEASIBLE) \|.*\| audited \|" "$tmp/log.md"
 grep -qE '\| mobius \| 1 \| 3 \| cold \| - \| INFEASIBLE \|.*\| - \|' "$tmp/log.md"

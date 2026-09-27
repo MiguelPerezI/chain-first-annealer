@@ -27,3 +27,4 @@ opti/webapp/live/
 opti/webapp/exports/
 opti/webapp/__pycache__/
 opti/.venv-sat/
+opti/cluster/kfp/compiled/
