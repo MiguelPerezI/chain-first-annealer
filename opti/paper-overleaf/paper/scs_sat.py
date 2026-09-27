@@ -373,7 +373,8 @@ if __name__ == "__main__":
         description="CP-SAT cover decision for K×K (cold or hybrid warm-start)")
     parser.add_argument("--complex", default="mobius",
                         choices=["mobius", "rp2", "torus", "klein", "s1xw",
-                                 "circle", "s2", "s3", "cube", "dodeca"],
+                                 "circle", "s2", "s3", "s4", "s5", "s6", "s7",
+                                 "cube", "dodeca"],
                         help="base simplicial complex K")
     parser.add_argument("--k", type=int, required=True,
                         help="number of domains")
