@@ -285,6 +285,29 @@ def build(name):
         return Product([(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 5), (0, 1, 5),
                         (1, 2, 4), (2, 3, 5), (3, 4, 1), (4, 5, 2), (5, 1, 3)],
                        "RP² (6 vertices, 10 triangles, hemi-icosahedron)")
+    if name == "hemi_dodeca":
+        # The hemi-dodecahedron, dual of the stored `rp2` (hemi-icosahedron):
+        # 10 vertices (the 10 rp2 triangles, labelled by rp2 facet id), 15 edges
+        # (the rp2 edges, i.e. the Petersen graph, each in exactly 2 faces) and
+        # 6 pentagonal faces (the 5-triangle stars of rp2's 6 vertices).  Not
+        # simplicial, so each pentagon is fanned from one of its vertices into
+        # 3 triangles exactly as for `dodeca`: 18 triangles, f-vector (10, 27,
+        # 18), every edge in exactly two triangles, chi = 1, non-orientable --
+        # RP² again, but now facets may be disjoint (rp2's every-two-triangles-
+        # meet premise fails, so its product-family trap does not recur) and
+        # the product has 18²·6 = 1944 facets.  The list is rp2's dual read off
+        # its facet order (dual vertex i = rp2 triangle i), one fan trio per
+        # pentagon in rp2's vertex order, each trio listed from its fan apex.
+        # The stored `dodeca` fan has no fixed-point-free simplicial involution
+        # (its fans break the antipodal symmetry), so this cannot be obtained
+        # as a quotient of build("dodeca") -- it is built by duality instead.
+        return Product([(0, 1, 2), (0, 2, 3), (0, 3, 4),
+                        (0, 5, 7), (0, 7, 9), (0, 4, 9),
+                        (0, 5, 8), (0, 6, 8), (0, 1, 6),
+                        (1, 6, 9), (1, 7, 9), (1, 2, 7),
+                        (2, 5, 7), (2, 5, 8), (2, 3, 8),
+                        (4, 6, 9), (4, 6, 8), (3, 4, 8)],
+                       "RP² (10 vertices, 18 triangles, hemi-dodecahedron)")
     if name == "klein":
         # The vertex-minimal triangulation of the Klein bottle: 8 vertices 0..7,
         # 16 triangles, f-vector (8, 24, 16), chi = 0, valence vector
@@ -1359,7 +1382,7 @@ def make_monitors(a, P):
 
 def cli():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "rp2", "klein", "torus", "mobius", "s1xw"])
+    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "rp2", "hemi_dodeca", "klein", "torus", "mobius", "s1xw"])
     ap.add_argument("--k", type=int, default=3, help="number of chains / domains")
     ap.add_argument("--cmax", type=int, default=40, help="links per chain")
     ap.add_argument("--S", type=int, default=4096, help="population (GPU threads)")
