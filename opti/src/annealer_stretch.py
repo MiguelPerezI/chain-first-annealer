@@ -351,6 +351,30 @@ def build(name):
                         (2, 5, 7), (2, 5, 8), (2, 3, 8),
                         (4, 6, 9), (4, 6, 8), (3, 4, 8)],
                        "RP² (10 vertices, 18 triangles, hemi-dodecahedron)")
+    if name == "hemicube":
+        # The hemicube, quotient of the cube boundary by the antipodal map:
+        # 4 vertices (the antipodal pairs of the cube's 8), 6 edges (the cube's
+        # 12, paired) and 3 square faces (the 3 opposite-face pairs of the cube,
+        # each glued to itself along its antipodal image).  chi = 4 - 6 + 3 = 1
+        # and non-orientable -- RP² again, the regular map {4,3}/2 (dual of the
+        # hemi-octahedron {3,4}/2), completing the four hemi-polyhedra in the
+        # catalogue.  Not simplicial, and unlike hemi_dodeca's pentagons a
+        # square cannot be fanned from a corner: 4 vertices span only 4 triples,
+        # too few for the 6 triangles a 3-square triangulation would need
+        # (Heawood forces >= 6 vertices for a triangulation of RP²).  So each
+        # square is coned from a fresh centre vertex into 4 triangles: 7
+        # vertices, 12 triangles, f-vector (7, 18, 12) -- for a closed surface
+        # with chi = 1, E = 3V - 3chi = 18 and F = 2V - 2chi = 12 are forced,
+        # and every edge lies in exactly two triangles: a 7-vertex
+        # triangulation of RP².  The face cycles are the antipodal quotients
+        # of the cube's x/y/z face pairs (0,1,3,2), (0,3,2,1), (0,2,1,3),
+        # coned from centres 4 (x), 5 (y), 6 (z).  The product has 12²·6 = 864
+        # facets -- the same count as `cube`, so only the facet table (not nf)
+        # distinguishes them.
+        return Product([(0, 1, 4), (1, 3, 4), (2, 3, 4), (0, 2, 4),
+                        (0, 3, 5), (2, 3, 5), (1, 2, 5), (0, 1, 5),
+                        (0, 2, 6), (1, 2, 6), (1, 3, 6), (0, 3, 6)],
+                       "RP² (7 vertices, 12 triangles, hemicube)")
     if name == "klein":
         # The vertex-minimal triangulation of the Klein bottle: 8 vertices 0..7,
         # 16 triangles, f-vector (8, 24, 16), chi = 0, valence vector
@@ -1730,7 +1754,7 @@ def make_monitors(a, P):
 
 def cli():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "rp2", "hemi_dodeca", "klein", "torus", "mobius", "s1xw"])
+    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "rp2", "hemi_dodeca", "hemicube", "klein", "torus", "mobius", "s1xw"])
     ap.add_argument("--k", type=int, default=3, help="number of chains / domains")
     ap.add_argument("--cmax", type=int, default=40, help="links per chain")
     ap.add_argument("--S", type=int, default=4096, help="population (GPU threads)")
