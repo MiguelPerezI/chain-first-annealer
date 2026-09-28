@@ -140,8 +140,11 @@ def load_warm(path, NV, NG, NF, FAC, TRIS):
 
 
 def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
-               want_solution=False, outdir=None):
-    """Full CP-SAT solve from scratch."""
+               want_solution=False, outdir=None, fix_domain0=None):
+    """Full CP-SAT solve from scratch.
+
+    fix_domain0: optional list of facet ids forced into domain 0 (x[f,0]=1).
+    Used by the orbit-decomposition cases; None leaves the model unchanged."""
     assert L >= 2, "L must be >= 2 (chain of >= 2 links; L=1 is not encoded)"
     NT = len(TRIS)
     model = cp_model.CpModel()
@@ -162,6 +165,10 @@ def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
         for d in range(k):
             x[f, d] = model.NewBoolVar(f"x{f}_{d}")
         model.Add(sum(x[f, d] for d in range(k)) >= 1)
+    for f in (fix_domain0 or []):
+        model.Add(x[int(f), 0] == 1)
+    if fix_domain0:
+        print(f"  domain 0 fixed on {len(fix_domain0)} facets", flush=True)
     print(f"  adding contiguity constraints ({k}×{NF}×{L-2}×{NT} y-vars)...",
           flush=True)
     for d in range(k):
@@ -399,7 +406,10 @@ if __name__ == "__main__":
     parser.add_argument("--free", type=int, default=0,
                         help="number of domains to free in hybrid mode "
                              "(0 = free all k, i.e. cold solve with hints)")
+    parser.add_argument("--fix-domain0", default=None,
+                        help="JSON list of facet ids forced into domain 0 (cold mode)")
     args = parser.parse_args()
+    fix_domain0 = json.load(open(args.fix_domain0)) if args.fix_domain0 else None
 
     workers = args.workers if args.workers > 0 else min(multiprocessing.cpu_count(), 16)
     NV, NG, NF, FAC, TRIS, PI1, PI2, P = build_complex(args.complex)
@@ -417,4 +427,5 @@ if __name__ == "__main__":
         print(f"COLD mode: k={args.k}, L={args.L}, timeout={args.timeout}s")
         solve_cold(args.k, args.L, args.timeout, workers,
                    NV, NG, NF, FAC, TRIS, PI1, PI2,
-                   want_solution=args.witness, outdir=args.outdir)
+                   want_solution=args.witness, outdir=args.outdir,
+                   fix_domain0=fix_domain0)
