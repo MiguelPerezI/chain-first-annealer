@@ -160,13 +160,17 @@ over `|V|²` sets and `|F|²` pairs, solved in seconds by `rect_cover.py` (branc
 bound) or `scipy.optimize.milp` (HiGHS). Corollary 2 of
 `experiments/optimized_algorithms.md` (§27 for the full write-up) gives
 **`SC_strict(K) ≤ ρ − 1`** with no search, and `star_cover.py` is CPU-only.
+On the hemi-icosa, hemicube and hemi-octa `ρ = V` exactly (6, 7, 9), so the bound is
+`SC_strict ≤ V − 1 = 5, 6, 8`: the diagonal/grid covers of Lemma 7 meet the row–transversal
+lower bound of Lemma 6 — proofs in `experiments/optimized_algorithms.md` **§28** and in the
+paper (`main.tex` §5: `lem:rows`, `lem:covers`, `prop:hemi`).
 
 | surface (`--complex`) | V: abstract → complex | Δ | `\|K×K\|` | ρ | star cover (domains → SC) | annealer / searched cover (domains → SC) |
 |---|---|---|---|---|---|---|
 | Möbius (`mobius`) | 5 → 5 | 5 | 150 | 4 | `results/mobius_starcover_opt` (4 → ≤ 3) | CP-SAT `results/mobius_k3_sat` (3 → **= 2**); annealer `results/mobius_k4_from_k5` (4 → ≤ 3) |
 | hemi-icosa (`rp2`) | 6 → 6 | 10 | 600 | 6 | `results/rp2_starcover_opt` (6 → ≤ 5) | `results/rp2_k6` (6 → ≤ 5) |
 | hemicube | 4 → 7 | 12 | 864 | 7 | `results/hemicube_starcover_opt` (7 → ≤ 6) | `results/hemicube_k7` (7 → ≤ 6) |
-| hemi-octa (`hemi_octa`) | 3 → 9 | 16 | 1536 | 9 | `results/hemi_octa_starcover_opt` (9 → **≤ 8**) | — (`hemi_octa_k30` open; seeded k = 8 pending) |
+| hemi-octa (`hemi_octa`) | 3 → 9 | 16 | 1536 | 9 | `results/hemi_octa_starcover_opt` (9 → **≤ 8**) | `results/hemi_octa_k8` (8 → **≤ 7**, star-seeded, VERIFIED) |
 | hemi-dodeca (`hemi_dodeca`) | 10 → 10 | 18 | 1944 | 15 | `results/hemi_dodeca_starcover_opt` (15 → **≤ 14**) | — (best 1777/1944, no cover) |
 | Klein (`klein`) | 8 → 8 | 16 | 1536 | 12 | `results/klein_starcover_greedy` (12 → ≤ 11) | `results/klein_k10` (10 → ≤ 9) |
 | torus | 7 → 7 | 14 | 1176 | 11 | `results/torus_starcover_opt` (11 → ≤ 10) | — (searches stall) |
@@ -176,15 +180,20 @@ simplicial complex actually built (a non-simplicial face must be subdivided: hem
 4 → 7, squares coned from a centre; hemi-octahedron 3 → 9, edge midpoints; hemi-dodeca
 10 → 10, pentagons fanned; Möbius/hemi-icosa/Klein/torus are triangulations already).
 
-The Möbius band is the first non-orientable case where the search provably beats
-every product cover (`ρ − 1 = 3` vs `SC_strict = 2`); the product bound is an
+The Möbius band was the first non-orientable case where the search provably beats
+every product cover (`ρ − 1 = 3` vs `SC_strict = 2`); the hemi-octa star-seeded `k = 8`
+run joins it (8 domains < `ρ = 9`, so the cover is non-product: **SC ≤ 7** vs product ≤ 8),
+as do the wedge (§23) and cube (§26). The product bound is an
 upper bound, not an optimality claim.
 
 **Warm-starting the annealer from a star cover.** `star_cover.py` now writes the
 chains as `best_chains`, so any certificate above can seed
 `annealer_stretch.py --init` at `k = ρ − 1` (it keeps the k largest star domains
 and drops the rest). For the hemi-octahedron, `k = 8` starts at 1440/1536 facets
-(drops the 96-facet domain) and tries to absorb it:
+(drops the 96-facet domain) and tries to absorb it — **and does**: 1536/1536 at epoch 106
+(seed 8233, 6325 s), `VERIFIED system of 8 motion planners`, sizes
+258/237/224/186/175/160/150/146, chains 4/5/2/4/5/3/4/5 links ⇒ **`SC_strict ≤ 7`**,
+one below the product floor `ρ − 1 = 8` (§28):
 
 ```bash
 PYTHONUNBUFFERED=1 $PY src/annealer_stretch.py --complex hemi_octa --k 8 --cmax 40 --S 4096 \
@@ -193,8 +202,8 @@ PYTHONUNBUFFERED=1 $PY src/annealer_stretch.py --complex hemi_octa --k 8 --cmax 
   --pstretch 0.5 --pcollapse 0.5 \
   --init results/hemi_octa_starcover_opt/summary.json \
   --seed 8233 --verbose \
-  --outdir results/hemi_octa_k8_from_star9 \
-  2>&1 | tee logs/hemi_octa_k8_from_star9.log
+  --outdir results/hemi_octa_k8 \
+  2>&1 | tee logs/hemi_octa_k8.log
 ```
 
 (With the v3 annealer add `--pself 0.9 --pseam 0.0 --reheat-every 12 --reheat-T 0.3

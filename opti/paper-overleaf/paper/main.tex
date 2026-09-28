@@ -824,6 +824,94 @@ both.  Hence $\rho=3$, and for even $n$ Farber's $\TC(S^n)=2$
 disconnected.
 \end{proof}
 
+\begin{lemma}[row--transversal bound]\label{lem:rows}
+Let $\tau$ be the minimum size of a set of vertices meeting every facet
+of $K$, let $d=\max_v|\operatorname{star}(v)|$, and let $F$ be the
+number of facets.  Then $\rho(K)\ge\lceil\tau F/d\rceil$.
+\end{lemma}
+
+\begin{proof}
+Fix a covering set $R$ of $\rho(K)$ rectangles and a facet $s$, and put
+$W_s=\{w:\exists v\in s$ with $(v,w)\in R\}$.  Every facet $t$ meets
+$W_s$ (the pair $(s,t)$ lies over some $(v,w)\in R$ with $v\in s$ and
+$w\in t$), so $W_s$ meets every facet and $|W_s|\ge\tau$.  Summing over
+the $F$ facets counts each rectangle $(v,w)$ once per facet $s$
+containing $v$:
+\[
+\sum_{(v,w)\in R}|\operatorname{star}(v)|=\sum_s|W_s|\;\ge\;\tau F .
+\]
+Every summand is at most $d$, so $d\,\rho(K)\ge\tau F$.
+\end{proof}
+
+\begin{lemma}[diagonal and grid covers]\label{lem:covers}
+If every two facets of $K$ meet, the $|V|$ diagonal rectangles $(v,v)$
+cover $K\times K$ and $\rho(K)\le|V|$.  If $S\subseteq V$ meets every
+facet of $K$, the $|S|^2$ rectangles $(v,w)$ with $v,w\in S$ cover
+$K\times K$ and $\rho(K)\le|S|^2$.
+\end{lemma}
+
+\begin{proof}
+A pair $(s,t)$ lies over $(v,w)$ as soon as $v\in s$ and $w\in t$: take
+$v\in s\cap t$ in the first case, and $v\in s\cap S$, $w\in t\cap S$ in
+the second.
+\end{proof}
+
+\begin{proposition}[$\rho=|V|$ on three triangulations of the real
+projective plane]\label{prop:hemi}
+Let $K$ be one of the three minimal triangulations of the real
+projective plane obtained from the icosahedron, the cube and the
+octahedron quotiented by the antipodal map, with the subdivisions
+forced by simpliciality (a centre vertex for each of the three square
+faces of the cube quotient; a midpoint for each of the six doubled edge
+cells of the octahedron quotient).  These have $|V|=6$, $7$ and $9$
+respectively, and $\rho(K)=|V|$ in every case; hence
+\[
+\SCst(K)\le|V|-1=5,\ 6,\ 8 .
+\]
+\end{proposition}
+
+\begin{proof}
+\emph{Hemi-icosahedron ($|V|=6$).} The ten facets pairwise meet, so
+Lemma~\ref{lem:covers} gives $\rho\le6$.  Two vertices cover at most
+$5+5-2=8<10$ facets, so $\tau=3$, and Lemma~\ref{lem:rows} gives
+$\rho\ge\lceil3\cdot10/5\rceil=6$.
+
+\emph{Hemicube ($|V|=7$).} Each facet is a square centre together with
+an edge of the complete graph $K_4$ on the four cube vertices (each of
+the six edge types occurs in two squares).  Here $\tau=3$ (the three
+centres meet every facet), $F=12$ and $d=6$, so $\rho\ge6$.  A
+six-rectangle cover would attain equality in Lemma~\ref{lem:rows}: one
+centre as a first coordinate bounds the sum at $5\cdot6+4=34<36=\tau
+F$, and likewise on the second coordinate, so all six rectangles are
+cube-vertex pairs.  Coverage of the twelve facets then reduces to
+coverage of the $36$ ordered pairs of edge types of $K_4$ (a triangle
+contains exactly the two cube endpoints of its edge type).  For $R$ of
+size $6$ set $W_x=\{w:(x,w)\in R\}$.  The pair $(e,f)$ is covered iff
+$(W_a\cup W_b)\cap f\neq\emptyset$ for $e=\{a,b\}$, so every union
+$W_e:=W_a\cup W_b$ must meet all six edges of $K_4$, whence
+$|W_e|\ge3$.  But $\sum_e|W_e|\le\sum_x3|W_x|=18$, with equality only
+if the four $W_x$ are pairwise disjoint and sum to $6$ --- impossible
+in a $4$-element set.  Hence $\rho\ge7$, and seven rectangles attain
+it.  The count matches the vertex count by construction: the coned
+triangulation adds one centre per square, $|V|=4+3=7$.
+
+\emph{Hemi-octahedron ($|V|=9$).} With corners $\{0,1,2\}$ and one
+midpoint per doubled edge cell, every facet meets the set $S$ of one
+corner and the two midpoints of one edge cell, so $\rho\le|S|^2=9$
+(Lemma~\ref{lem:covers}).  The same count is forced on the vertex
+side: the subdivision adds one vertex per edge cell, and the doubled
+complete abstract $1$-skeleton has $2\binom{3}{2}=6$ edge cells, so
+$|V|=3+6=9=|S|^2$.  Lemma~\ref{lem:rows} only gives $\rho\ge8$, but the
+set-cover linear program is tight at $9$ and the integer program
+certifies $\rho=9$ (HiGHS, optimality certified), attained by the
+$|S|^2$ rectangles.
+
+The coincidence is proper to these triangulations, not to the projective
+plane: the $10$-vertex triangulation coming from the hemi-dodecahedron
+has $\rho=15>10$, and on the Császár torus and the minimal Klein bottle
+$\rho=11>7$ and $\rho=12>8$.
+\end{proof}
+
 \begin{remark}
 The rectangle bound is not always sharp.  $\SCst(\partial\Delta^2)=1$:
 the explicit two-domain covers of \cite{OLGB21} and of

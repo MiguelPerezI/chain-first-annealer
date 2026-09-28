@@ -1435,7 +1435,7 @@ in `independent_check.py` format):
 | Möbius band (`mobius`) | 5 → 5 | 5 | 150 | **4** | `mobius_starcover_opt` (4 → ≤ 3) | CP-SAT `mobius_k3_sat` (3 → **= 2**, exact); annealer `mobius_k4_from_k5` (4 → ≤ 3) |
 | hemi-icosahedron (`rp2`) | 6 → 6 | 10 | 600 | **6** | `rp2_starcover_opt` (6 → ≤ 5) | annealer `rp2_k6` (6 → ≤ 5) |
 | hemicube (`hemicube`) | 4 → 7 | 12 | 864 | **7** | `hemicube_starcover_opt` (7 → ≤ 6) | annealer `hemicube_k7` (7 → ≤ 6; `hemicube_k6` incomplete) |
-| hemi-octahedron (`hemi_octa`) | 3 → 9 | 16 | 1536 | **9** | `hemi_octa_starcover_opt` (9 → **≤ 8**) | — (k = 30 run open; star-seeded k = 8 recipe pending) |
+| hemi-octahedron (`hemi_octa`) | 3 → 9 | 16 | 1536 | **9** | `hemi_octa_starcover_opt` (9 → **≤ 8**) | star-seeded annealer `hemi_octa_k8` (8 → **≤ 7**, VERIFIED) |
 | hemi-dodecahedron (`hemi_dodeca`) | 10 → 10 | 18 | 1944 | **15** | `hemi_dodeca_starcover_opt` (15 → **≤ 14**) | — (annealer best 1777/1944, no cover) |
 | Klein bottle (`klein`) | 8 → 8 | 16 | 1536 | **12** | `klein_starcover_greedy` (12 → ≤ 11) | annealer `klein_k10` (10 → ≤ 9) |
 | Császár torus (`torus`) | 7 → 7 | 14 | 1176 | **11** (§Cor. 4) | `torus_starcover_opt` (11 → ≤ 10) | — (searches stall: best 733/1176) |
@@ -1453,18 +1453,123 @@ complex vertex counts coincide, with the complex the minimal triangulation of it
 Two readings. First, the four hemi-polyhedra are four triangulations of the same space, RP², and
 the star cover is a search-free certificate on each: `ρ = 6, 7, 9, 15` give `SC_strict(RP²) ≤ 5, 6,
 8, 14` on the hemi-icosahedron, hemicube, hemi-octahedron and hemi-dodecahedron. On the first two
-the annealer ties the product bound; on the last two it has not yet beaten it — and the gap between
-`ρ − 1` and the searched value, wherever one exists, measures how far the optimal domains are from
-being products. Second, the
-**Möbius band is the first non-orientable surface where the search provably beats every product
+the annealer ties the product bound; on the hemi-octahedron the star-seeded `k = 8` run
+(`hemi_octa_k8`, seed 8233) **beat it** with `SC_strict ≤ 7` — 8 domains against `ρ = 9`, so the
+attaining domains are provably non-product; on the hemi-dodecahedron the search has not reached
+the product bound. The gap between `ρ − 1` and the searched value, wherever one exists, measures
+how far the optimal domains are from being products. Second, the
+**Möbius band was the first non-orientable surface where the search provably beats every product
 cover**: `ρ = 4` certifies ≤ 3, but the CP-SAT three-domain cover (65+43+42) gives `SC_strict = 2`,
-one domain below the entire product family (the wedge §23 and cube §26 are the other
-search-beats-products cases). The product bound is an upper bound, never an optimality claim.
+one domain below the entire product family (the hemi-octahedron above, the wedge §23 and the cube
+§26 are the other search-beats-products cases). The product bound is an upper bound, never an
+optimality claim.
 
 **Using a star cover as a warm start.** `star_cover.py` now records the full-grid chains in
 `summary.json` under `best_chains`, the key `gpu_sc.py` / `annealer_stretch.py --init` expects, so a
 star certificate can seed the annealer at fewer chains (`k = ρ − 1`) and let it try to absorb the
 dropped domain. For the hemi-octahedron the 9-domain star cover seeds 1440/1536 facets at `k = 8`
-(the 96-facet domain is dropped); the run is the direct test of whether `SC_strict ≤ 7` in a
-non-product family. `hybrid_cover.py` is the complementary probe: keep the `m` largest star
+(the 96-facet domain is dropped); the run answers the direct test of whether `SC_strict ≤ 7` in a
+non-product family: **yes** — 1536/1536 at epoch 106 (seed 8233, 6325 s, `VERIFIED system of 8
+motion planners`, sizes 258/237/224/186/175/160/150/146, chains 4/5/2/4/5/3/4/5 links), i.e.
+**`SC_strict(RP²) ≤ 7`** one domain below the product floor, certificate `results/hemi_octa_k8`.
+`hybrid_cover.py` is the complementary probe: keep the `m` largest star
 rectangles frozen and anneal only the remainder.
+
+## 28. Why ρ = V on the hemi-polyhedra (row–transversal, diagonal, grid)
+
+§27 records the coincidence: on the hemi-icosahedron, the hemicube and the hemi-octahedron the
+exact star-cover number equals the vertex count (`ρ = 6, 7, 9 = V`), so `SC_strict ≤ V − 1 =
+5, 6, 8` with no search. The mechanism is three elementary bounds on `ρ` — not one per vertex,
+but a lower bound from facet-transversals matched by diagonal/grid covers, with the subdivisions
+of §27 supplying the arithmetic that makes both sides land on `V`. (Formal versions of Lemma 6,
+Lemma 7 and Proposition 8 are in the paper, §5, after Corollary 3 there.) Notation as in §19:
+`τ` = minimum size of a set of vertices meeting every facet of `K`, `d = max_v |star(v)|`,
+`F` = number of facets.
+
+**Lemma 6 (row–transversal bound).** `ρ(K) ≥ ⌈τ·F / d⌉`.
+
+*Proof.* Let `R` be a cover by `ρ` rectangles. Fix a facet `s` and set `W_s = {w : ∃v ∈ s with
+(v,w) ∈ R}`. Every facet `t` meets `W_s` (the pair `(s,t)` lies over some `(v,w) ∈ R` with
+`v ∈ s`, `w ∈ t`), so `W_s` is a facet-transversal and `|W_s| ≥ τ`. Summing over the `F` facets
+counts each rectangle once per `s` containing its first coordinate:
+`Σ_{(v,w)∈R} |star(v)| = Σ_s |W_s| ≥ τ·F`. Every summand is at most `d`, hence `d·ρ ≥ τ·F`. ∎
+
+Tight on `circle` (`⌈2·3/2⌉ = 3 = ρ`), `s2` (`⌈2·4/3⌉ = 3 = ρ`), `mobius` (`⌈2·5/3⌉ = 4 = ρ`)
+and `rp2` (`⌈3·10/5⌉ = 6 = ρ`); on `klein` and `torus` it gives 10 against `ρ = 12` and 11.
+
+**Lemma 7 (diagonal and grid covers).** (i) If every two facets of `K` meet, the `V` diagonal
+rectangles `(v,v)` cover `K×K`, so `ρ(K) ≤ V`. (ii) If `S ⊆ V` meets every facet of `K`, the
+`|S|²` rectangles `(v,w)` with `v, w ∈ S` cover `K×K`, so `ρ(K) ≤ |S|²`.
+
+*Proof.* A facet pair `(s,t)` lies over `(v,w)` as soon as `v ∈ s` and `w ∈ t`: take `v ∈ s ∩ t`
+in (i), and `v ∈ s ∩ S`, `w ∈ t ∩ S` in (ii). ∎
+
+**Proposition 8 (ρ = V on the three hemi-polyhedra).** For the stored minimal triangulations of
+§27, `ρ = V` exactly:
+
+| complex | V | τ | d | F | `⌈τF/d⌉` | covering LP | `ρ` (exact) |
+|---|---|---|---|---|---|---|---|
+| hemi-icosahedron (`rp2`) | 6 | 3 | 5 | 10 | **6** | 4.00 | **6 = V** |
+| hemicube | 7 | 3 | 6 | 12 | 6 | 4.00 | **7 = V** |
+| hemi-octahedron (`hemi_octa`) | 9 | 3 | 6 | 16 | 8 | **9.00** | **9 = V** |
+| (contrast) hemi-dodecahedron | 10 | 4 | 9 | 18 | 8 | 11.11 | 15 ≠ V |
+| (contrast) Möbius band | 5 | 2 | 3 | 5 | **4** | 2.78 | 4 ≠ V |
+| (contrast) Klein bottle | 8 | 4 | 7 | 16 | 10 | 7.11 | 12 ≠ V |
+| (contrast) Császár torus | 7 | 4 | 6 | 14 | 10 | 5.44 | 11 ≠ V |
+
+*Hemi-icosahedron (`rp2`), hand proof both sides.* The ten facets pairwise meet — no two of the
+ten triples on six vertices are disjoint (facet table of `build("rp2")`, 0 disjoint pairs) — so
+Lemma 7(i) gives `ρ ≤ 6`. Lemma 6 gives `ρ ≥ ⌈3·10/5⌉ = 6` (`τ = 3`: two stars cover at most
+`5+5−2 = 8 < 10` facets). The diagonal cover of `rp2_starcover_opt` attains it.
+
+*Hemicube, hand proof both sides.* Each facet is a square centre together with an edge of `K₄` on
+the four cube-vertices `0–3` (the 12 triangles are the 3 coned squares; as unordered pairs the
+square edges run through the 6 edge types of `K₄`, each in 2 squares). Here `τ = 3` (the three
+centres meet every facet), `d = 6`, `F = 12`, so Lemma 6 gives `ρ ≥ 6`. Suppose six rectangles
+covered. In `Σ_{(v,w)∈R} |star(v)| ≥ 36` every summand would have to equal 6 — a single centre
+first-coordinate caps the sum at `5·6 + 4 = 34 < 36` — and the same holds on the second
+coordinate, so all six rectangles are cube-vertex pairs. Coverage of the 12 triangles then reduces
+to coverage of the 36 ordered edge-type pairs of `K₄` (a triangle contains exactly the two
+cube-endpoints of its edge type). For `R` of size 6 put `W_x = {w : (x,w) ∈ R}`. The pair
+`(e,f)` is covered iff `(W_a ∪ W_b) ∩ f ≠ ∅` for `e = {a,b}`, so every union `W_e := W_a ∪ W_b`
+must meet all 6 edges of `K₄`, i.e. `|W_e| ≥ 3`. But `Σ_e |W_e| ≤ Σ_x 3·|W_x| = 18`, with
+equality only if the four `W_x` are pairwise disjoint (`K₄` is complete) and `Σ_x |W_x| = 6` —
+impossible inside a 4-element ground set (pairwise disjoint sets sum to ≤ 4). Hence `ρ ≥ 7`;
+`hemicube_starcover_opt` attains 7 with the pairs
+`(0,0) (0,1) (1,2) (1,0) (3,1) (2,3) (3,2)` on the cube-vertices, and `rect_cover.py` plus the
+HiGHS integer program certify the same optimum. And `7 = 4 + 3 = V_abs + F_abs = V`: the coned
+triangulation adds exactly one centre per square.
+
+*Hemi-octahedron, hand upper + certified lower.* Corners `0,1,2` (|star| = 4) and the six
+edge-cell midpoints `3–8` (|star| = 6). Every one of the 16 facets meets `S = {0, 5, 6}` — the
+corner `X` and the two midpoints `C, D` of the `Y–Z` edge cell — so Lemma 7(ii) gives `ρ ≤ 9`.
+The same count is forced on the vertex side: the medial subdivision adds one vertex per edge
+cell and the doubled complete abstract 1-skeleton has `2·C(3,2) = 6` edge cells, so
+`V = 3 + 6 = 3² = |S|²`. For the lower bound Lemma 6 only reaches 8 (`τ = 3`, `F = 16`, `d = 6`),
+but the set-cover LP is **tight** here — value `9.0`, dual certificate from HiGHS, the only
+complex computed with zero integrality gap (contrast `rp2` 4.00 and `hemicube` 4.00 below their
+integer optima) — and `rect_cover.py` / the HiGHS integer program certify `ρ = 9` optimal
+(`hemi_octa_starcover_opt` attains it with the grid `S²`). Hence `ρ = 9 = V`. ∎
+
+**Consequence.** `SC_strict ≤ V − 1`: **≤ 5** (hemi-icosahedron), **≤ 6** (hemicube),
+**≤ 8** (hemi-octahedron) — Corollary 2 applied to Proposition 8, zero search. The star-seeded
+`k = 8` annealer run on the hemi-octahedron subsequently beat the product floor by one domain
+(`SC_strict ≤ 7` with 8 < ρ = 9 rectangles, so the attaining domains are provably non-product —
+`results/hemi_octa_k8`, §27), as the Möbius band, the wedge (§23) and the cube (§26) do on their
+surfaces.
+
+**Why the coincidence is not a law of RP².** `ρ` is an invariant of the star-incidence of the
+chosen triangulation, not of the underlying surface: on the hemi-dodecahedron (same RP²) it is
+15 = `E_abs` ≠ 10 = V; on the Möbius band 4 < 5 = V (Lemma 6 is tight there, the diagonal merely
+non-optimal); on the Klein bottle and Császár torus 12 and 11 exceed 8 and 7. The three
+coincidences are the three ways the minimal subdivision of a hemi-polyhedron can pay exactly the
+gap: no subdivision and no disjoint facet pairs (hemi-icosa), one centre per face with the
+`K₄` edge-pair optimum landing on `V_abs + F_abs` (hemicube), one midpoint per edge cell with
+`V_abs + 2·C(V_abs,2) = V_abs²` (hemi-octa).
+
+Re-verify: `python src/rect_cover.py <name>` for `ρ` (B&B, or `scipy.optimize.milp` as in §27);
+`python src/star_cover.py <name> <outdir> <(v,w)…>` rebuilds and re-verifies each certificate in
+`results/{rp2,hemicube,hemi_octa}_starcover_opt`; the `τ, d, F` and LP columns come from the
+facet tables of `build()` with the row–transversal inequality above and an LP over `|V|²`
+rectangle variables. The proofs of Lemma 6–7 and Proposition 8 are also in the paper
+(`paper-overleaf/paper/main.tex`, §5).
