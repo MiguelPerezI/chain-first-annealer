@@ -22,6 +22,10 @@ TIME_BIN=/nonexistent bash "$OPTI/scripts/sat_rung.sh" mobius 1 3 120 4 "$tmp/no
 grep -qE '\| mobius \| 1 \| 3 \| cold \| - \| INFEASIBLE \|' "$tmp/notime.md"
 grep -q "measured by rss_run.py" "$tmp/notime/time.txt" || { echo "FAIL: TIME_BIN ignored"; exit 1; }
 grep -qE '\| 0\.[0-9][1-9] \||\| [1-9][0-9]*\.[0-9]+ \|' "$tmp/notime.md" || { echo "FAIL: no RSS without GNU time"; cat "$tmp/notime.md"; exit 1; }
+# factored encoding end to end: known Moebius 3-cover must come back audited
+SCS_ENCODING=factored bash "$OPTI/scripts/sat_rung.sh" mobius 3 6 120 4 "$tmp/fac" "$tmp/fac.md"
+grep -qE '\| mobius \| 3 \| 6 \| cold \| - \| (OPTIMAL|FEASIBLE) \|.*\| audited \|' "$tmp/fac.md" || { echo "FAIL: factored control"; cat "$tmp/fac.md"; exit 1; }
+grep -q "middle-link encoding: factored" "$tmp/fac/solver.log" || { echo "FAIL: SCS_ENCODING ignored"; exit 1; }
 cat "$tmp/log.md"
 grep -qE "\| mobius \| 5 \| $L \| hybrid \| 1 \| (OPTIMAL|FEASIBLE) \|.*\| audited \|" "$tmp/log.md"
 grep -qE '\| mobius \| 1 \| 3 \| cold \| - \| INFEASIBLE \|.*\| - \|' "$tmp/log.md"
