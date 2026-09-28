@@ -332,6 +332,33 @@ def build(name):
                         (0, 3, 5), (2, 3, 5), (1, 2, 5), (0, 1, 5),
                         (0, 2, 6), (1, 2, 6), (1, 3, 6), (0, 3, 6)],
                        "RP² (7 vertices, 12 triangles, hemicube)")
+    if name == "hemi_octa":
+        # The hemi-octahedron, quotient of the octahedron by the antipodal
+        # map: 3 vertices (the antipodal pairs {x,-x}, {y,-y}, {z,-z}), 6
+        # edges (the octahedron's 12 edges, paired -- TWO edge cells between
+        # every pair of vertices) and 4 triangular faces (the octahedron's 8,
+        # paired; every face spans all 3 vertices).  chi = 3 - 6 + 4 = 1 and
+        # non-orientable -- RP², the regular map {3,4}/2, the smallest of the
+        # four hemi-polyhedra.  Not a simplicial complex: all 4 faces are the
+        # same 3-vertex triple and the 6 edges form three doubled pairs, so a
+        # simplicial model must split the edge cells.  A model on 6 vertices
+        # would be the unique 6-vertex triangulation of RP² (the stored `rp2`
+        # hemi-icosahedron), so we use the order-24-symmetric medial
+        # subdivision: a fresh midpoint on every edge cell and each face (now
+        # the hexagon corner,mid,corner,mid,corner,mid) cut into its central
+        # triangle of midpoints plus the 3 corner triangles.  That is 9
+        # vertices, 24 edges, 16 triangles, f-vector (9, 24, 16) -- every edge
+        # in exactly 2 triangles, links single cycles, chi = 1, non-orientable
+        # (a closed surface, hence RP²); automorphism group of order 24,
+        # transitive on the 3 corners and on the 6 midpoints.  Corners 0,1,2 =
+        # X,Y,Z; midpoints 3..8 = A,B (cell X-Y), C,D (Y-Z), E,F (Z-X); the
+        # faces are F1=(A,C,E), F2=(A,D,F), F3=(B,D,E), F4=(B,C,F).  The
+        # product has 16²·6 = 1536 facets.
+        return Product([(0, 3, 7), (1, 3, 5), (2, 5, 7), (3, 5, 7),   # F1
+                        (0, 3, 8), (1, 3, 6), (2, 6, 8), (3, 6, 8),   # F2
+                        (0, 4, 7), (1, 4, 6), (2, 6, 7), (4, 6, 7),   # F3
+                        (0, 4, 8), (1, 4, 5), (2, 5, 8), (4, 5, 8)],  # F4
+                       "RP² (9 vertices, 16 triangles, hemi-octahedron)")
     if name == "klein":
         # The vertex-minimal triangulation of the Klein bottle: 8 vertices 0..7,
         # 16 triangles, f-vector (8, 24, 16), chi = 0, valence vector
@@ -1406,7 +1433,7 @@ def make_monitors(a, P):
 
 def cli():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "rp2", "hemi_dodeca", "hemicube", "klein", "torus", "mobius", "s1xw"])
+    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "rp2", "hemi_dodeca", "hemicube", "hemi_octa", "klein", "torus", "mobius", "s1xw"])
     ap.add_argument("--k", type=int, default=3, help="number of chains / domains")
     ap.add_argument("--cmax", type=int, default=40, help="links per chain")
     ap.add_argument("--S", type=int, default=4096, help="population (GPU threads)")

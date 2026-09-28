@@ -1,0 +1,307 @@
+=== annealer_stretch chain-first annealer ===  K=RP² (7 vertices, 12 triangles, hemicube)  |F_L|=864  grid=49  k=6 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/hemicube_k6/summary.json (reduced chains of the 6 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  h1-guide: 31/33 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch   1: best  831.0/864  top10 [831, 831, 830, 828, 828, 828, 828, 828, 828, 828]  median 550  now-median 548     73.6s     0.291 Mmoves/s  stretch prop 4490653 acc 523114 (12%)  collapse prop 4499117 acc 122320 (3%)  leftovers 33
+  epoch   2: best  831.0/864  top10 [831, 831, 830, 828, 828, 828, 828, 828, 828, 828]  median 566  now-median 564    135.2s     0.310 Mmoves/s  stretch prop 4078692 acc 383497 (9%)  collapse prop 4080745 acc 89328 (2%)  leftovers 33
+  h1-guide: 31/33 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch   3: best  831.0/864  top10 [831, 831, 831, 830, 828, 828, 828, 828, 828, 828]  median 828  now-median 826    200.5s     0.317 Mmoves/s  stretch prop 4170833 acc 319451 (8%)  collapse prop 4170615 acc 93703 (2%)  leftovers 33
+  epoch   4: best  831.0/864  top10 [831, 831, 831, 830, 828, 828, 828, 828, 828, 828]  median 828  now-median 826    263.2s     0.319 Mmoves/s  stretch prop 4171963 acc 325802 (8%)  collapse prop 4170119 acc 99748 (2%)  leftovers 33
+  h1-guide: 31/33 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch   5: best  831.0/864  top10 [831, 831, 831, 831, 831, 830, 828, 828, 828, 828]  median 828  now-median 826    327.6s     0.322 Mmoves/s  stretch prop 4436422 acc 268888 (6%)  collapse prop 4438232 acc 103168 (2%)  leftovers 33
+  epoch   6: best  831.0/864  top10 [831, 831, 831, 831, 831, 830, 828, 828, 828, 828]  median 828  now-median 826    389.4s     0.324 Mmoves/s  stretch prop 4440884 acc 277530 (6%)  collapse prop 4439779 acc 109212 (2%)  leftovers 33
+  h1-guide: 31/33 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch   7: best  831.0/864  top10 [831, 831, 831, 831, 831, 831, 831, 830, 828, 828]  median 828  now-median 826    452.4s     0.326 Mmoves/s  stretch prop 4759167 acc 248658 (5%)  collapse prop 4758616 acc 112508 (2%)  leftovers 33
+  epoch   8: best  831.0/864  top10 [831, 831, 831, 831, 831, 831, 831, 830, 828, 828]  median 828  now-median 826    512.9s     0.328 Mmoves/s  stretch prop 4764189 acc 257038 (5%)  collapse prop 4763935 acc 117592 (2%)  leftovers 33
+  h1-guide: 31/33 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch   9: best  831.0/864  top10 [831, 831, 831, 831, 831, 831, 831, 831, 831, 830]  median 828  now-median 826    576.2s     0.329 Mmoves/s  stretch prop 4763178 acc 253720 (5%)  collapse prop 4765301 acc 112567 (2%)  leftovers 33
+  epoch  10: best  831.0/864  top10 [831, 831, 831, 831, 831, 831, 831, 831, 831, 830]  median 828  now-median 826    637.0s     0.330 Mmoves/s  stretch prop 4774602 acc 261349 (5%)  collapse prop 4773685 acc 117816 (2%)  leftovers 33
+  h1-guide: 31/33 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  11: best  831.0/864  top10 [831, 831, 831, 831, 831, 831, 831, 831, 831, 830]  median 828  now-median 826    700.5s     0.331 Mmoves/s  stretch prop 4776092 acc 273783 (6%)  collapse prop 4775327 acc 119949 (3%)  leftovers 33
+  epoch  12: best  831.0/864  top10 [831, 831, 831, 831, 831, 831, 831, 831, 831, 830]  median 828  now-median 826    761.2s     0.331 Mmoves/s  stretch prop 4772656 acc 278176 (6%)  collapse prop 4778438 acc 122761 (3%)  leftovers 33
+  h1-guide: 31/33 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  13: best  831.0/864  top10 [831, 831, 831, 831, 831, 831, 831, 831, 831, 831]  median 828  now-median 826    824.5s     0.332 Mmoves/s  stretch prop 4785876 acc 289917 (6%)  collapse prop 4783512 acc 124237 (3%)  leftovers 33
+  epoch  14: best  831.0/864  top10 [831, 831, 831, 831, 831, 831, 831, 831, 831, 831]  median 828  now-median 826    885.1s     0.333 Mmoves/s  stretch prop 4786135 acc 291540 (6%)  collapse prop 4784418 acc 127759 (3%)  leftovers 33
+  h1-guide: 31/32 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  15: best  832.0/864  top10 [832, 831, 831, 831, 831, 831, 831, 831, 831, 831]  median 828  now-median 826    948.2s     0.333 Mmoves/s  stretch prop 4785204 acc 298336 (6%)  collapse prop 4786688 acc 125319 (3%)  leftovers 32
+  epoch  16: best  832.0/864  top10 [832, 831, 831, 831, 831, 831, 831, 831, 831, 831]  median 828  now-median 826   1008.6s     0.334 Mmoves/s  stretch prop 4781046 acc 305774 (6%)  collapse prop 4777281 acc 129998 (3%)  leftovers 32
+  h1-guide: 30/32 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  17: best  832.0/864  top10 [832, 832, 832, 831, 831, 831, 831, 831, 831, 831]  median 828  now-median 826   1071.5s     0.334 Mmoves/s  stretch prop 4778389 acc 311243 (7%)  collapse prop 4783520 acc 129957 (3%)  leftovers 32
+  epoch  18: best  832.0/864  top10 [832, 832, 832, 831, 831, 831, 831, 831, 831, 831]  median 828  now-median 825   1131.9s     0.334 Mmoves/s  stretch prop 4775278 acc 309979 (6%)  collapse prop 4777649 acc 131824 (3%)  leftovers 32
+  h1-guide: 30/32 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  19: best  832.0/864  top10 [832, 832, 832, 832, 832, 831, 831, 831, 831, 831]  median 828  now-median 825   1194.6s     0.335 Mmoves/s  stretch prop 4776340 acc 318531 (7%)  collapse prop 4776421 acc 131522 (3%)  leftovers 32
+  epoch  20: best  832.0/864  top10 [832, 832, 832, 832, 832, 831, 831, 831, 831, 831]  median 828  now-median 825   1254.6s     0.335 Mmoves/s  stretch prop 4775566 acc 318373 (7%)  collapse prop 4777346 acc 133258 (3%)  leftovers 32
+  h1-guide: 29/31 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  21: best  833.0/864  top10 [833, 832, 832, 832, 832, 832, 832, 832, 831, 831]  median 828  now-median 825   1316.5s     0.336 Mmoves/s  stretch prop 4777520 acc 320275 (7%)  collapse prop 4777517 acc 132203 (3%)  leftovers 31
+  epoch  22: best  833.0/864  top10 [833, 833, 832, 832, 832, 832, 832, 832, 832, 832]  median 828  now-median 825   1376.4s     0.336 Mmoves/s  stretch prop 4730862 acc 331272 (7%)  collapse prop 4726266 acc 137787 (3%)  leftovers 31
+  h1-guide: 29/30 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  23: best  834.0/864  top10 [834, 833, 833, 833, 833, 832, 832, 832, 832, 832]  median 828  now-median 825   1438.4s     0.337 Mmoves/s  stretch prop 4714680 acc 333354 (7%)  collapse prop 4720126 acc 135257 (3%)  leftovers 30
+  epoch  24: best  836.0/864  top10 [836, 836, 834, 834, 834, 833, 833, 833, 832, 832]  median 828  now-median 825   1498.3s     0.337 Mmoves/s  stretch prop 4721517 acc 344337 (7%)  collapse prop 4721090 acc 142210 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  25: best  836.0/864  top10 [836, 836, 836, 836, 834, 834, 834, 833, 833, 833]  median 828  now-median 825   1560.1s     0.337 Mmoves/s  stretch prop 4731154 acc 351425 (7%)  collapse prop 4730695 acc 143977 (3%)  leftovers 28
+  epoch  26: best  836.0/864  top10 [836, 836, 836, 836, 834, 834, 834, 834, 834, 834]  median 828  now-median 825   1619.7s     0.337 Mmoves/s  stretch prop 4733032 acc 347710 (7%)  collapse prop 4735061 acc 145872 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  27: best  836.0/864  top10 [836, 836, 836, 836, 835, 835, 834, 834, 834, 834]  median 828  now-median 825   1681.6s     0.338 Mmoves/s  stretch prop 4732867 acc 350134 (7%)  collapse prop 4739093 acc 144216 (3%)  leftovers 28
+  epoch  28: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 835, 835, 835, 835]  median 828  now-median 826   1741.3s     0.338 Mmoves/s  stretch prop 4735408 acc 347700 (7%)  collapse prop 4738182 acc 146220 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  29: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 835, 835, 835]  median 828  now-median 826   1803.4s     0.338 Mmoves/s  stretch prop 4737712 acc 346010 (7%)  collapse prop 4736167 acc 142591 (3%)  leftovers 28
+  epoch  30: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 828  now-median 826   1863.2s     0.338 Mmoves/s  stretch prop 4743575 acc 343778 (7%)  collapse prop 4742364 acc 144781 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  31: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 828  now-median 826   1925.3s     0.339 Mmoves/s  stretch prop 4743611 acc 345708 (7%)  collapse prop 4748895 acc 143222 (3%)  leftovers 28
+  epoch  32: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 828  now-median 826   1985.2s     0.339 Mmoves/s  stretch prop 4754644 acc 344395 (7%)  collapse prop 4748476 acc 145954 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  33: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 828  now-median 826   2047.9s     0.339 Mmoves/s  stretch prop 4758377 acc 343472 (7%)  collapse prop 4761848 acc 143236 (3%)  leftovers 28
+  epoch  34: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 828  now-median 826   2108.1s     0.339 Mmoves/s  stretch prop 4764722 acc 342348 (7%)  collapse prop 4763632 acc 145967 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  35: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 828  now-median 828   2172.1s     0.339 Mmoves/s  stretch prop 4776823 acc 350495 (7%)  collapse prop 4772526 acc 145658 (3%)  leftovers 28
+  epoch  36: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 828  now-median 827   2233.3s     0.339 Mmoves/s  stretch prop 4775874 acc 349028 (7%)  collapse prop 4774756 acc 148436 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  37: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 829  now-median 828   2296.5s     0.339 Mmoves/s  stretch prop 4795208 acc 362838 (8%)  collapse prop 4798208 acc 149663 (3%)  leftovers 28
+  epoch  38: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 829  now-median 828   2357.5s     0.339 Mmoves/s  stretch prop 4793850 acc 357317 (7%)  collapse prop 4790762 acc 151545 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  39: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 830  now-median 830   2420.5s     0.339 Mmoves/s  stretch prop 4826600 acc 381005 (8%)  collapse prop 4826391 acc 156622 (3%)  leftovers 28
+  epoch  40: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 830  now-median 830   2481.3s     0.339 Mmoves/s  stretch prop 4824472 acc 377125 (8%)  collapse prop 4822444 acc 157374 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  41: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 831  now-median 831   2545.1s     0.338 Mmoves/s  stretch prop 4860125 acc 398701 (8%)  collapse prop 4858415 acc 161446 (3%)  leftovers 28
+  epoch  42: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 831  now-median 831   2606.4s     0.338 Mmoves/s  stretch prop 4851447 acc 391993 (8%)  collapse prop 4847022 acc 160839 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  43: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 832  now-median 832   2669.9s     0.338 Mmoves/s  stretch prop 4889167 acc 404367 (8%)  collapse prop 4891092 acc 164424 (3%)  leftovers 28
+  epoch  44: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 832  now-median 832   2731.2s     0.338 Mmoves/s  stretch prop 4879624 acc 396335 (8%)  collapse prop 4874905 acc 163181 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  45: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 833  now-median 833   2795.0s     0.338 Mmoves/s  stretch prop 4905491 acc 407875 (8%)  collapse prop 4905149 acc 165200 (3%)  leftovers 28
+  epoch  46: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 833  now-median 833   2856.4s     0.338 Mmoves/s  stretch prop 4896254 acc 401960 (8%)  collapse prop 4899049 acc 164870 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  47: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 834  now-median 834   2920.6s     0.338 Mmoves/s  stretch prop 4924903 acc 416065 (8%)  collapse prop 4927301 acc 165981 (3%)  leftovers 28
+  epoch  48: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 834  now-median 834   2982.3s     0.338 Mmoves/s  stretch prop 4912102 acc 407571 (8%)  collapse prop 4915466 acc 164411 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  49: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 834  now-median 834   3046.7s     0.338 Mmoves/s  stretch prop 4940010 acc 420657 (9%)  collapse prop 4944314 acc 166746 (3%)  leftovers 28
+  epoch  50: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 834  now-median 834   3108.9s     0.338 Mmoves/s  stretch prop 4932577 acc 411069 (8%)  collapse prop 4935818 acc 164745 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  51: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 835  now-median 835   3173.3s     0.337 Mmoves/s  stretch prop 4972265 acc 425740 (9%)  collapse prop 4971620 acc 166902 (3%)  leftovers 28
+  epoch  52: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 835  now-median 835   3235.3s     0.337 Mmoves/s  stretch prop 4960558 acc 416841 (8%)  collapse prop 4963333 acc 165128 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  53: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   3300.0s     0.337 Mmoves/s  stretch prop 4994189 acc 431338 (9%)  collapse prop 4996091 acc 168460 (3%)  leftovers 28
+  epoch  54: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   3362.3s     0.337 Mmoves/s  stretch prop 4980431 acc 421984 (8%)  collapse prop 4984732 acc 166052 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  55: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   3427.0s     0.337 Mmoves/s  stretch prop 5032695 acc 436076 (9%)  collapse prop 5030406 acc 167360 (3%)  leftovers 28
+  epoch  56: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   3489.5s     0.337 Mmoves/s  stretch prop 5022166 acc 428212 (9%)  collapse prop 5021006 acc 165409 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  57: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   3554.6s     0.337 Mmoves/s  stretch prop 5065568 acc 432622 (9%)  collapse prop 5066669 acc 165896 (3%)  leftovers 28
+  epoch  58: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   3617.5s     0.336 Mmoves/s  stretch prop 5047699 acc 423301 (8%)  collapse prop 5050557 acc 164477 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  59: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   3682.5s     0.336 Mmoves/s  stretch prop 5066020 acc 434819 (9%)  collapse prop 5066676 acc 166429 (3%)  leftovers 28
+  epoch  60: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   3745.4s     0.336 Mmoves/s  stretch prop 5045798 acc 425371 (8%)  collapse prop 5051610 acc 164556 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  61: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   3810.7s     0.336 Mmoves/s  stretch prop 5058079 acc 435508 (9%)  collapse prop 5055322 acc 166388 (3%)  leftovers 28
+  epoch  62: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   3873.6s     0.336 Mmoves/s  stretch prop 5044557 acc 425758 (8%)  collapse prop 5041651 acc 164512 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  63: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   3938.6s     0.336 Mmoves/s  stretch prop 5057325 acc 436782 (9%)  collapse prop 5051857 acc 167404 (3%)  leftovers 28
+  epoch  64: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4001.0s     0.336 Mmoves/s  stretch prop 5040148 acc 425922 (8%)  collapse prop 5040034 acc 165701 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  65: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4066.2s     0.335 Mmoves/s  stretch prop 5055321 acc 439304 (9%)  collapse prop 5054675 acc 167651 (3%)  leftovers 28
+  epoch  66: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4129.0s     0.335 Mmoves/s  stretch prop 5038666 acc 431182 (9%)  collapse prop 5038496 acc 166317 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  67: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4193.9s     0.335 Mmoves/s  stretch prop 5045523 acc 439199 (9%)  collapse prop 5045347 acc 168243 (3%)  leftovers 28
+  epoch  68: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4256.3s     0.335 Mmoves/s  stretch prop 5034833 acc 428915 (9%)  collapse prop 5033405 acc 165915 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  69: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4321.6s     0.335 Mmoves/s  stretch prop 5045350 acc 443126 (9%)  collapse prop 5044678 acc 169670 (3%)  leftovers 28
+  epoch  70: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4384.3s     0.335 Mmoves/s  stretch prop 5028092 acc 432862 (9%)  collapse prop 5027444 acc 167878 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  71: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4449.4s     0.335 Mmoves/s  stretch prop 5042534 acc 444191 (9%)  collapse prop 5046499 acc 169161 (3%)  leftovers 28
+  epoch  72: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4512.0s     0.335 Mmoves/s  stretch prop 5029413 acc 434544 (9%)  collapse prop 5030782 acc 168473 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  73: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4576.9s     0.335 Mmoves/s  stretch prop 5040829 acc 443524 (9%)  collapse prop 5039872 acc 171041 (3%)  leftovers 28
+  epoch  74: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4639.2s     0.335 Mmoves/s  stretch prop 5031386 acc 434845 (9%)  collapse prop 5022515 acc 168132 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  75: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4703.8s     0.335 Mmoves/s  stretch prop 5036409 acc 444823 (9%)  collapse prop 5033167 acc 169383 (3%)  leftovers 28
+  epoch  76: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4765.8s     0.334 Mmoves/s  stretch prop 5024774 acc 435288 (9%)  collapse prop 5018835 acc 167353 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  77: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4830.5s     0.334 Mmoves/s  stretch prop 5031324 acc 444440 (9%)  collapse prop 5028686 acc 169771 (3%)  leftovers 28
+  epoch  78: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4892.5s     0.334 Mmoves/s  stretch prop 5015429 acc 433512 (9%)  collapse prop 5016832 acc 167931 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  79: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   4956.6s     0.334 Mmoves/s  stretch prop 5025226 acc 445332 (9%)  collapse prop 5019648 acc 169647 (3%)  leftovers 28
+  epoch  80: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5018.3s     0.334 Mmoves/s  stretch prop 5005958 acc 435160 (9%)  collapse prop 5006947 acc 168701 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  81: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5082.8s     0.334 Mmoves/s  stretch prop 5023864 acc 445701 (9%)  collapse prop 5026342 acc 169723 (3%)  leftovers 28
+  epoch  82: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5144.8s     0.334 Mmoves/s  stretch prop 5012027 acc 435851 (9%)  collapse prop 5008959 acc 167909 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  83: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5208.8s     0.334 Mmoves/s  stretch prop 5027496 acc 447361 (9%)  collapse prop 5019377 acc 170114 (3%)  leftovers 28
+  epoch  84: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5270.8s     0.334 Mmoves/s  stretch prop 5008384 acc 436861 (9%)  collapse prop 5010731 acc 167852 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  85: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5335.1s     0.334 Mmoves/s  stretch prop 5020738 acc 447873 (9%)  collapse prop 5016054 acc 170963 (3%)  leftovers 28
+  epoch  86: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5396.9s     0.334 Mmoves/s  stretch prop 5006967 acc 436450 (9%)  collapse prop 5000895 acc 168940 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  87: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5460.9s     0.334 Mmoves/s  stretch prop 5016128 acc 446525 (9%)  collapse prop 5016433 acc 170761 (3%)  leftovers 28
+  epoch  88: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5522.8s     0.334 Mmoves/s  stretch prop 5006447 acc 438369 (9%)  collapse prop 5005570 acc 168738 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  89: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5587.2s     0.334 Mmoves/s  stretch prop 5011428 acc 445687 (9%)  collapse prop 5014192 acc 171359 (3%)  leftovers 28
+  epoch  90: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5649.0s     0.334 Mmoves/s  stretch prop 4998458 acc 436739 (9%)  collapse prop 4997289 acc 169336 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  91: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5712.9s     0.334 Mmoves/s  stretch prop 5015429 acc 447441 (9%)  collapse prop 5018085 acc 170555 (3%)  leftovers 28
+  epoch  92: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5774.5s     0.334 Mmoves/s  stretch prop 5002291 acc 438271 (9%)  collapse prop 5004012 acc 169207 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  93: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5838.5s     0.334 Mmoves/s  stretch prop 5010013 acc 447219 (9%)  collapse prop 5007475 acc 170607 (3%)  leftovers 28
+  epoch  94: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5900.2s     0.334 Mmoves/s  stretch prop 4993886 acc 436042 (9%)  collapse prop 4995040 acc 169171 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  95: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   5964.1s     0.334 Mmoves/s  stretch prop 5010648 acc 445817 (9%)  collapse prop 5009937 acc 170549 (3%)  leftovers 28
+  epoch  96: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6025.6s     0.334 Mmoves/s  stretch prop 4994442 acc 437817 (9%)  collapse prop 4995016 acc 168679 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  97: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6089.6s     0.334 Mmoves/s  stretch prop 5006313 acc 447048 (9%)  collapse prop 5008338 acc 170952 (3%)  leftovers 28
+  epoch  98: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6151.3s     0.334 Mmoves/s  stretch prop 4995979 acc 437491 (9%)  collapse prop 4995592 acc 169520 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  99: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6215.1s     0.334 Mmoves/s  stretch prop 5005637 acc 446008 (9%)  collapse prop 5006132 acc 171207 (3%)  leftovers 28
+  epoch 100: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6276.7s     0.334 Mmoves/s  stretch prop 4990661 acc 435065 (9%)  collapse prop 4983962 acc 168510 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 101: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6340.7s     0.334 Mmoves/s  stretch prop 5007114 acc 448485 (9%)  collapse prop 5005043 acc 170843 (3%)  leftovers 28
+  epoch 102: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6402.4s     0.334 Mmoves/s  stretch prop 4993777 acc 439488 (9%)  collapse prop 4994523 acc 168902 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 103: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6466.1s     0.334 Mmoves/s  stretch prop 5001929 acc 445133 (9%)  collapse prop 5006159 acc 171469 (3%)  leftovers 28
+  epoch 104: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6527.4s     0.334 Mmoves/s  stretch prop 4988481 acc 434975 (9%)  collapse prop 4991243 acc 169472 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 105: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6591.3s     0.334 Mmoves/s  stretch prop 4999981 acc 448595 (9%)  collapse prop 4998668 acc 170907 (3%)  leftovers 28
+  epoch 106: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6652.7s     0.334 Mmoves/s  stretch prop 4986683 acc 439254 (9%)  collapse prop 4989441 acc 168921 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 107: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6716.4s     0.334 Mmoves/s  stretch prop 4999159 acc 446627 (9%)  collapse prop 4996719 acc 171248 (3%)  leftovers 28
+  epoch 108: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6777.9s     0.334 Mmoves/s  stretch prop 4981694 acc 436357 (9%)  collapse prop 4985426 acc 169221 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 109: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6841.7s     0.334 Mmoves/s  stretch prop 4997779 acc 447092 (9%)  collapse prop 4994606 acc 171626 (3%)  leftovers 28
+  epoch 110: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6903.3s     0.334 Mmoves/s  stretch prop 4984172 acc 437617 (9%)  collapse prop 4985621 acc 170175 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 111: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   6966.8s     0.334 Mmoves/s  stretch prop 4992234 acc 446616 (9%)  collapse prop 4995463 acc 171520 (3%)  leftovers 28
+  epoch 112: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7028.2s     0.334 Mmoves/s  stretch prop 4981782 acc 436614 (9%)  collapse prop 4976999 acc 169064 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 113: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7091.9s     0.334 Mmoves/s  stretch prop 4993505 acc 446744 (9%)  collapse prop 4990350 acc 171320 (3%)  leftovers 28
+  epoch 114: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7153.3s     0.334 Mmoves/s  stretch prop 4976497 acc 436836 (9%)  collapse prop 4978296 acc 169267 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 115: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7216.7s     0.334 Mmoves/s  stretch prop 4991396 acc 445118 (9%)  collapse prop 4994035 acc 171513 (3%)  leftovers 28
+  epoch 116: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7277.9s     0.334 Mmoves/s  stretch prop 4983223 acc 434350 (9%)  collapse prop 4979698 acc 169775 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 117: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7341.5s     0.334 Mmoves/s  stretch prop 4992666 acc 446521 (9%)  collapse prop 4986965 acc 171323 (3%)  leftovers 28
+  epoch 118: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7402.8s     0.334 Mmoves/s  stretch prop 4973427 acc 435064 (9%)  collapse prop 4971988 acc 169096 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 119: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7466.2s     0.334 Mmoves/s  stretch prop 4989966 acc 448098 (9%)  collapse prop 4992679 acc 171164 (3%)  leftovers 28
+  epoch 120: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7527.4s     0.334 Mmoves/s  stretch prop 4983060 acc 439552 (9%)  collapse prop 4981604 acc 169475 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 121: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7591.1s     0.334 Mmoves/s  stretch prop 4988229 acc 445874 (9%)  collapse prop 4991271 acc 170782 (3%)  leftovers 28
+  epoch 122: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7652.4s     0.334 Mmoves/s  stretch prop 4977371 acc 436513 (9%)  collapse prop 4976213 acc 168665 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 123: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7715.8s     0.334 Mmoves/s  stretch prop 4989332 acc 447101 (9%)  collapse prop 4991503 acc 171053 (3%)  leftovers 28
+  epoch 124: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7776.8s     0.334 Mmoves/s  stretch prop 4980807 acc 436966 (9%)  collapse prop 4975633 acc 169357 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 125: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7840.6s     0.334 Mmoves/s  stretch prop 4984509 acc 445107 (9%)  collapse prop 4983760 acc 170937 (3%)  leftovers 28
+  epoch 126: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7901.8s     0.334 Mmoves/s  stretch prop 4973952 acc 436750 (9%)  collapse prop 4972308 acc 169840 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 127: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   7965.1s     0.334 Mmoves/s  stretch prop 4982115 acc 444568 (9%)  collapse prop 4986767 acc 171193 (3%)  leftovers 28
+  epoch 128: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8026.3s     0.334 Mmoves/s  stretch prop 4967637 acc 433984 (9%)  collapse prop 4973409 acc 168907 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 129: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8089.9s     0.334 Mmoves/s  stretch prop 4980758 acc 447618 (9%)  collapse prop 4984350 acc 171738 (3%)  leftovers 28
+  epoch 130: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8151.0s     0.334 Mmoves/s  stretch prop 4969062 acc 437420 (9%)  collapse prop 4966380 acc 169838 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 131: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8214.3s     0.334 Mmoves/s  stretch prop 4984120 acc 446043 (9%)  collapse prop 4984135 acc 172930 (3%)  leftovers 28
+  epoch 132: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8275.2s     0.334 Mmoves/s  stretch prop 4969706 acc 435220 (9%)  collapse prop 4972097 acc 169636 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 133: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8338.7s     0.334 Mmoves/s  stretch prop 4981539 acc 443257 (9%)  collapse prop 4976495 acc 171352 (3%)  leftovers 28
+  epoch 134: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8399.8s     0.334 Mmoves/s  stretch prop 4968758 acc 432904 (9%)  collapse prop 4965534 acc 169132 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 135: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8463.1s     0.334 Mmoves/s  stretch prop 4982237 acc 445523 (9%)  collapse prop 4981791 acc 171479 (3%)  leftovers 28
+  epoch 136: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8524.2s     0.334 Mmoves/s  stretch prop 4968557 acc 436144 (9%)  collapse prop 4967408 acc 168989 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 137: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8587.7s     0.334 Mmoves/s  stretch prop 4977260 acc 445139 (9%)  collapse prop 4974603 acc 170901 (3%)  leftovers 28
+  epoch 138: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8648.9s     0.334 Mmoves/s  stretch prop 4966489 acc 434293 (9%)  collapse prop 4967535 acc 168801 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 139: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8712.2s     0.334 Mmoves/s  stretch prop 4980377 acc 446209 (9%)  collapse prop 4973343 acc 171458 (3%)  leftovers 28
+  epoch 140: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8773.1s     0.335 Mmoves/s  stretch prop 4962533 acc 436607 (9%)  collapse prop 4968252 acc 170051 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 141: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8836.6s     0.335 Mmoves/s  stretch prop 4980110 acc 444891 (9%)  collapse prop 4975765 acc 170888 (3%)  leftovers 28
+  epoch 142: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8897.8s     0.335 Mmoves/s  stretch prop 4968994 acc 435797 (9%)  collapse prop 4966621 acc 169143 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 143: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   8961.0s     0.335 Mmoves/s  stretch prop 4982814 acc 447427 (9%)  collapse prop 4977467 acc 171525 (3%)  leftovers 28
+  epoch 144: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9021.9s     0.335 Mmoves/s  stretch prop 4966305 acc 435996 (9%)  collapse prop 4963658 acc 169773 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 145: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9085.2s     0.335 Mmoves/s  stretch prop 4971599 acc 445849 (9%)  collapse prop 4977895 acc 170590 (3%)  leftovers 28
+  epoch 146: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9146.2s     0.335 Mmoves/s  stretch prop 4960384 acc 435887 (9%)  collapse prop 4959734 acc 169707 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 147: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9209.4s     0.335 Mmoves/s  stretch prop 4974142 acc 446112 (9%)  collapse prop 4976537 acc 171830 (3%)  leftovers 28
+  epoch 148: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9270.1s     0.335 Mmoves/s  stretch prop 4961089 acc 437382 (9%)  collapse prop 4962306 acc 169425 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 149: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9333.3s     0.335 Mmoves/s  stretch prop 4975629 acc 445109 (9%)  collapse prop 4973691 acc 172046 (3%)  leftovers 28
+  epoch 150: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9394.1s     0.335 Mmoves/s  stretch prop 4959156 acc 433854 (9%)  collapse prop 4961443 acc 168814 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 151: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9457.4s     0.335 Mmoves/s  stretch prop 4976323 acc 445722 (9%)  collapse prop 4972633 acc 172247 (3%)  leftovers 28
+  epoch 152: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9518.2s     0.335 Mmoves/s  stretch prop 4959887 acc 437527 (9%)  collapse prop 4961808 acc 169548 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 153: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9581.5s     0.335 Mmoves/s  stretch prop 4973210 acc 445870 (9%)  collapse prop 4968543 acc 171689 (3%)  leftovers 28
+  epoch 154: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9642.3s     0.335 Mmoves/s  stretch prop 4956496 acc 433606 (9%)  collapse prop 4955047 acc 169523 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 155: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9705.1s     0.335 Mmoves/s  stretch prop 4970003 acc 443902 (9%)  collapse prop 4972345 acc 171421 (3%)  leftovers 28
+  epoch 156: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9765.7s     0.335 Mmoves/s  stretch prop 4960397 acc 434292 (9%)  collapse prop 4952828 acc 169520 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 157: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9829.0s     0.335 Mmoves/s  stretch prop 4970338 acc 444152 (9%)  collapse prop 4967926 acc 171526 (3%)  leftovers 28
+  epoch 158: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9890.0s     0.335 Mmoves/s  stretch prop 4958522 acc 435082 (9%)  collapse prop 4956874 acc 170108 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 159: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836   9952.9s     0.335 Mmoves/s  stretch prop 4968254 acc 444998 (9%)  collapse prop 4966261 acc 171435 (3%)  leftovers 28
+  epoch 160: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10013.6s     0.335 Mmoves/s  stretch prop 4959662 acc 435739 (9%)  collapse prop 4955722 acc 169814 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 161: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10076.8s     0.335 Mmoves/s  stretch prop 4967686 acc 445066 (9%)  collapse prop 4966681 acc 171477 (3%)  leftovers 28
+  epoch 162: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10137.7s     0.335 Mmoves/s  stretch prop 4956667 acc 436238 (9%)  collapse prop 4953095 acc 169609 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 163: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10200.4s     0.335 Mmoves/s  stretch prop 4962897 acc 442599 (9%)  collapse prop 4967599 acc 171796 (3%)  leftovers 28
+  epoch 164: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10260.8s     0.335 Mmoves/s  stretch prop 4957407 acc 433919 (9%)  collapse prop 4955375 acc 170469 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 165: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10324.0s     0.335 Mmoves/s  stretch prop 4966108 acc 443230 (9%)  collapse prop 4966217 acc 171188 (3%)  leftovers 28
+  epoch 166: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10384.7s     0.335 Mmoves/s  stretch prop 4954007 acc 433505 (9%)  collapse prop 4951429 acc 168836 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 167: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10447.7s     0.335 Mmoves/s  stretch prop 4965791 acc 445336 (9%)  collapse prop 4973294 acc 170717 (3%)  leftovers 28
+  epoch 168: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10508.4s     0.335 Mmoves/s  stretch prop 4953949 acc 434595 (9%)  collapse prop 4958702 acc 168791 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 169: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10571.6s     0.335 Mmoves/s  stretch prop 4968340 acc 443289 (9%)  collapse prop 4968585 acc 171161 (3%)  leftovers 28
+  epoch 170: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10632.4s     0.335 Mmoves/s  stretch prop 4952865 acc 430751 (9%)  collapse prop 4953588 acc 168580 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 171: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10695.0s     0.335 Mmoves/s  stretch prop 4961667 acc 443977 (9%)  collapse prop 4960117 acc 171095 (3%)  leftovers 28
+  epoch 172: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10755.5s     0.335 Mmoves/s  stretch prop 4946350 acc 432538 (9%)  collapse prop 4952494 acc 169119 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 173: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10818.4s     0.335 Mmoves/s  stretch prop 4963953 acc 445801 (9%)  collapse prop 4963076 acc 171507 (3%)  leftovers 28
+  epoch 174: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10878.8s     0.335 Mmoves/s  stretch prop 4949079 acc 436916 (9%)  collapse prop 4950789 acc 170151 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 175: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  10941.5s     0.335 Mmoves/s  stretch prop 4965131 acc 444646 (9%)  collapse prop 4961087 acc 171123 (3%)  leftovers 28
+  epoch 176: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11001.8s     0.335 Mmoves/s  stretch prop 4951855 acc 434888 (9%)  collapse prop 4948954 acc 169199 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 177: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11064.7s     0.335 Mmoves/s  stretch prop 4962113 acc 443179 (9%)  collapse prop 4964438 acc 171586 (3%)  leftovers 28
+  epoch 178: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11125.1s     0.335 Mmoves/s  stretch prop 4950704 acc 432670 (9%)  collapse prop 4956126 acc 170009 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 179: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11187.6s     0.335 Mmoves/s  stretch prop 4960921 acc 442934 (9%)  collapse prop 4958670 acc 171799 (3%)  leftovers 28
+  epoch 180: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11247.8s     0.335 Mmoves/s  stretch prop 4949718 acc 433273 (9%)  collapse prop 4944239 acc 169926 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 181: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11310.7s     0.335 Mmoves/s  stretch prop 4963713 acc 445359 (9%)  collapse prop 4964604 acc 172235 (3%)  leftovers 28
+  epoch 182: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11371.3s     0.335 Mmoves/s  stretch prop 4952700 acc 435171 (9%)  collapse prop 4951156 acc 170017 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 183: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11434.0s     0.335 Mmoves/s  stretch prop 4956833 acc 445453 (9%)  collapse prop 4965462 acc 171813 (3%)  leftovers 28
+  epoch 184: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11494.3s     0.336 Mmoves/s  stretch prop 4951386 acc 434446 (9%)  collapse prop 4946114 acc 169507 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 185: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11557.2s     0.336 Mmoves/s  stretch prop 4958541 acc 444550 (9%)  collapse prop 4954276 acc 171630 (3%)  leftovers 28
+  epoch 186: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11617.5s     0.336 Mmoves/s  stretch prop 4940934 acc 434283 (9%)  collapse prop 4943191 acc 169361 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 187: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11680.2s     0.336 Mmoves/s  stretch prop 4963134 acc 444119 (9%)  collapse prop 4956854 acc 170720 (3%)  leftovers 28
+  epoch 188: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11740.5s     0.336 Mmoves/s  stretch prop 4953839 acc 435212 (9%)  collapse prop 4947949 acc 168893 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 189: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11803.3s     0.336 Mmoves/s  stretch prop 4960185 acc 445090 (9%)  collapse prop 4962756 acc 171886 (3%)  leftovers 28
+  epoch 190: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11863.6s     0.336 Mmoves/s  stretch prop 4947341 acc 435663 (9%)  collapse prop 4949074 acc 169207 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 191: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11926.3s     0.336 Mmoves/s  stretch prop 4961372 acc 445696 (9%)  collapse prop 4964862 acc 172130 (3%)  leftovers 28
+  epoch 192: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  11986.6s     0.336 Mmoves/s  stretch prop 4952509 acc 435773 (9%)  collapse prop 4952589 acc 170346 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 193: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  12049.3s     0.336 Mmoves/s  stretch prop 4959210 acc 447045 (9%)  collapse prop 4956891 acc 171343 (3%)  leftovers 28
+  epoch 194: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  12109.7s     0.336 Mmoves/s  stretch prop 4945770 acc 437213 (9%)  collapse prop 4947789 acc 169608 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 195: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  12172.2s     0.336 Mmoves/s  stretch prop 4960099 acc 442962 (9%)  collapse prop 4954949 acc 172283 (3%)  leftovers 28
+  epoch 196: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  12232.4s     0.336 Mmoves/s  stretch prop 4945447 acc 431406 (9%)  collapse prop 4943639 acc 170016 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 197: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  12295.2s     0.336 Mmoves/s  stretch prop 4956778 acc 442283 (9%)  collapse prop 4953671 acc 170788 (3%)  leftovers 28
+  epoch 198: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  12355.6s     0.336 Mmoves/s  stretch prop 4944370 acc 433242 (9%)  collapse prop 4941616 acc 169113 (3%)  leftovers 28
+  h1-guide: 27/28 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 199: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  12418.2s     0.336 Mmoves/s  stretch prop 4959625 acc 445074 (9%)  collapse prop 4954892 acc 172212 (3%)  leftovers 28
+  epoch 200: best  836.0/864  top10 [836, 836, 836, 836, 836, 836, 836, 836, 836, 836]  median 836  now-median 836  12478.4s     0.336 Mmoves/s  stretch prop 4944327 acc 435295 (9%)  collapse prop 4942338 acc 169432 (3%)  leftovers 28
+best coverage 836/864  domain sizes [203, 216, 216, 198, 198, 168]  time 12481.0s  kernel 12193.9s  moves 4.1e+09
+NOT a covering: 28 facets uncovered
+wrote results/hemicube_k6_v2/summary.json (partial)

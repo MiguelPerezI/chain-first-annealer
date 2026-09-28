@@ -1,0 +1,9 @@
+=== annealer_stretch chain-first annealer ===  K=RP² (7 vertices, 12 triangles, hemicube)  |F_L|=864  grid=49  k=13 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/hemicube_k14/summary.json (reduced chains of the 13 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best  864.0/864  top10 [864, 864, 864, 864, 864, 864, 864, 864, 864, 864]  median 544  now-median 543     43.8s     0.470 Mmoves/s  stretch prop 0 acc 0 (0%)  collapse prop 0 acc 0 (0%)  leftovers []
+  full coverage reached at epoch 1
+best coverage 864/864  domain sizes [202, 164, 160, 157, 147, 142, 134, 140, 129, 127, 123, 122, 117]  time 48.9s  kernel 43.6s  moves 2.05e+07
+VERIFIED system of 13 motion planners: sizes [202, 149, 127, 93, 72, 48, 43, 42, 34, 22, 15, 12, 5], reduced chain lengths [8, 7, 8, 13, 6, 8, 8, 5, 4, 6, 6, 6, 5]  =>  SC_strict(RP² (7 vertices, 12 triangles, hemicube)) <= 12
+wrote results/hemicube_k13/cover.txt planners.txt summary.json

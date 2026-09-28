@@ -1,0 +1,28 @@
+=== annealer_stretch chain-first annealer ===  K=RP² (7 vertices, 12 triangles, hemicube)  |F_L|=864  grid=49  k=9 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/hemicube_k10/summary.json (reduced chains of the 9 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  h1-guide: 17/27 uncovered facets are H1-obstructed for all 9 chains (weight 0)
+  epoch   1: best  837.0/864  top10 [837, 837, 836, 836, 836, 835, 835, 835, 835, 835]  median 588  now-median 587     79.9s     0.268 Mmoves/s  stretch prop 3862096 acc 487918 (13%)  collapse prop 3860153 acc 125522 (3%)  leftovers 27
+  epoch   2: best  844.0/864  top10 [844, 842, 840, 840, 840, 839, 839, 839, 839, 839]  median 593  now-median 582    131.1s     0.321 Mmoves/s  stretch prop 1729963 acc 198080 (11%)  collapse prop 1729724 acc 51512 (3%)  leftovers 20
+  h1-guide: 6/20 uncovered facets are H1-obstructed for all 9 chains (weight 0)
+  epoch   3: best  844.0/864  top10 [844, 844, 844, 843, 842, 842, 841, 841, 840, 840]  median 824  now-median 816    181.9s     0.349 Mmoves/s  stretch prop 1026429 acc 169422 (17%)  collapse prop 1028626 acc 54946 (5%)  leftovers 20
+  epoch   4: best  847.0/864  top10 [847, 845, 844, 844, 844, 843, 843, 843, 843, 843]  median 824  now-median 820    229.2s     0.367 Mmoves/s  stretch prop 832574 acc 154721 (19%)  collapse prop 831956 acc 41816 (5%)  leftovers 17
+  h1-guide: 9/13 uncovered facets are H1-obstructed for all 9 chains (weight 0)
+  epoch   5: best  851.0/864  top10 [851, 850, 847, 846, 846, 845, 845, 845, 845, 845]  median 829  now-median 825    288.5s     0.365 Mmoves/s  stretch prop 2000124 acc 186861 (9%)  collapse prop 2001483 acc 50643 (3%)  leftovers 13
+  epoch   6: best  851.0/864  top10 [851, 850, 849, 848, 848, 847, 847, 846, 846, 846]  median 829  now-median 827    341.7s     0.368 Mmoves/s  stretch prop 2372918 acc 168858 (7%)  collapse prop 2375117 acc 55886 (2%)  leftovers 13
+  h1-guide: 9/13 uncovered facets are H1-obstructed for all 9 chains (weight 0)
+  epoch   7: best  851.0/864  top10 [851, 851, 850, 850, 849, 849, 849, 849, 849, 849]  median 833  now-median 832    396.1s     0.371 Mmoves/s  stretch prop 2347507 acc 163680 (7%)  collapse prop 2349028 acc 59903 (3%)  leftovers 13
+  epoch   8: best  854.0/864  top10 [854, 853, 851, 851, 851, 851, 851, 850, 850, 850]  median 834  now-median 833    448.3s     0.374 Mmoves/s  stretch prop 2310841 acc 160946 (7%)  collapse prop 2311592 acc 59247 (3%)  leftovers [12, 15, 16, 34, 348, 516, 672, 749, 767, 852]
+  epoch   9: best  857.0/864  top10 [857, 854, 854, 853, 853, 853, 852, 852, 851, 851]  median 837  now-median 836    492.4s     0.382 Mmoves/s  stretch prop 721534 acc 113383 (16%)  collapse prop 721162 acc 40899 (6%)  leftovers [12, 15, 16, 34, 516, 672, 749]
+  epoch  10: best  857.0/864  top10 [857, 855, 854, 854, 853, 853, 853, 853, 853, 853]  median 838  now-median 837    537.5s     0.389 Mmoves/s  stretch prop 790943 acc 145240 (18%)  collapse prop 789452 acc 48578 (6%)  leftovers [12, 15, 16, 34, 516, 672, 749]
+  epoch  11: best  858.0/864  top10 [858, 858, 857, 857, 855, 854, 854, 854, 854, 854]  median 840  now-median 840    580.4s     0.396 Mmoves/s  stretch prop 657228 acc 132082 (20%)  collapse prop 657802 acc 45238 (7%)  leftovers [15, 16, 34, 516, 672, 749]
+  epoch  12: best  861.0/864  top10 [861, 859, 858, 858, 857, 857, 856, 856, 856, 855]  median 841  now-median 841    623.3s     0.402 Mmoves/s  stretch prop 672868 acc 139701 (21%)  collapse prop 673431 acc 47518 (7%)  leftovers [329, 822, 828]
+  h1-guide: 1/3 uncovered facets are H1-obstructed for all 9 chains (weight 0)
+  epoch  13: best  861.0/864  top10 [861, 860, 860, 858, 858, 858, 858, 857, 857, 856]  median 843  now-median 843    668.0s     0.406 Mmoves/s  stretch prop 1029963 acc 93696 (9%)  collapse prop 1029626 acc 27574 (3%)  leftovers [329, 822, 828]
+  epoch  14: best  861.0/864  top10 [861, 860, 860, 859, 858, 858, 858, 857, 857, 857]  median 844  now-median 843    712.0s     0.410 Mmoves/s  stretch prop 953139 acc 84705 (9%)  collapse prop 952442 acc 24054 (3%)  leftovers [329, 822, 828]
+  epoch  15: best  864.0/864  top10 [864, 861, 861, 861, 860, 860, 859, 859, 859, 858]  median 846  now-median 845    755.9s     0.413 Mmoves/s  stretch prop 956210 acc 79300 (8%)  collapse prop 956733 acc 22320 (2%)  leftovers []
+  full coverage reached at epoch 15
+best coverage 864/864  domain sizes [143, 204, 184, 143, 149, 166, 187, 127, 174]  time 759.4s  kernel 743.7s  moves 3.07e+08
+VERIFIED system of 9 motion planners: sizes [192, 147, 143, 98, 83, 75, 70, 43, 13], reduced chain lengths [6, 8, 9, 9, 6, 4, 4, 7, 4]  =>  SC_strict(RP² (7 vertices, 12 triangles, hemicube)) <= 8
+wrote results/hemicube_k9/cover.txt planners.txt summary.json
