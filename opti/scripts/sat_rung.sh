@@ -11,6 +11,8 @@ OPTI=$(cd "$(dirname "$0")/.." && pwd)
 PY=${PY:-$OPTI/.venv-sat/bin/python}
 mkdir -p "$out"
 args=(--complex "$cx" --k "$k" --L "$L" --timeout "$to" --workers "$wk" --outdir "$out" --witness)
+# middle-link encoding: y (default) or factored (about half the RAM on RP2)
+[ -n "${SCS_ENCODING:-}" ] && args+=(--encoding "$SCS_ENCODING")
 mode=cold; freecol=-
 if [ -n "$warm" ]; then args+=(--warm "$warm" --free "$free"); mode=hybrid; freecol=$free; fi
 

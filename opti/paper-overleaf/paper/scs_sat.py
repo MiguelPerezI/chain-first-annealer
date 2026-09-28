@@ -139,8 +139,78 @@ def load_warm(path, NV, NG, NF, FAC, TRIS):
     return raw_chains, raw_domains, covered, order
 
 
+def minimal_non_faces(NV, TRIS):
+    """Minimal vertex sets of K that are not simplices (every proper subset is)."""
+    import itertools
+    faces = {frozenset(s) for T in TRIS for r in range(1, len(T) + 1)
+             for s in itertools.combinations(T, r)}
+    out = []
+    for r in range(2, NV + 1):
+        for s in itertools.combinations(range(NV), r):
+            if frozenset(s) not in faces and all(
+                    frozenset(t) in faces for t in itertools.combinations(s, r - 1)):
+                out.append(s)
+    return out
+
+
+class MiddleLinks:
+    """1-contiguity of the middle links m_i ~ m_{i+1} (1 <= i <= L-2) on facet f,
+    enforced by x[f, d].
+
+    encoding "y" (default): one Boolean per maximal simplex T of K, both maps
+        inside T on every vertex of f (the original scs_sat.py model).
+    encoding "factored": one-hot b[d,i,v,c] of the middle maps, colour
+        indicators h[c] ("c appears on f in m_i or m_{i+1}", forced up by
+        implications) and one clause per minimal non-face N of K:
+        not x[f,d] or not all h[c], c in N. Equisatisfiable with "y";
+        about half the peak RAM on RP2 k=5 L=4 (rp2_klein_cp_sat_results.md).
+    """
+
+    def __init__(self, model, m, x, L, NV, TRIS, encoding="y"):
+        if encoding not in ("y", "factored"):
+            raise ValueError(f"unknown encoding {encoding!r}")
+        self.model, self.m, self.x, self.L, self.NV = model, m, x, L, NV
+        self.TRIS, self.encoding = TRIS, encoding
+        self.b = {}
+        self.nonfaces = minimal_non_faces(NV, TRIS) if encoding == "factored" else None
+
+    def _onehot(self, d, i, v):
+        key = (d, i, v)
+        if key not in self.b:
+            bs = [self.model.NewBoolVar(f"b{d}_{i}_{v}_{c}") for c in range(self.NV)]
+            self.model.AddExactlyOne(bs)
+            for c in range(self.NV):
+                self.model.Add(self.m[d, i, v] == c).OnlyEnforceIf(bs[c])
+            self.b[key] = bs
+        return self.b[key]
+
+    def add(self, d, f, verts):
+        model, m, x = self.model, self.m, self.x
+        for i in range(1, self.L - 1):
+            if self.encoding == "y":
+                ys = [model.NewBoolVar(f"y{d}_{f}_{i}_{t}") for t in range(len(self.TRIS))]
+                model.Add(sum(ys) >= x[f, d])
+                for t, T in enumerate(self.TRIS):
+                    for v in verts:
+                        model.AddLinearExpressionInDomain(
+                            m[d, i, v], cp_model.Domain.FromValues(T)
+                        ).OnlyEnforceIf(ys[t])
+                        model.AddLinearExpressionInDomain(
+                            m[d, i + 1, v], cp_model.Domain.FromValues(T)
+                        ).OnlyEnforceIf(ys[t])
+                continue
+            h = [model.NewBoolVar(f"h{d}_{f}_{i}_{c}") for c in range(self.NV)]
+            for v in verts:
+                for c, (a, b2) in enumerate(zip(self._onehot(d, i, v),
+                                                self._onehot(d, i + 1, v))):
+                    model.AddImplication(a, h[c])
+                    model.AddImplication(b2, h[c])
+            for N in self.nonfaces:
+                model.AddBoolOr([x[f, d].Not()] + [h[c].Not() for c in N])
+
+
 def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
-               want_solution=False, outdir=None, fix_domain0=None):
+               want_solution=False, outdir=None, fix_domain0=None, encoding="y"):
     """Full CP-SAT solve from scratch.
 
     fix_domain0: optional list of facet ids forced into domain 0 (x[f,0]=1).
@@ -171,6 +241,8 @@ def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
         print(f"  domain 0 fixed on {len(fix_domain0)} facets", flush=True)
     print(f"  adding contiguity constraints ({k}×{NF}×{L-2}×{NT} y-vars)...",
           flush=True)
+    links = MiddleLinks(model, m, x, L, NV, TRIS, encoding)
+    print(f"  middle-link encoding: {encoding}", flush=True)
     for d in range(k):
         for f in range(NF):
             verts = FAC[f]
@@ -183,17 +255,7 @@ def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
                 model.AddLinearExpressionInDomain(
                     m[d, L - 1, v], cp_model.Domain.FromValues(tau)
                 ).OnlyEnforceIf(x[f, d])
-            for i in range(1, L - 1):
-                ys = [model.NewBoolVar(f"y{d}_{f}_{i}_{t}") for t in range(NT)]
-                model.Add(sum(ys) >= x[f, d])
-                for t, T in enumerate(TRIS):
-                    for v in verts:
-                        model.AddLinearExpressionInDomain(
-                            m[d, i, v], cp_model.Domain.FromValues(T)
-                        ).OnlyEnforceIf(ys[t])
-                        model.AddLinearExpressionInDomain(
-                            m[d, i + 1, v], cp_model.Domain.FromValues(T)
-                        ).OnlyEnforceIf(ys[t])
+            links.add(d, f, verts)
     for d in range(k - 1):
         model.Add(sum(x[f, d] for f in range(NF))
                   >= sum(x[f, d + 1] for f in range(NF)))
@@ -222,7 +284,7 @@ def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
 
 def solve_hybrid(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
                  warm_path, n_free,
-                 want_solution=False, outdir=None):
+                 want_solution=False, outdir=None, encoding="y"):
     """Hybrid solve: freeze (k - n_free) best annealer domains, free the rest.
 
     Frozen domains have their chains fixed as constants — zero CP-SAT variables.
@@ -301,6 +363,8 @@ def solve_hybrid(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
         model.Add(sum(all_x) >= 1)
 
     # --- Contiguity constraints for free domains only ---
+    links = MiddleLinks(model, m, x, L, NV, TRIS, encoding)
+    print(f"  middle-link encoding: {encoding}", flush=True)
     for fd in range(n_free):
         d = free_start + fd
         for f in range(NF):
@@ -314,17 +378,7 @@ def solve_hybrid(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
                 model.AddLinearExpressionInDomain(
                     m[d, L - 1, v], cp_model.Domain.FromValues(tau)
                 ).OnlyEnforceIf(x[f, d])
-            for i in range(1, L - 1):
-                ys = [model.NewBoolVar(f"y{d}_{f}_{i}_{t}") for t in range(NT)]
-                model.Add(sum(ys) >= x[f, d])
-                for t, T in enumerate(TRIS):
-                    for v in verts:
-                        model.AddLinearExpressionInDomain(
-                            m[d, i, v], cp_model.Domain.FromValues(T)
-                        ).OnlyEnforceIf(ys[t])
-                        model.AddLinearExpressionInDomain(
-                            m[d, i + 1, v], cp_model.Domain.FromValues(T)
-                        ).OnlyEnforceIf(ys[t])
+            links.add(d, f, verts)
 
     # Symmetry breaking among free domains only
     for fd in range(n_free - 1):
@@ -408,6 +462,8 @@ if __name__ == "__main__":
                              "(0 = free all k, i.e. cold solve with hints)")
     parser.add_argument("--fix-domain0", default=None,
                         help="JSON list of facet ids forced into domain 0 (cold mode)")
+    parser.add_argument("--encoding", default="y", choices=["y", "factored"],
+                        help="middle-link contiguity encoding (factored: ~half the RAM)")
     args = parser.parse_args()
     fix_domain0 = json.load(open(args.fix_domain0)) if args.fix_domain0 else None
 
@@ -422,10 +478,11 @@ if __name__ == "__main__":
         solve_hybrid(args.k, args.L, args.timeout, workers,
                      NV, NG, NF, FAC, TRIS, PI1, PI2,
                      args.warm, args.free,
-                     want_solution=args.witness, outdir=args.outdir)
+                     want_solution=args.witness, outdir=args.outdir,
+                     encoding=args.encoding)
     else:
         print(f"COLD mode: k={args.k}, L={args.L}, timeout={args.timeout}s")
         solve_cold(args.k, args.L, args.timeout, workers,
                    NV, NG, NF, FAC, TRIS, PI1, PI2,
                    want_solution=args.witness, outdir=args.outdir,
-                   fix_domain0=fix_domain0)
+                   fix_domain0=fix_domain0, encoding=args.encoding)

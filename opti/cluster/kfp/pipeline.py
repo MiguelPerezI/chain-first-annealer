@@ -20,6 +20,7 @@ Settings fixed in the IR at compile time (KFP cannot template them):
     SAT_PARALLELISM  default 1     (rungs at once; namespace quota ~17 CPU / 66Gi)
     SAT_TIMEOUT_S    default 90000 (pod timeout; solver --timeout is a parameter)
     SAT_VARIANT      name suffix of the compiled YAML (e.g. "giants")
+    SAT_ENCODING     default factored (y = original scs_sat model)
 
 Usage:
     SAT_PVC=<workspace-pvc> python opti/cluster/kfp/pipeline.py
@@ -37,6 +38,9 @@ MEM = os.environ.get("SAT_MEM", "28Gi")
 PARALLELISM = int(os.environ.get("SAT_PARALLELISM", "1"))
 TIMEOUT_S = int(os.environ.get("SAT_TIMEOUT_S", "90000"))
 VARIANT = os.environ.get("SAT_VARIANT", "")
+# middle-link encoding passed to scs_sat.py through sat_rung.sh; "factored"
+# used about half the RAM of "y" on RP2 k=5 L=4 (rp2_klein_cp_sat_results.md)
+ENCODING = os.environ.get("SAT_ENCODING", "factored")
 
 HOME = "/home/jovyan"
 REPO = f"{HOME}/chain-first-annealer"
@@ -75,6 +79,7 @@ def _harden(task, step: str):
     kubernetes.add_pod_label(task, "paso", step)
     task.set_env_variable("HOME", HOME)
     task.set_env_variable("PYTHONUNBUFFERED", "1")
+    task.set_env_variable("SCS_ENCODING", ENCODING)
     task.set_cpu_request(CPU).set_cpu_limit(CPU)
     task.set_memory_request(MEM).set_memory_limit(MEM)
     # every rung is a fresh solver run; a cached result would hide a rerun
