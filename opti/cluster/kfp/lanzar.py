@@ -42,9 +42,9 @@ def main():
     import kfp
     ns = a.namespace or open(SA_NAMESPACE).read().strip()
     args = {
-        "complex": a.complex, "control_k": a.control_k, "control_L": a.control_L,
+        "complex": a.complex, "control_k": a.control_k, "control_L": str(a.control_L),
         "control_timeout_s": a.control_timeout_s, "k": a.k,
-        "ladder": [int(x) for x in a.ladder.split(",")],
+        "ladder": [x.strip() for x in a.ladder.split(",")],
         "solver_timeout_s": a.solver_timeout_s, "workers": a.workers,
         "out_root": a.out_root, "warm_file": a.warm_file, "free": a.free,
     }

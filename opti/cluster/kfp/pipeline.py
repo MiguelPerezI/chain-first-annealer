@@ -51,7 +51,7 @@ UID_JOVYAN = 1000
 def cp_sat_rung(
     complex: str,
     k: int,
-    L: int,
+    L: str,   # ParallelFor hands loop items over as strings; the shell treats it as text
     solver_timeout_s: int,
     workers: int,
     out_root: str,
@@ -95,10 +95,10 @@ def _harden(task, step: str):
 def cp_sat_ladder(
     complex: str = "rp2",
     control_k: int = 6,
-    control_L: int = 8,
+    control_L: str = "8",
     control_timeout_s: int = 21600,
     k: int = 5,
-    ladder: list = [4, 5, 6, 8, 12, 16],
+    ladder: list = ["4", "5", "6", "8", "12", "16"],
     solver_timeout_s: int = 86400,
     workers: int = 6,
     out_root: str = f"{HOME}/cp_sat_results",
