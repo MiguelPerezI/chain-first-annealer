@@ -23,7 +23,9 @@ class Cases(unittest.TestCase):
             self.assertEqual(len(a1[0]["domain0_facets"]), 150)
             self.assertEqual(a1[0]["residual"], 450)
             NV, NG, NF, FAC, TRIS, _, _, _ = scs_sat.build_complex("rp2")
-            chains, doms, _, _ = scs_sat.load_warm(a1[0]["warm_file"], NV, NG, NF, FAC, TRIS)
+            warm = Path(a1[0]["warm_file"])
+            warm = warm if warm.is_absolute() else OPTI / warm
+            chains, doms, _, _ = scs_sat.load_warm(str(warm), NV, NG, NF, FAC, TRIS)
             self.assertEqual(sorted(doms[0]), sorted(a1[0]["domain0_facets"]))
             self.assertEqual(len(chains[0]), 3)   # pi1, constant, pi2
 

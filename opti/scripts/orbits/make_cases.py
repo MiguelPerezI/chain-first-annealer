@@ -33,8 +33,12 @@ def write_case(out, cid, family, P, chain, dom, extra):
     warm = Path(out, f"{cid}.json")
     warm.write_text(json.dumps({"best_chains": [chain], "status": "partial",
                                 "chain_domain_sizes": [len(dom)], "coverage": len(dom)}))
+    try:
+        rel = warm.resolve().relative_to(OPTI)   # portable to the cluster checkout
+    except ValueError:
+        rel = warm.resolve()
     return {"id": cid, "family": family, "domain0_facets": sorted(int(f) for f in dom),
-            "warm_file": str(warm), "residual": P.nf - len(dom), **extra}
+            "warm_file": str(rel), "residual": P.nf - len(dom), **extra}
 
 
 def main():

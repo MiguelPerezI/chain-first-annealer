@@ -51,16 +51,19 @@ def cp_sat_rung(
     solver_timeout_s: int,
     workers: int,
     out_root: str,
+    warm_file: str,
+    free: int,
     status: dsl.OutputPath(str),
     certificate: dsl.OutputPath(str),
     rung: dsl.Output[dsl.Artifact],
 ):
-    """One rung: scs_sat.py, time and RSS, witness conversion, independent audit."""
+    """One rung: scs_sat.py, time and RSS, witness conversion, independent audit.
+    warm_file/free select a hybrid case (e.g. orbit case A1); "" / 0 is cold."""
     return dsl.ContainerSpec(
         image=IMAGE,
         command=["bash", f"{REPO}/opti/cluster/kfp/rung_entry.sh"],
         args=[complex, k, L, solver_timeout_s, workers, out_root,
-              status, certificate, rung.path],
+              status, certificate, rung.path, warm_file, free],
     )
 
 
@@ -94,10 +97,13 @@ def cp_sat_ladder(
     solver_timeout_s: int = 86400,
     workers: int = 6,
     out_root: str = f"{HOME}/cp_sat_results",
+    warm_file: str = "",
+    free: int = 0,
 ):
+    # the control is always cold: it validates the encoding, not the case
     control = cp_sat_rung(complex=complex, k=control_k, L=control_L,
                           solver_timeout_s=control_timeout_s, workers=workers,
-                          out_root=out_root)
+                          out_root=out_root, warm_file="", free=0)
     control.set_display_name("control (known cover)")
     _harden(control, "control")
 
@@ -106,7 +112,7 @@ def cp_sat_ladder(
         with dsl.ParallelFor(items=ladder, parallelism=PARALLELISM, name="ladder") as L:
             rung = cp_sat_rung(complex=complex, k=k, L=L,
                                solver_timeout_s=solver_timeout_s, workers=workers,
-                               out_root=out_root)
+                               out_root=out_root, warm_file=warm_file, free=free)
             rung.set_display_name("rung")
             _harden(rung, "ladder")
 

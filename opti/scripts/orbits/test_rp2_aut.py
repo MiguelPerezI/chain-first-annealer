@@ -3,7 +3,7 @@
 Finding (2026-09-27): A5 does NOT act on the staircase facets of RP2 x RP2.
 Only the identity preserves the staircase facet set, because a staircase is
 monotone in the vertex order. The usable symmetry is the diagonal action on
-pairs of triangles (s, t): 100 pairs, 3 orbits (|s and t| = 0, 1, 2).
+pairs of triangles (s, t): 100 pairs, 3 orbits (|s and t| = 1, 2, 3).
 """
 import sys
 import unittest
@@ -45,8 +45,10 @@ class Aut(unittest.TestCase):
         reps, covered = A.pair_orbit_reps(self.P, self.G)
         self.assertEqual(covered, 100)
         self.assertEqual(len(reps), 3)
+        # two distinct triangles of the hemi-icosahedron always share a vertex;
+        # the orbits are: share a vertex, share an edge, same triangle
         sizes = sorted(len(set(r[0]) & set(r[1])) for r in reps)
-        self.assertEqual(sizes, [0, 1, 2])
+        self.assertEqual(sizes, [1, 2, 3])
 
 
 if __name__ == "__main__":
