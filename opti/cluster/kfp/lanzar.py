@@ -30,6 +30,10 @@ def main():
     ap.add_argument("--solver-timeout-s", type=int, default=86400)
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--out-root", default="/home/jovyan/cp_sat_results")
+    ap.add_argument("--warm-file", default="",
+                    help="hybrid case for the ladder rungs, relative to opti/ "
+                         "(e.g. results/rp2_cases/A1_star0.json)")
+    ap.add_argument("--free", type=int, default=0, help="free domains with --warm-file")
     ap.add_argument("--experiment", default="cp-sat-ladders")
     ap.add_argument("--namespace", help="default: the notebook's own namespace")
     ap.add_argument("--wait", action="store_true")
@@ -42,7 +46,7 @@ def main():
         "control_timeout_s": a.control_timeout_s, "k": a.k,
         "ladder": [int(x) for x in a.ladder.split(",")],
         "solver_timeout_s": a.solver_timeout_s, "workers": a.workers,
-        "out_root": a.out_root,
+        "out_root": a.out_root, "warm_file": a.warm_file, "free": a.free,
     }
     client = kfp.Client()
     run = client.create_run_from_pipeline_package(

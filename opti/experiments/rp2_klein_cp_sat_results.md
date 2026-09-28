@@ -31,3 +31,32 @@ These rows prove nothing about the covers. What they measure:
 Consequence for the cluster: do not size rungs by model size alone. The KFP
 defaults (8 CPU, 28 GiB, 6 workers) leave room for growth during the search;
 record peak RSS per rung and lower `--workers` before raising RAM.
+
+## 2026-09-27, orbit decomposition and encoding measurements (laptop)
+
+Plan: `docs/superpowers/plans/2026-09-27-rp2-orbit-decomposition.md`.
+
+**Symmetry.** Aut(RP²) = A₅ (60 elements, triangle transitive), but only the
+identity maps staircase facets to staircase facets: a staircase is monotone
+in the vertex order. The diagonal action lives on triangle pairs (s, t): 100
+pairs, 3 orbits (|s ∩ t| = 1, 2, 3; two distinct triangles always meet). An
+orbit split therefore needs a transport argument between the staircase
+triangulations of equivalent pairs (Mike, spec Decision 2). Case A1
+(domain 0 = star(0)×star(0)) uses no symmetry and is ready.
+
+**Encodings on RP² k=5 L=4** (cold, 10 min, 4 workers, 6 GB cap):
+
+| encoding | vars | cons | status at 600 s | peak RAM |
+|---|---:|---:|---|---:|
+| `y[d,f,i,T]` (scs_sat.py) | 63,546 | 636,604 | UNKNOWN | 3.33 GB |
+| factored clauses (`scripts/tables/factored_model.py`) | 42,786 | 454,384 | UNKNOWN | 1.62 GB |
+
+Same verdicts on Moebius L=6: k=3 OPTIMAL (15.4 s vs 7.2 s), k=2 INFEASIBLE
+(3.0 s vs 1.5 s). The factored encoding halves the RAM in the same window.
+
+**A1 hybrid on RP² k=5 L=4:** 50,838 vars, 509,403 cons (UNKNOWN at 20 s,
+smoke only). Launch on the lab with
+`python opti/cluster/kfp/lanzar.py --warm-file results/rp2_cases/A1_star0.json --free 4`.
+
+**Control with domain 0 fixed** (rp2 k=6 L=8, 132 facets fixed, 4 workers):
+OOM at 6 GB on the laptop. Must run on the lab.
