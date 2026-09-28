@@ -59,7 +59,11 @@ The star covers are computed in closed form (Corollary 3: `D(v) = star(v) × sta
 domain sizes) and audited end to end; S⁸ is the last `n` at which the full facet-by-facet certificate is both
 writable and auditable on this machine (S⁹: 5.88 M facets, ≈0.8 GB `cover.txt`, ≈16.5 GB for the auditor). The size
 wall, the closed forms and `stream_starcover.py` (the streamed verifier for that regime, cross-checked against the
-audited certificates) are Section 21 of `optimized_algorithms.md`.
+audited certificates) are Section 21 of `optimized_algorithms.md`. The exact rectangle-cover numbers of the
+hemi-polyhedra (all RP²), the Klein bottle and the Möbius band — and the search-free bounds
+`SC_strict ≤ ρ − 1` they certify, with `star_cover.py` certificates reusable as annealer `--init` seeds — are
+Section 27; the Möbius band is the first non-orientable case where the searched cover beats every product cover
+(`SC_strict = 2` vs `ρ − 1 = 3`).
 
 A second and *independent* wall sits on the search side rather than the writing side: the chain-first GPU annealer
 cannot be launched on ∂Δ⁸ at all (its per-thread kernel state is 764 KB against a 512 KB limit). ∂Δ⁷ is expensive,

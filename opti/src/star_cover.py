@@ -11,9 +11,24 @@ since on a facet sigma over (s, t): pi1(sigma) u c_v(sigma) = s (a simplex),
 c_v(sigma) u c_w(sigma) = {v, w} (an edge if v ~ w in K; for non-adjacent
 v, w insert the constants along a shortest path), c_w(sigma) u pi2(sigma) = t.
 Hence  SC_strict(K) <= rho(K) - 1  where rho(K) is the minimum number of
-rectangles star(v) x star(w) covering all pairs of facets of K.  For the
-Csaszar torus rho = 7 (exact search), for dDelta^4 rho = 3 (matching the
-3-domain certificate of Part II).
+rectangles star(v) x star(w) covering all pairs of facets of K.  Exact values
+include rho(dDelta^4) = 3, rho(wedge) = 4, rho(Mobius) = 4, rho(hemi-
+icosahedron) = 6, rho(hemicube) = 7, rho(cube) = 8, rho(hemi-octahedron) = 9,
+rho(Csaszar torus) = 11, rho(Klein) = 12 and rho(hemi-dodecahedron) = 15; all
+are set-cover problems over |V|^2 rectangles and |F|^2 facet pairs, solved
+exactly by the integer program of rect_cover.py / scipy's HiGHS in seconds.
+The star-cover bound is an upper bound, not the optimum: on the Mobius band
+rho = 4 (SC <= 3) while the CP-SAT cover of 3 domains gives SC = 2, so the
+product family can be a domain short.
+
+The summary.json also records the full-grid chains under `best_chains`
+([domain][map][ngrid] int8) -- the key gpu_sc.py / annealer_stretch.py read in
+`--init` -- so a star certificate can seed the annealer at fewer chains
+(e.g. k = rho - 1) to try to reduce the product bound, and hybrid_cover.py can
+freeze its m largest domains and anneal only the remainder.
+
+The tool is host-only: it never launches a CUDA kernel (gpu_sc is imported for
+its host-side Product / reduce / verify helpers), so it runs on CPU machines.
 
 Usage:  star_cover.py <complex> <outdir> v0,w0 v1,w1 ...
         (rectangles given as vertex pairs; if omitted, a greedy cover is used)
@@ -84,6 +99,7 @@ if __name__ == "__main__":
     parts = build(P, rects, reduce="--no-reduce" not in sys.argv)
     gpu_sc.verify_system(P, parts)
     summ = gpu_sc.write_certificate(P, parts, outdir, dict(method="star(v) x star(w) product domains (star_cover.py)",
-                                                          rectangles=[list(r) for r in rects]))
+                                                          rectangles=[list(r) for r in rects],
+                                                          best_chains=[[m.tolist() for m in c] for _, c in parts]))
     print(f"{P.name}: {len(parts)} domains {summ['domain_sizes']}, chain lengths {summ['chain_lengths']}, "
           f"SC_strict <= {len(parts) - 1}; verified, written to {outdir}")

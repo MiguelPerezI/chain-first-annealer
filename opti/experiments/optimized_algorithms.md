@@ -1412,3 +1412,59 @@ complex subdivision buys nothing, exactly as for ∂Δ³.
 **A 2-domain control.** On S² the theory forbids a 2-domain cover (`TC(S²) = 2`), so `--k 2` is a
 falsification test for the whole pipeline: if the auditor ever verified a 2-domain cover of the cube,
 the energy or the checker would be wrong. `./run_cube.sh k2` [PENDING: result].
+
+## 27. Exact rectangle-cover numbers: the hemi-polyhedra and the non-orientable surfaces
+
+Corollary 2 turns the search for a motion-planner system into a **set cover with no
+search at all**: every vertex pair `(v, w)` gives the product domain `D(v,w) = star(v) × star(w)`,
+and the minimum number `ρ(K)` of such rectangles covering all `|F|²` facet pairs certifies
+`SC_strict(K) ≤ ρ(K) − 1`. `ρ` depends only on the base complex — no GPU, no annealing, and the
+certificate chains are the three-map chains `π₁ ~ c_v ~ … ~ c_w ~ π₂` of Theorem 1. It is a
+set-cover instance with `|V|²` sets over `|F|²` elements, so every complex here is solved
+**exactly** in seconds: `rect_cover.py` (bitmask branch and bound) and an independent
+`scipy.optimize.milp`/HiGHS formulation agree wherever both finish (the branch and bound only
+stops early where the search tree grows, as on the hemi-dodecahedron).
+
+This settles the product bound for the whole non-orientable campaign (all hemi-polyhedra are
+RP²; `build()` names in `gpu_sc.py`). The certificates are `results/<name>_starcover_opt`
+(`_greedy` where greedy; all verified by the Definition 2.3 check of `star_cover.py` and written
+in `independent_check.py` format):
+
+| complex (`--complex`) | V: abstract → complex | Δ (complex) | `\|K×K\|` | ρ (exact) | star cover (domains → SC) | annealer / searched cover (domains → SC) |
+|---|---|---|---|---|---|---|
+| Möbius band (`mobius`) | 5 → 5 | 5 | 150 | **4** | `mobius_starcover_opt` (4 → ≤ 3) | CP-SAT `mobius_k3_sat` (3 → **= 2**, exact); annealer `mobius_k4_from_k5` (4 → ≤ 3) |
+| hemi-icosahedron (`rp2`) | 6 → 6 | 10 | 600 | **6** | `rp2_starcover_opt` (6 → ≤ 5) | annealer `rp2_k6` (6 → ≤ 5) |
+| hemicube (`hemicube`) | 4 → 7 | 12 | 864 | **7** | `hemicube_starcover_opt` (7 → ≤ 6) | annealer `hemicube_k7` (7 → ≤ 6; `hemicube_k6` incomplete) |
+| hemi-octahedron (`hemi_octa`) | 3 → 9 | 16 | 1536 | **9** | `hemi_octa_starcover_opt` (9 → **≤ 8**) | — (k = 30 run open; star-seeded k = 8 recipe pending) |
+| hemi-dodecahedron (`hemi_dodeca`) | 10 → 10 | 18 | 1944 | **15** | `hemi_dodeca_starcover_opt` (15 → **≤ 14**) | — (annealer best 1777/1944, no cover) |
+| Klein bottle (`klein`) | 8 → 8 | 16 | 1536 | **12** | `klein_starcover_greedy` (12 → ≤ 11) | annealer `klein_k10` (10 → ≤ 9) |
+| Császár torus (`torus`) | 7 → 7 | 14 | 1176 | **11** (§Cor. 4) | `torus_starcover_opt` (11 → ≤ 10) | — (searches stall: best 733/1176) |
+
+The `V: abstract → complex` column separates the abstract polyhedron/regular map from the
+simplicial complex the code actually feeds to the annealer. `K` must be simplicial, so a
+non-simplicial abstract polyhedron is subdivided *minimally*: the hemi-dodecahedron's six
+pentagons are fanned into triangles from a vertex (10 → 10, no new vertex), the hemicube's
+three squares are coned from a fresh centre (4 → 7, one per square), and the hemi-octahedron's
+six edge cells — doubled, so no 3-vertex simplicial model exists — are split at a midpoint each
+(3 → 9, the medial subdivision of `build("hemi_octa")`). The Möbius band (5), hemi-icosahedron (6),
+Klein bottle (8) and Császár torus (7) are simplicial triangulations already: abstract and
+complex vertex counts coincide, with the complex the minimal triangulation of its space.
+
+Two readings. First, the four hemi-polyhedra are four triangulations of the same space, RP², and
+the star cover is a search-free certificate on each: `ρ = 6, 7, 9, 15` give `SC_strict(RP²) ≤ 5, 6,
+8, 14` on the hemi-icosahedron, hemicube, hemi-octahedron and hemi-dodecahedron. On the first two
+the annealer ties the product bound; on the last two it has not yet beaten it — and the gap between
+`ρ − 1` and the searched value, wherever one exists, measures how far the optimal domains are from
+being products. Second, the
+**Möbius band is the first non-orientable surface where the search provably beats every product
+cover**: `ρ = 4` certifies ≤ 3, but the CP-SAT three-domain cover (65+43+42) gives `SC_strict = 2`,
+one domain below the entire product family (the wedge §23 and cube §26 are the other
+search-beats-products cases). The product bound is an upper bound, never an optimality claim.
+
+**Using a star cover as a warm start.** `star_cover.py` now records the full-grid chains in
+`summary.json` under `best_chains`, the key `gpu_sc.py` / `annealer_stretch.py --init` expects, so a
+star certificate can seed the annealer at fewer chains (`k = ρ − 1`) and let it try to absorb the
+dropped domain. For the hemi-octahedron the 9-domain star cover seeds 1440/1536 facets at `k = 8`
+(the 96-facet domain is dropped); the run is the direct test of whether `SC_strict ≤ 7` in a
+non-product family. `hybrid_cover.py` is the complementary probe: keep the `m` largest star
+rectangles frozen and anneal only the remainder.
