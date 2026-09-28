@@ -252,6 +252,76 @@ def mobius_facets():
     return [(0, 1, 2), (1, 2, 3), (2, 3, 4), (0, 3, 4), (0, 1, 4)]
 
 
+def rp2_facets():
+    """The vertex-minimal triangulation of the real projective plane (the
+    hemi-icosahedron): 6 vertices 0..5, 10 triangles, f-vector (6, 15, 10),
+    chi = 1.  Listed in the same order as gpu_sc.build("rp2") AFTER Product's
+    within-facet sort, since the staircase enumeration of KxK depends on the
+    facet order and on each facet's vertex order."""
+    return [(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 5), (0, 1, 5),
+            (1, 2, 4), (2, 3, 5), (1, 3, 4), (2, 4, 5), (1, 3, 5)]
+
+
+def check_rp2(tri):
+    """Re-prove that these 10 triangles on 6 vertices triangulate RP², from
+    the list alone: every edge lies in exactly 2 triangles (closed surface,
+    15 edges, 1-skeleton K6), every vertex link is a single 5-cycle (no
+    singular vertices), chi = 6 - 15 + 10 = 1, and NO coherent orientation
+    exists.  A closed surface with chi = 1 is non-orientable with one
+    crosscap, i.e. RP² (classification: chi = 2 - k)."""
+    assert len(tri) == 10 and len(set(tri)) == 10, "not 10 distinct triangles"
+    tri = [tuple(sorted(t)) for t in tri]
+    V = sorted({v for t in tri for v in t})
+    assert V == list(range(6)), "vertices must be exactly 0..5"
+    cnt = {}
+    for t in tri:
+        for e in combinations(t, 2):
+            cnt[e] = cnt.get(e, 0) + 1
+    assert len(cnt) == 15, f"1-skeleton must have 15 edges, has {len(cnt)}"
+    assert all(c == 2 for c in cnt.values()), \
+        "not a closed surface: some edge is not in exactly 2 triangles"
+    for v in V:
+        link = [tuple(x for x in t if x != v) for t in tri if v in t]
+        adj = {}
+        for a, b in link:
+            adj.setdefault(a, []).append(b)
+            adj.setdefault(b, []).append(a)
+        assert all(len(n) == 2 for n in adj.values()), f"link of {v} is not a cycle"
+        start = next(iter(adj))
+        prev, u, steps = start, adj[start][0], 1
+        while u != start:
+            nxt = [w for w in adj[u] if w != prev]
+            prev, u, steps = u, nxt[0], steps + 1
+        assert steps == len(adj) == 5, f"link of {v} is not a single 5-cycle"
+    assert len(V) - len(cnt) + len(tri) == 1, "chi != 1"
+    # orientation: propagate signs across shared edges; a conflict means none exists
+    sgn = {0: 1}
+    stack = [0]
+    orientable = True
+
+    def edge_dir(t, a, b):
+        i, j = t.index(a), t.index(b)
+        return 1 if (j - i) % 3 == 1 else -1
+
+    while stack:
+        i = stack.pop()
+        for j, t in enumerate(tri):
+            if j == i:
+                continue
+            common = set(tri[i]) & set(t)
+            if len(common) != 2:
+                continue
+            a, b = sorted(common)
+            need = -sgn[i] * edge_dir(tri[i], a, b) * edge_dir(t, a, b)
+            if j not in sgn:
+                sgn[j] = need
+                stack.append(j)
+            elif sgn[j] != need:
+                orientable = False
+    assert not orientable, "a coherent orientation exists: chi = 1 would be impossible"
+    return True
+
+
 def check_mobius(tri):
     """Re-prove that these 5 triangles on 5 vertices triangulate the Möbius
     band, from the list alone:
@@ -661,6 +731,8 @@ def detect_k(resdir):
         return "dodecahedron boundary (20 vertices, 36 triangles)", dodeca_facets()
     if nf == 150:
         return "Möbius band (5 vertices, 5 triangles)", mobius_facets()
+    if nf == 600:
+        return "RP² (6 vertices, 10 triangles, hemi-icosahedron)", rp2_facets()
     if nf == 5400:
         return "S¹×(S¹∨S¹) (polyhedral product (S¹,*)^P₃)", s1xw_facets()
     for n in (2, 3, 4, 5, 6, 7, 8, 9):   # ∂Δ^n x ∂Δ^n: n = 6 (12348) .. 9 (5883020) facets
@@ -672,7 +744,7 @@ def detect_k(resdir):
         f"cover.txt reports {nf} facets — this auditor only rebuilds "
         f"the wedge of two circles (50), the barycenter triangle (54), "
         f"the cube boundary (864), the minimal Klein bottle (1536), "
-        f"the Möbius band (150), S¹×(S¹∨S¹) (5400), "
+        f"the Möbius band (150), RP² (600), S¹×(S¹∨S¹) (5400), "
         f"∂Δ^n x ∂Δ^n for n = 2 (18), 3 (96), 4 (500), 5 (2520), 6 (12348), "
         f"7 (59136), 8 (277992), 9 (1287000), 10 (5883020) facets and the "
         f"Császár torus (1176); above n = 10 no facet-by-facet cover.txt "
@@ -797,6 +869,14 @@ def main(resdir):
         # so at least 5 domains in any system of PL motion planners
         print(f"K = {name}: 16 triangles re-proved a Klein bottle "
               f"(closed, links single cycles, no coherent orientation, chi = 0)")
+    elif name.startswith("RP²"):
+        assert len(KF) == 10, "not ten triangles"
+        check_rp2(KF)   # re-proves ||K|| = RP² from the facet list alone
+        nf_expected = len(KF) ** 2 * 6   # 100 triangle pairs x C(4,2) paths
+        n = None
+        floor = 3   # repository bracket 2 <= SC_strict(RP²) (rp2_literature_check.md)
+        print(f"K = {name}: 10 triangles re-proved RP² "
+              f"(closed, links 5-cycles, no coherent orientation, chi = 1)")
     elif name.startswith("Möbius"):
         assert len(KF) == 5, "not five triangles"
         check_mobius(KF)  # re-proves ||K|| = Möbius band from the facet list alone

@@ -60,3 +60,13 @@ smoke only). Launch on the lab with
 
 **Control with domain 0 fixed** (rp2 k=6 L=8, 132 facets fixed, 4 workers):
 OOM at 6 GB on the laptop. Must run on the lab.
+
+## 2026-09-28, factored encoding control on the laptop
+
+`scs_sat.py --complex rp2 --k 6 --L 8 --encoding factored`, 4 workers, 6 GB
+cap: **OPTIMAL in 53.8 s**, 143,790 vars, 1,559,189 cons, peak RSS 2.98 GB.
+The same control with the `y` encoding was killed by OOM at 6 GB (8 and 4
+workers). Certificate `results/cp_sat_rp2_factored/control_k6_L8/certificate`:
+6 domains, audited by `independent_check.py` (RP² support added in this
+change; before it the auditor rejected every 600-facet cover, which would
+also have kept the KFP control gate closed for RP²).
