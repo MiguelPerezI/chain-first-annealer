@@ -14,7 +14,8 @@ Hence  SC_strict(K) <= rho(K) - 1  where rho(K) is the minimum number of
 rectangles star(v) x star(w) covering all pairs of facets of K.  Exact values
 include rho(dDelta^4) = 3, rho(wedge) = 4, rho(Mobius) = 4, rho(hemi-
 icosahedron) = 6, rho(hemicube) = 7, rho(cube) = 8, rho(hemi-octahedron) = 9,
-rho(Csaszar torus) = 11, rho(Klein) = 12 and rho(hemi-dodecahedron) = 15; all
+rho(Csaszar torus) = 11, rho(Klein) = 12, rho(hemi-dodecahedron) = 15,
+rho(icosa) = 24 and rho(dodecahedron) = 36; all
 are set-cover problems over |V|^2 rectangles and |F|^2 facet pairs, solved
 exactly by the integer program of rect_cover.py / scipy's HiGHS in seconds.
 The star-cover bound is an upper bound, not the optimum: on the Mobius band

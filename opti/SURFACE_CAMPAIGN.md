@@ -174,11 +174,30 @@ paper (`main.tex` §5: `lem:rows`, `lem:covers`, `prop:hemi`).
 | hemi-dodeca (`hemi_dodeca`) | 10 → 10 | 18 | 1944 | 15 | `results/hemi_dodeca_starcover_opt` (15 → **≤ 14**) | — (best 1777/1944, no cover) |
 | Klein (`klein`) | 8 → 8 | 16 | 1536 | 12 | `results/klein_starcover_greedy` (12 → ≤ 11) | `results/klein_k10` (10 → ≤ 9) |
 | torus | 7 → 7 | 14 | 1176 | 11 | `results/torus_starcover_opt` (11 → ≤ 10) | — (searches stall) |
+| dodecahedron S² (`dodeca`) | 20 → 20 | 36 | 7776 | 36 | `results/dodeca_starcover_opt` (36 → ≤ 35) | — (k = 3 stagnates at 2602/7776 = 33.5 %) |
+| icosahedron S² (`icosa`) | 12 → 12 | 20 | 2400 | 24 | `results/icosa_starcover_opt` (24 → **≤ 23**) | — (density-ladder control, not yet annealed) |
 
 `V: abstract → complex` is the abstract polyhedron/regular map's vertex count versus the
 simplicial complex actually built (a non-simplicial face must be subdivided: hemicube
 4 → 7, squares coned from a centre; hemi-octahedron 3 → 9, edge midpoints; hemi-dodeca
 10 → 10, pentagons fanned; Möbius/hemi-icosa/Klein/torus are triangulations already).
+
+The **dodecahedron** row is the S² control from the density ladder: exact `ρ = 36`, a 6×6 grid
+cover on the minimum facet-transversal `S = {0, 2, 8, 10, 12, 19}` (τ = 6, so `|S|² = 36`), with the
+covering LP tight at 36 (HiGHS, 0.6 s). The row–transversal bound of Lemma 6 is weaker here
+(`⌈6·36/8⌉ = 27`), so this is a grid/LP case, not a row–transversal one. Certificate
+`results/dodeca_starcover_opt` (36 domains, sizes 384×4 + 288×8 + 216×4 + 192×8 + 144×8 + 96×4,
+chains 2–5 links, verified) gives **`SC_strict(dodecahedron) ≤ 35`** search-free. With
+`ρ(∂Δ³) = 3` and `ρ(cube) = 8`, three triangulations of S² now carry ρ = 3, 8, 36 — ρ is
+combinatorial, not a homotopy invariant.
+
+The **icosahedron** rung of the same ladder is now exact too: `ρ = 24`, and this one is
+row–transversal tight (unlike the dodecahedron): τ = 6 (`{0,2,4,6,8,10}`), `d = 5`, `F = 20`,
+`⌈6·20/5⌉ = 24` (Lemma 6), matched by the 24-rectangle cover of
+`results/icosa_starcover_opt` (150×3 + 126×5 + 102×6 + 78×7 + 54×3 = 2400, chains 2–5 links,
+verified) ⇒ **`SC_strict(icosa) ≤ 23`**. The covering LP is only 16 here; the double cover
+`rp2` (hemi-icosahedron) has `ρ = 6 = V`, so the two S² triangulations of the same ladder
+split the same way the RP² ones do.
 
 The Möbius band was the first non-orientable case where the search provably beats
 every product cover (`ρ − 1 = 3` vs `SC_strict = 2`); the hemi-octa star-seeded `k = 8`
@@ -235,8 +254,8 @@ K	V/F	density	dual diam	ρ
 ∂Δ³ (S²)	4/4	100 %	1	3
 octahedron	6/8	40.0 %	3	4
 cube	8/12	21.4 %	4	8
-icosahedron	12/20	9.1 %	5	≥ 24
-dodecahedron	20/36	3.2 %	7	≥ 32
+icosahedron	12/20	9.1 %	5	24
+dodecahedron	20/36	3.2 %	7	36
 Density and dual diameter are both monotone down the ladder, and ρ explodes — so octa/icosa at k = 3 cleanly separate "sparsity threshold" from "dodeca-specific". Run both; prediction if density is the disease: success at 40 %, failure or heavy stall at 9.1 %.
 Second test — C1, stated correctly (optimized_algorithms.md:965): SC_strict⁰(∂Δ⁴) = 2 > 1 = TC(S³). The 16-cell (S³, 8 vertices, 16 tetrahedra, nf = 16²·20 = 5120) is the right probe: it has a simplicial antipodal map (unlike ∂Δ⁴, which has no A at all — 5 vertices), so the antipodal branch is an honest subcomplex and the only question is facet-respect. If it also pins at its 2-rectangle optimum, the gap is triangulation-independent; if it covers at k=2, C1 is a fact about ∂Δ⁴'s K₅ combinatorics (dodeca_campaign_analysis.md:661-675) and SC_strict⁰ depends on the triangulation.
 Third — don't build a tool for the degree-n statement. The even-sphere k=2 wall is already certified by TC(S^{even}) = 2 ≤ SC_strict (González, Cor. 3); 1 − A_* = 2 is a 5-line lemma (deg A = (−1)^{n+1}) for the paper, and its only code-level payoff is per-domain certification (e.g. "the antipodal branch is not one domain"). Two implementation notes: the cube and dodeca facet lists in build() are not A-invariant (cube face diagonal 0–5 maps under (0 6)(1 7)(2 4)(3 5) to 3–6, absent from the opposite face's fan) — use cross-polytopes only; and the octahedron already serves both tests (density rung + A-simplicial S² control), so only the 16-cell and icosa need new facet lists. Optional genus-2: 10 vertices / 24 triangles (χ = −2), nf = 3456, H₁(;Z/2) rank 4 — fine as a rank test, but record TC in the normalized convention so it doesn't inherit the torus row's bug.

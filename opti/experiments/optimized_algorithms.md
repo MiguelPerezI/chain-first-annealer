@@ -1464,6 +1464,24 @@ one domain below the entire product family (the hemi-octahedron above, the wedge
 §26 are the other search-beats-products cases). The product bound is an upper bound, never an
 optimality claim.
 
+**S² control: the dodecahedron (density ladder).** The `dodeca` complex — the 20-vertex,
+36-triangle control of `experiments/dodeca_anneal_log.md`, 7776 product facets — has exact
+`ρ = 36`, the largest value here. The minimum facet-transversal is `S = {0, 2, 8, 10, 12, 19}`
+(τ = 6) and the 6×6 grid cover `S × S` attains 36 (`results/dodeca_starcover_opt`, 36 domains
+[384×4, 288×8, 216×4, 192×8, 144×8, 96×4], chains 2–5 links, verified); the covering LP is
+integral at 36 (HiGHS, 0.6 s), so 36 is certified optimal, while the row–transversal bound is only
+`⌈6·36/8⌉ = 27` — a grid/LP case, unlike the hemi-polyhedra where Lemma 6 is tight. The bound is
+`SC_strict(dodecahedron) ≤ 35` with no search; it is far from the `k = 3` campaign target, but the
+structural point is that with `ρ(∂Δ³) = 3`, `ρ(cube) = 8` and `ρ(dodeca) = 36` three triangulations
+of S² carry three different values: ρ is a combinatorial invariant of the triangulation, not a
+homotopy invariant of the surface. The icosahedron rung (`icosa`, 12 vertices, 20 triangles, 2400
+product facets — now in `build()`, the double cover of `rp2`) completes the ladder with exact
+`ρ = 24`, row–transversal tight this time: `τ = 6` (`{0,2,4,6,8,10}`), `d = 5`, `F = 20`,
+`⌈6·20/5⌉ = 24` (Lemma 6), matched by the 24-rectangle cover of `results/icosa_starcover_opt`
+(150×3 + 126×5 + 102×6 + 78×7 + 54×3, chains 2–5 links, verified) ⇒ `SC_strict(icosa) ≤ 23`;
+the covering LP is far weaker here (16.00), and the grid cover on a minimum transversal needs
+36.  HiGHS's own certificate gap (incumbent 24, dual 23) is closed by Lemma 6, so 24 is exact.
+
 **Using a star cover as a warm start.** `star_cover.py` now records the full-grid chains in
 `summary.json` under `best_chains`, the key `gpu_sc.py` / `annealer_stretch.py --init` expects, so a
 star certificate can seed the annealer at fewer chains (`k = ρ − 1`) and let it try to absorb the
@@ -1494,8 +1512,9 @@ Lemma 7 and Proposition 8 are in the paper, §5, after Corollary 3 there.) Notat
 counts each rectangle once per `s` containing its first coordinate:
 `Σ_{(v,w)∈R} |star(v)| = Σ_s |W_s| ≥ τ·F`. Every summand is at most `d`, hence `d·ρ ≥ τ·F`. ∎
 
-Tight on `circle` (`⌈2·3/2⌉ = 3 = ρ`), `s2` (`⌈2·4/3⌉ = 3 = ρ`), `mobius` (`⌈2·5/3⌉ = 4 = ρ`)
-and `rp2` (`⌈3·10/5⌉ = 6 = ρ`); on `klein` and `torus` it gives 10 against `ρ = 12` and 11.
+Tight on `circle` (`⌈2·3/2⌉ = 3 = ρ`), `s2` (`⌈2·4/3⌉ = 3 = ρ`), `mobius` (`⌈2·5/3⌉ = 4 = ρ`),
+`rp2` (`⌈3·10/5⌉ = 6 = ρ`) and `icosa` (`⌈6·20/5⌉ = 24 = ρ`); on `klein` and `torus` it gives 10
+against `ρ = 12` and 11.
 
 **Lemma 7 (diagonal and grid covers).** (i) If every two facets of `K` meet, the `V` diagonal
 rectangles `(v,v)` cover `K×K`, so `ρ(K) ≤ V`. (ii) If `S ⊆ V` meets every facet of `K`, the
@@ -1513,6 +1532,8 @@ in (i), and `v ∈ s ∩ S`, `w ∈ t ∩ S` in (ii). ∎
 | hemicube | 7 | 3 | 6 | 12 | 6 | 4.00 | **7 = V** |
 | hemi-octahedron (`hemi_octa`) | 9 | 3 | 6 | 16 | 8 | **9.00** | **9 = V** |
 | (contrast) hemi-dodecahedron | 10 | 4 | 9 | 18 | 8 | 11.11 | 15 ≠ V |
+| (contrast) dodecahedron (S²) | 20 | 6 | 8 | 36 | 27 | **36.00** | 36 ≠ V |
+| (contrast) icosahedron (S²) | 12 | 6 | 5 | 20 | **24** | 16.00 | 24 ≠ V |
 | (contrast) Möbius band | 5 | 2 | 3 | 5 | **4** | 2.78 | 4 ≠ V |
 | (contrast) Klein bottle | 8 | 4 | 7 | 16 | 10 | 7.11 | 12 ≠ V |
 | (contrast) Császár torus | 7 | 4 | 6 | 14 | 10 | 5.44 | 11 ≠ V |

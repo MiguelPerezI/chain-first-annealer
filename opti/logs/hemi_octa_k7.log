@@ -1,0 +1,22 @@
+=== annealer_stretch chain-first annealer ===  K=RP² (9 vertices, 16 triangles, hemi-octahedron)  |F_L|=1536  grid=81  k=7 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/hemi_octa_k8/summary.json (reduced chains of the 7 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  h1-guide: 13/104 uncovered facets are H1-obstructed for all 7 chains (weight 0)
+  epoch   1: best 1432.0/1536  top10 [1432, 1426, 1426, 1422, 1422, 1422, 1422, 1422, 1422, 1421]  median 873  now-median 872    121.1s     0.204 Mmoves/s  stretch prop 4616438 acc 831611 (18%)  collapse prop 4617200 acc 73538 (2%)  leftovers 104
+  epoch   2: best 1432.0/1536  top10 [1432, 1426, 1426, 1425, 1425, 1423, 1423, 1422, 1422, 1422]  median 893  now-median 813    191.6s     0.240 Mmoves/s  stretch prop 3279631 acc 436782 (13%)  collapse prop 3281309 acc 72514 (2%)  leftovers 104
+  h1-guide: 13/104 uncovered facets are H1-obstructed for all 7 chains (weight 0)
+  epoch   3: best 1432.0/1536  top10 [1432, 1426, 1426, 1425, 1425, 1425, 1423, 1423, 1423, 1422]  median 1408  now-median 1296    280.8s     0.257 Mmoves/s  stretch prop 2403703 acc 210104 (9%)  collapse prop 2401874 acc 53812 (2%)  leftovers 104
+  epoch   4: best 1432.0/1536  top10 [1432, 1426, 1426, 1425, 1425, 1425, 1423, 1423, 1423, 1422]  median 1408  now-median 1294    346.2s     0.269 Mmoves/s  stretch prop 2021811 acc 178700 (9%)  collapse prop 2023228 acc 38465 (2%)  leftovers 104
+  h1-guide: 13/104 uncovered facets are H1-obstructed for all 7 chains (weight 0)
+  epoch   5: best 1432.0/1536  top10 [1432, 1426, 1426, 1426, 1425, 1425, 1425, 1425, 1424, 1423]  median 1410  now-median 1307    431.2s     0.275 Mmoves/s  stretch prop 1911265 acc 93516 (5%)  collapse prop 1912024 acc 33483 (2%)  leftovers 104
+  epoch   6: best 1432.0/1536  top10 [1432, 1426, 1426, 1426, 1425, 1425, 1425, 1425, 1424, 1423]  median 1410  now-median 1308    495.9s     0.282 Mmoves/s  stretch prop 1645647 acc 74961 (5%)  collapse prop 1642714 acc 21447 (1%)  leftovers 104
+  h1-guide: 13/104 uncovered facets are H1-obstructed for all 7 chains (weight 0)
+  epoch   7: best 1432.0/1536  top10 [1432, 1426, 1426, 1426, 1425, 1425, 1425, 1425, 1425, 1424]  median 1410  now-median 1314    574.7s     0.284 Mmoves/s  stretch prop 1749324 acc 45171 (3%)  collapse prop 1749067 acc 23383 (1%)  leftovers 104
+  epoch   8: best 1432.0/1536  top10 [1432, 1426, 1426, 1426, 1425, 1425, 1425, 1425, 1425, 1424]  median 1410  now-median 1316    639.0s     0.288 Mmoves/s  stretch prop 1457827 acc 24718 (2%)  collapse prop 1457788 acc 11207 (1%)  leftovers 104
+  h1-guide: 13/104 uncovered facets are H1-obstructed for all 7 chains (weight 0)
+  epoch   9: best 1432.0/1536  top10 [1432, 1432, 1427, 1426, 1426, 1426, 1426, 1426, 1425, 1425]  median 1411  now-median 1316    716.7s     0.290 Mmoves/s  stretch prop 1685125 acc 45708 (3%)  collapse prop 1683554 acc 22811 (1%)  leftovers 104
+  epoch  10: best 1432.0/1536  top10 [1432, 1432, 1427, 1426, 1426, 1426, 1426, 1426, 1425, 1425]  median 1411  now-median 1317    780.4s     0.293 Mmoves/s  stretch prop 1402831 acc 25859 (2%)  collapse prop 1403205 acc 10474 (1%)  leftovers 104
+  h1-guide: 13/104 uncovered facets are H1-obstructed for all 7 chains (weight 0)
+  epoch  11: best 1432.0/1536  top10 [1432, 1432, 1427, 1426, 1426, 1426, 1426, 1426, 1426, 1425]  median 1412  now-median 1316    857.9s     0.294 Mmoves/s  stretch prop 1646256 acc 44772 (3%)  collapse prop 1648709 acc 22566 (1%)  leftovers 104
+  epoch  12: best 1432.0/1536  top10 [1432, 1432, 1427, 1426, 1426, 1426, 1426, 1426, 1426, 1425]  median 1412  now-median 1317    921.2s     0.296 Mmoves/s  stretch prop 1374415 acc 25157 (2%)  collapse prop 1372643 acc 10412 (1%)  leftovers 104

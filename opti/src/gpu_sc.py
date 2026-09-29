@@ -77,6 +77,20 @@ sm_u01_dev = cuda.jit(device=True, inline=True)(_sm_u01)
 # --------------------------------------------------------------------------- #
 #  K and the staircase product L = K x K (facet order == Abstract_Motion_GPU)  #
 # --------------------------------------------------------------------------- #
+class _SparseSimplex:
+    """Mask-membership predicate for complexes too large for the dense 2^nv
+    is_simplex byte table (nv > 24).  Keeps only the actual sub-simplex masks
+    (sum of 2^|facet| of them) and answers index lookups with np.isin, so the
+    host-side tools (star_cover.py, certificates) work unchanged.  The GPU
+    kernels need the dense table and reject this object."""
+
+    def __init__(self, masks):
+        self.masks = masks
+
+    def __getitem__(self, key):
+        return np.isin(key, self.masks)
+
+
 class Product:
     """K given by maximal facets over {0..nv-1}; L = K x K with the staircase
     triangulation; every lookup table the kernels need, as flat numpy arrays.
@@ -94,24 +108,36 @@ class Product:
         # 16 MB.  The grid-id arrays (facet_verts: a product facet's vertices
         # are grid ids, up to ngrid - 1) are int16, which allows nv <= 181 and
         # is why the old nv <= 11 int8 guard was raised.
-        assert nv <= 24, (f"is_simplex table would be 2^{nv} bytes; the "
-                          f"streaming tools (make_definition_md.py / "
-                          f"stream_starcover.py) cover larger K")
         self.ngrid = nv * nv
         # is_simplex[S] for S a bitmask over V_K: S is a simplex iff it is a
         # subset of some facet.  Enumerate the subsets of each facet (2^|facet|
         # of them) rather than filtering all 2^nv masks — for the dodecahedron
-        # that is 36 x 8 instead of 1,048,576 full scans.
+        # that is 36 x 8 instead of 1,048,576 full scans.  Above nv = 24 the
+        # dense table is not representable, so host lookups go through a
+        # sorted mask set (_SparseSimplex) instead.
         masks = [sum(1 << v for v in f) for f in self.kfacets]
-        tab = np.zeros(1 << nv, dtype=np.uint8)
-        for m in masks:
-            s = m
-            while True:
-                tab[s] = 1
-                if s == 0:
-                    break
-                s = (s - 1) & m
-        self.is_simplex = tab
+        if nv <= 24:
+            tab = np.zeros(1 << nv, dtype=np.uint8)
+            for m in masks:
+                s = m
+                while True:
+                    tab[s] = 1
+                    if s == 0:
+                        break
+                    s = (s - 1) & m
+            self.is_simplex = tab
+        else:
+            assert nv <= 62, "vertex bitmasks are int64"
+            vals = set()
+            for m in masks:
+                s = m
+                while True:
+                    vals.add(s)
+                    if s == 0:
+                        break
+                    s = (s - 1) & m
+            assert len(vals) <= 1 << 22, "sparse simplex set too large"
+            self.is_simplex = _SparseSimplex(np.array(sorted(vals), np.int64))
         # BFS distances on the 1-skeleton
         adj = np.zeros((nv, nv), bool)
         for f in self.kfacets:
@@ -267,6 +293,63 @@ def build(name):
                         (5, 7, 10), (5, 10, 11), (2, 17, 18), (2, 7, 18),
                         (1, 2, 7), (0, 1, 7), (0, 5, 7), (0, 5, 6)],
                        "dodecahedron boundary (20 vertices, 36 triangles)")
+    if name == "icosa":
+        # The icosahedron boundary: 12 vertices 0..11, 20 triangles --
+        # antiprism construction: apex 0 over the top pentagon 1..5, apex 11
+        # under the bottom pentagon 6..10, side band (t_i, t_{i+1}, b_i) and
+        # (t_{i+1}, b_i, b_{i+1}) with indices mod 5.  f-vector (12, 30, 20),
+        # 5-regular 1-skeleton, every edge in exactly two triangles, chi = 2:
+        # a triangulated S^2, the double cover of the hemi-icosahedron `rp2`.
+        return Product([(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 5), (0, 5, 1),
+                        (11, 6, 7), (11, 7, 8), (11, 8, 9), (11, 9, 10),
+                        (11, 10, 6),
+                        (1, 2, 6), (2, 6, 7), (2, 3, 7), (3, 7, 8), (3, 4, 8),
+                        (4, 8, 9), (4, 5, 9), (5, 9, 10), (5, 1, 10),
+                        (1, 10, 6)],
+                       "icosahedron boundary (12 vertices, 20 triangles)")
+    if name == "dodeca_star":
+        # Stellar subdivision of the dodecahedron boundary at the 12 pentagon
+        # centres: one new vertex per pentagon (20..31), each pentagon coned
+        # from its centre into 5 triangles -> 32 vertices, 60 triangles.  The
+        # stored `dodeca` triangulation lists each pentagon as three
+        # consecutive facets (a fan), so the pentagon 5-cycles are recovered
+        # combinatorially from those triples: the fan diagonals are the edges
+        # shared inside a triple, the pentagon boundary is the five edges
+        # appearing once.  No coordinates are used.
+        base = [tuple(f) for f in build("dodeca").kfacets]
+        assert len(base) % 3 == 0
+        pentagons = []
+        for i in range(0, len(base), 3):
+            count = {}
+            for tri in base[i:i + 3]:
+                for q, a in enumerate(tri):
+                    for b in tri[q + 1:]:
+                        e = (a, b) if a < b else (b, a)
+                        count[e] = count.get(e, 0) + 1
+            nbr = {}
+            for (a, b), c in count.items():
+                if c == 1:
+                    nbr.setdefault(a, []).append(b)
+                    nbr.setdefault(b, []).append(a)
+            assert len(nbr) == 5 and all(len(n) == 2 for n in nbr.values())
+            start = min(nbr)
+            cyc, prev, cur = [start], -1, start
+            while True:
+                a, b = nbr[cur]
+                nxt = a if b == prev else b
+                if nxt == start:
+                    break
+                cyc.append(nxt)
+                prev, cur = cur, nxt
+            assert len(cyc) == 5
+            pentagons.append(cyc)
+        assert len(pentagons) == 12
+        facets = []
+        for i, cyc in enumerate(pentagons):
+            c = 20 + i
+            for j in range(5):
+                facets.append((c, cyc[j], cyc[(j + 1) % 5]))
+        return Product(facets, "dodecahedron stellar subdivision (32 vertices, 60 triangles)")
     if name == "torus":
         f = []
         for i in range(7):
@@ -656,6 +739,8 @@ class ChainAnnealer:
                  weights=None, threads=64):
         validate_parameters(k=k, cmax=cmax, S=S, seed=seed, threads=threads)
         self.P, self.k, self.cmax, self.S = P, k, cmax, S
+        assert isinstance(P.is_simplex, np.ndarray), \
+            "GPU kernels need the dense is_simplex table (nv <= 24)"
         self.C1 = cmax + 1
         self.threads = threads
         self.rng = np.random.default_rng(seed)
@@ -991,6 +1076,8 @@ class LocalSearchGPU:
     def __init__(self, P: Product, walks=128):
         self.P = P
         self.walks = walks
+        assert isinstance(P.is_simplex, np.ndarray), \
+            "GPU kernels need the dense is_simplex table (nv <= 24)"
         self.kernel, self.walk_cpu = make_ls_kernel(P.nv, P.ngrid, P.maskw)
         self.d_fv = cuda.to_device(P.facet_verts)
         self.d_fnv = cuda.to_device(P.facet_nv)
@@ -1433,7 +1520,7 @@ def make_monitors(a, P):
 
 def cli():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "rp2", "hemi_dodeca", "hemicube", "hemi_octa", "klein", "torus", "mobius", "s1xw"])
+    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "dodeca_star", "icosa", "rp2", "hemi_dodeca", "hemicube", "hemi_octa", "klein", "torus", "mobius", "s1xw"])
     ap.add_argument("--k", type=int, default=3, help="number of chains / domains")
     ap.add_argument("--cmax", type=int, default=40, help="links per chain")
     ap.add_argument("--S", type=int, default=4096, help="population (GPU threads)")
