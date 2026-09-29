@@ -1483,8 +1483,9 @@ the covering LP is far weaker here (16.00), and the grid cover on a minimum tran
 36.  HiGHS's own certificate gap (incumbent 24, dual 23) is closed by Lemma 6, so 24 is exact.
 The star-seeded `k = 23` run (`icosa_k23`, seed 8233) then absorbed the dropped 54-facet domain
 and closed 2400/2400 (`VERIFIED system of 23 motion planners`), i.e. **`SC_strict(icosa) ≤ 22`** —
-one below the product floor `ρ − 1 = 23`, so the 23 attaining domains are provably non-product
-(the `k = 22` rung is open).
+one below the product floor `ρ − 1 = 23`, so the 23 attaining domains are provably non-product;
+the ladder continued and closed `icosa_k22` (≤ 21) and `icosa_k21` (**≤ 20**, VERIFIED) in turn,
+so `SC_strict(icosa) ≤ 20` today, four below the product floor.
 
 **Using a star cover as a warm start.** `star_cover.py` now records the full-grid chains in
 `summary.json` under `best_chains`, the key `gpu_sc.py` / `annealer_stretch.py --init` expects, so a
@@ -1580,8 +1581,8 @@ integer optima) — and `rect_cover.py` / the HiGHS integer program certify `ρ 
 **≤ 8** (hemi-octahedron) — Corollary 2 applied to Proposition 8, zero search. The star-seeded
 `k = 8` annealer run on the hemi-octahedron subsequently beat the product floor by one domain
 (`SC_strict ≤ 7` with 8 < ρ = 9 rectangles, so the attaining domains are provably non-product —
-`results/hemi_octa_k8`, §27), and the star-seeded `k = 23` run on the icosahedron did the same
-(`SC_strict ≤ 22` with 23 < ρ = 24, `results/icosa_k23`), as the Möbius band, the wedge (§23) and
+`results/hemi_octa_k8`, §27), and the star-seeded `k = 23→22→21` ladder on the icosahedron did
+the same (`SC_strict ≤ 20` with 21 < ρ = 24, `results/icosa_k2*`), as the Möbius band, the wedge (§23) and
 the cube (§26) do on their surfaces.
 
 **Why the coincidence is not a law of RP².** `ρ` is an invariant of the star-incidence of the

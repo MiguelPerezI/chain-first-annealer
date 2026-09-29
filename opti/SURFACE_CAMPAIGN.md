@@ -175,7 +175,7 @@ paper (`main.tex` §5: `lem:rows`, `lem:covers`, `prop:hemi`).
 | Klein (`klein`) | 8 → 8 | 16 | 1536 | 12 | `results/klein_starcover_greedy` (12 → ≤ 11) | `results/klein_k10` (10 → ≤ 9) |
 | torus | 7 → 7 | 14 | 1176 | 11 | `results/torus_starcover_opt` (11 → ≤ 10) | — (searches stall) |
 | dodecahedron S² (`dodeca`) | 20 → 20 | 36 | 7776 | 36 | `results/dodeca_starcover_opt` (36 → ≤ 35) | — (k = 3 stagnates at 2602/7776 = 33.5 %) |
-| icosahedron S² (`icosa`) | 12 → 12 | 20 | 2400 | 24 | `results/icosa_starcover_opt` (24 → **≤ 23**) | `results/icosa_k23` (23 → **≤ 22**, star-seeded, VERIFIED; k = 22 rung open) |
+| icosahedron S² (`icosa`) | 12 → 12 | 20 | 2400 | 24 | `results/icosa_starcover_opt` (24 → **≤ 23**) | `results/icosa_k21` (21 → **≤ 20**, VERIFIED; ladder k = 23→22→21 closed) |
 
 `V: abstract → complex` is the abstract polyhedron/regular map's vertex count versus the
 simplicial complex actually built (a non-simplicial face must be subdivided: hemicube
@@ -200,7 +200,8 @@ verified) ⇒ **`SC_strict(icosa) ≤ 23`**. The covering LP is only 16 here; th
 split the same way the RP² ones do. The star-seeded `k = 23` run then absorbed the dropped
 54-facet domain — 2400/2400 at epoch ~2 (seed 8233), `VERIFIED system of 23 motion planners`
 ⇒ **`SC_strict(icosa) ≤ 22`**, one below the product floor `ρ − 1 = 23`, so the attaining
-domains are non-product; the `k = 22` rung (target ≤ 21) is open.
+domains are non-product; the ladder continued and closed `icosa_k22` (≤ 21) and `icosa_k21`
+(**≤ 20**, 2400/2400, VERIFIED) in turn — four below the product floor and counting.
 
 The Möbius band was the first non-orientable case where the search provably beats
 every product cover (`ρ − 1 = 3` vs `SC_strict = 2`); the hemi-octa star-seeded `k = 8`

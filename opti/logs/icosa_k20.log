@@ -1,0 +1,4 @@
+=== annealer_stretch chain-first annealer ===  K=icosahedron boundary (12 vertices, 20 triangles)  |F_L|=2400  grid=144  k=20 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/icosa_k21/summary.json (reduced chains of the 20 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
