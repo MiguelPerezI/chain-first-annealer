@@ -20,3 +20,5 @@
   h1-guide: 13/104 uncovered facets are H1-obstructed for all 7 chains (weight 0)
   epoch  11: best 1432.0/1536  top10 [1432, 1432, 1427, 1426, 1426, 1426, 1426, 1426, 1426, 1425]  median 1412  now-median 1316    857.9s     0.294 Mmoves/s  stretch prop 1646256 acc 44772 (3%)  collapse prop 1648709 acc 22566 (1%)  leftovers 104
   epoch  12: best 1432.0/1536  top10 [1432, 1432, 1427, 1426, 1426, 1426, 1426, 1426, 1426, 1425]  median 1412  now-median 1317    921.2s     0.296 Mmoves/s  stretch prop 1374415 acc 25157 (2%)  collapse prop 1372643 acc 10412 (1%)  leftovers 104
+  h1-guide: 13/104 uncovered facets are H1-obstructed for all 7 chains (weight 0)
+  epoch  13: best 1432.0/1536  top10 [1432, 1432, 1431, 1429, 1427, 1427, 1426, 1426, 1426, 1426]  median 1413  now-median 1318    998.6s     0.297 Mmoves/s  stretch prop 1641233 acc 46148 (3%)  collapse prop 1642436 acc 21826 (1%)  leftovers 104

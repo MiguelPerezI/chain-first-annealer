@@ -310,6 +310,20 @@ def build(name):
                         (5, 7, 10), (5, 10, 11), (2, 17, 18), (2, 7, 18),
                         (1, 2, 7), (0, 1, 7), (0, 5, 7), (0, 5, 6)],
                        "dodecahedron boundary (20 vertices, 36 triangles)")
+    if name == "icosa":
+        # The icosahedron boundary: 12 vertices 0..11, 20 triangles --
+        # antiprism construction: apex 0 over the top pentagon 1..5, apex 11
+        # under the bottom pentagon 6..10, side band (t_i, t_{i+1}, b_i) and
+        # (t_{i+1}, b_i, b_{i+1}) with indices mod 5.  f-vector (12, 30, 20),
+        # 5-regular 1-skeleton, every edge in exactly two triangles, chi = 2:
+        # a triangulated S^2, the double cover of the hemi-icosahedron `rp2`.
+        return Product([(0, 1, 2), (0, 2, 3), (0, 3, 4), (0, 4, 5), (0, 5, 1),
+                        (11, 6, 7), (11, 7, 8), (11, 8, 9), (11, 9, 10),
+                        (11, 10, 6),
+                        (1, 2, 6), (2, 6, 7), (2, 3, 7), (3, 7, 8), (3, 4, 8),
+                        (4, 8, 9), (4, 5, 9), (5, 9, 10), (5, 1, 10),
+                        (1, 10, 6)],
+                       "icosahedron boundary (12 vertices, 20 triangles)")
     if name == "torus":
         f = []
         for i in range(7):
@@ -1781,7 +1795,7 @@ def make_monitors(a, P):
 
 def cli():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "rp2", "hemi_dodeca", "hemicube", "hemi_octa", "klein", "torus", "mobius", "s1xw"])
+    ap.add_argument("--complex", default="s2", choices=["circle", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "wedge", "bary", "cube", "dodeca", "icosa", "rp2", "hemi_dodeca", "hemicube", "hemi_octa", "klein", "torus", "mobius", "s1xw"])
     ap.add_argument("--k", type=int, default=3, help="number of chains / domains")
     ap.add_argument("--cmax", type=int, default=40, help="links per chain")
     ap.add_argument("--S", type=int, default=4096, help="population (GPU threads)")
