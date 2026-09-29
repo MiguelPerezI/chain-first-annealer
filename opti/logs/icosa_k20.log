@@ -2,3 +2,9 @@
   seeded population from results/icosa_k21/summary.json (reduced chains of the 20 largest domains, padded to cmax)
 /home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
   warn(NumbaPerformanceWarning(msg))
+  epoch   1: best 2394.0/2400  top10 [2394, 2393, 2393, 2393, 2393, 2393, 2393, 2392, 2392, 2392]  median 1404  now-median 1404    112.8s     0.200 Mmoves/s  stretch prop 1877294 acc 155186 (8%)  collapse prop 1873453 acc 47704 (3%)  leftovers [498, 501, 502, 578, 580, 2267]
+  epoch   2: best 2400.0/2400  top10 [2400, 2400, 2400, 2399, 2399, 2398, 2398, 2398, 2398, 2398]  median 1410  now-median 1404    173.2s     0.257 Mmoves/s  stretch prop 647726 acc 25942 (4%)  collapse prop 647482 acc 10623 (2%)  leftovers []
+  full coverage reached at epoch 2
+best coverage 2400/2400  domain sizes [411, 226, 206, 203, 220, 203, 194, 188, 183, 182, 181, 181, 167, 168, 163, 162, 162, 159, 158, 149]  time 194.9s  kernel 159.1s  moves 4.1e+07
+VERIFIED system of 20 motion planners: sizes [411, 195, 194, 180, 176, 162, 142, 135, 116, 104, 89, 86, 66, 59, 58, 53, 47, 46, 45, 36], reduced chain lengths [6, 6, 6, 5, 3, 5, 6, 5, 4, 5, 3, 4, 3, 3, 4, 3, 4, 2, 4, 3]  =>  SC_strict(icosahedron boundary (12 vertices, 20 triangles)) <= 19
+wrote results/icosa_k20/cover.txt planners.txt summary.json

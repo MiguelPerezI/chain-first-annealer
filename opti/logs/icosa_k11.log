@@ -1,0 +1,11 @@
+=== annealer_stretch chain-first annealer ===  K=icosahedron boundary (12 vertices, 20 triangles)  |F_L|=2400  grid=144  k=11 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/icosa_k12/summary.json (reduced chains of the 11 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best 2377.0/2400  top10 [2377, 2376, 2376, 2376, 2376, 2375, 2375, 2375, 2375, 2375]  median 1388  now-median 1388     80.0s     0.261 Mmoves/s  stretch prop 3265852 acc 469533 (14%)  collapse prop 3266546 acc 47461 (1%)  leftovers 23
+  epoch   2: best 2384.0/2400  top10 [2384, 2383, 2381, 2381, 2380, 2380, 2380, 2380, 2379, 2379]  median 1394  now-median 1390    138.4s     0.300 Mmoves/s  stretch prop 2588580 acc 189377 (7%)  collapse prop 2592110 acc 34635 (1%)  leftovers 16
+  epoch   3: best 2384.0/2400  top10 [2384, 2383, 2381, 2381, 2381, 2380, 2380, 2380, 2380, 2379]  median 2370  now-median 2365    199.6s     0.313 Mmoves/s  stretch prop 2406954 acc 136630 (6%)  collapse prop 2403730 acc 30816 (1%)  leftovers 16
+  epoch   4: best 2384.0/2400  top10 [2384, 2383, 2381, 2381, 2381, 2380, 2380, 2380, 2380, 2379]  median 2370  now-median 2364    256.5s     0.324 Mmoves/s  stretch prop 1965917 acc 107767 (5%)  collapse prop 1964748 acc 25034 (1%)  leftovers 16
+  epoch   5: best 2384.0/2400  top10 [2384, 2383, 2382, 2382, 2381, 2381, 2381, 2380, 2380, 2380]  median 2371  now-median 2366    317.0s     0.328 Mmoves/s  stretch prop 2205190 acc 69676 (3%)  collapse prop 2208376 acc 22364 (1%)  leftovers 16
+  epoch   6: best 2384.0/2400  top10 [2384, 2383, 2382, 2382, 2381, 2381, 2381, 2380, 2380, 2380]  median 2371  now-median 2366    374.5s     0.333 Mmoves/s  stretch prop 1966408 acc 59501 (3%)  collapse prop 1968360 acc 19184 (1%)  leftovers 16
+  epoch   7: best 2384.0/2400  top10 [2384, 2384, 2383, 2382, 2382, 2382, 2382, 2381, 2381, 2381]  median 2372  now-median 2367    435.6s     0.334 Mmoves/s  stretch prop 2299072 acc 48734 (2%)  collapse prop 2296578 acc 19249 (1%)  leftovers 16

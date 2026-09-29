@@ -1,0 +1,10 @@
+=== annealer_stretch chain-first annealer ===  K=icosahedron boundary (12 vertices, 20 triangles)  |F_L|=2400  grid=144  k=17 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/icosa_k18/summary.json (reduced chains of the 17 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  epoch   1: best 2399.0/2400  top10 [2399, 2399, 2399, 2399, 2399, 2399, 2399, 2399, 2399, 2399]  median 1401  now-median 1401     75.4s     0.277 Mmoves/s  stretch prop 2383220 acc 396777 (17%)  collapse prop 2380231 acc 53391 (2%)  leftovers [120]
+  epoch   2: best 2400.0/2400  top10 [2400, 2399, 2399, 2399, 2399, 2399, 2399, 2399, 2399, 2399]  median 1406  now-median 1404    116.5s     0.358 Mmoves/s  stretch prop 190547 acc 15 (0%)  collapse prop 190678 acc 1907 (1%)  leftovers []
+  full coverage reached at epoch 2
+best coverage 2400/2400  domain sizes [419, 394, 299, 304, 289, 257, 270, 236, 231, 229, 218, 217, 230, 211, 208, 194, 186]  time 126.3s  kernel 114.4s  moves 4.1e+07
+VERIFIED system of 17 motion planners: sizes [419, 332, 299, 243, 207, 155, 141, 138, 90, 84, 75, 52, 46, 43, 40, 20, 16], reduced chain lengths [6, 5, 6, 7, 5, 5, 5, 6, 4, 5, 3, 3, 4, 3, 3, 3, 2]  =>  SC_strict(icosahedron boundary (12 vertices, 20 triangles)) <= 16
+wrote results/icosa_k17/cover.txt planners.txt summary.json
