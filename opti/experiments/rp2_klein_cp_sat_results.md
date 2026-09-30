@@ -76,6 +76,9 @@ also have kept the KFP control gate closed for RP²).
 Revision `e3c25d8`, pod limit 7 CPU / 26 GiB, 5 CP-SAT workers, 24 h limit
 per rung (`nproc.txt` says 32: that is the node, not the pod limit). Raw output in
 `results/cp_sat_rp2_kfp/` (copied from `~/cp_sat_results`).
+Encoding: `factored` for every rung (`SCS_ENCODING=factored` in the compiled
+pipeline; each `solver.log` prints `middle-link encoding: factored`). `row.md`
+and the certificate params do not record the encoding.
 
 | rung | vars | cons | status | wall | peak RSS | certificate |
 |---|---:|---:|---|---:|---:|---|
