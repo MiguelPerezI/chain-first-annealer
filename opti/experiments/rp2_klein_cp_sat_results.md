@@ -73,7 +73,8 @@ also have kept the KFP control gate closed for RP²).
 
 ## 2026-09-28 to 2026-09-30, KFP ladder on the lab (factored, cold)
 
-Revision `e3c25d8`, 32 CPUs per pod, 24 h limit per rung. Raw output in
+Revision `e3c25d8`, pod limit 7 CPU / 26 GiB, 5 CP-SAT workers, 24 h limit
+per rung (`nproc.txt` says 32: that is the node, not the pod limit). Raw output in
 `results/cp_sat_rp2_kfp/` (copied from `~/cp_sat_results`).
 
 | rung | vars | cons | status | wall | peak RSS | certificate |
