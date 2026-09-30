@@ -85,8 +85,7 @@ def build(k, L, NV, NG, NF, FAC, TRIS, PI1, PI2, fix_domain0=None):
                         model.AddImplication(b[d, i + 1, v, c], h[c])
                 for N in nonfaces:
                     model.AddBoolOr([x[f, d].Not()] + [h[c].Not() for c in N])
-    for d in range(k - 1):
-        model.Add(sum(x[f, d] for f in range(NF)) >= sum(x[f, d + 1] for f in range(NF)))
+    scs_sat.order_by_size(model, x, NF, range(1 if fix_domain0 else 0, k))
     return model, m, x, nonfaces
 
 

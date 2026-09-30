@@ -17,6 +17,13 @@ if bash "$OPTI/scripts/sat_rung.sh" mobius 5 4 120 4 "$tmp/nofree" "$tmp/log.md"
      "$OPTI/results/mobius_k5/summary.json" 0 2>/dev/null; then
   echo "FAIL: WARM with FREE=0 was accepted"; exit 1
 fi
+# the KFP entrypoint must refuse the same thing instead of running a cold rung
+if PY="$PY" bash "$OPTI/cluster/kfp/rung_entry.sh" mobius 3 4 1 1 "$tmp/entry" \
+     "$tmp/entry/status" "$tmp/entry/cert" "$tmp/entry/art.tgz" \
+     "$OPTI/results/mobius_k5/summary.json" 0 2>/dev/null; then
+  echo "FAIL: rung_entry.sh accepted WARM with FREE=0"; exit 1
+fi
+[ ! -e "$tmp/entry/mobius_k3_L4" ] || { echo "FAIL: rung_entry.sh ran a rung for WARM with FREE=0"; exit 1; }
 # images without GNU time (e.g. the Kubeflow notebook image) fall back to rss_run.py
 TIME_BIN=/nonexistent bash "$OPTI/scripts/sat_rung.sh" mobius 1 3 120 4 "$tmp/notime" "$tmp/notime.md"
 grep -qE '\| mobius \| 1 \| 3 \| cold \| - \| INFEASIBLE \|' "$tmp/notime.md"
