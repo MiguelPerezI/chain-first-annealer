@@ -70,3 +70,20 @@ workers). Certificate `results/cp_sat_rp2_factored/control_k6_L8/certificate`:
 6 domains, audited by `independent_check.py` (RP² support added in this
 change; before it the auditor rejected every 600-facet cover, which would
 also have kept the KFP control gate closed for RP²).
+
+## 2026-09-28 to 2026-09-30, KFP ladder on the lab (factored, cold)
+
+Revision `e3c25d8`, 32 CPUs per pod, 24 h limit per rung. Raw output in
+`results/cp_sat_rp2_kfp/` (copied from `~/cp_sat_results`).
+
+| rung | vars | cons | status | wall | peak RSS | certificate |
+|---|---:|---:|---|---:|---:|---|
+| control rp2 k=6 L=8 | 143,790 | 1,559,189 | OPTIMAL | 39.8 s | 3.14 GB | audited |
+| rp2 k=5 L=4 | 42,786 | 454,384 | UNKNOWN (24 h limit) | 86,403 s | 3.61 GB | - |
+| rp2 k=5 L=5 | 62,046 | 665,644 | UNKNOWN (24 h limit) | 86,403 s | 5.37 GB | - |
+| rp2 k=5 L=6 | | | running since 2026-09-30 06:57Z | | | |
+
+The factored encoding removes the OOM: both k=5 rungs ran the full 24 h
+well under the RAM limit. It does not settle them: no cover and no
+infeasibility proof in 24 h. Neither UNKNOWN row is evidence for or against
+a 5-cover of RP².
