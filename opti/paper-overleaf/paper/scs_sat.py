@@ -209,12 +209,25 @@ class MiddleLinks:
                 model.AddBoolOr([x[f, d].Not()] + [h[c].Not() for c in N])
 
 
+def order_by_size(model, x, NF, domains):
+    """Symmetry breaking |D_a| >= |D_b| for consecutive domains in `domains`.
+
+    Only for interchangeable domains. A domain with pinned facets or a frozen
+    chain is distinguishable, and ordering it against the others could cut
+    every cover whose largest domain is another one (a false INFEASIBLE)."""
+    domains = list(domains)
+    for a, b in zip(domains, domains[1:]):
+        model.Add(sum(x[f, a] for f in range(NF))
+                  >= sum(x[f, b] for f in range(NF)))
+
+
 def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
                want_solution=False, outdir=None, fix_domain0=None, encoding="y"):
     """Full CP-SAT solve from scratch.
 
     fix_domain0: optional list of facet ids forced into domain 0 (x[f,0]=1).
-    Used by the orbit-decomposition cases; None leaves the model unchanged."""
+    Used by the orbit-decomposition cases; None leaves the model unchanged.
+    With it, domain 0 is left out of the size ordering (see order_by_size)."""
     assert L >= 2, "L must be >= 2 (chain of >= 2 links; L=1 is not encoded)"
     NT = len(TRIS)
     model = cp_model.CpModel()
@@ -256,9 +269,7 @@ def solve_cold(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
                     m[d, L - 1, v], cp_model.Domain.FromValues(tau)
                 ).OnlyEnforceIf(x[f, d])
             links.add(d, f, verts)
-    for d in range(k - 1):
-        model.Add(sum(x[f, d] for f in range(NF))
-                  >= sum(x[f, d + 1] for f in range(NF)))
+    order_by_size(model, x, NF, range(1 if fix_domain0 else 0, k))
 
     n_vars = len(model.proto.variables)
     n_cons = len(model.proto.constraints)
@@ -292,6 +303,7 @@ def solve_hybrid(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
     must be covered by either a frozen domain OR a freed domain.
     """
     assert L >= 2, "L must be >= 2 (chain of >= 2 links; L=1 is not encoded)"
+    assert 1 <= n_free <= k, f"n_free must be in 1..k={k} (got {n_free})"
     NT = len(TRIS)
     raw_chains, raw_domains, covered, order = load_warm(
         warm_path, NV, NG, NF, FAC, TRIS)
@@ -381,11 +393,7 @@ def solve_hybrid(k, L, timeout_s, workers, NV, NG, NF, FAC, TRIS, PI1, PI2,
             links.add(d, f, verts)
 
     # Symmetry breaking among free domains only
-    for fd in range(n_free - 1):
-        d1 = free_start + fd
-        d2 = free_start + fd + 1
-        model.Add(sum(x[f, d1] for f in range(NF))
-                  >= sum(x[f, d2] for f in range(NF)))
+    order_by_size(model, x, NF, range(free_start, k))
 
     n_vars = len(model.proto.variables)
     n_cons = len(model.proto.constraints)
@@ -458,22 +466,36 @@ if __name__ == "__main__":
     parser.add_argument("--warm", default=None,
                         help="path to annealer summary.json for hybrid mode")
     parser.add_argument("--free", type=int, default=0,
-                        help="number of domains to free in hybrid mode "
-                             "(0 = free all k, i.e. cold solve with hints)")
+                        help="number of domains CP-SAT re-solves in hybrid mode "
+                             "(1..k, required with --warm)")
     parser.add_argument("--fix-domain0", default=None,
                         help="JSON list of facet ids forced into domain 0 (cold mode)")
     parser.add_argument("--encoding", default="y", choices=["y", "factored"],
                         help="middle-link contiguity encoding (factored: ~half the RAM)")
     args = parser.parse_args()
-    fix_domain0 = json.load(open(args.fix_domain0)) if args.fix_domain0 else None
+    if args.warm and not 1 <= args.free <= args.k:
+        parser.error(f"--warm needs 1 <= --free <= --k (got --free {args.free}, "
+                     f"--k {args.k}); --free 0 would drop the warm file and solve cold")
+    if args.warm and args.fix_domain0:
+        parser.error("--fix-domain0 is cold mode only: in hybrid mode the first "
+                     "domains are frozen chains, so domain 0 cannot be pinned")
+    fix_domain0 = None
+    if args.fix_domain0:
+        fix_domain0 = json.load(open(args.fix_domain0))
+        if not (isinstance(fix_domain0, list)
+                and all(isinstance(f, int) for f in fix_domain0)):
+            parser.error(f"--fix-domain0 {args.fix_domain0}: expected a JSON list of "
+                         f"facet ids (an annealer summary goes to --warm)")
 
     workers = args.workers if args.workers > 0 else min(multiprocessing.cpu_count(), 16)
     NV, NG, NF, FAC, TRIS, PI1, PI2, P = build_complex(args.complex)
+    if fix_domain0 and not all(0 <= f < NF for f in fix_domain0):
+        parser.error(f"--fix-domain0 {args.fix_domain0}: facet ids must be in 0..{NF - 1}")
 
     print(f"{P.name}: {NF} facets, {NG} grid vertices, "
           f"{len(TRIS)} maximal facets of K, NV={NV}; workers={workers}")
 
-    if args.warm and args.free > 0:
+    if args.warm:
         print(f"HYBRID mode: warm={args.warm}, free={args.free}/{args.k}")
         solve_hybrid(args.k, args.L, args.timeout, workers,
                      NV, NG, NF, FAC, TRIS, PI1, PI2,
