@@ -150,11 +150,15 @@ miss:
 
 On the sparse complexes the product bound is far from everything known:
 the icosa star certificate (ρ = 24 ⇒ SCst ≤ 23) seeds the annealer via
-`best_chains` → `--init`, and the star-seeded ladder closed k = 23, 22, 21
-*and* 20 (`results/icosa_k20`: a verified 20-domain certificate) ⇒
-**SCst(icosa) ≤ 19** — the annealer beat its own seed's family by four
-domains.  On the dodecahedron the star bound (≤ 35) remains the only
-certified bound; the k = 3 campaign stalled at ~2602/7776 facets.
+`best_chains` → `--init`, and the star-seeded ladder closed every rung
+k = 23 down to k = 5 (`results/icosa_k5_v2`: a verified 5-domain
+certificate over the 2400-facet KxK, domains of 894+755+387+185+179
+facets, reached at epoch 67 of the warm continuation from the first
+k = 5 run's 2395/2400 stall) ⇒ **SCst(icosa) ≤ 4** — the annealer beat
+its own seed's family by nineteen domains and closed to within two of
+the topological floor: TC(S²) = 2 forces 2 ≤ SCst(icosa) ≤ 4.  On the
+dodecahedron the star bound (≤ 35) remains the only certified bound;
+the k = 3 campaign stalled at ~2602/7776 facets.
 
 ## 4. When the bound *is* the minimum: the even-sphere sandwich
 
@@ -215,7 +219,7 @@ covering certificate plus the paper's solver; star domains from
 | hemi-dodecahedron | 15 > \|V\| = 10 | 14 | ≤ 14 (star only) | open |
 | Császár torus | 11 | 10 | ≤ 10 (star only; TC(T²) = 2 below) | open |
 | Klein bottle | 12 | 11 | ≤ 9 (verified k = 10; k = 9/8 stall at 1494/1470, k = 5 at 1186, of 1536) | open, gap likely large |
-| icosahedron | 24 | 23 | ≤ 19 (star-seeded ladder; k = 20 closed) | no — beaten by 4 |
+| icosahedron | 24 | 23 | ≤ 4 (star-seeded ladder; k = 5 closed) | no — beaten by 19 |
 | dodecahedron | 36 | 35 | ≤ 35 (k = 3 stalled ~2602/7776) | no (expected), unproven |
 
 Reading of the table: the star cover is the minimum exactly where a
@@ -240,7 +244,7 @@ Even where not sharp, the star cover is load-bearing:
   anneals only the remainder.  Two of the table's sub-star records do
   descend from a star certificate this way — the icosahedron ladder
   (k = 23 seeded from `icosa_starcover_opt`, then warm-started down
-  through k = 20) and the hemi-octahedron k = 8 certificate — but the
+  through k = 5) and the hemi-octahedron k = 8 certificate — but the
   cube, Möbius and Klein records are annealer/CP-SAT native (cold starts;
   the verified Klein ladder k = 15 → 10 originates in a cold run), so
   "star-seeded" is not a universal property of the improved bounds.
@@ -248,10 +252,17 @@ Even where not sharp, the star cover is load-bearing:
   `gpu_sc.verify_system`.  The sphere runs (s2–s8) are additionally
   audited by this repo's code-independent `src/independent_check.py`
   (invoked from `scripts/run_starcovers.sh`), whose facet order matches
-  the Abstract_Motion_GPU pipeline; the newer small-complex
-  `*_starcover_opt` certificates record `independent_audit: not_run` in
-  their provenance, so for those the internal audit is currently the only
-  one executed.
+  the Abstract_Motion_GPU pipeline.  Since 2026-09-30 the checker also
+  rebuilds the icosahedron (2400-facet KxK; it re-proves the identity
+  from the facet list alone — the unique 5-regular triangulated sphere,
+  antipodal quotient the hemi-icosahedron — and its planner-grid parser
+  was fixed for the two-digit vertex labels that nv = 12 produces), and
+  with it the entire icosahedron ladder passes the full independent
+  audit: all twenty certificates, the `icosa_starcover_opt` seed (24
+  domains) and every rung k = 23 … 5, including the SCst ≤ 4 record.
+  The remaining small-complex `*_starcover_opt` certificates record
+  `independent_audit: not_run` in their provenance, so for those the
+  internal audit is currently the only one executed.
 
 One-line summary: **complete by a trivial membership argument, minimal
 within its family by exact set-cover computation, an upper bound because
