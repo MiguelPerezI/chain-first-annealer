@@ -1,0 +1,458 @@
+nohup: ignoring input
+=== annealer_stretch chain-first annealer ===  K=RP² (10 vertices, 18 triangles, hemi-dodecahedron)  |F_L|=1944  grid=100  k=6 cmax=40 S=4096 iters=5000  T0=0.6 T1=0.02  beta=5.0 gamma=0.1 mu=0.0 ptrack=0.3  guide=5.0/(max 8.0)  seed=8233  crossover=0.0 h1-guide=2  pstretch=0.5  pcollapse=0.5
+  seeded population from results/hemi_dodeca_k6/summary.json (reduced chains of the 6 largest domains, padded to cmax)
+/home/mike666/Documents/venv/lib/python3.14/site-packages/numba/cuda/dispatcher.py:537: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+  warn(NumbaPerformanceWarning(msg))
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch   1: best 1919.0/1944  top10 [1919, 1919, 1918, 1918, 1918, 1918, 1918, 1918, 1918, 1918]  median 1111  now-median 1110     84.3s     0.255 Mmoves/s  stretch prop 4591966 acc 921448 (20%)  collapse prop 4589428 acc 63569 (1%)  leftovers 25
+  epoch   2: best 1919.0/1944  top10 [1919, 1919, 1919, 1918, 1918, 1918, 1918, 1918, 1918, 1918]  median 1120  now-median 1099    158.1s     0.266 Mmoves/s  stretch prop 4385767 acc 874713 (20%)  collapse prop 4387984 acc 45544 (1%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch   3: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1918, 1918, 1918, 1918, 1918, 1918]  median 1918  now-median 1886    241.1s     0.264 Mmoves/s  stretch prop 3985095 acc 552788 (14%)  collapse prop 3985539 acc 32046 (1%)  leftovers 25
+  epoch   4: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1918, 1918, 1918, 1918, 1918, 1918]  median 1918  now-median 1886    320.2s     0.262 Mmoves/s  stretch prop 3892228 acc 547037 (14%)  collapse prop 3891039 acc 28493 (1%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch   5: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1918, 1918, 1918, 1918, 1918]  median 1918  now-median 1910    405.1s     0.260 Mmoves/s  stretch prop 3807698 acc 239770 (6%)  collapse prop 3810448 acc 16872 (0%)  leftovers 25
+  epoch   6: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1918, 1918, 1918, 1918, 1918]  median 1918  now-median 1910    486.3s     0.259 Mmoves/s  stretch prop 3748767 acc 234436 (6%)  collapse prop 3746698 acc 14856 (0%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch   7: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1918, 1918, 1918]  median 1918  now-median 1915    570.5s     0.258 Mmoves/s  stretch prop 3826121 acc 57907 (2%)  collapse prop 3822061 acc 5355 (0%)  leftovers 25
+  epoch   8: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1918, 1918]  median 1918  now-median 1915    651.2s     0.258 Mmoves/s  stretch prop 3756879 acc 53214 (1%)  collapse prop 3757053 acc 3549 (0%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch   9: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1916    735.3s     0.258 Mmoves/s  stretch prop 3890094 acc 55996 (1%)  collapse prop 3887397 acc 5209 (0%)  leftovers 25
+  epoch  10: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1916    815.6s     0.257 Mmoves/s  stretch prop 3824632 acc 51334 (1%)  collapse prop 3825226 acc 3520 (0%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  11: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1916    899.7s     0.257 Mmoves/s  stretch prop 3822396 acc 54374 (1%)  collapse prop 3828343 acc 5525 (0%)  leftovers 25
+  epoch  12: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1915    980.3s     0.257 Mmoves/s  stretch prop 3765290 acc 48833 (1%)  collapse prop 3768992 acc 3638 (0%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  13: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1915   1064.7s     0.257 Mmoves/s  stretch prop 3771662 acc 56870 (2%)  collapse prop 3771564 acc 5322 (0%)  leftovers 25
+  epoch  14: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1915   1145.3s     0.257 Mmoves/s  stretch prop 3715732 acc 51101 (1%)  collapse prop 3717962 acc 3722 (0%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  15: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1915   1229.8s     0.256 Mmoves/s  stretch prop 3724625 acc 54489 (1%)  collapse prop 3723365 acc 5548 (0%)  leftovers 25
+  epoch  16: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1915   1310.3s     0.256 Mmoves/s  stretch prop 3664989 acc 49646 (1%)  collapse prop 3668430 acc 3537 (0%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  17: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1915   1394.6s     0.256 Mmoves/s  stretch prop 3676761 acc 55688 (2%)  collapse prop 3676473 acc 5433 (0%)  leftovers 25
+  epoch  18: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1914   1474.9s     0.256 Mmoves/s  stretch prop 3624159 acc 49058 (1%)  collapse prop 3624825 acc 3826 (0%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  19: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1914   1559.2s     0.256 Mmoves/s  stretch prop 3632237 acc 57655 (2%)  collapse prop 3631226 acc 5206 (0%)  leftovers 25
+  epoch  20: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1914   1639.6s     0.256 Mmoves/s  stretch prop 3578722 acc 53367 (1%)  collapse prop 3578569 acc 3410 (0%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  21: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1914   1723.5s     0.256 Mmoves/s  stretch prop 3597540 acc 56049 (2%)  collapse prop 3599126 acc 5930 (0%)  leftovers 25
+  epoch  22: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1914   1803.8s     0.256 Mmoves/s  stretch prop 3545912 acc 51509 (1%)  collapse prop 3547443 acc 4089 (0%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  23: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1914   1887.7s     0.256 Mmoves/s  stretch prop 3563387 acc 58480 (2%)  collapse prop 3562552 acc 5468 (0%)  leftovers 25
+  epoch  24: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1913   1968.2s     0.256 Mmoves/s  stretch prop 3507971 acc 52935 (2%)  collapse prop 3511931 acc 3817 (0%)  leftovers 25
+  h1-guide: 6/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  25: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1903   2052.8s     0.256 Mmoves/s  stretch prop 3542696 acc 55844 (2%)  collapse prop 3541427 acc 8072 (0%)  leftovers 25
+  epoch  26: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1895   2133.1s     0.256 Mmoves/s  stretch prop 3355453 acc 50702 (2%)  collapse prop 3353703 acc 9752 (0%)  leftovers 25
+  h1-guide: 10/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  27: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1898   2216.6s     0.256 Mmoves/s  stretch prop 3269946 acc 56549 (2%)  collapse prop 3267214 acc 8702 (0%)  leftovers 25
+  epoch  28: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1898   2296.0s     0.256 Mmoves/s  stretch prop 3606442 acc 47541 (1%)  collapse prop 3600864 acc 4701 (0%)  leftovers 25
+  h1-guide: 10/25 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  29: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1898   2379.5s     0.256 Mmoves/s  stretch prop 3647234 acc 54040 (1%)  collapse prop 3646250 acc 6182 (0%)  leftovers 25
+  epoch  30: best 1919.0/1944  top10 [1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1899   2458.7s     0.256 Mmoves/s  stretch prop 3601632 acc 48557 (1%)  collapse prop 3597953 acc 4342 (0%)  leftovers 25
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  31: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1900   2541.8s     0.256 Mmoves/s  stretch prop 3642020 acc 54540 (1%)  collapse prop 3640472 acc 5816 (0%)  leftovers 23
+  epoch  32: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1919, 1919, 1919, 1919, 1919, 1919]  median 1918  now-median 1899   2621.3s     0.256 Mmoves/s  stretch prop 3229123 acc 50297 (2%)  collapse prop 3228174 acc 5148 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  33: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1919, 1919, 1919]  median 1918  now-median 1900   2704.8s     0.257 Mmoves/s  stretch prop 3272758 acc 55625 (2%)  collapse prop 3273126 acc 6717 (0%)  leftovers 23
+  epoch  34: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1919, 1919, 1919]  median 1918  now-median 1900   2784.4s     0.257 Mmoves/s  stretch prop 3216846 acc 49692 (2%)  collapse prop 3216401 acc 4937 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  35: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1919]  median 1918  now-median 1901   2867.3s     0.257 Mmoves/s  stretch prop 3272785 acc 54637 (2%)  collapse prop 3275395 acc 6280 (0%)  leftovers 23
+  epoch  36: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1919]  median 1918  now-median 1901   2946.8s     0.257 Mmoves/s  stretch prop 3226860 acc 50065 (2%)  collapse prop 3222565 acc 4572 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  37: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1903   3029.8s     0.257 Mmoves/s  stretch prop 3299590 acc 57036 (2%)  collapse prop 3296162 acc 6093 (0%)  leftovers 23
+  epoch  38: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1902   3109.1s     0.257 Mmoves/s  stretch prop 3245805 acc 52063 (2%)  collapse prop 3248451 acc 4074 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  39: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1904   3191.7s     0.257 Mmoves/s  stretch prop 3335850 acc 58227 (2%)  collapse prop 3335265 acc 6036 (0%)  leftovers 23
+  epoch  40: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1904   3270.9s     0.257 Mmoves/s  stretch prop 3283051 acc 52994 (2%)  collapse prop 3283861 acc 4158 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  41: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1907   3353.4s     0.257 Mmoves/s  stretch prop 3378909 acc 56490 (2%)  collapse prop 3380501 acc 6019 (0%)  leftovers 23
+  epoch  42: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1906   3432.4s     0.257 Mmoves/s  stretch prop 3322314 acc 51693 (2%)  collapse prop 3321720 acc 4253 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  43: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1908   3514.9s     0.257 Mmoves/s  stretch prop 3388088 acc 55836 (2%)  collapse prop 3391429 acc 6003 (0%)  leftovers 23
+  epoch  44: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1907   3594.0s     0.257 Mmoves/s  stretch prop 3330988 acc 51207 (2%)  collapse prop 3333552 acc 3992 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  45: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1909   3676.3s     0.257 Mmoves/s  stretch prop 3405311 acc 55682 (2%)  collapse prop 3411190 acc 6061 (0%)  leftovers 23
+  epoch  46: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1909   3755.2s     0.257 Mmoves/s  stretch prop 3345572 acc 50004 (1%)  collapse prop 3344180 acc 4246 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  47: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1910   3838.1s     0.257 Mmoves/s  stretch prop 3438084 acc 56945 (2%)  collapse prop 3437547 acc 5860 (0%)  leftovers 23
+  epoch  48: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1918  now-median 1910   3917.9s     0.257 Mmoves/s  stretch prop 3378624 acc 51494 (2%)  collapse prop 3377057 acc 3987 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  49: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1911   4001.6s     0.257 Mmoves/s  stretch prop 3478300 acc 56731 (2%)  collapse prop 3477407 acc 6277 (0%)  leftovers 23
+  epoch  50: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1911   4081.4s     0.257 Mmoves/s  stretch prop 3407151 acc 51828 (2%)  collapse prop 3404749 acc 4235 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  51: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1914   4164.9s     0.257 Mmoves/s  stretch prop 3540516 acc 55459 (2%)  collapse prop 3537081 acc 6264 (0%)  leftovers 23
+  epoch  52: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1913   4245.0s     0.257 Mmoves/s  stretch prop 3461852 acc 49466 (1%)  collapse prop 3460729 acc 4183 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  53: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1915   4328.7s     0.257 Mmoves/s  stretch prop 3662691 acc 55741 (2%)  collapse prop 3663087 acc 6551 (0%)  leftovers 23
+  epoch  54: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1915   4408.5s     0.257 Mmoves/s  stretch prop 3578569 acc 49593 (1%)  collapse prop 3573102 acc 4198 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  55: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1916   4491.5s     0.257 Mmoves/s  stretch prop 3710345 acc 57469 (2%)  collapse prop 3713993 acc 6332 (0%)  leftovers 23
+  epoch  56: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1915   4571.1s     0.257 Mmoves/s  stretch prop 3621259 acc 52338 (1%)  collapse prop 3622918 acc 4069 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  57: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1915   4654.7s     0.257 Mmoves/s  stretch prop 3681835 acc 56719 (2%)  collapse prop 3680306 acc 6505 (0%)  leftovers 23
+  epoch  58: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1915   4734.8s     0.257 Mmoves/s  stretch prop 3596258 acc 50231 (1%)  collapse prop 3597661 acc 4165 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  59: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1915   4818.6s     0.257 Mmoves/s  stretch prop 3635637 acc 57049 (2%)  collapse prop 3637779 acc 6446 (0%)  leftovers 23
+  epoch  60: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1915   4898.6s     0.257 Mmoves/s  stretch prop 3552832 acc 52286 (1%)  collapse prop 3550342 acc 4053 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  61: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1915   4982.3s     0.257 Mmoves/s  stretch prop 3592011 acc 56201 (2%)  collapse prop 3589578 acc 6311 (0%)  leftovers 23
+  epoch  62: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1914   5062.4s     0.257 Mmoves/s  stretch prop 3505861 acc 50505 (1%)  collapse prop 3510706 acc 4052 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  63: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1914   5145.9s     0.257 Mmoves/s  stretch prop 3565997 acc 56315 (2%)  collapse prop 3565358 acc 6406 (0%)  leftovers 23
+  epoch  64: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1914   5225.7s     0.257 Mmoves/s  stretch prop 3487309 acc 51281 (1%)  collapse prop 3484110 acc 4217 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  65: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1914   5309.1s     0.257 Mmoves/s  stretch prop 3539330 acc 58256 (2%)  collapse prop 3542794 acc 6373 (0%)  leftovers 23
+  epoch  66: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1914   5389.1s     0.257 Mmoves/s  stretch prop 3459104 acc 52367 (2%)  collapse prop 3462244 acc 3907 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  67: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1914   5472.8s     0.257 Mmoves/s  stretch prop 3530446 acc 56752 (2%)  collapse prop 3530869 acc 6416 (0%)  leftovers 23
+  epoch  68: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1913   5552.3s     0.257 Mmoves/s  stretch prop 3449818 acc 51479 (1%)  collapse prop 3448554 acc 3978 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  69: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1913   5635.3s     0.257 Mmoves/s  stretch prop 3528706 acc 55898 (2%)  collapse prop 3531122 acc 6532 (0%)  leftovers 23
+  epoch  70: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1913   5714.8s     0.257 Mmoves/s  stretch prop 3450768 acc 51204 (1%)  collapse prop 3453263 acc 4068 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  71: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1913   5798.2s     0.257 Mmoves/s  stretch prop 3543008 acc 58137 (2%)  collapse prop 3545435 acc 6750 (0%)  leftovers 23
+  epoch  72: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1913   5877.8s     0.257 Mmoves/s  stretch prop 3461898 acc 54149 (2%)  collapse prop 3461324 acc 4307 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  73: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1913   5960.8s     0.257 Mmoves/s  stretch prop 3535701 acc 57195 (2%)  collapse prop 3537177 acc 6660 (0%)  leftovers 23
+  epoch  74: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1912   6040.3s     0.257 Mmoves/s  stretch prop 3448451 acc 52669 (2%)  collapse prop 3447944 acc 4300 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  75: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1912   6123.8s     0.257 Mmoves/s  stretch prop 3544629 acc 57303 (2%)  collapse prop 3546645 acc 6831 (0%)  leftovers 23
+  epoch  76: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1919  now-median 1912   6203.8s     0.257 Mmoves/s  stretch prop 3461932 acc 52252 (2%)  collapse prop 3460510 acc 4295 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  77: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1920  now-median 1911   6287.8s     0.257 Mmoves/s  stretch prop 3559404 acc 56347 (2%)  collapse prop 3561163 acc 7047 (0%)  leftovers 23
+  epoch  78: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1920  now-median 1911   6368.1s     0.257 Mmoves/s  stretch prop 3473595 acc 51033 (1%)  collapse prop 3472946 acc 4605 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  79: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1911   6452.0s     0.257 Mmoves/s  stretch prop 3601193 acc 57767 (2%)  collapse prop 3600658 acc 7190 (0%)  leftovers 23
+  epoch  80: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1911   6532.3s     0.257 Mmoves/s  stretch prop 3506148 acc 53024 (2%)  collapse prop 3506132 acc 4726 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  81: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1911   6617.6s     0.257 Mmoves/s  stretch prop 3688375 acc 56881 (2%)  collapse prop 3692034 acc 7842 (0%)  leftovers 23
+  epoch  82: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1911   6699.2s     0.257 Mmoves/s  stretch prop 3586023 acc 51895 (1%)  collapse prop 3589454 acc 5045 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  83: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   6785.5s     0.257 Mmoves/s  stretch prop 3692568 acc 58341 (2%)  collapse prop 3691808 acc 8114 (0%)  leftovers 23
+  epoch  84: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   6867.7s     0.257 Mmoves/s  stretch prop 3575124 acc 52818 (1%)  collapse prop 3573033 acc 5278 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  85: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   6953.7s     0.257 Mmoves/s  stretch prop 3710465 acc 58500 (2%)  collapse prop 3711640 acc 8442 (0%)  leftovers 23
+  epoch  86: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   7035.5s     0.257 Mmoves/s  stretch prop 3585187 acc 53057 (1%)  collapse prop 3586654 acc 5422 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  87: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   7121.0s     0.257 Mmoves/s  stretch prop 3650972 acc 57901 (2%)  collapse prop 3650345 acc 8137 (0%)  leftovers 23
+  epoch  88: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   7202.8s     0.257 Mmoves/s  stretch prop 3535996 acc 51796 (1%)  collapse prop 3539728 acc 5194 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  89: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   7287.9s     0.256 Mmoves/s  stretch prop 3596087 acc 56857 (2%)  collapse prop 3600302 acc 7918 (0%)  leftovers 23
+  epoch  90: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   7369.6s     0.256 Mmoves/s  stretch prop 3495053 acc 51779 (1%)  collapse prop 3492812 acc 4972 (0%)  leftovers 23
+  h1-guide: 6/23 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  91: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   7454.5s     0.256 Mmoves/s  stretch prop 3551715 acc 57084 (2%)  collapse prop 3551513 acc 7719 (0%)  leftovers 23
+  epoch  92: best 1921.0/1944  top10 [1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   7535.6s     0.256 Mmoves/s  stretch prop 3449125 acc 51068 (1%)  collapse prop 3449039 acc 4642 (0%)  leftovers 23
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  93: best 1922.0/1944  top10 [1922, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   7620.4s     0.256 Mmoves/s  stretch prop 3494729 acc 56714 (2%)  collapse prop 3495001 acc 7453 (0%)  leftovers 22
+  epoch  94: best 1922.0/1944  top10 [1922, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   7700.2s     0.256 Mmoves/s  stretch prop 3357640 acc 49588 (1%)  collapse prop 3358965 acc 4475 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  95: best 1922.0/1944  top10 [1922, 1922, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   7783.4s     0.256 Mmoves/s  stretch prop 3436690 acc 55517 (2%)  collapse prop 3438611 acc 7471 (0%)  leftovers 22
+  epoch  96: best 1922.0/1944  top10 [1922, 1922, 1921, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1908   7863.2s     0.256 Mmoves/s  stretch prop 3335209 acc 51003 (2%)  collapse prop 3333263 acc 4518 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  97: best 1922.0/1944  top10 [1922, 1922, 1922, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1907   7946.4s     0.256 Mmoves/s  stretch prop 3393852 acc 55726 (2%)  collapse prop 3393283 acc 7219 (0%)  leftovers 22
+  epoch  98: best 1922.0/1944  top10 [1922, 1922, 1922, 1921, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1907   8025.9s     0.256 Mmoves/s  stretch prop 3282027 acc 50601 (2%)  collapse prop 3283056 acc 4497 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch  99: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1907   8108.9s     0.256 Mmoves/s  stretch prop 3355705 acc 55991 (2%)  collapse prop 3354649 acc 7227 (0%)  leftovers 22
+  epoch 100: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1921, 1921, 1921, 1921, 1921, 1921]  median 1921  now-median 1906   8188.4s     0.256 Mmoves/s  stretch prop 3255230 acc 51140 (2%)  collapse prop 3249281 acc 4246 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 101: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1921, 1921, 1921]  median 1921  now-median 1907   8271.3s     0.256 Mmoves/s  stretch prop 3329280 acc 57175 (2%)  collapse prop 3329064 acc 7008 (0%)  leftovers 22
+  epoch 102: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1921, 1921, 1921]  median 1921  now-median 1906   8350.6s     0.256 Mmoves/s  stretch prop 3228780 acc 53203 (2%)  collapse prop 3228569 acc 4183 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 103: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1921, 1921]  median 1921  now-median 1906   8433.3s     0.256 Mmoves/s  stretch prop 3286436 acc 56535 (2%)  collapse prop 3288669 acc 7064 (0%)  leftovers 22
+  epoch 104: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1921, 1921]  median 1921  now-median 1906   8512.5s     0.256 Mmoves/s  stretch prop 3190306 acc 51043 (2%)  collapse prop 3192045 acc 4205 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 105: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906   8595.3s     0.256 Mmoves/s  stretch prop 3276059 acc 55767 (2%)  collapse prop 3275261 acc 7148 (0%)  leftovers 22
+  epoch 106: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906   8674.4s     0.256 Mmoves/s  stretch prop 3177497 acc 50675 (2%)  collapse prop 3173947 acc 4153 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 107: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906   8757.0s     0.257 Mmoves/s  stretch prop 3250379 acc 56489 (2%)  collapse prop 3248591 acc 6806 (0%)  leftovers 22
+  epoch 108: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   8836.1s     0.257 Mmoves/s  stretch prop 3147699 acc 50675 (2%)  collapse prop 3146746 acc 3844 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 109: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906   8918.6s     0.257 Mmoves/s  stretch prop 3234213 acc 57149 (2%)  collapse prop 3237368 acc 6599 (0%)  leftovers 22
+  epoch 110: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   8997.7s     0.257 Mmoves/s  stretch prop 3138681 acc 52862 (2%)  collapse prop 3142677 acc 3798 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 111: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   9080.2s     0.257 Mmoves/s  stretch prop 3209237 acc 55237 (2%)  collapse prop 3207055 acc 7413 (0%)  leftovers 22
+  epoch 112: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   9158.9s     0.257 Mmoves/s  stretch prop 3103678 acc 50061 (2%)  collapse prop 3106426 acc 4450 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 113: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   9241.3s     0.257 Mmoves/s  stretch prop 3197595 acc 56323 (2%)  collapse prop 3197769 acc 6978 (0%)  leftovers 22
+  epoch 114: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   9320.1s     0.257 Mmoves/s  stretch prop 3100607 acc 51041 (2%)  collapse prop 3102540 acc 4065 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 115: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   9402.3s     0.257 Mmoves/s  stretch prop 3180497 acc 56611 (2%)  collapse prop 3180922 acc 6938 (0%)  leftovers 22
+  epoch 116: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   9480.8s     0.257 Mmoves/s  stretch prop 3076830 acc 52076 (2%)  collapse prop 3077248 acc 4065 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 117: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   9563.1s     0.257 Mmoves/s  stretch prop 3163688 acc 55107 (2%)  collapse prop 3162896 acc 7080 (0%)  leftovers 22
+  epoch 118: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   9641.8s     0.257 Mmoves/s  stretch prop 3070212 acc 49850 (2%)  collapse prop 3068940 acc 4140 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 119: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   9724.0s     0.257 Mmoves/s  stretch prop 3155736 acc 57103 (2%)  collapse prop 3153394 acc 7045 (0%)  leftovers 22
+  epoch 120: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1904   9802.7s     0.257 Mmoves/s  stretch prop 3059468 acc 52259 (2%)  collapse prop 3058028 acc 4027 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 121: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   9884.9s     0.257 Mmoves/s  stretch prop 3148218 acc 55692 (2%)  collapse prop 3151792 acc 7020 (0%)  leftovers 22
+  epoch 122: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905   9963.7s     0.257 Mmoves/s  stretch prop 3054401 acc 50957 (2%)  collapse prop 3053046 acc 4118 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 123: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905  10045.7s     0.257 Mmoves/s  stretch prop 3151878 acc 55132 (2%)  collapse prop 3154202 acc 7250 (0%)  leftovers 22
+  epoch 124: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905  10124.2s     0.257 Mmoves/s  stretch prop 3058098 acc 49939 (2%)  collapse prop 3055210 acc 4321 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 125: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905  10206.5s     0.257 Mmoves/s  stretch prop 3144024 acc 56749 (2%)  collapse prop 3146355 acc 7321 (0%)  leftovers 22
+  epoch 126: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1904  10285.0s     0.257 Mmoves/s  stretch prop 3051256 acc 51187 (2%)  collapse prop 3052471 acc 4420 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 127: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905  10367.4s     0.257 Mmoves/s  stretch prop 3154993 acc 57567 (2%)  collapse prop 3155294 acc 6892 (0%)  leftovers 22
+  epoch 128: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905  10446.0s     0.257 Mmoves/s  stretch prop 3060829 acc 52142 (2%)  collapse prop 3058288 acc 4058 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 129: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905  10528.1s     0.257 Mmoves/s  stretch prop 3157694 acc 55908 (2%)  collapse prop 3161303 acc 7312 (0%)  leftovers 22
+  epoch 130: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905  10606.7s     0.257 Mmoves/s  stretch prop 3065898 acc 49821 (2%)  collapse prop 3065651 acc 4190 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 131: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906  10688.9s     0.257 Mmoves/s  stretch prop 3186358 acc 57123 (2%)  collapse prop 3185855 acc 7174 (0%)  leftovers 22
+  epoch 132: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905  10767.4s     0.257 Mmoves/s  stretch prop 3087548 acc 53577 (2%)  collapse prop 3090871 acc 4178 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 133: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906  10849.4s     0.257 Mmoves/s  stretch prop 3215606 acc 56528 (2%)  collapse prop 3219250 acc 7176 (0%)  leftovers 22
+  epoch 134: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1905  10928.0s     0.257 Mmoves/s  stretch prop 3116105 acc 50944 (2%)  collapse prop 3115530 acc 4193 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 135: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906  11009.9s     0.257 Mmoves/s  stretch prop 3240805 acc 56985 (2%)  collapse prop 3242054 acc 7430 (0%)  leftovers 22
+  epoch 136: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906  11088.4s     0.257 Mmoves/s  stretch prop 3142552 acc 51307 (2%)  collapse prop 3138419 acc 4549 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 137: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906  11170.2s     0.257 Mmoves/s  stretch prop 3272876 acc 56741 (2%)  collapse prop 3277692 acc 7520 (0%)  leftovers 22
+  epoch 138: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906  11248.6s     0.257 Mmoves/s  stretch prop 3169923 acc 52576 (2%)  collapse prop 3172202 acc 4688 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 139: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906  11330.4s     0.257 Mmoves/s  stretch prop 3298166 acc 56361 (2%)  collapse prop 3298136 acc 7533 (0%)  leftovers 22
+  epoch 140: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906  11409.0s     0.257 Mmoves/s  stretch prop 3200521 acc 50764 (2%)  collapse prop 3202103 acc 4519 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 141: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906  11491.1s     0.258 Mmoves/s  stretch prop 3324782 acc 54248 (2%)  collapse prop 3325397 acc 7765 (0%)  leftovers 22
+  epoch 142: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1906  11569.6s     0.258 Mmoves/s  stretch prop 3214862 acc 48792 (2%)  collapse prop 3216388 acc 4529 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 143: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1907  11652.6s     0.258 Mmoves/s  stretch prop 3363603 acc 57436 (2%)  collapse prop 3364745 acc 7911 (0%)  leftovers 22
+  epoch 144: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1921  now-median 1907  11731.9s     0.258 Mmoves/s  stretch prop 3259229 acc 51403 (2%)  collapse prop 3259029 acc 4906 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 145: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1907  11814.9s     0.258 Mmoves/s  stretch prop 3393662 acc 56959 (2%)  collapse prop 3396397 acc 7687 (0%)  leftovers 22
+  epoch 146: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1907  11894.2s     0.258 Mmoves/s  stretch prop 3288247 acc 52296 (2%)  collapse prop 3288145 acc 4838 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 147: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1908  11977.2s     0.258 Mmoves/s  stretch prop 3508901 acc 56132 (2%)  collapse prop 3511105 acc 8181 (0%)  leftovers 22
+  epoch 148: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1907  12056.6s     0.258 Mmoves/s  stretch prop 3399507 acc 50697 (1%)  collapse prop 3398379 acc 5384 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 149: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  12140.9s     0.258 Mmoves/s  stretch prop 3638370 acc 57298 (2%)  collapse prop 3637527 acc 8418 (0%)  leftovers 22
+  epoch 150: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  12221.5s     0.258 Mmoves/s  stretch prop 3523239 acc 52515 (1%)  collapse prop 3518009 acc 5346 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 151: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  12306.0s     0.257 Mmoves/s  stretch prop 3678810 acc 58375 (2%)  collapse prop 3678041 acc 8458 (0%)  leftovers 22
+  epoch 152: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  12386.6s     0.257 Mmoves/s  stretch prop 3555080 acc 52930 (1%)  collapse prop 3556874 acc 5399 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 153: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  12470.7s     0.257 Mmoves/s  stretch prop 3623593 acc 57496 (2%)  collapse prop 3624308 acc 7828 (0%)  leftovers 22
+  epoch 154: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  12551.2s     0.257 Mmoves/s  stretch prop 3511531 acc 52644 (1%)  collapse prop 3512221 acc 5131 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 155: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  12635.0s     0.257 Mmoves/s  stretch prop 3560034 acc 55325 (2%)  collapse prop 3558354 acc 8047 (0%)  leftovers 22
+  epoch 156: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  12715.2s     0.257 Mmoves/s  stretch prop 3451524 acc 49246 (1%)  collapse prop 3451523 acc 5130 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 157: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  12798.9s     0.257 Mmoves/s  stretch prop 3513280 acc 55726 (2%)  collapse prop 3512727 acc 7442 (0%)  leftovers 22
+  epoch 158: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  12879.0s     0.257 Mmoves/s  stretch prop 3406959 acc 50475 (1%)  collapse prop 3399712 acc 4406 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 159: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  12962.7s     0.257 Mmoves/s  stretch prop 3460231 acc 55191 (2%)  collapse prop 3463619 acc 7716 (0%)  leftovers 22
+  epoch 160: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  13042.4s     0.257 Mmoves/s  stretch prop 3350434 acc 49689 (1%)  collapse prop 3353772 acc 4853 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 161: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1909  13125.6s     0.257 Mmoves/s  stretch prop 3422471 acc 53776 (2%)  collapse prop 3421998 acc 7506 (0%)  leftovers 22
+  epoch 162: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1908  13205.1s     0.257 Mmoves/s  stretch prop 3319514 acc 48254 (1%)  collapse prop 3321474 acc 4517 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 163: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1908  13288.2s     0.257 Mmoves/s  stretch prop 3382315 acc 56775 (2%)  collapse prop 3379896 acc 7210 (0%)  leftovers 22
+  epoch 164: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1907  13367.5s     0.257 Mmoves/s  stretch prop 3274931 acc 52467 (2%)  collapse prop 3275755 acc 4311 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 165: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1907  13450.5s     0.257 Mmoves/s  stretch prop 3348777 acc 55801 (2%)  collapse prop 3349051 acc 7483 (0%)  leftovers 22
+  epoch 166: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1907  13529.8s     0.257 Mmoves/s  stretch prop 3243239 acc 50410 (2%)  collapse prop 3244820 acc 4352 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 167: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1907  13612.6s     0.257 Mmoves/s  stretch prop 3303684 acc 55167 (2%)  collapse prop 3303268 acc 7269 (0%)  leftovers 22
+  epoch 168: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1906  13691.7s     0.257 Mmoves/s  stretch prop 3194657 acc 49609 (2%)  collapse prop 3196732 acc 4155 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 169: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1907  13774.4s     0.257 Mmoves/s  stretch prop 3284007 acc 56521 (2%)  collapse prop 3289178 acc 7132 (0%)  leftovers 22
+  epoch 170: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1907  13853.4s     0.257 Mmoves/s  stretch prop 3190056 acc 51614 (2%)  collapse prop 3185868 acc 4182 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 171: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1907  13936.0s     0.257 Mmoves/s  stretch prop 3253736 acc 56758 (2%)  collapse prop 3256822 acc 6934 (0%)  leftovers 22
+  epoch 172: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1906  14015.0s     0.257 Mmoves/s  stretch prop 3155244 acc 51703 (2%)  collapse prop 3156997 acc 4028 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 173: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1907  14097.6s     0.257 Mmoves/s  stretch prop 3238916 acc 56815 (2%)  collapse prop 3237508 acc 7156 (0%)  leftovers 22
+  epoch 174: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1906  14176.3s     0.257 Mmoves/s  stretch prop 3141102 acc 51591 (2%)  collapse prop 3139490 acc 4283 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 175: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1906  14258.6s     0.258 Mmoves/s  stretch prop 3211836 acc 57334 (2%)  collapse prop 3217832 acc 7171 (0%)  leftovers 22
+  epoch 176: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1906  14337.4s     0.258 Mmoves/s  stretch prop 3116605 acc 52134 (2%)  collapse prop 3115101 acc 4210 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 177: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1906  14419.8s     0.258 Mmoves/s  stretch prop 3199173 acc 57428 (2%)  collapse prop 3201260 acc 7106 (0%)  leftovers 22
+  epoch 178: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1906  14498.5s     0.258 Mmoves/s  stretch prop 3099233 acc 52129 (2%)  collapse prop 3099773 acc 4345 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 179: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1906  14580.7s     0.258 Mmoves/s  stretch prop 3176704 acc 55987 (2%)  collapse prop 3175534 acc 6990 (0%)  leftovers 22
+  epoch 180: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  14659.0s     0.258 Mmoves/s  stretch prop 3080306 acc 51116 (2%)  collapse prop 3078131 acc 4132 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 181: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1906  14741.1s     0.258 Mmoves/s  stretch prop 3156065 acc 56703 (2%)  collapse prop 3157110 acc 7209 (0%)  leftovers 22
+  epoch 182: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  14819.4s     0.258 Mmoves/s  stretch prop 3062695 acc 50934 (2%)  collapse prop 3063697 acc 4241 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 183: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  14901.4s     0.258 Mmoves/s  stretch prop 3143559 acc 57265 (2%)  collapse prop 3143061 acc 7156 (0%)  leftovers 22
+  epoch 184: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  14979.7s     0.258 Mmoves/s  stretch prop 3049119 acc 51206 (2%)  collapse prop 3050762 acc 4186 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 185: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1906  15061.5s     0.258 Mmoves/s  stretch prop 3131061 acc 56073 (2%)  collapse prop 3132324 acc 6971 (0%)  leftovers 22
+  epoch 186: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1906  15139.6s     0.258 Mmoves/s  stretch prop 3043459 acc 51007 (2%)  collapse prop 3042345 acc 4224 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 187: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  15221.5s     0.258 Mmoves/s  stretch prop 3112020 acc 56968 (2%)  collapse prop 3108702 acc 6755 (0%)  leftovers 22
+  epoch 188: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  15299.6s     0.258 Mmoves/s  stretch prop 3010326 acc 51852 (2%)  collapse prop 3007935 acc 3986 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 189: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  15381.6s     0.258 Mmoves/s  stretch prop 3112255 acc 57048 (2%)  collapse prop 3112921 acc 6773 (0%)  leftovers 22
+  epoch 190: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  15459.6s     0.258 Mmoves/s  stretch prop 3016838 acc 51309 (2%)  collapse prop 3017428 acc 3902 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 191: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  15541.4s     0.258 Mmoves/s  stretch prop 3090062 acc 56103 (2%)  collapse prop 3087503 acc 7042 (0%)  leftovers 22
+  epoch 192: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  15619.3s     0.258 Mmoves/s  stretch prop 2990842 acc 50817 (2%)  collapse prop 2991263 acc 4175 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 193: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  15701.1s     0.258 Mmoves/s  stretch prop 3079486 acc 55328 (2%)  collapse prop 3077229 acc 7041 (0%)  leftovers 22
+  epoch 194: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  15779.2s     0.258 Mmoves/s  stretch prop 2983541 acc 50578 (2%)  collapse prop 2986440 acc 4028 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 195: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  15861.0s     0.258 Mmoves/s  stretch prop 3061622 acc 55488 (2%)  collapse prop 3061151 acc 6905 (0%)  leftovers 22
+  epoch 196: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  15939.0s     0.258 Mmoves/s  stretch prop 2971622 acc 49516 (2%)  collapse prop 2975133 acc 4129 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 197: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16020.7s     0.258 Mmoves/s  stretch prop 3056900 acc 53753 (2%)  collapse prop 3056232 acc 7014 (0%)  leftovers 22
+  epoch 198: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16098.8s     0.258 Mmoves/s  stretch prop 2964647 acc 47399 (2%)  collapse prop 2965051 acc 4006 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 199: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16180.1s     0.258 Mmoves/s  stretch prop 3041472 acc 57659 (2%)  collapse prop 3038973 acc 6943 (0%)  leftovers 22
+  epoch 200: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16257.8s     0.258 Mmoves/s  stretch prop 2947071 acc 53263 (2%)  collapse prop 2946424 acc 3920 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 201: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16339.3s     0.258 Mmoves/s  stretch prop 3027356 acc 56003 (2%)  collapse prop 3033195 acc 6920 (0%)  leftovers 22
+  epoch 202: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16417.3s     0.258 Mmoves/s  stretch prop 2938936 acc 51444 (2%)  collapse prop 2940230 acc 4171 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 203: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16498.6s     0.258 Mmoves/s  stretch prop 3017844 acc 56378 (2%)  collapse prop 3019251 acc 6667 (0%)  leftovers 22
+  epoch 204: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16576.5s     0.258 Mmoves/s  stretch prop 2925973 acc 51363 (2%)  collapse prop 2925787 acc 3881 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 205: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16657.7s     0.258 Mmoves/s  stretch prop 3008839 acc 57164 (2%)  collapse prop 3010015 acc 7209 (0%)  leftovers 22
+  epoch 206: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16735.5s     0.258 Mmoves/s  stretch prop 2917675 acc 52586 (2%)  collapse prop 2919074 acc 4205 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 207: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16816.8s     0.258 Mmoves/s  stretch prop 2997416 acc 54629 (2%)  collapse prop 2994549 acc 6982 (0%)  leftovers 22
+  epoch 208: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16894.3s     0.258 Mmoves/s  stretch prop 2903364 acc 49553 (2%)  collapse prop 2901972 acc 4036 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 209: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  16975.6s     0.258 Mmoves/s  stretch prop 2977705 acc 58106 (2%)  collapse prop 2981046 acc 6665 (0%)  leftovers 22
+  epoch 210: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17053.0s     0.258 Mmoves/s  stretch prop 2886390 acc 53107 (2%)  collapse prop 2886556 acc 3627 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 211: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17134.2s     0.258 Mmoves/s  stretch prop 2982493 acc 56857 (2%)  collapse prop 2980312 acc 6995 (0%)  leftovers 22
+  epoch 212: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17211.7s     0.258 Mmoves/s  stretch prop 2895143 acc 51189 (2%)  collapse prop 2892868 acc 4122 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 213: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17292.7s     0.258 Mmoves/s  stretch prop 2970635 acc 53914 (2%)  collapse prop 2967817 acc 6912 (0%)  leftovers 22
+  epoch 214: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17370.3s     0.258 Mmoves/s  stretch prop 2873588 acc 48855 (2%)  collapse prop 2876776 acc 4149 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 215: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17451.4s     0.258 Mmoves/s  stretch prop 2962518 acc 56180 (2%)  collapse prop 2959067 acc 7079 (0%)  leftovers 22
+  epoch 216: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17529.1s     0.258 Mmoves/s  stretch prop 2873799 acc 51615 (2%)  collapse prop 2869872 acc 4202 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 217: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17610.3s     0.259 Mmoves/s  stretch prop 2958762 acc 57036 (2%)  collapse prop 2955171 acc 6768 (0%)  leftovers 22
+  epoch 218: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17687.7s     0.259 Mmoves/s  stretch prop 2868579 acc 50715 (2%)  collapse prop 2869515 acc 4008 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 219: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17768.5s     0.259 Mmoves/s  stretch prop 2946915 acc 56253 (2%)  collapse prop 2946746 acc 7052 (0%)  leftovers 22
+  epoch 220: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17846.1s     0.259 Mmoves/s  stretch prop 2858656 acc 51023 (2%)  collapse prop 2858637 acc 4132 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 221: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  17927.2s     0.259 Mmoves/s  stretch prop 2945006 acc 57029 (2%)  collapse prop 2944689 acc 6982 (0%)  leftovers 22
+  epoch 222: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  18004.8s     0.259 Mmoves/s  stretch prop 2855287 acc 51966 (2%)  collapse prop 2852351 acc 4070 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 223: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  18085.7s     0.259 Mmoves/s  stretch prop 2933780 acc 55696 (2%)  collapse prop 2934193 acc 6828 (0%)  leftovers 22
+  epoch 224: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  18163.4s     0.259 Mmoves/s  stretch prop 2840657 acc 50457 (2%)  collapse prop 2841009 acc 3881 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 225: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  18244.3s     0.259 Mmoves/s  stretch prop 2929072 acc 56516 (2%)  collapse prop 2923898 acc 6885 (0%)  leftovers 22
+  epoch 226: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1904  18321.7s     0.259 Mmoves/s  stretch prop 2830744 acc 51381 (2%)  collapse prop 2830591 acc 3835 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 227: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  18402.7s     0.259 Mmoves/s  stretch prop 2922884 acc 56438 (2%)  collapse prop 2920947 acc 6892 (0%)  leftovers 22
+  epoch 228: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  18480.1s     0.259 Mmoves/s  stretch prop 2828501 acc 50635 (2%)  collapse prop 2829954 acc 3993 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 229: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  18561.0s     0.259 Mmoves/s  stretch prop 2914089 acc 55200 (2%)  collapse prop 2913040 acc 6630 (0%)  leftovers 22
+  epoch 230: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  18638.1s     0.259 Mmoves/s  stretch prop 2822369 acc 49714 (2%)  collapse prop 2824745 acc 3856 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 231: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  18719.0s     0.259 Mmoves/s  stretch prop 2900436 acc 55722 (2%)  collapse prop 2898917 acc 6747 (0%)  leftovers 22
+  epoch 232: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1904  18796.2s     0.259 Mmoves/s  stretch prop 2805592 acc 50490 (2%)  collapse prop 2803907 acc 3973 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 233: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  18877.3s     0.259 Mmoves/s  stretch prop 2891077 acc 57527 (2%)  collapse prop 2889519 acc 6562 (0%)  leftovers 22
+  epoch 234: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1904  18954.7s     0.259 Mmoves/s  stretch prop 2802394 acc 52407 (2%)  collapse prop 2800881 acc 3782 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 235: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1904  19035.7s     0.259 Mmoves/s  stretch prop 2875865 acc 54915 (2%)  collapse prop 2871224 acc 6835 (0%)  leftovers 22
+  epoch 236: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1904  19112.7s     0.259 Mmoves/s  stretch prop 2783847 acc 50336 (2%)  collapse prop 2784617 acc 3864 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 237: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  19193.6s     0.259 Mmoves/s  stretch prop 2885294 acc 56606 (2%)  collapse prop 2884993 acc 6776 (0%)  leftovers 22
+  epoch 238: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  19270.8s     0.259 Mmoves/s  stretch prop 2796790 acc 51516 (2%)  collapse prop 2796887 acc 4094 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 239: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  19352.0s     0.259 Mmoves/s  stretch prop 2865890 acc 56472 (2%)  collapse prop 2864677 acc 6997 (0%)  leftovers 22
+  epoch 240: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1904  19429.1s     0.259 Mmoves/s  stretch prop 2777942 acc 52530 (2%)  collapse prop 2776416 acc 4098 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 241: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  19510.3s     0.259 Mmoves/s  stretch prop 2864298 acc 56918 (2%)  collapse prop 2860032 acc 6624 (0%)  leftovers 22
+  epoch 242: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1904  19587.5s     0.259 Mmoves/s  stretch prop 2774033 acc 51757 (2%)  collapse prop 2772985 acc 3818 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 243: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  19668.4s     0.259 Mmoves/s  stretch prop 2857154 acc 55367 (2%)  collapse prop 2857913 acc 7130 (0%)  leftovers 22
+  epoch 244: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  19745.3s     0.259 Mmoves/s  stretch prop 2769458 acc 50419 (2%)  collapse prop 2766944 acc 4111 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 245: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  19826.0s     0.259 Mmoves/s  stretch prop 2850627 acc 57910 (2%)  collapse prop 2851880 acc 6740 (0%)  leftovers 22
+  epoch 246: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1904  19903.1s     0.259 Mmoves/s  stretch prop 2760933 acc 52203 (2%)  collapse prop 2759844 acc 3910 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 247: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  19983.8s     0.259 Mmoves/s  stretch prop 2846335 acc 56872 (2%)  collapse prop 2848366 acc 6723 (0%)  leftovers 22
+  epoch 248: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  20060.6s     0.259 Mmoves/s  stretch prop 2755522 acc 52174 (2%)  collapse prop 2753252 acc 4002 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 249: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  20141.4s     0.259 Mmoves/s  stretch prop 2844990 acc 57401 (2%)  collapse prop 2842192 acc 6779 (0%)  leftovers 22
+  epoch 250: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  20218.8s     0.259 Mmoves/s  stretch prop 2756834 acc 51589 (2%)  collapse prop 2757289 acc 4070 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 251: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  20299.6s     0.259 Mmoves/s  stretch prop 2828232 acc 56141 (2%)  collapse prop 2826265 acc 7118 (0%)  leftovers 22
+  epoch 252: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1904  20376.5s     0.259 Mmoves/s  stretch prop 2733417 acc 50699 (2%)  collapse prop 2733929 acc 4199 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 253: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  20457.3s     0.259 Mmoves/s  stretch prop 2818230 acc 55096 (2%)  collapse prop 2818630 acc 6620 (0%)  leftovers 22
+  epoch 254: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  20534.4s     0.259 Mmoves/s  stretch prop 2734015 acc 49967 (2%)  collapse prop 2731645 acc 3719 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 255: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  20614.8s     0.259 Mmoves/s  stretch prop 2817608 acc 58035 (2%)  collapse prop 2815661 acc 6473 (0%)  leftovers 22
+  epoch 256: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1904  20691.9s     0.260 Mmoves/s  stretch prop 2724722 acc 52949 (2%)  collapse prop 2725493 acc 3505 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 257: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  20772.6s     0.260 Mmoves/s  stretch prop 2809187 acc 55345 (2%)  collapse prop 2806703 acc 6809 (0%)  leftovers 22
+  epoch 258: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  20849.5s     0.260 Mmoves/s  stretch prop 2719574 acc 50249 (2%)  collapse prop 2722373 acc 3829 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 259: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  20930.1s     0.260 Mmoves/s  stretch prop 2805441 acc 54043 (2%)  collapse prop 2804411 acc 6994 (0%)  leftovers 22
+  epoch 260: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21007.1s     0.260 Mmoves/s  stretch prop 2716251 acc 49656 (2%)  collapse prop 2715789 acc 4100 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 261: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21087.6s     0.260 Mmoves/s  stretch prop 2797823 acc 56860 (2%)  collapse prop 2797200 acc 6633 (0%)  leftovers 22
+  epoch 262: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21164.2s     0.260 Mmoves/s  stretch prop 2704579 acc 51013 (2%)  collapse prop 2704954 acc 3983 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 263: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21244.5s     0.260 Mmoves/s  stretch prop 2797245 acc 57397 (2%)  collapse prop 2795017 acc 7053 (0%)  leftovers 22
+  epoch 264: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21321.2s     0.260 Mmoves/s  stretch prop 2707491 acc 52331 (2%)  collapse prop 2708045 acc 4165 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 265: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21401.6s     0.260 Mmoves/s  stretch prop 2784555 acc 57488 (2%)  collapse prop 2784396 acc 6733 (0%)  leftovers 22
+  epoch 266: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21478.3s     0.260 Mmoves/s  stretch prop 2689142 acc 51782 (2%)  collapse prop 2689278 acc 3794 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 267: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21558.5s     0.260 Mmoves/s  stretch prop 2776083 acc 55376 (2%)  collapse prop 2778499 acc 6942 (0%)  leftovers 22
+  epoch 268: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21635.4s     0.260 Mmoves/s  stretch prop 2691728 acc 50297 (2%)  collapse prop 2688769 acc 3924 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 269: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21715.7s     0.260 Mmoves/s  stretch prop 2782311 acc 58326 (2%)  collapse prop 2780753 acc 6768 (0%)  leftovers 22
+  epoch 270: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21792.4s     0.260 Mmoves/s  stretch prop 2689066 acc 52144 (2%)  collapse prop 2690010 acc 4095 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 271: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21872.8s     0.260 Mmoves/s  stretch prop 2770816 acc 55311 (2%)  collapse prop 2771422 acc 7184 (0%)  leftovers 22
+  epoch 272: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  21949.5s     0.260 Mmoves/s  stretch prop 2686690 acc 49769 (2%)  collapse prop 2686437 acc 4441 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 273: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22029.8s     0.260 Mmoves/s  stretch prop 2767540 acc 56067 (2%)  collapse prop 2763435 acc 6963 (0%)  leftovers 22
+  epoch 274: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22106.6s     0.260 Mmoves/s  stretch prop 2673130 acc 50165 (2%)  collapse prop 2672024 acc 4051 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 275: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22186.7s     0.260 Mmoves/s  stretch prop 2758262 acc 56119 (2%)  collapse prop 2762043 acc 6574 (0%)  leftovers 22
+  epoch 276: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22263.3s     0.260 Mmoves/s  stretch prop 2671661 acc 49723 (2%)  collapse prop 2668771 acc 3912 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 277: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22343.6s     0.260 Mmoves/s  stretch prop 2751078 acc 57816 (2%)  collapse prop 2750909 acc 6522 (0%)  leftovers 22
+  epoch 278: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22420.3s     0.260 Mmoves/s  stretch prop 2664377 acc 52156 (2%)  collapse prop 2661042 acc 3869 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 279: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22500.6s     0.260 Mmoves/s  stretch prop 2752891 acc 56604 (2%)  collapse prop 2752269 acc 6879 (0%)  leftovers 22
+  epoch 280: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22577.1s     0.260 Mmoves/s  stretch prop 2664487 acc 51194 (2%)  collapse prop 2661533 acc 4116 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 281: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22657.4s     0.260 Mmoves/s  stretch prop 2754926 acc 57889 (2%)  collapse prop 2752480 acc 6700 (0%)  leftovers 22
+  epoch 282: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22734.1s     0.260 Mmoves/s  stretch prop 2672241 acc 52827 (2%)  collapse prop 2673030 acc 3888 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 283: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22814.5s     0.260 Mmoves/s  stretch prop 2741128 acc 58354 (2%)  collapse prop 2741575 acc 6800 (0%)  leftovers 22
+  epoch 284: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22891.2s     0.260 Mmoves/s  stretch prop 2651094 acc 54007 (2%)  collapse prop 2650144 acc 3862 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 285: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  22971.3s     0.260 Mmoves/s  stretch prop 2733165 acc 55491 (2%)  collapse prop 2729911 acc 7007 (0%)  leftovers 22
+  epoch 286: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23047.8s     0.260 Mmoves/s  stretch prop 2642480 acc 50247 (2%)  collapse prop 2643494 acc 3988 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 287: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23128.0s     0.260 Mmoves/s  stretch prop 2724093 acc 56072 (2%)  collapse prop 2724023 acc 6624 (0%)  leftovers 22
+  epoch 288: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23204.6s     0.260 Mmoves/s  stretch prop 2639225 acc 50825 (2%)  collapse prop 2635056 acc 3849 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 289: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23284.9s     0.260 Mmoves/s  stretch prop 2729744 acc 55854 (2%)  collapse prop 2729926 acc 6912 (0%)  leftovers 22
+  epoch 290: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23361.6s     0.260 Mmoves/s  stretch prop 2639869 acc 51210 (2%)  collapse prop 2639158 acc 4087 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 291: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23441.8s     0.260 Mmoves/s  stretch prop 2725791 acc 57107 (2%)  collapse prop 2725815 acc 6602 (0%)  leftovers 22
+  epoch 292: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23518.3s     0.260 Mmoves/s  stretch prop 2643373 acc 52410 (2%)  collapse prop 2636197 acc 3700 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 293: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23598.5s     0.260 Mmoves/s  stretch prop 2715983 acc 54035 (2%)  collapse prop 2715789 acc 6844 (0%)  leftovers 22
+  epoch 294: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23675.1s     0.260 Mmoves/s  stretch prop 2626747 acc 48582 (2%)  collapse prop 2626825 acc 4012 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 295: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23755.2s     0.261 Mmoves/s  stretch prop 2712143 acc 56999 (2%)  collapse prop 2717225 acc 6648 (0%)  leftovers 22
+  epoch 296: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23831.6s     0.261 Mmoves/s  stretch prop 2627495 acc 51862 (2%)  collapse prop 2630869 acc 3901 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 297: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23911.6s     0.261 Mmoves/s  stretch prop 2713482 acc 55452 (2%)  collapse prop 2715605 acc 6764 (0%)  leftovers 22
+  epoch 298: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  23988.1s     0.261 Mmoves/s  stretch prop 2631182 acc 50714 (2%)  collapse prop 2629106 acc 3901 (0%)  leftovers 22
+  h1-guide: 6/22 uncovered facets are H1-obstructed for all 6 chains (weight 0)
+  epoch 299: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  24067.9s     0.261 Mmoves/s  stretch prop 2706403 acc 56122 (2%)  collapse prop 2702753 acc 6687 (0%)  leftovers 22
+  epoch 300: best 1922.0/1944  top10 [1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922, 1922]  median 1922  now-median 1905  24144.3s     0.261 Mmoves/s  stretch prop 2614988 acc 49977 (2%)  collapse prop 2616040 acc 3806 (0%)  leftovers 22
+best coverage 1922/1944  domain sizes [521, 483, 457, 434, 406, 345]  time 24147.3s  kernel 23572.1s  moves 6.14e+09
+NOT a covering: 22 facets uncovered
+wrote results/hemi_dodeca_k6_v2/summary.json (partial)
