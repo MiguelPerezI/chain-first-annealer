@@ -1,0 +1,111 @@
+% Addendum to rigid_subcomplexes.tex (2026-10-07): rigid graphs over minimal complexes, maximal star
+% rectangles, and the exact completion of the icosahedron stall.  Uses the macros and theorem environments
+% of rigid_subcomplexes.tex (\SCst, \TC, \gen, theorem/lemma/proposition/corollary/remark).
+
+\section{Rigid graphs over minimal complexes}
+
+\begin{definition}
+A vertex $v$ of $K$ is \emph{dominated} if some vertex $v'\ne v$ belongs to every facet of $K$ that contains
+$v$.  Thus $K$ has no dominated vertex if and only if $\bigcap\{\sigma\ \text{facet}: v\in\sigma\}=\{v\}$ for
+every vertex $v$.
+\end{definition}
+
+Every closed surface triangulation has no dominated vertex (the facets at $v$ are the triangles $\{v,a_i,a_{i+1}\}$
+around the link cycle of $v$, of length at least~$3$, and their intersection is $\{v\}$); so does
+$\partial\Delta^{N-1}$ and the five-vertex M\"obius band.  More generally a complex without free faces has no
+dominated vertex, since removing a dominated vertex is a strong collapse, hence a sequence of elementary collapses.
+
+\begin{lemma}\label{lem:idalone}
+If $K$ has no dominated vertex and $\varphi:K\to K$ is a simplicial map contiguous to the identity, then
+$\varphi=\mathrm{id}$.
+\end{lemma}
+\begin{proof}
+For a facet $\sigma$, contiguity gives $\sigma\cup\varphi(\sigma)\in K$; since $\sigma$ is maximal,
+$\varphi(\sigma)\subseteq\sigma$.  Hence for a vertex $v$,
+$\varphi(v)\in\bigcap_{\sigma\ni v}\sigma=\{v\}$.
+\end{proof}
+
+\begin{theorem}[rigid graphs]\label{thm:graphs}
+Let $K$ have no dominated vertex and let $w:V\to V$ be non-decreasing for the vertex order and simplicial
+($w(\sigma)\in K$ for every $\sigma\in K$), with $w\ne\mathrm{id}$.  Put
+\[
+\Gamma_w=\bigl\{\{(v,w(v)):v\in\sigma\}:\sigma\in K\bigr\}.
+\]
+Then $\Gamma_w$ is a subcomplex of $K\times K$, $\pi_1|_{\Gamma_w}$ is an isomorphism onto $K$ under which
+$\pi_2|_{\Gamma_w}$ becomes $w$, and $\Gamma_w$ is rigid.  The same holds for the transpose
+$\Gamma_w^{\mathsf T}=\{\{(w(v),v):v\in\sigma\}:\sigma\in K\}$.
+\end{theorem}
+\begin{proof}
+For $\sigma\in K$ let $S_\sigma=\{(v,w(v)):v\in\sigma\}$.  Since $w$ is non-decreasing, $S_\sigma$ is a chain in
+$V\times V$; $\pi_1(S_\sigma)=\sigma\in K$ and $\pi_2(S_\sigma)=w(\sigma)\in K$ because $w$ is simplicial.  By
+Lemma~\ref{lem:criterion} $S_\sigma$ is a simplex of $K\times K$, and $S_\tau\subseteq S_\sigma$ for
+$\tau\subseteq\sigma$, so $\Gamma_w$ is a subcomplex.  The map $(v,w(v))\mapsto v$ is a bijection on vertices
+carrying $S_\sigma$ to $\sigma$, hence an isomorphism $\Gamma_w\to K$; under it $\pi_1$ becomes $\mathrm{id}_K$ and
+$\pi_2$ becomes $w$.  A contiguity chain $\pi_1|_{\Gamma_w}=\psi_0\sim\dots\sim\psi_L=\pi_2|_{\Gamma_w}$ therefore
+becomes a chain $\mathrm{id}=\varphi_0\sim\varphi_1\sim\dots\sim\varphi_L=w$ of simplicial maps $K\to K$.  By
+Lemma~\ref{lem:idalone} and induction, $\varphi_i=\mathrm{id}$ for all $i$, so $w=\mathrm{id}$, a contradiction.
+For the transpose read the chain backwards: it starts at the isomorphism $\pi_2|_{\Gamma_w^{\mathsf T}}$.
+\end{proof}
+
+\begin{remark}
+(a) For $K=\partial\Delta^{N-1}$ every non-decreasing $w\ne\mathrm{id}$ is simplicial (it is not onto by
+Lemma~\ref{lem:notonto}, so proper subsets go to proper subsets) and $\Gamma_w=Z_w$: Theorem~\ref{thm:graphs}
+contains Proposition~\ref{prop:spheres} and extends it to every closed surface triangulation.
+(b) Constant $w\equiv c$ gives $\Gamma_c=K\times\{c\}$: no contiguity domain contains a full row or column of
+$K\times K$.
+(c) If $K$ is contractible and has no free face (a dunce-hat triangulation), then $K\times K\supseteq K\times\{c\}$
+is not a domain, so $\SCst(K)\ge1>0=\TC(|K|)$ although $\pi_1$ and $\pi_2$ are homotopic on $K\times\{c\}$: the
+rigidity of Theorem~\ref{thm:graphs} is combinatorial, not homotopical.
+\end{remark}
+
+\section{Star rectangles are maximal domains}
+
+Write $D(v,w)$ for the star rectangle of the preprint and recall that a rigid subcomplex of $\gen{D(v,w)\cup\{f\}}$
+shows that no domain contains $D(v,w)\cup\{f\}$ (Lemma~\ref{lem:hered}).
+
+\begin{theorem}[computer-verified]\label{thm:maximal}
+Let $K$ be the hemi-icosahedron, the five-vertex M\"obius band $K_M$, or the seven-vertex (Cs\'asz\'ar) torus.
+For every vertex pair $(v,w)$ and every facet $f$ of $K\times K$ not in $D(v,w)$, the subcomplex
+$\gen{D(v,w)\cup\{f\}}$ contains a hollow triangle $Z\cong C_3$ whose two projected closed walks $\pi_1\circ Z$,
+$\pi_2\circ Z$ lie in different contiguity classes of maps $C_3\to K$.  Hence no contiguity domain properly
+contains a star rectangle: every $D(v,w)$ is a maximal contiguity domain.
+\end{theorem}
+\begin{proof}[Proof (computer-assisted)]
+Rigidity of such a $Z$ is Lemma~\ref{lem:hered} applied to the restriction: a chain on $Z$ from $\pi_1|_Z$ to
+$\pi_2|_Z$ would be a contiguity chain between the two walks.  The $36\cdot450$, $25\cdot96$ and $49\cdot960$
+witnesses were produced by \texttt{scripts/rigid\_analysis/rigid.py} and re-verified independently: each edge of
+$Z$ is checked to lie in a facet of $D(v,w)\cup\{f\}$, and the contiguity classes of all maps $C_3\to K$ are
+recomputed by brute force from Definition~\ref{def:contig} ($2$, $3$ and $7$ classes respectively).  The
+certificates are \texttt{scripts/rigid\_analysis/certificates/maximal\_rectangles\_\{rp2,mobius,torus\}.json}.
+Every witness is also a hand proof via Lemma~\ref{lem:winding}: for the hemi-icosahedron, $D(1,1)$ and the facet
+over $(\{0,4,5\},\{2,3,5\})$, the points $(0,0),(0,2),(5,5)$ span a hollow triangle with $\pi_1$-walk $0,0,5$
+(winding $0$) and $\pi_2$-walk $0,2,5$, the essential empty triangle $\{0,2,5\}$ (winding $1$).
+\end{proof}
+
+\begin{corollary}
+On these three complexes a system of $k$ chains whose domains are star rectangles cannot increase its coverage by
+changing a single chain, whatever the change: any domain containing a rectangle equals it.  In particular the
+annealer's plateau at $k=\rho-1$ on the hemi-icosahedron ($540/600$, five diagonal rectangles) is a strict local
+maximum of coverage under all single-chain moves.
+\end{corollary}
+
+\section{The icosahedron: a stall that was not an obstruction}
+
+\begin{proposition}\label{prop:icosa}
+$\SCst(\text{icosahedron boundary})\le3$.
+\end{proposition}
+\begin{proof}
+Certificate \texttt{results/icosa\_k4\_exact}: four domains of $819$, $728$, $629$ and $224$ facets with chains of
+$8,9,7,6$ links, verified link by link by \texttt{src/independent\_check.py}.  It was obtained from the stalled
+state \texttt{icosa\_k4\_v3} ($2376/2400$ facets): its domain of $744$ facets together with all $24$ uncovered
+facets admits a chain of $8$ links (an exact SAT decision, \texttt{scripts/rigid\_analysis/domain\_chain\_sat.py}),
+while its smallest domain plus the same $24$ facets admits none of $\le12$ links.
+\end{proof}
+
+\begin{remark}
+The icosahedron has no empty triangle, all closed walks of length $\le5$ in it are in one contiguity class, and the
+family $\Gamma_w$ of Theorem~\ref{thm:graphs} ($3891$ maps) is avoidable by two facet classes; so no rigid
+subcomplex known to us obstructs even two domains, and the stall at four was a property of the search, not of the
+complex.  Whether three domains suffice ($\TC(S^2)=2$) is being decided by the exact cover search
+\texttt{scripts/rigid\_analysis/cegar\_cover.py}.
+\end{remark}

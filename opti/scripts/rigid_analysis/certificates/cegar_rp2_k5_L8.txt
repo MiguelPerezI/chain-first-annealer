@@ -1,0 +1,6 @@
+== rp2: 600 facets, k=5, L=8; minimal non-faces of K: 10
+  walks m=3: 216 maps C_m->K in 2 contiguity classes; 920 rigid closed walks (distinct edge sets)  [0.1s]
+  walks m=4: 1296 maps C_m->K in 2 contiguity classes; 18294 rigid closed walks (distinct edge sets)  [1.6s]
+  graphs: 181 non-decreasing simplicial self-maps != id (6 constant, 175 other) -> 362 rigid copies of K
+  it    1: classes [111, 99, 100, 132, 158], non-domains 4/5, learned 12 (sizes min/med/max 5/8/12)  t=714s
+  it    2: classes [108, 102, 101, 132, 158], non-domains 5/5, learned 27 (sizes min/med/max 5/7/12)  t=981s

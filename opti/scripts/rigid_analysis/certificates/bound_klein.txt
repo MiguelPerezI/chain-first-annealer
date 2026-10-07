@@ -1,0 +1,9 @@
+== klein: |V|=8, facets 16, dominated vertices: none, empty triangles: 18
+   K x K: 1536 facets, 960 edges
+  walks m=3: 356 maps C_m->K in 11 contiguity classes; 2852 rigid closed walks (distinct edge sets)  [0.1s]
+  walks m=4: 2504 maps C_m->K in 6 contiguity classes; 91688 rigid closed walks (distinct edge sets)  [4.4s]
+  graphs: 597 non-decreasing simplicial self-maps != id (8 constant, 589 other) -> 1194 rigid copies of K
+   rigid family size 95734
+  k=2: UNSAT  => SC_strict(K) >= 2  [95734 rigid subcomplexes, 9089 vars, 0.0s]
+  k=3: UNSAT  => SC_strict(K) >= 3  [95734 rigid subcomplexes, 13633 vars, 0.2s]
+  k=4: UNSAT  => SC_strict(K) >= 4  [95734 rigid subcomplexes, 18177 vars, 910.6s]

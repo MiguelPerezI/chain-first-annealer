@@ -1,0 +1,172 @@
+#### mobius_k3_cold_s4
+mobius_k3_cold_s4: 3 domains [60, 57, 48], leftovers 1
+  domain 2 (|D|=48) + 1 facets, L=8:
+    |D|=49 L=8: UNSAT (no chain with <= 8 links)  [2835 vars, 21329 clauses, 0.0s]
+  domain 2 (|D|=48) + 1 facets, L=12:
+    |D|=49 L=12: UNSAT (no chain with <= 12 links)  [4315 vars, 33209 clauses, 0.1s]
+  domain 1 (|D|=57) + 1 facets, L=8:
+    |D|=58 L=8: SAT (chain exists)  [3195 vars, 24893 clauses, 0.0s]
+    -> COMPLETION FOUND, chain saved to /home/mike666/chain-first-annealer/opti/scripts/rigid_analysis/certificates/mobius_k3_cold_s4_absorb_domain1_L8.json
+#### mobius_k3_stretch_from_149
+mobius_k3_stretch_from_149: 3 domains [60, 58, 50], leftovers 1
+  domain 2 (|D|=50) + 1 facets, L=8:
+    |D|=51 L=8: UNSAT (no chain with <= 8 links)  [2915 vars, 22121 clauses, 0.0s]
+  domain 2 (|D|=50) + 1 facets, L=12:
+    |D|=51 L=12: UNSAT (no chain with <= 12 links)  [4435 vars, 34441 clauses, 0.0s]
+  domain 1 (|D|=58) + 1 facets, L=8:
+    |D|=59 L=8: SAT (chain exists)  [3235 vars, 25289 clauses, 0.0s]
+    -> COMPLETION FOUND, chain saved to /home/mike666/chain-first-annealer/opti/scripts/rigid_analysis/certificates/mobius_k3_stretch_from_149_absorb_domain1_L8.json
+#### mobius_seed_999
+mobius_seed_999: 3 domains [58, 52, 59], leftovers 2
+  domain 1 (|D|=52) + 2 facets, L=8:
+    |D|=54 L=8: UNSAT (no chain with <= 8 links)  [3035 vars, 23309 clauses, 0.0s]
+  domain 1 (|D|=52) + 2 facets, L=12:
+    |D|=54 L=12: UNSAT (no chain with <= 12 links)  [4615 vars, 36289 clauses, 0.0s]
+  domain 0 (|D|=58) + 2 facets, L=8:
+    |D|=60 L=8: UNSAT (no chain with <= 8 links)  [3275 vars, 25685 clauses, 0.0s]
+  domain 0 (|D|=58) + 2 facets, L=12:
+    |D|=60 L=12: UNSAT (no chain with <= 12 links)  [4975 vars, 39985 clauses, 0.0s]
+  domain 2 (|D|=59) + 2 facets, L=8:
+    |D|=61 L=8: UNSAT (no chain with <= 8 links)  [3315 vars, 26081 clauses, 0.0s]
+  domain 2 (|D|=59) + 2 facets, L=12:
+    |D|=61 L=12: UNSAT (no chain with <= 12 links)  [5035 vars, 40601 clauses, 0.0s]
+  no single-domain completion found within the tried chain lengths
+#### rp2_k5_hybrid
+rp2_k5_hybrid: 5 domains [150, 150, 141, 150, 150], leftovers 60
+  domain 2 (|D|=141) + 60 facets, L=8:
+    |D|=201 L=8: UNSAT (no chain with <= 8 links)  [11160 vars, 105738 clauses, 0.0s]
+  domain 2 (|D|=141) + 60 facets, L=12:
+    |D|=201 L=12: UNSAT (no chain with <= 12 links)  [16848 vars, 164322 clauses, 0.0s]
+  domain 0 (|D|=150) + 60 facets, L=8:
+    |D|=210 L=8: UNSAT (no chain with <= 8 links)  [11592 vars, 110292 clauses, 0.0s]
+  domain 0 (|D|=150) + 60 facets, L=12:
+    |D|=210 L=12: UNSAT (no chain with <= 12 links)  [17496 vars, 171396 clauses, 0.0s]
+  domain 1 (|D|=150) + 60 facets, L=8:
+    |D|=210 L=8: UNSAT (no chain with <= 8 links)  [11592 vars, 110292 clauses, 0.0s]
+  domain 1 (|D|=150) + 60 facets, L=12:
+    |D|=210 L=12: UNSAT (no chain with <= 12 links)  [17496 vars, 171396 clauses, 0.0s]
+  domain 3 (|D|=150) + 60 facets, L=8:
+    |D|=210 L=8: UNSAT (no chain with <= 8 links)  [11592 vars, 110292 clauses, 0.0s]
+  domain 3 (|D|=150) + 60 facets, L=12:
+    |D|=210 L=12: UNSAT (no chain with <= 12 links)  [17496 vars, 171396 clauses, 0.0s]
+  domain 4 (|D|=150) + 60 facets, L=8:
+    |D|=210 L=8: UNSAT (no chain with <= 8 links)  [11592 vars, 110292 clauses, 0.0s]
+  domain 4 (|D|=150) + 60 facets, L=12:
+    |D|=210 L=12: UNSAT (no chain with <= 12 links)  [17496 vars, 171396 clauses, 0.0s]
+  no single-domain completion found within the tried chain lengths
+#### rp2_k5_from_k6_stretch_collapse7232
+rp2_k5_from_k6_stretch_collapse7232: 5 domains [151, 132, 123, 150, 132], leftovers 56
+  domain 2 (|D|=123) + 56 facets, L=8:
+    |D|=179 L=8: UNSAT (no chain with <= 8 links)  [10104 vars, 94606 clauses, 0.0s]
+  domain 2 (|D|=123) + 56 facets, L=12:
+    |D|=179 L=12: UNSAT (no chain with <= 12 links)  [15264 vars, 147030 clauses, 0.0s]
+  domain 1 (|D|=132) + 56 facets, L=8:
+    |D|=188 L=8: UNSAT (no chain with <= 8 links)  [10536 vars, 99160 clauses, 0.0s]
+  domain 1 (|D|=132) + 56 facets, L=12:
+    |D|=188 L=12: UNSAT (no chain with <= 12 links)  [15912 vars, 154104 clauses, 0.0s]
+  domain 4 (|D|=132) + 56 facets, L=8:
+    |D|=188 L=8: UNSAT (no chain with <= 8 links)  [10536 vars, 99160 clauses, 0.0s]
+  domain 4 (|D|=132) + 56 facets, L=12:
+    |D|=188 L=12: UNSAT (no chain with <= 12 links)  [15912 vars, 154104 clauses, 0.0s]
+  domain 3 (|D|=150) + 56 facets, L=8:
+    |D|=206 L=8: UNSAT (no chain with <= 8 links)  [11400 vars, 108268 clauses, 0.0s]
+  domain 3 (|D|=150) + 56 facets, L=12:
+    |D|=206 L=12: UNSAT (no chain with <= 12 links)  [17208 vars, 168252 clauses, 0.0s]
+  domain 0 (|D|=151) + 56 facets, L=8:
+    |D|=207 L=8: UNSAT (no chain with <= 8 links)  [11448 vars, 108774 clauses, 0.0s]
+  domain 0 (|D|=151) + 56 facets, L=12:
+    |D|=207 L=12: UNSAT (no chain with <= 12 links)  [17280 vars, 169038 clauses, 0.0s]
+  no single-domain completion found within the tried chain lengths
+#### hemicube_k6_v2
+hemicube_k6_v2: 6 domains [203, 216, 216, 198, 198, 168], leftovers 28
+  domain 5 (|D|=168) + 28 facets, L=8:
+    |D|=196 L=8: UNSAT (no chain with <= 8 links)  [13377 vars, 125146 clauses, 0.0s]
+  domain 5 (|D|=168) + 28 facets, L=12:
+    |D|=196 L=12: UNSAT (no chain with <= 12 links)  [20237 vars, 194530 clauses, 0.0s]
+  domain 3 (|D|=198) + 28 facets, L=8:
+    |D|=226 L=8: UNSAT (no chain with <= 8 links)  [15057 vars, 143146 clauses, 0.0s]
+  domain 3 (|D|=198) + 28 facets, L=12:
+    |D|=226 L=12: UNSAT (no chain with <= 12 links)  [22757 vars, 222490 clauses, 0.0s]
+  domain 4 (|D|=198) + 28 facets, L=8:
+    |D|=226 L=8: UNSAT (no chain with <= 8 links)  [15057 vars, 143146 clauses, 0.0s]
+  domain 4 (|D|=198) + 28 facets, L=12:
+    |D|=226 L=12: UNSAT (no chain with <= 12 links)  [22757 vars, 222490 clauses, 0.0s]
+  domain 0 (|D|=203) + 28 facets, L=8:
+    |D|=231 L=8: UNSAT (no chain with <= 8 links)  [15337 vars, 146146 clauses, 0.0s]
+  domain 0 (|D|=203) + 28 facets, L=12:
+    |D|=231 L=12: UNSAT (no chain with <= 12 links)  [23177 vars, 227150 clauses, 0.0s]
+  domain 1 (|D|=216) + 28 facets, L=8:
+    |D|=244 L=8: UNSAT (no chain with <= 8 links)  [16065 vars, 153946 clauses, 0.0s]
+  domain 1 (|D|=216) + 28 facets, L=12:
+    |D|=244 L=12: UNSAT (no chain with <= 12 links)  [24269 vars, 239266 clauses, 0.0s]
+  domain 2 (|D|=216) + 28 facets, L=8:
+    |D|=244 L=8: UNSAT (no chain with <= 8 links)  [16065 vars, 153946 clauses, 0.0s]
+  domain 2 (|D|=216) + 28 facets, L=12:
+    |D|=244 L=12: UNSAT (no chain with <= 12 links)  [24269 vars, 239266 clauses, 0.0s]
+  no single-domain completion found within the tried chain lengths
+#### hemi_dodeca_k6_v2
+hemi_dodeca_k6_v2: 6 domains [521, 483, 457, 434, 406, 345], leftovers 22
+  domain 5 (|D|=345) + 22 facets, L=8:
+    |D|=367 L=8: UNSAT (no chain with <= 8 links)  [36360 vars, 370574 clauses, 0.0s]
+  domain 5 (|D|=345) + 22 facets, L=12:
+    |D|=367 L=12: UNSAT (no chain with <= 12 links)  [55040 vars, 575410 clauses, 0.0s]
+  domain 4 (|D|=406) + 22 facets, L=8:
+    |D|=428 L=8: UNSAT (no chain with <= 8 links)  [41240 vars, 426816 clauses, 0.0s]
+  domain 4 (|D|=406) + 22 facets, L=12:
+    |D|=428 L=12: UNSAT (no chain with <= 12 links)  [62360 vars, 662640 clauses, 0.0s]
+  domain 3 (|D|=434) + 22 facets, L=8:
+    |D|=456 L=8: UNSAT (no chain with <= 8 links)  [43480 vars, 452632 clauses, 0.0s]
+  domain 3 (|D|=434) + 22 facets, L=12:
+    |D|=456 L=12: UNSAT (no chain with <= 12 links)  [65720 vars, 702680 clauses, 0.0s]
+  domain 2 (|D|=457) + 22 facets, L=8:
+    |D|=479 L=8: UNSAT (no chain with <= 8 links)  [45320 vars, 473838 clauses, 0.0s]
+  domain 2 (|D|=457) + 22 facets, L=12:
+    |D|=479 L=12: UNSAT (no chain with <= 12 links)  [68480 vars, 735570 clauses, 0.0s]
+  domain 1 (|D|=483) + 22 facets, L=8:
+    |D|=505 L=8: UNSAT (no chain with <= 8 links)  [47400 vars, 497810 clauses, 0.0s]
+  domain 1 (|D|=483) + 22 facets, L=12:
+    |D|=505 L=12: UNSAT (no chain with <= 12 links)  [71600 vars, 772750 clauses, 0.0s]
+  domain 0 (|D|=521) + 22 facets, L=8:
+    |D|=543 L=8: UNSAT (no chain with <= 8 links)  [50440 vars, 532846 clauses, 0.0s]
+  domain 0 (|D|=521) + 22 facets, L=12:
+    |D|=543 L=12: UNSAT (no chain with <= 12 links)  [76160 vars, 827090 clauses, 0.0s]
+  no single-domain completion found within the tried chain lengths
+#### klein_k9_v4
+klein_k9_v4: 9 domains [276, 270, 268, 266, 261, 238, 236, 226, 187], leftovers 42
+  domain 8 (|D|=187) + 42 facets, L=8:
+    |D|=229 L=8: UNSAT (no chain with <= 8 links)  [18240 vars, 182910 clauses, 0.0s]
+  domain 8 (|D|=187) + 42 facets, L=12:
+    |D|=229 L=12: UNSAT (no chain with <= 12 links)  [27616 vars, 283766 clauses, 0.0s]
+  domain 7 (|D|=226) + 42 facets, L=8:
+    |D|=268 L=8: UNSAT (no chain with <= 8 links)  [20736 vars, 211848 clauses, 0.0s]
+  domain 7 (|D|=226) + 42 facets, L=12:
+    |D|=268 L=12: UNSAT (no chain with <= 12 links)  [31360 vars, 328616 clauses, 0.0s]
+  domain 6 (|D|=236) + 42 facets, L=8:
+    |D|=278 L=8: UNSAT (no chain with <= 8 links)  [21376 vars, 219268 clauses, 0.0s]
+  domain 6 (|D|=236) + 42 facets, L=12:
+    |D|=278 L=12: UNSAT (no chain with <= 12 links)  [32320 vars, 340116 clauses, 0.0s]
+  domain 5 (|D|=238) + 42 facets, L=8:
+    |D|=280 L=8: UNSAT (no chain with <= 8 links)  [21504 vars, 220752 clauses, 0.0s]
+  domain 5 (|D|=238) + 42 facets, L=12:
+    |D|=280 L=12: UNSAT (no chain with <= 12 links)  [32512 vars, 342416 clauses, 0.0s]
+  domain 4 (|D|=261) + 42 facets, L=8:
+    |D|=303 L=8: UNSAT (no chain with <= 8 links)  [22976 vars, 237818 clauses, 0.0s]
+  domain 4 (|D|=261) + 42 facets, L=12:
+    |D|=303 L=12: UNSAT (no chain with <= 12 links)  [34720 vars, 368866 clauses, 0.0s]
+  domain 3 (|D|=266) + 42 facets, L=8:
+    |D|=308 L=8: UNSAT (no chain with <= 8 links)  [23296 vars, 241528 clauses, 0.0s]
+  domain 3 (|D|=266) + 42 facets, L=12:
+    |D|=308 L=12: UNSAT (no chain with <= 12 links)  [35200 vars, 374616 clauses, 0.0s]
+  domain 2 (|D|=268) + 42 facets, L=8:
+    |D|=310 L=8: UNSAT (no chain with <= 8 links)  [23424 vars, 243012 clauses, 0.0s]
+  domain 2 (|D|=268) + 42 facets, L=12:
+    |D|=310 L=12: UNSAT (no chain with <= 12 links)  [35392 vars, 376916 clauses, 0.0s]
+  domain 1 (|D|=270) + 42 facets, L=8:
+    |D|=312 L=8: UNSAT (no chain with <= 8 links)  [23552 vars, 244496 clauses, 0.0s]
+  domain 1 (|D|=270) + 42 facets, L=12:
+    |D|=312 L=12: UNSAT (no chain with <= 12 links)  [35584 vars, 379216 clauses, 0.0s]
+  domain 0 (|D|=276) + 42 facets, L=8:
+    |D|=318 L=8: UNSAT (no chain with <= 8 links)  [23936 vars, 248948 clauses, 0.0s]
+  domain 0 (|D|=276) + 42 facets, L=12:
+    |D|=318 L=12: UNSAT (no chain with <= 12 links)  [36160 vars, 386116 clauses, 0.0s]
+  no single-domain completion found within the tried chain lengths

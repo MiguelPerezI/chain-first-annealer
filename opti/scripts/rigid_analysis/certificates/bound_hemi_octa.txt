@@ -1,0 +1,8 @@
+== hemi_octa: |V|=9, facets 16, dominated vertices: none, empty triangles: 4
+   K x K: 1536 facets, 1008 edges
+  walks m=3: 273 maps C_m->K in 25 contiguity classes; 596 rigid closed walks (distinct edge sets)  [0.1s]
+  walks m=4: 1785 maps C_m->K in 2 contiguity classes; 30326 rigid closed walks (distinct edge sets)  [2.9s]
+  graphs: 1028 non-decreasing simplicial self-maps != id (9 constant, 1019 other) -> 2056 rigid copies of K
+   rigid family size 32978
+  k=2: UNSAT  => SC_strict(K) >= 2  [32978 rigid subcomplexes, 9249 vars, 0.0s]
+  k=3: UNSAT  => SC_strict(K) >= 3  [32978 rigid subcomplexes, 13873 vars, 8.4s]

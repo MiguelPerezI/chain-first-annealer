@@ -1,0 +1,4 @@
+== icosa: 2400 facets, k=3, L=10; minimal non-faces of K: 36
+  walks m=3: 312 maps C_m->K in 1 contiguity classes; 0 rigid closed walks (distinct edge sets)  [0.4s]
+  graphs: 3891 non-decreasing simplicial self-maps != id (12 constant, 3879 other) -> 7782 rigid copies of K
+  it    1: classes [2166, 2138, 2146], non-domains 3/3, learned 9 (sizes min/med/max 7/7/9)  t=328s

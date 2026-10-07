@@ -1,0 +1,7 @@
+== icosa: |V|=12, facets 20, dominated vertices: none, empty triangles: 0
+   K x K: 2400 facets, 1620 edges
+  walks m=3: 312 maps C_m->K in 1 contiguity classes; 0 rigid closed walks (distinct edge sets)  [0.1s]
+  walks m=4: 1632 maps C_m->K in 1 contiguity classes; 0 rigid closed walks (distinct edge sets)  [2.1s]
+  graphs: 3891 non-decreasing simplicial self-maps != id (12 constant, 3879 other) -> 7782 rigid copies of K
+   rigid family size 7782
+  k=2: SAT (no bound)  [7782 rigid subcomplexes, 11361 vars, 0.0s]
