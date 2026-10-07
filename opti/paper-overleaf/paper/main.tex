@@ -783,9 +783,13 @@ a cover) where the annealer stalled in eight runs, proves $k=2$ impossible
 on $K_M$ and $\partial\Delta^4$ at once, and covers $\partial\Delta^3$ by
 three domains in two seconds.  On the hemi-icosahedron at $k=5$, the
 hemicube at $k=5$ and the icosahedron at $k=3$ it learns minimal non-domain
-sets of $3$ to $16$ facets, smaller than any member of the hand-built
-families, at a few minutes per iteration; these runs were still open when
-this version was written.  The solver is strongest at finding covers; for
+sets of $3$ to $25$ facets, smaller than any member of the hand-built
+families, at several minutes per iteration (the outer SAT dominates); within
+a two-hour budget each it reached $22$, $6$ and $17$ iterations with $290$,
+$90$ and $153$ learned sets and no verdict, every proposed partition still
+containing a non-domain class.  The learned sets are kept
+(\texttt{certificates/learned\_*.json}) and seed later runs.  The solver is
+strongest at finding covers; for
 infeasibility its learned cuts are local, and on the cube boundary at $k=2$,
 where $\TC(S^2)=2$ already forbids a cover, $83$ iterations and $498$
 learned sets did not reach UNSAT in $38$ minutes.

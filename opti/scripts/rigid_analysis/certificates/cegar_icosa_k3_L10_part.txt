@@ -8,3 +8,13 @@
   it    5: classes [527, 1000, 873], non-domains 3/3, learned 45 (sizes min/med/max 7/7/16)  t=1869s
   it    6: classes [529, 1000, 871], non-domains 3/3, learned 54 (sizes min/med/max 7/7/16)  t=2233s
   it    7: classes [528, 1000, 872], non-domains 3/3, learned 63 (sizes min/med/max 7/7/16)  t=2597s
+  it    8: classes [523, 1000, 877], non-domains 3/3, learned 72 (sizes min/med/max 7/8/20)  t=2982s
+  it    9: classes [526, 1000, 874], non-domains 3/3, learned 81 (sizes min/med/max 7/8/20)  t=3336s
+  it   10: classes [528, 1000, 872], non-domains 3/3, learned 90 (sizes min/med/max 7/8/20)  t=3700s
+  it   11: classes [531, 1000, 869], non-domains 3/3, learned 99 (sizes min/med/max 7/8/20)  t=4099s
+  it   12: classes [530, 1000, 870], non-domains 3/3, learned 108 (sizes min/med/max 7/8/22)  t=4696s
+  it   13: classes [521, 1000, 879], non-domains 3/3, learned 117 (sizes min/med/max 7/8/25)  t=5174s
+  it   14: classes [528, 1000, 872], non-domains 3/3, learned 126 (sizes min/med/max 7/8/25)  t=5745s
+  it   15: classes [529, 1000, 871], non-domains 3/3, learned 135 (sizes min/med/max 7/8/25)  t=6112s
+  it   16: classes [522, 1000, 878], non-domains 3/3, learned 144 (sizes min/med/max 7/8/25)  t=6454s
+  it   17: classes [540, 1000, 860], non-domains 3/3, learned 153 (sizes min/med/max 7/8/25)  t=6934s

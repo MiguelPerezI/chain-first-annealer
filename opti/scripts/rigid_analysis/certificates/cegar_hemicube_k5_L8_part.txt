@@ -2,3 +2,9 @@
   walks m=3: 247 maps C_m->K in 2 contiguity classes; 1100 rigid closed walks (distinct edge sets)  [0.4s]
   graphs: 450 non-decreasing simplicial self-maps != id (7 constant, 443 other) -> 900 rigid copies of K
   it    1: classes [210, 192, 159, 129, 174], non-domains 5/5, learned 15 (sizes min/med/max 3/5/11)  t=1372s
+  it    2: classes [210, 194, 158, 128, 174], non-domains 5/5, learned 30 (sizes min/med/max 3/6/11)  t=1620s
+  it    3: classes [245, 161, 152, 128, 178], non-domains 5/5, learned 45 (sizes min/med/max 3/6/11)  t=5429s
+  it    4: classes [154, 196, 216, 124, 174], non-domains 5/5, learned 60 (sizes min/med/max 3/6/11)  t=5814s
+  it    5: classes [217, 157, 174, 139, 177], non-domains 5/5, learned 75 (sizes min/med/max 3/5/11)  t=6825s
+  it    6: classes [225, 160, 179, 174, 126], non-domains 5/5, learned 90 (sizes min/med/max 3/6/12)  t=7160s
+RESULT hemicube k=5 L=8: TIMEOUT after 6 iterations, 90 learned sets -> /home/mike666/chain-first-annealer/opti/scripts/rigid_analysis/certificates/learned_hemicube_k5_L8.json
