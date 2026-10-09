@@ -71,9 +71,9 @@ workers). Certificate `results/cp_sat_rp2_factored/control_k6_L8/certificate`:
 change; before it the auditor rejected every 600-facet cover, which would
 also have kept the KFP control gate closed for RP²).
 
-## 2026-09-28 to 2026-09-30, KFP ladder on the lab (factored, cold)
+## 2026-09-28 to 2026-10-04, KFP ladder on the lab (factored, cold)
 
-Revision `e3c25d8`, pod limit 7 CPU / 26 GiB, 5 CP-SAT workers, 24 h limit
+Revision `e3c25d8` (L=8, 12, 16: `eecb9b9`, see `revision.txt`), pod limit 7 CPU / 26 GiB, 5 CP-SAT workers, 24 h limit
 per rung (`nproc.txt` says 32: that is the node, not the pod limit). Raw output in
 `results/cp_sat_rp2_kfp/` (copied from `~/cp_sat_results`).
 Encoding: `factored` for every rung (`SCS_ENCODING=factored` in the compiled
@@ -85,9 +85,13 @@ and the certificate params do not record the encoding.
 | control rp2 k=6 L=8 | 143,790 | 1,559,189 | OPTIMAL | 39.8 s | 3.14 GB | audited |
 | rp2 k=5 L=4 | 42,786 | 454,384 | UNKNOWN (24 h limit) | 86,403 s | 3.61 GB | - |
 | rp2 k=5 L=5 | 62,046 | 665,644 | UNKNOWN (24 h limit) | 86,403 s | 5.37 GB | - |
-| rp2 k=5 L=6 | | | running since 2026-09-30 06:57Z | | | |
+| rp2 k=5 L=6 | 81,306 | 876,904 | UNKNOWN (24 h limit) | 86,403 s | 7.38 GB | - |
+| rp2 k=5 L=8 | 119,826 | 1,299,424 | UNKNOWN (24 h limit) | 86,405 s | 8.71 GB | - |
+| rp2 k=5 L=12 | 196,866 | 2,144,464 | UNKNOWN (24 h limit) | 86,409 s | 11.14 GB | - |
+| rp2 k=5 L=16 | 273,906 | 2,989,504 | UNKNOWN (24 h limit) | 86,408 s | 12.97 GB | - |
 
-The factored encoding removes the OOM: both k=5 rungs ran the full 24 h
-well under the RAM limit. It does not settle them: no cover and no
-infeasibility proof in 24 h. Neither UNKNOWN row is evidence for or against
-a 5-cover of RP².
+The factored encoding removes the OOM: every k=5 rung ran the full 24 h
+well under the RAM limit (peak 12.97 GB at L=16). It does not settle them:
+no cover and no infeasibility proof in 24 h at any L in 4..16 (L=6: 70.8 M
+conflicts, 299 M branches). Larger L does not help the cold search. No
+UNKNOWN row is evidence for or against a 5-cover of RP².
