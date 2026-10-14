@@ -70,3 +70,49 @@ workers). Certificate `results/cp_sat_rp2_factored/control_k6_L8/certificate`:
 6 domains, audited by `independent_check.py` (RP² support added in this
 change; before it the auditor rejected every 600-facet cover, which would
 also have kept the KFP control gate closed for RP²).
+
+## 2026-09-28 to 2026-10-04, KFP ladder on the lab (factored, cold)
+
+Revision `e3c25d8` (L=8, 12, 16: `eecb9b9`, see `revision.txt`), pod limit 7 CPU / 26 GiB, 5 CP-SAT workers, 24 h limit
+per rung (`nproc.txt` says 32: that is the node, not the pod limit). Raw output in
+`results/cp_sat_rp2_kfp/` (copied from `~/cp_sat_results`).
+Encoding: `factored` for every rung (`SCS_ENCODING=factored` in the compiled
+pipeline; each `solver.log` prints `middle-link encoding: factored`). `row.md`
+and the certificate params do not record the encoding.
+
+| rung | vars | cons | status | wall | peak RSS | certificate |
+|---|---:|---:|---|---:|---:|---|
+| control rp2 k=6 L=8 | 143,790 | 1,559,189 | OPTIMAL | 39.8 s | 3.14 GB | audited |
+| rp2 k=5 L=4 | 42,786 | 454,384 | UNKNOWN (24 h limit) | 86,403 s | 3.61 GB | - |
+| rp2 k=5 L=5 | 62,046 | 665,644 | UNKNOWN (24 h limit) | 86,403 s | 5.37 GB | - |
+| rp2 k=5 L=6 | 81,306 | 876,904 | UNKNOWN (24 h limit) | 86,403 s | 7.38 GB | - |
+| rp2 k=5 L=8 | 119,826 | 1,299,424 | UNKNOWN (24 h limit) | 86,405 s | 8.71 GB | - |
+| rp2 k=5 L=12 | 196,866 | 2,144,464 | UNKNOWN (24 h limit) | 86,409 s | 11.14 GB | - |
+| rp2 k=5 L=16 | 273,906 | 2,989,504 | UNKNOWN (24 h limit) | 86,408 s | 12.97 GB | - |
+
+The factored encoding removes the OOM: every k=5 rung ran the full 24 h
+well under the RAM limit (peak 12.97 GB at L=16). It does not settle them:
+no cover and no infeasibility proof in 24 h at any L in 4..16 (L=6: 70.8 M
+conflicts, 299 M branches). Larger L does not help the cold search. No
+UNKNOWN row is evidence for or against a 5-cover of RP².
+
+## 2026-10-09 to 2026-10-10, KFP ladder on the lab, case A1 (factored, hybrid)
+
+Revision `bbeca34`, pod limit 7 CPU / 26 GiB, 7 CP-SAT workers, 24 h limit
+per rung. Hybrid mode: `--warm-file results/rp2_cases/A1_star0.json --free 4`,
+so domain 0 = star(0)×star(0) is frozen with the chains of the warm file
+(150/600 facets) and 4 free domains must cover the 450 residual facets.
+The control rp2 k=6 L=8 passed again (OPTIMAL in 39.5 s, audited). Raw
+output in `results/cp_sat_rp2_kfp/rp2_k5_L*_A1_star0_free4/`.
+
+| rung | vars | cons | status | wall | peak RSS | conflicts |
+|---|---:|---:|---|---:|---:|---:|
+| A1 k=5 L=4 | 34,230 | 363,627 | INFEASIBLE | 91.8 s | 1.30 GB | 0.6 M |
+| A1 k=5 L=6 | 65,046 | 701,643 | INFEASIBLE | 51,511 s | 7.20 GB | 23.5 M |
+| A1 k=5 L=8 | 95,862 | 1,039,659 | INFEASIBLE | 67,518 s | 8.44 GB | 21.8 M |
+
+Scope: no 5-cover of RP² extends the frozen A1 domain (with these chains)
+by 4 free domains of chain length L ≤ 8. This is not a proof that RP² has
+no 5-cover: it covers only case A1 with this frozen domain, and only up to
+L = 8. `LRAT_status: NA` on every rung, so the infeasibility has no
+independently checkable proof; it rests on CP-SAT.

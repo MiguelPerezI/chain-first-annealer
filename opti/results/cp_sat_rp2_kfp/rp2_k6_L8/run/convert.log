@@ -1,0 +1,12 @@
+K = RP² (6 vertices, 10 triangles, hemi-icosahedron): 10 triangles re-proved RP² (closed, links 5-cycles, no coherent orientation, chi = 1)
+K = RP² (6 vertices, 10 triangles, hemi-icosahedron): rebuilt KxK independently — 600 maximal facets
+[1] facet table: 600/600 staircase facets match cover.txt
+[2] cover: 6 disjoint domains cover all 600 facets (sizes [142, 132, 109, 80, 74, 63])
+[3] domain 0: 142 facets, chain of 6 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+[3] domain 1: 132 facets, chain of 4 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+[3] domain 2: 109 facets, chain of 5 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+[3] domain 3: 80 facets, chain of 5 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+[3] domain 4: 74 facets, chain of 5 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+[3] domain 5: 63 facets, chain of 5 maps — pi1→pi2, simplicial + 1-contiguous everywhere: OK
+
+VERIFIED: SC_strict(RP² (6 vertices, 10 triangles, hemi-icosahedron)) <= 5 by 6 explicit planner domains (subdivision level 0)
