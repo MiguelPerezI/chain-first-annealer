@@ -15,7 +15,9 @@ context, per-task CPU/RAM/timeout, no caching.
 Settings fixed in the IR at compile time (KFP cannot template them):
     SAT_PVC          workspace PVC of the notebook (required)
     SAT_IMAGE        default cr.saptiva.com/apps/jupyter-saptiva-ds-cpu:v1.11.0-saptiva2
-    SAT_CPU          default 8     (CPU request = limit per rung)
+    SAT_CPU          default 8     (CPU limit per rung)
+    SAT_CPU_REQUEST  default SAT_CPU (a lower request avoids KubeCPUOvercommit;
+                     the rung can still burst to SAT_CPU when the node is idle)
     SAT_MEM          default 28Gi  (RAM grows with CP-SAT workers)
     SAT_PARALLELISM  default 1     (rungs at once; namespace quota ~17 CPU / 66Gi)
     SAT_TIMEOUT_S    default 90000 (pod timeout; solver --timeout is a parameter)
@@ -34,6 +36,7 @@ from kfp import compiler, dsl, kubernetes
 PVC = os.environ.get("SAT_PVC", "")
 IMAGE = os.environ.get("SAT_IMAGE", "cr.saptiva.com/apps/jupyter-saptiva-ds-cpu:v1.11.0-saptiva2")
 CPU = os.environ.get("SAT_CPU", "8")
+CPU_REQUEST = os.environ.get("SAT_CPU_REQUEST", CPU)
 MEM = os.environ.get("SAT_MEM", "28Gi")
 PARALLELISM = int(os.environ.get("SAT_PARALLELISM", "1"))
 TIMEOUT_S = int(os.environ.get("SAT_TIMEOUT_S", "90000"))
@@ -80,7 +83,7 @@ def _harden(task, step: str):
     task.set_env_variable("HOME", HOME)
     task.set_env_variable("PYTHONUNBUFFERED", "1")
     task.set_env_variable("SCS_ENCODING", ENCODING)
-    task.set_cpu_request(CPU).set_cpu_limit(CPU)
+    task.set_cpu_request(CPU_REQUEST).set_cpu_limit(CPU)
     task.set_memory_request(MEM).set_memory_limit(MEM)
     # every rung is a fresh solver run; a cached result would hide a rerun
     task.set_caching_options(False)
