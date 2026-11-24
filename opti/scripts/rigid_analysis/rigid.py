@@ -22,7 +22,7 @@ import argparse, itertools, json, os, sys, time
 from collections import defaultdict, deque
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-RELAX = '/home/mike666/chain-first-annealer/opti/scripts/relaxation'
+RELAX = os.path.join(HERE, '..', 'relaxation')
 sys.path.insert(0, RELAX)
 import relax  # staircase(), load_complexes()
 

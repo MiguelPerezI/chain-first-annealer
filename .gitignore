@@ -28,3 +28,17 @@ opti/webapp/exports/
 opti/webapp/__pycache__/
 opti/.venv-sat/
 opti/cluster/kfp/compiled/
+
+# LaTeX build products
+*.aux
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+opti/*.log
+opti/*.out
+opti/paper-overleaf/**/*.log
+opti/paper-overleaf/**/*.out
+opti/paper-overleaf/arxiv/*.pdf
+
+# Shared library built on first use by scripts/relaxation/relax.py
+*.so

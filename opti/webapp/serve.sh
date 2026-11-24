@@ -8,6 +8,6 @@
 # python3 has neither, and kxk_state imports gpu_sc which imports numba).
 set -u
 cd "$(dirname "$0")/.." || exit 1
-PY=${PY:-/home/mike666/whisper_env/bin/python}
+PY=${PY:-python3}
 [ -x "$PY" ] || { echo "no python with numba/matplotlib at $PY (set PY=...)"; exit 1; }
 exec "$PY" -u webapp/server.py "$@"

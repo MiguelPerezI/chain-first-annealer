@@ -18,6 +18,6 @@
     "-o",
     "StrictHostKeyChecking=accept-new"
   ],
-  "local_python": "/home/mike666/whisper_env/bin/python",
+  "local_python": "python3",
   "_local_python": "interpreter for simulations: needs numba (+ matplotlib only for the export button)"
 }

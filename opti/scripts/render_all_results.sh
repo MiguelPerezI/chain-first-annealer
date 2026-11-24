@@ -14,7 +14,7 @@
 # names (figures/rp2_kxk_k5_540.*, figures/klein_kxk_k5_1186.*) -- skipped so
 # the same picture does not appear twice in figures/ under two names.
 set -u
-PY=${PY:-/home/mike666/whisper_env/bin/python}
+PY=${PY:-python3}
 cd "$(dirname "$0")/.." || exit 1
 mkdir -p figures
 _ALREADY_DELIVERED=" rp2_k5_push_warm klein_cold666_seed_999 "

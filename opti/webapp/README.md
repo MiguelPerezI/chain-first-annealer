@@ -11,7 +11,7 @@ curl -s localhost:8770/api/runs | python -m json.tool | head
 ```
 
 Needs a python with numba (for `gpu_sc`) **and** matplotlib (for the export
-button): `serve.sh` defaults to `/home/mike666/whisper_env/bin/python`. No web
+button): `serve.sh` defaults to `python3` (override with `PY=...`). No web
 framework is involved — stdlib `http.server` plus one HTML page and Canvas 2D.
 
 ## What it shows

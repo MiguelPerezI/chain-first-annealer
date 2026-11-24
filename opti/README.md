@@ -1,8 +1,11 @@
 # Certificates for the paper
 
-*Simplicial complexity in seconds: explicit sharp covers of all
-boundary-of-simplex spheres and the Császár torus* (M. E. Perez Ibarra,
-J. Flores).
+*Explicit covers and rigid obstructions for simplicial complexity: from
+spheres to surfaces* (M. Perez, J. Flores); the arXiv source is in
+[paper-overleaf/arxiv/](paper-overleaf/arxiv/). This file documents the
+first-phase sphere, torus, wedge and cube certificates; the surface descents,
+the rigid-subcomplex lower bounds and the exact completions are described in
+the paper and in [../README.md](../README.md).
 
 This repository is the companion artifact of the article. Every system
 of piecewise-linear motion planners the paper reports is stored here as
