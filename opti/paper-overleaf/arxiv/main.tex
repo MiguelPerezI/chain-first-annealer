@@ -1,0 +1,999 @@
+% !TeX program = pdflatex
+% arXiv submission draft.  Suggested classes: primary math.AT; secondary cs.RO, cs.DC.
+\documentclass[12pt]{article}
+
+\setlength{\oddsidemargin}{.5cm}
+\setlength{\evensidemargin}{.5cm}
+\setlength{\textwidth}{6in}
+\setlength{\textheight}{8in}
+\setlength{\emergencystretch}{1.5em}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{array,longtable}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\newcommand{\doi}[1]{doi:\,\href{http://dx.doi.org/#1}{#1}}
+\newcommand{\TC}{\mathrm{TC}}
+\newcommand{\SC}{\mathrm{SC}}
+\newcommand{\SCst}{\SC_{\mathrm{strict}}}
+\newcommand{\SD}{\mathrm{SD}}
+\newcommand{\gen}[1]{\langle #1\rangle}
+\newcommand{\Zt}{\mathbb{Z}_2}
+
+\newtheorem{theo}{Theorem}[section]
+\newtheorem{lemma}[theo]{Lemma}
+\newtheorem{corollary}[theo]{Corollary}
+\newtheorem{proposition}[theo]{Proposition}
+\newtheorem{definition}[theo]{Definition}
+\newtheorem{remark}[theo]{Remark}
+\newtheorem{conjecture}[theo]{Conjecture}
+
+\title{Explicit covers and rigid obstructions for simplicial complexity:\\
+ from spheres to surfaces}
+
+\author{M. Perez\footnote{Escuela Superior de F\'isica
+y Matem\'aticas del Instituto Polit\'ecnico Nacional, Edificio 9, Unidad
+Profesional Adolfo L\'opez Mateos, 07300 Mexico City, Mexico.}, and
+J. Flores\footnotemark[1]}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Gonz\'alez's strict simplicial complexity $\SCst(K)$ at subdivision level
+zero is one less than the minimum number of contiguity domains covering the
+ordered product $K\times K$.  Computing it needs explicit covers, and
+certifying it needs lower bounds that hold for contiguity chains of every
+length.  We develop both sides.  \emph{Upper bounds.}  The star cover
+(every product of two vertex stars is a contiguity domain) gives
+$\SCst(K)\le\rho(K)-1$ for an exactly computable set-cover constant $\rho(K)$
+in seconds, sharp on every even sphere $\partial\Delta^{n+1}$.  A
+chain-first GPU annealer that evolves whole systems of $k$ chains, seeded by
+the star cover and descended in $k$, finds three-domain covers of
+$S^2,\dots,S^6$ and of the cube boundary and descends from $24$ to $5$
+domains on the icosahedron boundary; an exact SAT decision procedure for
+``is this facet set a domain'' then completes the annealer's $k=4$ stall
+into a verified $4$-domain cover, $\SCst(\text{icosahedron})\le3$.
+\emph{Lower bounds.}  A subcomplex of $K\times K$ is \emph{rigid} if the two
+projections restricted to it are joined by no contiguity chain; $k$ domains
+cannot cover $K\times K$ unless $k$ classes of facets avoid every rigid
+subcomplex, a finite colouring problem.  Rigid hollow triangles live over
+essential empty triangles of $K$, and we prove that on any complex with no
+dominated vertex the graph of every order-preserving simplicial self-map is
+rigid, which contains the rigid spheres of the simplex boundaries.  The
+resulting chain-length-free bounds give $\SCst(\partial\Delta^{n+1})=2>1=\TC(S^n)$
+for $n=3,5,7,9$, $\SCst=2>1$ for the five-vertex M\"obius band, $\SCst\ge3>2$
+for the seven-vertex torus, $4\le\SCst\le5$ for the hemi-icosahedron and
+$4\le\SCst\le6$ for the hemicube.  They also explain the annealer's stalls:
+on these surfaces and on $\partial\Delta^4$ every uncovered facet of a
+stalled state closes a rigid subcomplex in every domain, and every star
+rectangle of the hemi-icosahedron, the M\"obius band and the torus is a
+maximal domain; on the icosahedron no such obstruction exists and the stall
+was a search failure.  Every cover reported is verified link by link by an
+auditor sharing no code with the search.
+\end{abstract}
+
+\medskip\noindent
+\emph{Keywords and phrases:} topological complexity; simplicial
+complexity; contiguity chains; piecewise linear motion planning;
+simulated annealing; SAT; GPU computing.
+
+\medskip\noindent
+\emph{2020 Mathematics Subject Classification:} Primary: 55M30, 68W20.
+Secondary: 68T40, 55U10, 90C27.
+
+\section{Introduction}\label{sec:intro}
+
+Farber's topological complexity $\TC(X)$ \cite{F03} measures the minimum
+number of continuous motion-planning rules on a space $X$; we use the
+reduced convention, so a cover by $k$ domains certifies $\TC\le k-1$.
+Gonz\'alez's simplicial complexity \cite{G18} discretises it: on the ordered
+product $K\times K$ of a triangulation $K$ of $X$, continuity becomes
+contiguity of simplicial maps (Section~\ref{sec:back}).  The resulting
+invariant $\SCst(K)$ is finite and checkable, satisfies
+$\SCst(K)\ge\TC(\|K\|)$, and equals $\TC$ in the limit of barycentric
+subdivisions.  At subdivision level $0$ it is an invariant of the
+triangulation, and almost nothing was known about it beyond the circle and
+the wedge of two circles \cite{OLGB21}.
+
+This paper computes or brackets $\SCst$ at level $0$ for the simplex
+boundaries up to $S^9$, three triangulations of $S^2$, the vertex-minimal
+M\"obius band, the $7$-vertex torus, the $8$-vertex Klein bottle and four
+triangulations of $\mathbb{RP}^2$.  The method has two halves, and the
+paper's organisation follows them.
+
+\emph{Upper bounds are explicit covers.}  Section~\ref{sec:star} proves that
+every product $D(v,w)$ of two vertex stars is a contiguity domain
+(Theorem~\ref{thm:prod}), so the exact minimum $\rho(K)$ of a small set-cover
+instance gives $\SCst(K)\le\rho(K)-1$ without search; on
+$\partial\Delta^{n+1}$ this is $\SCst\le2$ for all $n$, sharp for even $n$.
+Section~\ref{sec:annealer} describes the chain-first annealer, which anneals
+whole systems of $k$ contiguity chains on one GPU under an energy that grades
+every uncovered facet by the defect count of its best chain; it finds
+three-domain covers of $S^2$ through $S^6$ and of the cube boundary, where
+$\rho=8$.  Section~\ref{sec:descent} documents the star-seeded descents in
+$k$ on the surfaces.  Section~\ref{sec:exact} adds exact tools: a SAT
+decision ``does this facet set admit a chain of at most $L$ links'', which
+completes stalled annealer states, and a lazy cover solver built on it.
+
+\emph{Lower bounds are rigid subcomplexes.}  Section~\ref{sec:rigid}
+develops the notion from the companion note \cite{PM26b}: a subcomplex $Z$
+of $K\times K$ is rigid if $\pi_1|_Z$ and $\pi_2|_Z$ are joined by no
+contiguity chain of any length.  No domain contains a rigid subcomplex, so if
+$k$ classes of facets cannot avoid a family of rigid subcomplexes then $k$
+domains cannot cover (Theorem~\ref{thm:bound}).  Two sources supply the
+families: hollow triangles over essential empty triangles of $K$, and, new
+here, the graphs $\Gamma_w$ of order-preserving simplicial self-maps
+$w\ne\mathrm{id}$ of a complex without dominated vertices
+(Theorem~\ref{thm:graphs}).  The second source contains the rigid spheres
+that prove $\SCst(\partial\Delta^{n+1})=2$ for $n=3,5,7,9$ and shows that the
+odd spheres and the surfaces share one combinatorial property, minimality in
+the sense of Barmak and Minian \cite{BM12}.  Section~\ref{sec:stall} uses
+both families to dissect every stalled state of the annealer: the stalls on
+$\mathbb{RP}^2$, the hemicube, the Klein bottle and $\partial\Delta^4$ are
+rigid-closed dead ends, and the star rectangles of three surfaces are
+maximal domains (Theorem~\ref{thm:maximal}); the stall on the icosahedron was
+not an obstruction, and its exact completion gives $\SCst\le3$.
+
+Three kinds of statement appear and are never conflated: \emph{audited
+certificates} (explicit covers, re-checked by an independent program),
+\emph{computer-assisted theorems} (finite SAT instances built from proved
+rigid families, or witness lists re-verified from the definitions), and
+\emph{empirical observations} (plateaus and stalls).  Section~\ref{sec:results}
+collects the values, Section~\ref{sec:repro} the certificates and tools, and
+Section~\ref{sec:concl} the open questions.
+
+\section{Background and notation}\label{sec:back}
+
+Throughout, $K$ is a finite, nonempty, connected simplicial complex on an
+ordered vertex set $V$; a \emph{facet} is a maximal simplex, and
+$\operatorname{star}(v)$ is the set of facets containing $v$.  The
+\emph{ordered product} $K\times K$ is the complex of all nonempty chains
+$S\subseteq V\times V$ (in the product order) with $\pi_1(S)\in K$ and
+$\pi_2(S)\in K$; its realisation is the staircase triangulation of
+$\|K\|\times\|K\|$, and $\pi_1,\pi_2$ are simplicial.  Its facets are the
+monotone lattice paths in $s\times t$ for pairs $(s,t)$ of facets of $K$;
+when $K$ is pure of dimension $d$ there are $\binom{2d}{d}$ of them over
+every \emph{cell} $(s,t)$.  A set $S\subseteq V\times V$ is a simplex of
+$K\times K$ iff it is a chain with both projections in $K$; hence two
+simplices lie in a common facet iff their union is a simplex.
+
+Two simplicial maps $\varphi,\varphi':J\to K$ are \emph{contiguous},
+$\varphi\sim\varphi'$, if $\varphi(\sigma)\cup\varphi'(\sigma)\in K$ for
+every facet $\sigma$ of $J$; a \emph{contiguity chain} of $L$ links is a
+sequence $\varphi=\varphi_0\sim\cdots\sim\varphi_L=\varphi'$.  A subcomplex
+$D\subseteq K\times K$ is a \emph{contiguity domain} if $\pi_1|_D$ and
+$\pi_2|_D$ are joined by a contiguity chain of simplicial maps $D\to K$, and
+\[
+\SCst(K)=\bigl(\text{least number of domains covering }K\times K\bigr)-1
+\;\ge\;\TC(\|K\|)
+\]
+\cite{G18,OLGB21}, with equality after enough barycentric subdivisions.  A
+cover by $k$ domains is a system of $k$ piecewise-linear motion planners.
+All statements here are at subdivision level $0$, and coverage figures count
+facets of $K\times K$.
+
+Two elementary facts are used repeatedly.  \emph{Heredity}: a subcomplex of
+a domain is a domain (restrict the chain).  \emph{Facet classes}: if
+$D_1,\dots,D_k$ cover $K\times K$ and $\mathcal F_j$ is the set of facets in
+$D_j$, then $\gen{\mathcal F_j}\subseteq D_j$ is a domain and the
+$\mathcal F_j$ cover the facets; so the existence of a $k$-cover is a
+question about $k$ sets of facets, which may overlap but can be made
+disjoint.
+
+\section{Upper bounds without search: the star cover}\label{sec:star}
+
+Write $c_x$ for the constant map to the vertex $x$.
+
+\begin{theo}[product domains]\label{thm:prod}
+For vertices $v,w$ of $K$ let $D(v,w)\subseteq K\times K$ be generated by
+the facets over cells $(s,t)$ with $v\in s$, $w\in t$.  Then $D(v,w)$ is a
+contiguity domain: if $v=v_0,v_1,\dots,v_m=w$ is an edge path of $K$, then
+$\pi_1\sim c_{v_0}\sim c_{v_1}\sim\cdots\sim c_{v_m}\sim\pi_2$ on $D(v,w)$.
+\end{theo}
+
+\begin{proof}
+A facet $\sigma$ over $(s,t)$ has $\pi_1(\sigma)=s$ and $\pi_2(\sigma)=t$
+(a staircase path visits every row and column) and $c_x(\sigma)=\{x\}$, so
+all maps are simplicial.  Consecutively, $s\cup\{v\}=s$ since $v\in s$,
+$\{v_i,v_{i+1}\}$ is an edge, and $\{w\}\cup t=t$.
+\end{proof}
+
+\begin{corollary}\label{cor:rho}
+Let $\rho(K)$ be the least size of a set $R\subseteq V\times V$ such that
+every cell $(s,t)$ has some $(v,w)\in R$ with $v\in s$, $w\in t$.  Then
+$\SCst(K)\le\rho(K)-1$.  For every $n\ge1$, $\rho(\partial\Delta^{n+1})=3$;
+hence $\SCst(\partial\Delta^{n+1})\le2$, with equality $=\TC(S^n)=2$ for
+even $n\ge2$.
+\end{corollary}
+
+\begin{proof}
+The first claim is Theorem~\ref{thm:prod}.  On $\partial\Delta^{n+1}$ with
+facets $s_a=V\setminus\{a\}$, the pairs $(0,0),(1,1),(2,2)$ cover: $(s_a,s_b)$
+is missed by $(v,v)$ iff $v\in\{a,b\}$, and $\{0,1,2\}\not\subseteq\{a,b\}$.
+Two pairs $(v,w),(v',w')$ never suffice: $(s_v,s_{w'})$ is missed by both.
+Equality for even $n$ is Farber's $\TC(S^n)=2$ \cite{F03} and $\SCst\ge\TC$.
+\end{proof}
+
+\begin{lemma}[counting bounds]\label{lem:rows}
+Let $\tau$ be the least size of a set of vertices meeting every facet,
+$d=\max_v|\operatorname{star}(v)|$, and $F$ the number of facets.  Then
+$\lceil\tau F/d\rceil\le\rho(K)\le\tau^2$.
+\end{lemma}
+
+\begin{proof}
+A transversal $S$ of size $\tau$ gives the cover $S\times S$.  For the lower
+bound fix an optimal $R$ and a facet $s$; $W_s=\{w:\exists v\in s,(v,w)\in
+R\}$ is a transversal, so $|W_s|\ge\tau$, and counting incidences
+$\sum_{(v,w)\in R}|\operatorname{star}(v)|\ge\sum_s|W_s|\ge\tau F$ with each
+summand at most $d$.
+\end{proof}
+
+The lemma computes $\rho$ outright for the simplex boundaries, the
+hemi-icosahedron ($\rho=6$) and the icosahedron ($\tau=6$, $d=5$, $F=20$,
+so $\rho\ge24$, attained).  Table~\ref{tab:rho} lists $\rho$ for the
+complexes of this paper; every value is the exact optimum of the set-cover
+instance (CP-SAT \cite{ORTools}, status OPTIMAL, at most $12$\,s).  Exactness matters: greedy
+needs $27$ rectangles on the icosahedron against $24$.
+
+\begin{table}[H]
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+complex $K$ & $|V|$ & $F$ & $\tau$ & $d$ &
+$\lceil\tau F/d\rceil$ & $\rho(K)$ & $\tau^2$ \\
+\midrule
+$\partial\Delta^{n+1}$, $n\ge1$ & $n{+}2$ & $n{+}2$ & $2$ & $n{+}1$ & $3$ & $3$ & $4$\\
+wedge $S^1\vee S^1$ & $4$ & $5$ & $2$ & $3$ & $4$ & $4$ & $4$\\
+M\"obius band $K_M$ & $5$ & $5$ & $2$ & $3$ & $4$ & $4$ & $4$\\
+cube boundary & $8$ & $12$ & $3$ & $6$ & $6$ & $8$ & $9$\\
+hemi-icosahedron ($\mathbb{RP}^2$) & $6$ & $10$ & $3$ & $5$ & $6$ & $6$ & $9$\\
+hemicube ($\mathbb{RP}^2$) & $7$ & $12$ & $3$ & $6$ & $6$ & $7$ & $9$\\
+hemi-octahedron ($\mathbb{RP}^2$) & $9$ & $16$ & $3$ & $6$ & $8$ & $9$ & $9$\\
+hemi-dodecahedron ($\mathbb{RP}^2$) & $10$ & $18$ & $4$ & $9$ & $8$ & $15$ & $16$\\
+Cs\'asz\'ar torus & $7$ & $14$ & $4$ & $6$ & $10$ & $11$ & $16$\\
+Klein bottle (Cervone) & $8$ & $16$ & $4$ & $7$ & $10$ & $12$ & $16$\\
+icosahedron boundary & $12$ & $20$ & $6$ & $5$ & $24$ & $24$ & $36$\\
+dodecahedron boundary & $20$ & $36$ & $6$ & $8$ & $27$ & $36$ & $36$\\
+\bottomrule
+\end{tabular}
+\caption{The rectangle constant $\rho(K)$ and the bounds of
+Lemma~\ref{lem:rows}; facet lists in \texttt{results/*\_starcover*/summary.json}.
+The hemicube and hemi-octahedron are subdivided to be simplicial (a centre
+vertex per square, a midpoint per edge cell); the pentagons of the
+hemi-dodecahedron are fanned.  Three triangulations of $S^2$ carry
+$\rho=3,8,36$: $\rho$ is combinatorial, not a homotopy invariant.}
+\label{tab:rho}
+\end{table}
+
+\emph{The star cover as a method} (\texttt{src/star\_cover.py},
+\texttt{src/rect\_cover.py}).  Solve the set cover exactly, chain each
+rectangle along a shortest edge path, assign every facet to the first
+rectangle containing it, shorten each chain by the greedy reduction of
+\cite[Alg.~2]{OLGB21}, verify.  It cannot fail and costs seconds (the
+icosahedron in $1.3$\,s greedy, $12$\,s exact; $\partial\Delta^9$ with
+$1\,287\,000$ facets by three domains); it returns a complete verified cover,
+the bound $\rho-1$, and chains that seed the annealer.  The gap between
+$\rho-1$ and $\SCst$ is the restriction to product-shaped domains with
+constant chains; it is large on sparse complexes (cube $7$ against $2$,
+icosahedron $23$ against at most $3$) and closes exactly where a lower bound
+rises to meet it (even spheres).
+
+\section{Upper bounds by search: the chain-first annealer}\label{sec:annealer}
+
+\paragraph{Why not grow domains one facet at a time.}  The pipeline of
+\cite{OLGB21} grows one domain at a time by budgeted random walks
+(\textsc{LocalSearch}).  Our faithful GPU port of it on
+$\partial\Delta^3\times\partial\Delta^3$ ($96$ facets, walk budget $40000$,
+$16$ replicas) froze every replica at a \emph{near-rectangle} of $30$ to
+$54$ facets, and $65$ consecutive retry passes over a frozen front produced
+zero successes in $82\%$ of the wall time; an earlier C++/MPI version on $96$
+cores never completed one cover in $120$-hour jobs (authors' runs, not
+measurements of \cite{OLGB21}).  Two mechanisms are consistent with the
+record: an exhausted extension returns only failure, never a graded
+distance to success, while contiguity is a hard constraint; and sequential,
+irrevocable growth leaves fronts at which no tested extension succeeded.  In
+retrospect, Theorem~\ref{thm:maximal} below shows that on several surfaces
+a rectangle-shaped front \emph{cannot} be extended by any facet at all.
+
+\paragraph{The annealer.}  A \emph{state} is a tuple of $k$ chains
+$C=(\varphi_0,\dots,\varphi_{c_{\max}})$ of vertex assignments
+$V\times V\to V$ with $\varphi_0=\pi_1$, $\varphi_{c_{\max}}=\pi_2$; the
+interior entries are arbitrary.  A facet $\sigma$ is \emph{covered} by $C$
+when every link is contiguous on $\sigma$; on the subcomplex
+$\mathrm{Dom}(C)$ generated by the covered facets the entries are simplicial
+and consecutive entries contiguous (each image of a covered facet lies in the
+union of images of an adjacent link, a simplex of $K$), so $C|_{\mathrm{Dom}(C)}$
+is a contiguity chain and $\mathrm{Dom}(C)$ a domain.  With $b_j(\sigma)$
+the number of links of chain $j$ violating contiguity on $\sigma$,
+$m(\sigma)=\min_j b_j(\sigma)$, $\mathrm{pen}(0)=0$ and
+$\mathrm{pen}(b)=1+\beta b$ for $b>0$, the energy is
+\[
+E=\sum_\sigma w_\sigma\,\mathrm{pen}(m(\sigma))+\gamma\sum_j\sum_\sigma b_j(\sigma),
+\]
+with facet weights $w_\sigma=1$ unless a guided restart raises them.  The
+first sum vanishes exactly at a cover and grades every uncovered facet by
+its best chain, the graded signal the greedy lacks; the second penalises
+defects in all chains and suppresses drift ($\gamma=0$ made long chains
+fail in the sphere runs).  \emph{Coverage}, the reported quantity, is the
+number of facets with $m(\sigma)=0$; the stopping criterion is full coverage
+followed by verification, never $E=0$.
+
+A population of $S$ states anneals in parallel on the GPU under a
+Metropolis rule \cite{KGV83}.  States are initialised by random sweeps flipping $\pi_1$
+towards $\pi_2$.  A proposal changes the value of one vertex in one chain at
+a single interior position or over a block of two to eight consecutive
+positions (\emph{track} moves, probability $p_{\mathrm{track}}$), copying
+from a neighbouring map with probability $1/2$ and otherwise drawing a fresh
+vertex; the surface campaigns add compound \emph{stretch}, \emph{collapse}
+and \emph{seam} proposals that rewrite several columns of a block at once.
+The temperature follows a geometric schedule within each epoch; every second
+epoch the weakest quarter of the population is overwritten by the elite and a
+few slots re-initialised.  The proposal kernel is not symmetric and we claim
+no convergence guarantee.  When the incumbent covers every facet, facets are
+partitioned (each to the first chain covering it), empty domains discarded,
+chains reduced, and the system verified map by map, link by link, facet by
+facet; the output is a certificate.  Algorithm~\ref{alg:anneal} gives the loop.
+
+\begin{algorithm}[H]
+\caption{\textsc{ChainAnneal}($K$, $k$, $c_{\max}$; $S$, $\beta$, $\gamma$,
+$p_{\mathrm{track}}$).}
+\label{alg:anneal}
+\begin{algorithmic}[1]
+\State initialise $S$ states by random sweeps from $\pi_1$ to $\pi_2$;
+$\mathcal C^*\gets$ incumbent (highest coverage)
+\For{epoch $=1,2,\dots$}
+\ForAll{states, in parallel on the GPU}
+\State $M$ Metropolis steps at temperature $T_0\to T_1$: pick a chain $j$
+and a vertex $w$, propose a new value at one position or over a block of
+$2$--$8$ positions (copied from a neighbour w.p.\ $1/2$, else fresh), accept
+w.p.\ $\min\{1,e^{-\Delta E/T}\}$
+\EndFor
+\State update $\mathcal C^*$ by unweighted coverage
+\If{$\mathcal C^*$ covers every facet}
+\State partition facets to chains, discard empty domains, reduce each chain
+\cite[Alg.~2]{OLGB21}, verify; \Return the certificate ($\SCst\le k-1$)
+\EndIf
+\State every second epoch: overwrite the weakest quarter with the elite,
+re-initialise a few slots
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Ladders.}  A \emph{warm} rung initialises half the population
+from the previous incumbent (chains reduced on their domains and padded with
+$\pi_2$); a \emph{guided} rung additionally raises the weight of facets the
+incumbent misses by $g$ after each epoch (capped at $g_{\max}$, decaying
+towards $1$ by a factor $0.7$).  Rungs pay a fixed overhead
+$\tau\approx40$\,s and their gain is front-loaded (an empirical fit on the
+dodecahedron gives $\Delta\mathrm{cov}(t)\approx c\,t^{0.8}$), so coverage
+per GPU-hour peaks at rungs of about $4\tau\approx2.7$\,min.  The surface
+campaigns also used a \emph{$k$-descent} ladder: a complete $k$-cover seeds
+the $(k{-}1)$-search by keeping its $k-1$ largest domains
+(Section~\ref{sec:descent}).
+
+\begin{table}[H]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}llr@{\hspace{8pt}}crl>{\raggedright\arraybackslash}p{3.1cm}@{}}
+\toprule
+target & $K$ & facets & $k$ & coverage & wall time & certified domains \\
+\midrule
+$S^1$ & $\partial\Delta^2$ & $18$ & $2$ & $18/18$ & $7.9$\,s & $9+9$; $\SCst=1=\TC$\\
+$S^2$ & $\partial\Delta^3$ & $96$ & $3$ & $96/96$ & $22$\,s & $54+29+13$; $\SCst=2=\TC$\\
+$S^3$ & $\partial\Delta^4$ & $500$ & $3$ & $500/500$ & $153$\,s & $309+130+61$; $\SCst\le2$\\
+$S^4$ & $\partial\Delta^5$ & $2520$ & $3$ & $2520/2520$ & $13$\,min & $1634+653+233$; $\SCst=2=\TC$\\
+$S^5$ & $\partial\Delta^6$ & $12348$ & $3$ & $12348/12348$ & $34$\,min & $7061+4239+1048$; $\SCst\le2$\\
+$S^6$ & $\partial\Delta^7$ & $59136$ & $3$ & $59136/59136$ & ${\approx}2.5$\,h$^\S$ & $44909+11451+2776$; $\SCst=2=\TC$\\
+\midrule
+$S^1\vee S^1$ & wedge & $50$ & $3$ & $50/50$ & $41$\,s & $18+16+16$; $\SCst=2$\\
+$S^2$ & cube boundary & $864$ & $3$ & $864/864$ & ${\approx}24$\,min$^\dagger$ & $482+236+146$; $\SCst=2=\TC$\\
+M\"obius & $K_M$ & $150$ & $4$ & $150/150$ & $17$\,s$^\ddagger$ & $54+37+34+25$; $\SCst\le3$\\
+\midrule
+$S^2$ & $\partial\Delta^3$ & $96$ & $2$ & $84/96$ & plateau & two-rectangle value\\
+$S^3$ & $\partial\Delta^4$ & $500$ & $2$ & $460/500$ & plateau & two-rectangle value ($8$ runs)\\
+$S^4$ & $\partial\Delta^5$ & $2520$ & $2$ & $2380/2520$ & $12$\,min & two-rectangle value\\
+\bottomrule
+\end{tabular}
+\caption{Chain-first annealer on one Tesla T4 unless noted; $k$ chains
+export at most $k$ nonempty domains.  Parameters: $c_{\max}=20$--$40$,
+$S=4096$ (circle $1024$), $5000$--$20000$ moves per epoch, $\beta=5$,
+$\gamma=0.5$, $p_{\mathrm{track}}=0.3$ (M\"obius: $\beta=1$,
+$p_{\mathrm{track}}=0.5$).  $^\dagger$Three rungs: cold $303$\,s
+($662/864$), warm $814$\,s ($820$), guided $304$\,s (complete); a guided
+cold rung alone stalled at $858$.  $^\ddagger$Warm from a $k=5$ cover
+($36$\,s); eight $k=3$ runs stalled at $148/150$ (Section~\ref{sec:stall}).
+$^\S$Eight-rung ladder on an RTX PRO 6000 ($S=64$ cold, $S=256$ guided).  The
+$k=2$ plateaus stop at the coverage of the best two rectangles; the domains
+realising them are often not rectangles.}
+\label{tab:annealer}
+\end{table}
+
+\paragraph{The dodecahedron.}  On the dodecahedron boundary ($20$
+vertices, $36$ triangles, $7776$ product facets, simplex density $3.2\%$,
+dual diameter $7$) a $20$-hour campaign at $k=3$ (five warm escalations of
+up to an hour, then $172$ rungs of $2.5$\,min over $12$ GPU-hours) rose from
+$644$ to $2602$ facets ($33.5\%$) with mean gain per rung falling from $11.7$
+to below $1$.  No cover below $\rho=36$ is known; the star bound $\SCst\le35$
+stands.
+
+\section{Star-seeded descents on the surfaces}\label{sec:descent}
+
+The surface campaigns ran \texttt{annealer\_stretch.py} ($\beta=5$,
+$\gamma=0.1$, $c_{\max}=40$, $S=4096$, $5000$ steps per epoch, seed $8233$
+unless stated) with the $k$-descent ladder.  Table~\ref{tab:descent} records
+first covers, descents and first stalls.  The cold first cover was the stage
+that did not scale ($2$\,h on the Klein bottle; cold runs on the
+hemi-octahedron and hemi-dodecahedron ended without a cover); the star cover
+replaces it: the hemi-dodecahedron star-seeded at $k=14$ covered in
+$6689$\,s where cold runs at $k=15,20,30$ had not after $3521$, $14673$ and
+$2863$\,s, and the icosahedron descended from the $24$-domain star cover to a
+verified $5$-domain cover in $17.9$\,h of rungs, every rung from $k=23$ to
+$k=5$ closing (the $k=5$ rung after a warm continuation of a $2395/2400$
+stall).  Single seeds, one lineage per complex: these are recorded
+observations, not controlled comparisons.
+
+\begin{table}[H]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}l r>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{1.9cm}>{\raggedright\arraybackslash}p{2.4cm}@{}}
+\toprule
+complex ($|K{\times}K|$) & $\rho$ & first cover & descent (wall) & lowest verified & first stall \\
+\midrule
+hemi-icosahedron ($600$) & $6$ & cold $k{=}11$: $679$\,s & $k{=}11\to6$ ($0.8$\,h) & $6$ domains & $k{=}5$: $540$--$544/600$\\
+hemicube ($864$) & $7$ & cold $k{=}20$: $2470$\,s & $k{=}20\to7$ ($2.0$\,h) & $7$ & $k{=}6$: $836/864$\\
+Klein bottle ($1536$) & $12$ & cold $k{=}15$: $7075$\,s & $k{=}15\to10$ ($4.3$\,h) & $10$ & $k{=}9$: $1494/1536$\\
+hemi-octahedron ($1536$) & $9$ & star-seeded $k{=}8$: $6298$\,s & --- & $8$ & $k{=}7$: $1432/1536$ (log)\\
+hemi-dodecahedron ($1944$) & $15$ & star-seeded $k{=}14$: $6689$\,s & $k{=}14\to7$ ($12.3$\,h) & $7$ & $k{=}6$: $1922/1944$\\
+icosahedron ($2400$) & $24$ & star-seeded $k{=}23$: $1545$\,s & $k{=}23\to5$ ($17.9$\,h) & $5$; then $4$ (Section~\ref{sec:exact}) & $k{=}4$: $2376/2400$ ($3$ runs)\\
+dodecahedron ($7776$) & $36$ & none below $\rho$ & --- & star only & $k{=}3$: $2602/7776$\\
+Cs\'asz\'ar torus ($1176$) & $11$ & none below $\rho$ & --- & star only & $k{=}11$ cold: $563/1176$\\
+\bottomrule
+\end{tabular}
+\caption{First covers, descents and first stalls.  Sources:
+\texttt{results/rp2\_k11}\dots\texttt{rp2\_k6},
+\texttt{hemicube\_k20}\dots\texttt{k7}, \texttt{klein\_k15\_8233\_v2}\dots\texttt{klein\_k10},
+\texttt{hemi\_octa\_k8}, \texttt{hemi\_dodeca\_k14}\dots\texttt{k7},
+\texttt{icosa\_k23}\dots\texttt{icosa\_k5\_v2}; stalls in \texttt{rp2\_k5\_*},
+\texttt{hemicube\_k6\_v2}, \texttt{klein\_k9\_v4}, \texttt{hemi\_dodeca\_k6\_v2},
+\texttt{icosa\_k4\_v3}, \texttt{dodeca\_*}.  A stall is the best coverage of
+the recorded runs at that $k$; Section~\ref{sec:stall} decides which stalls
+are obstructions.}
+\label{tab:descent}
+\end{table}
+
+\section{Lower bounds for chains of every length: rigid subcomplexes}\label{sec:rigid}
+
+A failed search, and even a solver infeasibility for chains of at most $L$
+links, says nothing about longer chains.  The bounds of this section have no
+such defect.  Proofs omitted here are in the companion note \cite{PM26b}.
+
+\begin{definition}\label{def:rigid}
+A subcomplex $Z\subseteq K\times K$ is \emph{rigid} if $\pi_1|_Z$ and
+$\pi_2|_Z$ are joined by no contiguity chain of simplicial maps $Z\to K$, of
+any length; equivalently, $Z$ is not a contiguity domain.  For a family
+$\mathcal Z$ of subcomplexes, a \emph{$\mathcal Z$-avoiding $k$-cover} is a
+family $\mathcal F_1,\dots,\mathcal F_k$ of sets of facets of $K\times K$
+covering all facets such that no $\gen{\mathcal F_j}$ contains a member of
+$\mathcal Z$; $\chi(\mathcal Z)$ is the least such $k$.
+\end{definition}
+
+\begin{theo}[rigid-subcomplex bound]\label{thm:bound}
+If $\mathcal Z$ is a family of rigid subcomplexes then $\SCst(K)+1\ge\chi(\mathcal Z)$.
+Deciding whether a $\mathcal Z$-avoiding $k$-cover exists is a finite SAT
+instance (variables ``facet $f$ in class $j$'' and ``simplex $z$ absent from
+class $j$'').  For $r\ge|V|^2$ the family of all rigid subcomplexes with at
+most $r$ vertices gives $\chi=\SCst(K)+1$ exactly.
+\end{theo}
+
+\begin{proof}
+The facet classes of a $k$-cover (Section~\ref{sec:back}) generate domains,
+and by heredity a domain contains no rigid subcomplex.  Conversely, if no
+class contains any rigid subcomplex, each class is itself a domain.
+\end{proof}
+
+\subsection{Source 1: hollow triangles with mismatched winding}
+
+For a $\Zt$-valued $1$-cocycle $u$ of $K$ and a closed walk $f:C_m\to K$,
+let $w_u(f)=\sum_i u(f(y_i)f(y_{i+1}))$.  Contiguous maps $C_m\to K$ have the
+same winding (add the cocycle relation on the two triangles $a,b,b'$ and
+$a,a',b'$ of each contiguity square $\{a,b,a',b'\}$ and sum over the cycle).
+Hence a hollow triangle $Z\subseteq K\times K$ (three pairwise comparable
+grid points whose pairs are simplices and whose triple is not) is rigid as
+soon as $w_u(\pi_1\circ Z)\ne w_u(\pi_2\circ Z)$; the basic case is the
+\emph{slice} $\tau\times\{c\}$ over an \emph{essential empty triangle}
+$\tau$ (three edges of $K$, not a face, with $u(\partial\tau)=1$), where
+$\pi_1$ winds and $\pi_2$ is constant.  More generally, a closed walk
+$Z$ in the $1$-skeleton of $K\times K$ is rigid whenever its two projected
+walks lie in different \emph{contiguity classes} of maps $C_m\to K$; we
+compute these classes exactly (union--find over all $|V|^m$ maps).  They
+are finer than homotopy: the $3$-walks of the Klein bottle fall into $11$
+classes but its $4$-walks into $6$, the torus separates the two integral
+windings ($7$ classes of $3$-walks), the hemi-octahedron has $25$ classes of
+$3$-walks and $2$ of $4$-walks, while the hemi-icosahedron has exactly $2$
+classes (the $\Zt$ winding) for every length $3$ to $6$ and the icosahedron
+and cube boundaries have a single class for every length up to $5$ and $6$:
+no rigid short cycle exists there.
+
+\subsection{Source 2: rigid graphs over minimal complexes}
+
+A vertex $v$ is \emph{dominated} if some $v'\ne v$ lies in every facet
+containing $v$; $K$ has no dominated vertex iff
+$\bigcap\{\sigma\text{ facet}:v\in\sigma\}=\{v\}$ for all $v$.  Such
+complexes are the \emph{minimal} complexes of Barmak--Minian \cite{BM12}.
+Every closed surface triangulation has no dominated vertex (the facets at $v$
+are the triangles around the link cycle of $v$, of length $\ge3$), nor has
+$\partial\Delta^{n+1}$ nor the five-vertex M\"obius band; more generally a
+complex without free faces has none, since deleting a dominated vertex is a
+strong collapse.
+
+\begin{lemma}\label{lem:idalone}
+If $K$ has no dominated vertex and $\varphi:K\to K$ is simplicial and
+contiguous to $\mathrm{id}_K$, then $\varphi=\mathrm{id}_K$.
+\end{lemma}
+
+\begin{proof}
+For a facet $\sigma$, $\sigma\cup\varphi(\sigma)\in K$ and $\sigma$ is
+maximal, so $\varphi(\sigma)\subseteq\sigma$; hence
+$\varphi(v)\in\bigcap_{\sigma\ni v}\sigma=\{v\}$.
+\end{proof}
+
+\begin{theo}[rigid graphs]\label{thm:graphs}
+Let $K$ have no dominated vertex and let $w:V\to V$ be non-decreasing for
+the vertex order and simplicial ($w(\sigma)\in K$ for all $\sigma\in K$),
+with $w\ne\mathrm{id}$.  Then
+\[
+\Gamma_w=\bigl\{\{(v,w(v)):v\in\sigma\}:\sigma\in K\bigr\}
+\]
+is a subcomplex of $K\times K$, $\pi_1|_{\Gamma_w}$ is an isomorphism onto
+$K$ under which $\pi_2|_{\Gamma_w}$ becomes $w$, and $\Gamma_w$ is rigid.
+The same holds for the transpose $\Gamma_w^{\mathsf T}=\{\{(w(v),v):v\in\sigma\}\}$.
+\end{theo}
+
+\begin{proof}
+For $\sigma\in K$, $S_\sigma=\{(v,w(v)):v\in\sigma\}$ is a chain because $w$
+is non-decreasing, with $\pi_1(S_\sigma)=\sigma\in K$ and
+$\pi_2(S_\sigma)=w(\sigma)\in K$ because $w$ is simplicial; so $S_\sigma$ is a
+simplex of $K\times K$, and $S_\tau\subseteq S_\sigma$ for $\tau\subseteq\sigma$.
+The bijection $(v,w(v))\mapsto v$ carries $S_\sigma$ to $\sigma$, hence is an
+isomorphism $\Gamma_w\to K$ under which $\pi_1$ becomes $\mathrm{id}_K$ and
+$\pi_2$ becomes $w$.  A contiguity chain
+$\pi_1|_{\Gamma_w}=\psi_0\sim\cdots\sim\psi_L=\pi_2|_{\Gamma_w}$ therefore
+becomes a chain $\mathrm{id}=\varphi_0\sim\varphi_1\sim\cdots\sim\varphi_L=w$
+of simplicial maps $K\to K$; by Lemma~\ref{lem:idalone} and induction every
+$\varphi_i=\mathrm{id}$, so $w=\mathrm{id}$, a contradiction.  For the
+transpose read the chain backwards.
+\end{proof}
+
+\begin{remark}\label{rem:graphs}
+(a) For $K=\partial\Delta^{n+1}$ every non-decreasing $w\ne\mathrm{id}$ is
+simplicial (it is not onto, so proper subsets go to proper subsets) and
+$\Gamma_w$ is the hollow sphere $Z_w$ of \cite{PM26b}; Theorem~\ref{thm:graphs}
+extends those rigid spheres to every closed surface.  (b) Constants $w\equiv c$
+give $\Gamma_c=K\times\{c\}$: no domain contains a full row or column of
+$K\times K$.  (c) A contractible complex without free faces (a dunce-hat
+triangulation) has $K\times\{c\}$ rigid although $\pi_1$ and $\pi_2$ are
+homotopic there, so $\SCst(K)\ge1>0=\TC$: the rigidity is combinatorial.  On
+the complexes of this paper, however, every $\Gamma_w$ has even mod-$2$
+degree or acts non-trivially on $H^1(K;\Zt)$, so it is also homotopically
+rigid (checked: no exception among $3891$ maps on the icosahedron, $597$ on
+the Klein bottle, $181$ on the hemi-icosahedron).  (d) We verified by brute
+force that $\mathrm{id}$ is alone in its contiguity class on all eleven
+complexes of Table~\ref{tab:rho}, while a cone or a path has $27$ or $4$
+maps contiguous to the identity.
+\end{remark}
+
+\subsection{The bounds}
+
+For each complex we built the family $\mathcal Z$ of all rigid closed walks
+of length $\le4$ (classes computed exactly) together with all $\Gamma_w$ and
+transposes, and decided the avoidance instances with CaDiCaL
+(\texttt{scripts/rigid\_analysis/rigid.py}).  Table~\ref{tab:floors} gives
+the results; an UNSAT row is a theorem for chains of every length.
+
+\begin{table}[H]
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrrrrcc@{}}
+\toprule
+$K$ & rigid walks & rigid graphs & $\TC{+}1$ & floor & UNSAT at $k$ & SAT at $k$ \\
+\midrule
+M\"obius band $K_M$ & $4\,684$ & $150$ & $2$ & $\mathbf 3$ & $2$ & $3$ \\
+$\partial\Delta^4$ ($S^3$) & $0$ & $250$ & $2$ & $\mathbf 3$ & $2$ & $3$ \\
+hemi-icosahedron & $19\,214$ & $362$ & $4$ & $\mathbf 5$ & $4$ ($28$\,s) & $5$ ($540$\,s) \\
+hemicube & $29\,216$ & $900$ & $4$ & $\mathbf 5$ & $4$ ($486$\,s) & $5$ ($411$\,s) \\
+Klein bottle & $94\,540$ & $1\,194$ & $5$ & $5$ & $4$ ($911$\,s) & $5$: undecided \\
+Cs\'asz\'ar torus & $87\,204$ & $686$ & $3$ & $\mathbf 4$ & $3$ & $4$ \\
+hemi-octahedron & $30\,922$ & $2\,056$ & $4$ & $4$ & $3$ & $4$ ($1476$\,s) \\
+hemi-dodecahedron & $37\,966$ & $2\,042$ & $4$ & $4$ & $3$ & $4$ \\
+cube, icosahedron & $0$ & $844$, $7\,782$ & $3$ & $2$ & --- & $2$ \\
+\bottomrule
+\end{tabular}
+\caption{Chain-length-free floors from Theorem~\ref{thm:bound} with the
+families of Sources 1 and 2 (distinct edge sets of rigid walks of length
+$\le4$; rigid graphs with transposes); ``floor'' is in domains, and the best
+known covers are in Table~\ref{tab:surfaces}.  Bold floors exceed $\TC+1$.  The
+family proves nothing on the two flag triangulations of $S^2$.  For
+$\partial\Delta^{n+1}$ the note \cite{PM26b} decides the rigid-sphere family
+at $k=2$: UNSAT for $n=3,5,7,9$ (six, six, three and two solvers agreeing).}
+\label{tab:floors}
+\end{table}
+
+\begin{theo}[computer-assisted]\label{thm:floors}
+At subdivision level $0$:
+$\SCst(\partial\Delta^{n+1})=2>1=\TC(S^n)$ for $n=3,5,7,9$;
+$\SCst(K_M)=2>1=\TC$ for the five-vertex M\"obius band (a hand proof is in
+\cite{PM26b});
+$3\le\SCst(\text{Cs\'asz\'ar torus})\le10$ with $\TC=2$;
+$4\le\SCst(\text{hemi-icosahedron})\le5$ and $4\le\SCst(\text{hemicube})\le6$
+with $\TC(\mathbb{RP}^2)=3$ \cite{FTY03};
+$4\le\SCst(\text{Klein})\le9$ with $\TC=4$ \cite{CV17}.
+\end{theo}
+
+\begin{proof}
+Lower bounds: Table~\ref{tab:floors} and Theorem~\ref{thm:bound}, the
+families being rigid by the winding argument and Theorem~\ref{thm:graphs}.
+Upper bounds: Corollary~\ref{cor:rho} for the spheres, the certificates of
+Tables~\ref{tab:annealer}, \ref{tab:descent} and~\ref{tab:surfaces}, and the
+star cover for the torus.
+\end{proof}
+
+The first statement upgrades the solver result of Section~\ref{sec:sat}
+(no two-domain cover of $\partial\Delta^4$ with chains of at most $48$
+links) to an unconditional one, and the M\"obius value, previously
+conditional on chains of at most $8$ links \cite{PM26}, is now
+unconditional.  For the hemi-icosahedron the full $H^1$-cycle relaxation
+(every class free of winding cycles of any length,
+\texttt{scripts/relaxation/h1cegar.py}) is also satisfiable at $k=5$, so no
+winding argument can exclude a five-domain cover; whether one exists is open
+(Section~\ref{sec:exact}).
+
+\section{Anatomy of a stall}\label{sec:stall}
+
+The families of Section~\ref{sec:rigid} decide whether a stalled state can
+be extended.  For a state with domains $D_1,\dots,D_k$ and uncovered facets
+$L$, call $f\in L$ \emph{dead} if $D_j\cup\{f\}$ contains a rigid subcomplex
+for every $j$: then no chain of any length covers $D_j\cup\{f\}$, and the
+state cannot gain $f$ without first losing facets.
+
+\begin{theo}[maximal rectangles; computer-verified]\label{thm:maximal}
+Let $K$ be the hemi-icosahedron, the five-vertex M\"obius band or the
+Cs\'asz\'ar torus.  For every vertex pair $(v,w)$ and every facet
+$f\notin D(v,w)$, the subcomplex generated by $D(v,w)\cup\{f\}$ contains a
+hollow triangle whose two projected $3$-walks lie in different contiguity
+classes of maps $C_3\to K$.  Hence every star rectangle $D(v,w)$ is a
+\emph{maximal} contiguity domain: no domain of any cover properly contains it.
+\end{theo}
+
+\begin{proof}
+$36\cdot450$, $25\cdot96$ and $49\cdot960$ explicit witnesses
+(\texttt{scripts/rigid\_analysis/}\allowbreak\texttt{certificates/}\allowbreak\texttt{maximal\_rectangles\_*.json}),
+each re-verified independently: every edge of the triangle lies in a facet of
+$D(v,w)\cup\{f\}$, and the two walks are in different classes, the classes
+recomputed by brute force from the definition of contiguity ($2$, $3$ and $7$
+classes).  Each witness is a hand proof by the winding argument: on the
+hemi-icosahedron, for $D(1,1)$ and the facet over $(\{0,4,5\},\{2,3,5\})$,
+the points $(0,0),(0,2),(5,5)$ span a hollow triangle whose $\pi_1$-walk
+$0,0,5$ has winding $0$ and whose $\pi_2$-walk $0,2,5$ is the essential empty
+triangle $\{0,2,5\}$.  Rigidity passes to supersets by heredity.
+\end{proof}
+
+On the hemicube $16$ of $49$ rectangles are maximal, on the Klein bottle $4$
+of $64$.  Theorem~\ref{thm:maximal} is the \emph{product-family trap}: the
+rectangle chains $\pi_1\sim c_v\sim\pi_2$ carry no defect penalty, so the
+annealer is drawn to the rectangle family, and once there no single-chain
+move of any width can gain a facet.  The hemi-icosahedron plateau at
+$k=\rho-1=5$ ($540/600$: five diagonal rectangles, the $60$ private facets of
+the sixth missing) is therefore a strict local maximum of coverage under all
+single-chain moves.
+
+\begin{table}[H]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.3cm}crrr>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\toprule
+state & $k$ & covered & $|L|$ & dead & witnesses & exact completion \\
+\midrule
+\texttt{rp2\_k5\_hybrid} & $5$ & $540/600$ & $60$ & $60/60$ & hollow triangles & none ($L\le12$)\\
+\texttt{rp2\_k5\_from\_k6\_\dots7232} & $5$ & $544/600$ & $56$ & $54/56$ & hollow triangles & none\\
+\texttt{rp2\_k3\_cold} & $3$ & $398/600$ & $202$ & $200/202$ & hollow triangles & ---\\
+\texttt{hemicube\_k6\_v2} & $6$ & $836/864$ & $28$ & $27/28$ & hollow triangles & none\\
+\texttt{klein\_k9\_v4} & $9$ & $1494/1536$ & $42$ & $41/42$ & $3$-walks, one $4$-walk & none\\
+\texttt{klein\_k8\_r1} & $8$ & $1483/1536$ & $53$ & $53/53$ & $3$-, $4$-walks & ---\\
+\texttt{hemi\_dodeca\_k6\_v2} & $6$ & $1922/1944$ & $22$ & $6/22$ & $3$-walks & none (doors in four domains)\\
+\texttt{mobius\_seed\_999} & $3$ & $148/150$ & $2$ & $0/2$ & --- & none\\
+\texttt{mobius\_k3\_cold\_s4}, \texttt{\dots\_stretch\_from\_149} & $3$ & $149/150$ & $1$ & $0/1$ & --- & \textbf{found} ($8$ links)\\
+\texttt{s3\_k2\_v2\_point}, \texttt{s3\_k2\_A}, \texttt{s3\_k2\_v2\_track} & $2$ & $460/500$ & $40$ & $40/40$ & rigid spheres & none ($L\le8$)\\
+\texttt{icosa\_k4\_v3} & $4$ & $2376/2400$ & $24$ & $0/24$ & --- & \textbf{found} ($8$ links): \texttt{icosa\_k4\_exact}\\
+\bottomrule
+\end{tabular}
+\caption{Door audit of the stalled states (\texttt{rigid.py audit}):
+``dead'' counts uncovered facets whose addition to \emph{every} domain
+closes a rigid subcomplex of the family of Table~\ref{tab:floors}; the full
+mod-$2$ cohomological balance test of \cite{PM26b} agrees on every row where
+it was run.  The last column is the exact decision of
+Section~\ref{sec:exact} for $D_j\cup L$ over all $j$.}
+\label{tab:audit}
+\end{table}
+
+Table~\ref{tab:audit} separates the stalls into two kinds.  On the
+hemi-icosahedron, the hemicube, the Klein bottle and $\partial\Delta^4$ the
+states are \emph{rigid-closed}: (almost) every door is shut by a hollow
+triangle or a rigid sphere, the state is a dead end of any search, and only
+a re-partition of the domains can continue.  On the icosahedron, the
+hemi-dodecahedron and the M\"obius $149$-states the doors are \emph{open}:
+no known obstruction forbids the extension, and the exact method of the next
+section settles what the annealer could not.
+
+\section{Exact methods}\label{sec:exact}
+
+\paragraph{Deciding a single domain.}  Whether a facet set $D$ admits a
+chain of at most $L$ links is a SAT instance: one-hot variables for the
+$L-1$ interior maps on the grid points of $D$, and for every facet and link a
+set of ``value present'' variables on which every minimal non-face of $K$
+(non-edges, empty triangles, and for $\partial\Delta^{n+1}$ the vertex set)
+is forbidden (\texttt{scripts/rigid\_analysis/domain\_chain\_sat.py}).
+Padding by $\pi_2$ makes ``no chain of exactly $L$ links'' equivalent to
+``none of at most $L$''.  Instances with up to $1\,000$ facets and $L=12$
+solve in under a second; the encoder reproduces every recorded domain and
+every rigid witness of Theorem~\ref{thm:maximal} (UNSAT for all tested $L$).
+
+\paragraph{Completing a stall.}  For each domain $D_j$ of a stalled state we
+ask whether $D_j\cup L$ is a domain.  On \texttt{icosa\_k4\_v3} the answer is
+yes for the domain of $744$ facets at $L=8$ (and no for the smallest domain
+at $L\le12$); the system of the three untouched chains and the new one is a
+verified cover.
+
+\begin{proposition}\label{prop:icosa}
+$\SCst(\text{icosahedron boundary})\le3$, by the audited certificate
+\texttt{results/icosa\_k4\_exact}: four domains of $819$, $728$, $629$ and
+$224$ facets with chains of $8$, $9$, $7$, $6$ links.  Hence
+$2\le\SCst(\text{icosahedron})\le3$.
+\end{proposition}
+
+The same step completes both M\"obius $149$-states into $3$-covers (the
+one domain with an open door absorbs the last facet with an $8$-link chain),
+and fails, as it must, on every rigid-closed state of Table~\ref{tab:audit}.
+The annealer's $k=4$ icosahedron plateau, reached by three runs of $200$
+epochs each, was thus one chain away from completion; the completing chain
+re-routes the whole domain and is not reachable by the local proposals, each
+of which is uphill.
+
+\paragraph{A lazy exact cover solver.}  Combining the two halves gives a
+solver for ``does $K\times K$ admit $k$ domains with chains of at most $L$
+links'' (\texttt{scripts/rigid\_analysis/}\allowbreak\texttt{cegar\_cover.py}): an outer SAT
+proposes $k$ (disjoint) facet classes avoiding the rigid families; the
+single-domain decision checks each class; a non-domain class yields an unsat
+core, minimised to a minimal non-domain facet set, which is learned as a
+clause for every class.  SAT returns chains and writes an audited
+certificate; UNSAT is a statement for chains of at most $L$ links, with the
+learned sets as a re-checkable certificate.  It finds the three-domain
+M\"obius cover in one second (the first proposal of the outer SAT is already
+a cover) where the annealer stalled in eight runs, proves $k=2$ impossible
+on $K_M$ and $\partial\Delta^4$ at once, and covers $\partial\Delta^3$ by
+three domains in two seconds.  On the hemi-icosahedron at $k=5$, the
+hemicube at $k=5$ and the icosahedron at $k=3$ it learns minimal non-domain
+sets of $3$ to $25$ facets, smaller than any member of the hand-built
+families, at several minutes per iteration (the outer SAT dominates); within
+a two-hour budget each it reached $22$, $6$ and $17$ iterations with $290$,
+$90$ and $153$ learned sets and no verdict, every proposed partition still
+containing a non-domain class.  The learned sets are kept
+(\texttt{certificates/learned\_*.json}) and seed later runs.  The solver is
+strongest at finding covers; for
+infeasibility its learned cuts are local, and on the cube boundary at $k=2$,
+where $\TC(S^2)=2$ already forbids a cover, $83$ iterations and $498$
+learned sets did not reach UNSAT in $38$ minutes.
+
+\section{CP-SAT on \texorpdfstring{$\partial\Delta^4$}{the 3-sphere model}}\label{sec:sat}
+
+Before the rigid-sphere argument we attacked $\partial\Delta^4$ at $k=2$
+with a direct CP-SAT model (\texttt{paper-overleaf/paper/scs\_sat.py}): one
+vertex-valued variable per grid vertex and interior map of each of $k$
+chains, a facet covered by a chain when every link's image union lies in a
+facet of $K$, every facet covered by some chain.  The encoding was validated
+on $1100$ random chains against the annealer's defect counts, by
+round-tripping five recorded covers, and by five solver controls in both
+directions (\texttt{experiments/s3\_sat\_validation\_log.md}).  It returned
+INFEASIBLE for $k=2$ at $L=4,5,8,12,16,24,32,40,48$ ($12$\,s to $1988$\,s,
+\texttt{logs/sat\_ladder/}), a solver result for chains of at most $48$
+links.  Theorem~\ref{thm:floors} now gives the unconditional statement, so
+the \emph{compression} question, whether every domain of
+$\partial\Delta^4\times\partial\Delta^4$ admits a chain of at most $48$
+links, is no longer needed for $\SCst(\partial\Delta^4)=2$; we record that
+every chainable domain we measured needs at most $4$ links.  The model does
+not scale: for $\partial\Delta^6$ at $L=3,4$ and for $\mathbb{RP}^2$ at
+$k=5$, $L=4$ it exhausted $5$--$6$\,GB without a verdict, which is why the
+lazy solver of Section~\ref{sec:exact} decides one domain at a time.
+
+\section{Results}\label{sec:results}
+
+\begin{table}[H]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrrrcc>{\raggedright\arraybackslash}p{4.6cm}c@{}}
+\toprule
+complex & $|V|$ & $|K{\times}K|$ & $\rho$ & $\TC$ & floor & best certified $\SCst\le$ (source) & audit \\
+\midrule
+circle $\partial\Delta^2$ & $3$ & $18$ & $3$ & $1$ & $1$ & $1$ (\texttt{circle\_probe3}); $=\TC$ & yes\\
+wedge $S^1\vee S^1$ & $4$ & $50$ & $4$ & $2$ & $2$ & $2$ (\texttt{wedge\_k3\_v2}); $=\TC$ & yes\\
+$\partial\Delta^{n+1}$, $n=2,4,6$ & & & $3$ & $2$ & $2$ & $2$; $=\TC$ (Cor.~\ref{cor:rho}, certificates $n\le6$) & yes\\
+$\partial\Delta^{n+1}$, $n=3,5,7,9$ & & & $3$ & $1$ & $\mathbf 2$ & $2$; $=\SCst>\TC$ (Thm.~\ref{thm:floors}) & yes ($n\le6$)\\
+M\"obius band & $5$ & $150$ & $4$ & $1$ & $\mathbf 2$ & $2$ (\texttt{mobius\_k3\_sat}, \texttt{mobius\_k3\_cegar\_L8}); $=\SCst$ & yes\\
+hemi-icosahedron & $6$ & $600$ & $6$ & $3$ & $\mathbf 4$ & $5$ (\texttt{rp2\_k6}) & yes\\
+hemicube & $7$ & $864$ & $7$ & $3$ & $\mathbf 4$ & $6$ (\texttt{hemicube\_k7}) & internal\\
+hemi-octahedron & $9$ & $1536$ & $9$ & $3$ & $3$ & $7$ (\texttt{hemi\_octa\_k8}) & internal\\
+hemi-dodecahedron & $10$ & $1944$ & $15$ & $3$ & $3$ & $6$ (\texttt{hemi\_dodeca\_k7}) & internal\\
+Klein bottle & $8$ & $1536$ & $12$ & $4$ & $4$ & $9$ (\texttt{klein\_k10}) & yes\\
+Cs\'asz\'ar torus & $7$ & $1176$ & $11$ & $2$ & $\mathbf 3$ & $10$ (star cover) & yes\\
+cube boundary & $8$ & $864$ & $8$ & $2$ & $2$ & $2$ (\texttt{cube\_k3\_guided}); $=\TC$ & yes\\
+icosahedron boundary & $12$ & $2400$ & $24$ & $2$ & $2$ & $3$ (\texttt{icosa\_k4\_exact}) & yes\\
+dodecahedron boundary & $20$ & $7776$ & $36$ & $2$ & $2$ & $35$ (star cover) & yes\\
+\bottomrule
+\end{tabular}
+\caption{State of knowledge at level $0$.  ``floor'' is the best lower
+bound on $\SCst$ (bold where it exceeds $\TC$: Theorem~\ref{thm:floors});
+$\TC$ is reduced \cite{F03,FTY03,CV17}.  ``audit'': re-checked by
+\texttt{src/independent\_check.py} for this paper; ``internal'': the auditor
+cannot yet rebuild the complex (facet counts $864$, $1536$ and $1944$
+collide with or are absent from its table), so only the search's own
+verifier was run.}
+\label{tab:surfaces}
+\end{table}
+
+Four remarks.  \emph{Sharp values.}  $\SCst=\TC$ on the circle, the
+wedge, the even spheres up to $S^6$ and the cube; $\SCst=\TC+1$ on the
+odd spheres $S^3,S^5,S^7,S^9$ and on the M\"obius band, the level-$0$ gap
+being genuine and chain-length-free.  \emph{Three triangulations of
+$S^2$} behave differently: $\partial\Delta^3$ and the cube are pinned at
+$2$, the icosahedron is bracketed $2\le\SCst\le3$, and $\rho$ runs
+$3,8,24$.  \emph{Prediction became quantitative}: rectangle arithmetic
+predicted the two-chain plateaus $460=23\cdot20$ on $\partial\Delta^4$ and
+$2380=34\cdot70$ on $\partial\Delta^5$, both observed, and
+Theorem~\ref{thm:maximal} now explains why rectangle-shaped fronts freeze.
+\emph{Where the method is blind.}  On the hemi-octahedron and the
+hemi-dodecahedron the rigid families add nothing to $\TC$ and the best
+covers ($8$ and $7$ domains) are far above the floor ($4$); on the torus
+no cover below $\rho=11$ is known although the floor is $4$.
+
+\section{Certificates, auditing, reproduction}\label{sec:repro}
+
+Every cover reported is discharged as data: chains are replayed
+deterministically, reduced by \cite[Alg.~2]{OLGB21}, and asserted to connect
+the two projections through pairwise contiguous simplicial maps over every
+facet of every domain (\texttt{cover.txt}, \texttt{planners.txt},
+\texttt{summary.json}).  An independent auditor
+(\texttt{src/independent\_check.py}), a pure-Python program that rebuilds
+each triangulation from its facet list and shares no code with the search,
+re-runs every check and exits nonzero on any discrepancy.  It verifies
+$59$ archived covers: the star covers of all complexes of
+Table~\ref{tab:rho} except the three subdivided models of $\mathbb{RP}^2$
+(up to $\partial\Delta^9$, $1\,287\,000$ facets), the whole icosahedron
+ladder (the $24$-domain seed, $k=23,\dots,5$ and \texttt{icosa\_k4\_exact}),
+the hemi-icosahedron and Klein rungs, the M\"obius certificates and the
+first-phase certificates of Table~\ref{tab:annealer}
+(\texttt{audit/verify\_all.py --check} in the certificates repository, which
+also checks a hash manifest).  The hemicube, hemi-octahedron and
+hemi-dodecahedron covers pass only the internal verifier
+(Table~\ref{tab:surfaces}); they are archived and hashed separately.
+
+Computer-assisted theorems rest on three kinds of artefact: SAT instances
+built from proved rigid families (\texttt{rigid.py bound}, logs in \texttt{scripts/rigid\_analysis/}\allowbreak\texttt{certificates/}\allowbreak\texttt{bound\_*.txt}; the rigid-sphere instances of \cite{PM26b}); witness lists re-verified from the definitions
+(\texttt{maximal\_rectangles\_*.json}); and single-domain decisions, each
+re-checkable in seconds.  The CP-SAT infeasibilities of Section~\ref{sec:sat}
+are solver outputs without proof logs and are labelled as such.
+
+Source code (annealer, star cover, rigid-subcomplex tools, exact solvers,
+auditor) is at
+\begin{center}\url{https://github.com/MiguelPerezI/chain-first-annealer}\end{center}
+and the archived certificates at
+\begin{center}\url{https://github.com/MiguelPerezI/simplicial-complexity-certificates}\end{center}
+Every cover cited in this paper is in the certificates archive; the
+rigid-analysis certificates, logs and stalled states are in
+\texttt{opti/scripts/rigid\_analysis/}, \texttt{opti/results/} and
+\texttt{opti/experiments/} of the source repository.  The versions described
+here carry the tag \texttt{arxiv-v1} in both repositories.
+All annealer runs except $S^6$ used one Tesla T4; wall times are single-run
+observations.  The rigid-analysis and exact computations ran on a four-core
+laptop CPU.
+
+\section{Concluding remarks}\label{sec:concl}
+
+The expensive object turned out to be the wrong object twice, and the
+missing object once.  The randomised greedy hunts chains one facet at a
+time; the annealer hunts whole systems and solves the classical targets in
+seconds to hours; its plateaus pointed to the star cover, which makes the
+first move search-free.  What was missing was a lower bound that does not
+depend on chain length.  Rigid subcomplexes supply it, and they answer the
+question the stalls had posed.  The annealer is weak in two precise ways: it
+cannot express the global re-routing of a chain that completes an open door
+(the icosahedron, the M\"obius $149$-states), and it is drawn into the
+rectangle family, whose members are maximal domains on three of the
+surfaces.  Where it stalls with every door rigid-closed, it is right to
+stall, and the floors show how close the certified values are to what can
+be proved.
+
+The property shared by the odd spheres and the stalling surfaces is
+minimality: the identity is contiguous only to itself, so every graph
+$\Gamma_w$ is rigid.  What separates them from $S^2$ is that the colouring
+number of their small rigid pieces exceeds $\TC+1$, while on the icosahedron
+no rigid short cycle exists and the graph family is avoidable by two
+classes.  Every rigid piece found is also homotopically rigid, so the
+level-$0$ excess on these complexes is a resolution effect: the facets of
+$K\times K$ are too coarse to separate pieces that topology also forbids.
+
+Open at the time of writing: whether the hemi-icosahedron admits five
+domains ($\SCst\in\{4,5\}$), the hemicube five or six, the icosahedron three
+($\SCst\in\{2,3\}$); whether the Klein bottle needs more than five domains
+(the rigid family at $k=5$ undecided); the torus between $4$ and $11$
+domains; and $\SCst(\partial\Delta^{n+1})=2$ for all odd $n$, known for
+$n\le9$.
+
+\begin{thebibliography}{10}
+
+\bibitem{BM12}
+J.~A. Barmak and E.~G. Minian.
+\newblock Strong homotopy types, nerves and collapses.
+\newblock {\em Discrete Comput. Geom.}, 47(2):301--328, 2012.
+
+\bibitem{CV17}
+D.~C. Cohen and L.~Vandembroucq.
+\newblock Topological complexity of the Klein bottle.
+\newblock {\em J. Appl. Comput. Topol.}, 1(2):199--213, 2017.
+
+\bibitem{F03}
+M.~Farber.
+\newblock Topological complexity of motion planning.
+\newblock {\em Discrete Comput. Geom.}, 29(2):211--221, 2003.
+
+\bibitem{FTY03}
+M.~Farber, S.~Tabachnikov, and S.~Yuzvinsky.
+\newblock Topological robotics: motion planning in projective spaces.
+\newblock {\em Int. Math. Res. Not.}, 2003(34):1853--1870, 2003.
+
+\bibitem{G18}
+J.~Gonz\'alez.
+\newblock Simplicial complexity: piecewise linear motion planning in
+  robotics.
+\newblock {\em New York J. Math.}, 24:279--292, 2018.
+
+\bibitem{KGV83}
+S.~Kirkpatrick, C.~D. Gelatt, Jr., and M.~P. Vecchi.
+\newblock Optimization by simulated annealing.
+\newblock {\em Science}, 220(4598):671--680, 1983.
+
+\bibitem{OLGB21}
+C.~Ortiz, A.~Lara, J.~Gonz\'alez, and A.~Borat.
+\newblock A randomized greedy algorithm for piecewise linear motion
+  planning.
+\newblock {\em Mathematics}, 9(19):2358, 2021.
+
+\bibitem{ORTools}
+L.~Perron and V.~Furnon.
+\newblock OR-Tools (CP-SAT solver).
+\newblock Google, \url{https://developers.google.com/optimization}.
+
+\bibitem{PM26}
+M.~Perez and J.~Flores.
+\newblock The strict simplicial complexity of the vertex-minimal
+  M\"obius band triangulation is~$2$.
+\newblock Companion note, 2026.
+
+\bibitem{PM26b}
+M.~Perez and J.~Flores.
+\newblock Rigid subcomplexes and lower bounds for strict simplicial
+  complexity at level~$0$.
+\newblock Supplementary note, 2026.
+
+\end{thebibliography}
+
+\end{document}

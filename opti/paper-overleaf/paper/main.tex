@@ -241,7 +241,7 @@ The lemma computes $\rho$ outright for the simplex boundaries, the
 hemi-icosahedron ($\rho=6$) and the icosahedron ($\tau=6$, $d=5$, $F=20$,
 so $\rho\ge24$, attained).  Table~\ref{tab:rho} lists $\rho$ for the
 complexes of this paper; every value is the exact optimum of the set-cover
-instance (CP-SAT, status OPTIMAL, at most $12$\,s).  Exactness matters: greedy
+instance (CP-SAT \cite{ORTools}, status OPTIMAL, at most $12$\,s).  Exactness matters: greedy
 needs $27$ rectangles on the icosahedron against $24$.
 
 \begin{table}[H]
@@ -329,7 +329,7 @@ number of facets with $m(\sigma)=0$; the stopping criterion is full coverage
 followed by verification, never $E=0$.
 
 A population of $S$ states anneals in parallel on the GPU under a
-Metropolis rule.  States are initialised by random sweeps flipping $\pi_1$
+Metropolis rule \cite{KGV83}.  States are initialised by random sweeps flipping $\pi_1$
 towards $\pi_2$.  A proposal changes the value of one vertex in one chain at
 a single interior position or over a block of two to eight consecutive
 positions (\emph{track} moves, probability $p_{\mathrm{track}}$), copying
@@ -825,7 +825,7 @@ lazy solver of Section~\ref{sec:exact} decides one domain at a time.
 complex & $|V|$ & $|K{\times}K|$ & $\rho$ & $\TC$ & floor & best certified $\SCst\le$ (source) & audit \\
 \midrule
 circle $\partial\Delta^2$ & $3$ & $18$ & $3$ & $1$ & $1$ & $1$ (\texttt{circle\_probe3}); $=\TC$ & yes\\
-wedge $S^1\vee S^1$ & $4$ & $50$ & $4$ & $2$ & $2$ & $2$ (\texttt{wedge}); $=\TC$ & yes\\
+wedge $S^1\vee S^1$ & $4$ & $50$ & $4$ & $2$ & $2$ & $2$ (\texttt{wedge\_k3\_v2}); $=\TC$ & yes\\
 $\partial\Delta^{n+1}$, $n=2,4,6$ & & & $3$ & $2$ & $2$ & $2$; $=\TC$ (Cor.~\ref{cor:rho}, certificates $n\le6$) & yes\\
 $\partial\Delta^{n+1}$, $n=3,5,7,9$ & & & $3$ & $1$ & $\mathbf 2$ & $2$; $=\SCst>\TC$ (Thm.~\ref{thm:floors}) & yes ($n\le6$)\\
 M\"obius band & $5$ & $150$ & $4$ & $1$ & $\mathbf 2$ & $2$ (\texttt{mobius\_k3\_sat}, \texttt{mobius\_k3\_cegar\_L8}); $=\SCst$ & yes\\
@@ -874,14 +874,17 @@ facet of every domain (\texttt{cover.txt}, \texttt{planners.txt},
 \texttt{summary.json}).  An independent auditor
 (\texttt{src/independent\_check.py}), a pure-Python program that rebuilds
 each triangulation from its facet list and shares no code with the search,
-re-runs every check and exits nonzero on any discrepancy; on 3 and 7 October
-2026 it verified the star covers of all complexes of Table~\ref{tab:rho}, the
-whole icosahedron ladder (the $24$-domain seed, $k=23,\dots,5$ and
-\texttt{icosa\_k4\_exact}), the hemi-icosahedron and Klein rungs, the
-M\"obius certificates and the eight archived first-phase certificates
-(hash manifest, \texttt{audit/verify\_all.py --check} in the certificates
-repository).  The hemicube, hemi-octahedron and hemi-dodecahedron pass only
-the internal verifier (Table~\ref{tab:surfaces}).
+re-runs every check and exits nonzero on any discrepancy.  It verifies
+$59$ archived covers: the star covers of all complexes of
+Table~\ref{tab:rho} except the three subdivided models of $\mathbb{RP}^2$
+(up to $\partial\Delta^9$, $1\,287\,000$ facets), the whole icosahedron
+ladder (the $24$-domain seed, $k=23,\dots,5$ and \texttt{icosa\_k4\_exact}),
+the hemi-icosahedron and Klein rungs, the M\"obius certificates and the
+first-phase certificates of Table~\ref{tab:annealer}
+(\texttt{audit/verify\_all.py --check} in the certificates repository, which
+also checks a hash manifest).  The hemicube, hemi-octahedron and
+hemi-dodecahedron covers pass only the internal verifier
+(Table~\ref{tab:surfaces}); they are archived and hashed separately.
 
 Computer-assisted theorems rest on three kinds of artefact: SAT instances
 built from proved rigid families (\texttt{rigid.py bound}, logs in \texttt{scripts/rigid\_analysis/}\allowbreak\texttt{certificates/}\allowbreak\texttt{bound\_*.txt}; the rigid-sphere instances of \cite{PM26b}); witness lists re-verified from the definitions
@@ -894,11 +897,11 @@ auditor) is at
 \begin{center}\url{https://github.com/MiguelPerezI/chain-first-annealer}\end{center}
 and the archived certificates at
 \begin{center}\url{https://github.com/MiguelPerezI/simplicial-complexity-certificates}\end{center}
-The star covers, descents, rigid-analysis certificates and
-\texttt{icosa\_k4\_exact} are in \texttt{opti/results/},
-\texttt{opti/scripts/rigid\_analysis/} and \texttt{opti/experiments/} of the
-source repository and are not yet in the certificates archive.
-% TODO(authors): archive and re-pin both commits.
+Every cover cited in this paper is in the certificates archive; the
+rigid-analysis certificates, logs and stalled states are in
+\texttt{opti/scripts/rigid\_analysis/}, \texttt{opti/results/} and
+\texttt{opti/experiments/} of the source repository.  The versions described
+here carry the tag \texttt{arxiv-v1} in both repositories.
 All annealer runs except $S^6$ used one Tesla T4; wall times are single-run
 observations.  The rigid-analysis and exact computations ran on a four-core
 laptop CPU.
